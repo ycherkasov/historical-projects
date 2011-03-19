@@ -1,0 +1,121 @@
+#include "user_allooc.h"
+#include "construct.h"
+
+#include <iostream>
+#include <cstdio>
+#include <new>
+
+intern g_intern;
+
+/** @brief 
+2 формы оператора new
+1 - обычная(show_new1)
+2 - с замещением(show_new2 - i и j имеют одинаковые адреса)
+
+*/
+
+void show_new1() {
+	// просто выделяем память
+	int* i = new int(6);
+	printf("%d\n", *i);
+	delete i;
+}
+
+
+void show_new2() {
+	int * i = new int(12);
+	printf("*i = %d\n", *i);
+
+	// инициализируем существующую память, в данном случае i = j
+	int * j = new(i) int(7);   // замещающий new
+	printf("*j = %d\n", *j);
+	printf("*i = %d\n", *i);
+	delete i;   // сразу же удалили и j
+}
+
+user_allooc::user_allooc(void)
+{
+	std::cout << "user_allooc()" << std::cout;
+}
+
+user_allooc::~user_allooc(void)
+{
+	std::cout << "~user_allooc()" << std::cout;
+}
+
+void* user_allooc::operator new(size_t s, void* p) throw(){
+	//return _alloca(s);
+	return p;
+}
+
+void user_allooc::operator delete(void* p){
+	//free(p);
+}
+
+// new_op_new.cpp
+// compile with: /EHsc
+#include<new>
+#include<iostream>
+
+using namespace std;
+
+class MyClass 
+{
+public: 
+	MyClass( ) : imember()
+	{
+		cout << "Construction MyClass." << this << endl;
+	};
+
+	~MyClass( )
+	{
+		imember = 0; cout << "Destructing MyClass." << this << endl;
+	};
+	int imember;
+};
+
+void show_new_delete()
+{
+	// первая, классическая форма оператора new
+	// В случае неудачи кидает исключение bad_alloc
+	MyClass* fPtr = new MyClass;
+	delete fPtr;
+
+	// вторая, замещающая функция new
+	// помещает объект по определенному адресу
+	// Не требует освобождения памяти
+	// Используется когда для переинициализации объекта используются конструкторы. 
+	// Обычно необходимо при работе с классами которые нельзя изменить.
+	char x[sizeof( MyClass )];
+	MyClass* fPtr2 = new( x ) MyClass;
+	fPtr2->~MyClass();
+	cout << "The address of x[0] is : " << ( void* )&x[0] << endl;
+	// http://rsdn.ru/forum/cpp/3679187.aspx
+
+	//Интенсивно применяется в микроконтроллерных системах, 
+	//где нужен четкий контроль за размещением объектов в памяти. 
+	//Там, зачастую, кучу использовать нельзя, т.к. нужно на момент компиляции знать, 
+	//сколько памяти использовано, а сколько еще доступно.
+
+/*	В слабых микроконтроллерах чаще применяют размещающие операторы new, 
+	а в более мощных можно уже воспользоваться перегруженными версиями операторов new/delete.
+	Проблема в том, что операторы new/delete многое не знают. 
+	Например, при работе с мелкими объектами overhead может быть слишком большим, 
+	либо за счет фрагментации памяти (т.к. объекты разных размеров) 
+	может падать производительность или возрастать расход памяти. 
+	Если же вы знаете, что у вас создается только два типа объекта 
+	(и вы знаете их максимальное число, что для микроконтроллерных проектов является нормой),
+	то по старту приложения вы можете выделить один большой кусок памяти 
+	(или два больших куска, каждый для своего типа объектов) для всех таких объектов, 
+	и перегрузить оператор new/delete для работы уже с
+	собственной выделенной "подкучей". 
+	Таким способом вы можете контролировать расход памяти и здорово поднять производительность.
+	*/
+
+	// третья, устаревшая форма оператора new
+	// В случае неудачи возвращает 0
+	MyClass* fPtr3 = new( nothrow ) MyClass;
+	if(fPtr3){ /*do something*/ }
+	delete fPtr3;
+}
+

@@ -1,0 +1,9 @@
+#pragma once
+void show_list();
+void show_deque();
+void show_adapters();
+void show_map();
+void show_map2();
+void show_multimap();
+void show_set();
+void show_multiset();

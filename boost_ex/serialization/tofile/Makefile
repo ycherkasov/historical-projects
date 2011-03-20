@@ -5,7 +5,7 @@ INCDIRS =
 
 #change to -ggdb for debugging
 COMPILER = g++
-COMPILEFLAGS = -O2
+COMPILEFLAGS = -ggdb
 COMPILE = $(COMPILER) $(COMPILEFLAGS)
 
 FILENAME = serialize2

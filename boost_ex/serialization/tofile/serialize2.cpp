@@ -26,17 +26,16 @@ enum {
     e_TelemetryResponse = 0x11
 };
 
-
 class gps_position {
 private:
     friend class boost::serialization::access;
 
     template<class Archive>
     void serialize(Archive & ar, const unsigned int version) {
-	// то же, что и make_nvp, только имя параметра выводится в макросе
-	ar & BOOST_SERIALIZATION_NVP(degrees);
-	ar & BOOST_SERIALIZATION_NVP(minutes);
-	ar & BOOST_SERIALIZATION_NVP(seconds);
+        // то же, что и make_nvp, только имя параметра выводится в макросе
+        ar & BOOST_SERIALIZATION_NVP(degrees);
+        ar & BOOST_SERIALIZATION_NVP(minutes);
+        ar & BOOST_SERIALIZATION_NVP(seconds);
     }
     int degrees;
     int minutes;
@@ -51,12 +50,43 @@ public:
     }
 };
 
+
+struct TelemetryRequest {
+    static const int telemetryRequestPacketSize = 4;
+    static const uint8_t e_typeID = e_TelemetryRequest;
+
+    TelemetryRequest()
+    : addr(0x01)
+    , packet_id(e_TelemetryRequest)
+    , size(telemetryRequestPacketSize) {}
+
+    friend class boost::serialization::access;
+    template<class Archive>
+    void serialize(Archive & ar, const unsigned int version) {
+        ar & BOOST_SERIALIZATION_NVP(addr);
+        ar & BOOST_SERIALIZATION_NVP(packet_id);
+        ar & BOOST_SERIALIZATION_NVP(size);
+        ar & BOOST_SERIALIZATION_NVP(crc8);
+    }
+    /** @brief UAV address (should be same with request) */
+    uint8_t addr;
+
+    /** @brief 0x11 */
+    uint8_t packet_id;
+
+    /** @brief 0x11 */
+    uint8_t size;
+
+    uint8_t crc8;
+
+};
+
 struct TelemetryResponse {
     static const int telemetryResponsePacketSize = 49;
     static const uint8_t e_typeID = e_TelemetryResponse;
 
     TelemetryResponse()
-    : addr()
+    : addr(0x01)
     , packet_id(e_TelemetryResponse)
     , size(telemetryResponsePacketSize)
     , currentState()
@@ -82,7 +112,8 @@ struct TelemetryResponse {
     , flapsChannel()
     , activeFPointId()
     , fdDeviation()
-    , nextPointDistance(){ }
+    , nextPointDistance() {
+    }
 
     enum E_ControlState {
         e_idle = 0x01, // Ожидание готовности датчиков
@@ -201,36 +232,35 @@ struct TelemetryResponse {
     friend class boost::serialization::access;
     template<class Archive>
     void serialize(Archive & ar, const unsigned int version) {
-    ar & BOOST_SERIALIZATION_NVP(addr);
-    ar & BOOST_SERIALIZATION_NVP (packet_id);
-    ar & BOOST_SERIALIZATION_NVP (size);
-    ar & BOOST_SERIALIZATION_NVP (currentState);
-    ar & BOOST_SERIALIZATION_NVP (roll);
-    ar & BOOST_SERIALIZATION_NVP (pitch);
-    ar & BOOST_SERIALIZATION_NVP (course);
-    ar & BOOST_SERIALIZATION_NVP (kiasSpeed);
-    ar & BOOST_SERIALIZATION_NVP (baroHeight);
-    ar & BOOST_SERIALIZATION_NVP (verticalSpeed);
-    ar & BOOST_SERIALIZATION_NVP (usonicAltmHeight);
-    ar & BOOST_SERIALIZATION_NVP (trackAngle);
-    ar & BOOST_SERIALIZATION_NVP (trackSpeed);
-    ar & BOOST_SERIALIZATION_NVP (lattitude);
-    ar & BOOST_SERIALIZATION_NVP (longitude);
-    ar & BOOST_SERIALIZATION_NVP (snsHeight);
-    ar & BOOST_SERIALIZATION_NVP (engineRPM);
-    ar & BOOST_SERIALIZATION_NVP (engineTemperature1);
-    ar & BOOST_SERIALIZATION_NVP (engineTemperature2);
-    ar & BOOST_SERIALIZATION_NVP (aileronChannel);
-    ar & BOOST_SERIALIZATION_NVP (elevatorChannel);
-    ar & BOOST_SERIALIZATION_NVP (rudderChannel);
-    ar & BOOST_SERIALIZATION_NVP (throttleChannel);
-    ar & BOOST_SERIALIZATION_NVP (flapsChannel);
-    ar & BOOST_SERIALIZATION_NVP (activeFPointId);
-    ar & BOOST_SERIALIZATION_NVP (fdDeviation);
-    ar & BOOST_SERIALIZATION_NVP (nextPointDistance);
-    ar & BOOST_SERIALIZATION_NVP (crc8);
+        ar & BOOST_SERIALIZATION_NVP(addr);
+        ar & BOOST_SERIALIZATION_NVP(packet_id);
+        ar & BOOST_SERIALIZATION_NVP(size);
+        ar & BOOST_SERIALIZATION_NVP(currentState);
+        ar & BOOST_SERIALIZATION_NVP(roll);
+        ar & BOOST_SERIALIZATION_NVP(pitch);
+        ar & BOOST_SERIALIZATION_NVP(course);
+        ar & BOOST_SERIALIZATION_NVP(kiasSpeed);
+        ar & BOOST_SERIALIZATION_NVP(baroHeight);
+        ar & BOOST_SERIALIZATION_NVP(verticalSpeed);
+        ar & BOOST_SERIALIZATION_NVP(usonicAltmHeight);
+        ar & BOOST_SERIALIZATION_NVP(trackAngle);
+        ar & BOOST_SERIALIZATION_NVP(trackSpeed);
+        ar & BOOST_SERIALIZATION_NVP(lattitude);
+        ar & BOOST_SERIALIZATION_NVP(longitude);
+        ar & BOOST_SERIALIZATION_NVP(snsHeight);
+        ar & BOOST_SERIALIZATION_NVP(engineRPM);
+        ar & BOOST_SERIALIZATION_NVP(engineTemperature1);
+        ar & BOOST_SERIALIZATION_NVP(engineTemperature2);
+        ar & BOOST_SERIALIZATION_NVP(aileronChannel);
+        ar & BOOST_SERIALIZATION_NVP(elevatorChannel);
+        ar & BOOST_SERIALIZATION_NVP(rudderChannel);
+        ar & BOOST_SERIALIZATION_NVP(throttleChannel);
+        ar & BOOST_SERIALIZATION_NVP(flapsChannel);
+        ar & BOOST_SERIALIZATION_NVP(activeFPointId);
+        ar & BOOST_SERIALIZATION_NVP(fdDeviation);
+        ar & BOOST_SERIALIZATION_NVP(nextPointDistance);
+        ar & BOOST_SERIALIZATION_NVP(crc8);
     }
-
 
     std::string get_debug_info() {
         char str[BUFSIZ];
@@ -243,42 +273,38 @@ struct TelemetryResponse {
 
 };
 
-
 template<typename TIArch, typename TOArch, typename TClass>
 void TestArch(const std::string & file, std::ios_base::openmode flags, const TClass & cont) {
 
+    int flag = boost::archive::no_header|boost::archive::no_codecvt|boost::archive::no_tracking;
     { // Сериализуем
-	std::ofstream ofs(file.c_str(), std::ios::out | flags);
-	TOArch oa(ofs);
-	// make_nvp создаёт пару имя-значение, которая отразится в XML
-	// если не используем XML архив, то можно пару не создавать
-	oa << boost::serialization::make_nvp("Test_Object", cont);
+        std::ofstream ofs(file.c_str(), std::ios::out | flags);
+        TOArch oa(ofs, flag);
+        // make_nvp создаёт пару имя-значение, которая отразится в XML
+        // если не используем XML архив, то можно пару не создавать
+        oa << boost::serialization::make_nvp("Test_Object", cont);
     }
 
-    TClass newg;
-    { // Десериализуем
-	std::ifstream ifs(file.c_str(), std::ios::in | flags);
-	TIArch ia(ifs);
-	ia >> boost::serialization::make_nvp("Test_Object", newg);
-    }
-
-    { // Еще раз сериализуем, чтобы потом сравнить результаты двух сериализаций
-	// и убедиться, что десериализациия прошла корректно
-	std::ofstream ofs((file + ".tmp").c_str(), std::ios::out | flags);
-	TOArch oa(ofs);
-	oa << boost::serialization::make_nvp("Test_Object", cont);
-    }
+//    TClass newg;
+//    { // Десериализуем
+//        std::ifstream ifs(file.c_str(), std::ios::in | flags);
+//        TIArch ia(ifs, flag);
+//        ia >> boost::serialization::make_nvp("Test_Object", newg);
+//    }
+//
+//    { // Еще раз сериализуем, чтобы потом сравнить результаты двух сериализаций
+//        // и убедиться, что десериализациия прошла корректно
+//        std::ofstream ofs((file + ".tmp").c_str(), std::ios::out | flags);
+//        TOArch oa(ofs, flag);
+//        oa << boost::serialization::make_nvp("Test_Object", cont);
+//    }
 }
 
 int main(int argc, char* argv[]) {
     std::ofstream ofs("filename");
 
-    //std::vector<gps_position> v;
-    //v.push_back(gps_position(35, 59, 24.567f));
-    //v.push_back(gps_position(36, 60, 25.567f));
-    //v.push_back(gps_position(37, 61, 26.567f));
-    TelemetryResponse t;
-    t.crc8 = 0;
+    TelemetryRequest t;
+    t.crc8 = 0xFF;
 
     using namespace boost::archive;
     //std::ios_base::openmode mode_txt = static_cast<std::ios_base::openmode>(0);

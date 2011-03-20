@@ -32,6 +32,7 @@ private:
     template<class Archive>
     void serialize(Archive & ar, const unsigned int version)
     {
+        // << - to archive, >> - from archive, & - both directions
         ar & degrees;
         ar & minutes;
         ar & seconds;

@@ -5,18 +5,26 @@
 #include <vector>
 
 // include headers that implement a archive in simple text format
-#include <boost/archive/text_oarchive.hpp>
-#include <boost/archive/text_iarchive.hpp>
+#include <boost/archive/binary_oarchive_impl.hpp>
+#include <boost/archive/binary_iarchive_impl.hpp>
 #include <boost/archive/binary_iarchive.hpp>
 #include <boost/archive/binary_oarchive.hpp>
-#include <boost/archive/xml_iarchive.hpp>
-#include <boost/archive/xml_oarchive.hpp>
+
+// include template definitions for base classes used.  Otherwise
+// you'll get link failure with undefined symbols
+#include <boost/archive/impl/basic_binary_oprimitive.ipp>
+#include <boost/archive/impl/basic_binary_iprimitive.ipp>
+#include <boost/archive/impl/basic_binary_oarchive.ipp>
+#include <boost/archive/impl/basic_binary_iarchive.ipp>
+
 // включаем, чтобы сериализация работала с векторами
 #include <boost/serialization/vector.hpp>
 // включаем, чтобы нормально проходила сериализация XML
 #include <boost/serialization/nvp.hpp>
 
 #include <boost/utility/enable_if.hpp>
+
+using namespace boost::archive;
 
 enum {
     e_IdentityRequest = 0x00,
@@ -50,7 +58,6 @@ public:
     }
 };
 
-
 struct TelemetryRequest {
     static const int telemetryRequestPacketSize = 4;
     static const uint8_t e_typeID = e_TelemetryRequest;
@@ -58,9 +65,13 @@ struct TelemetryRequest {
     TelemetryRequest()
     : addr(0x01)
     , packet_id(e_TelemetryRequest)
-    , size(telemetryRequestPacketSize) {}
+    , size(telemetryRequestPacketSize) {
+    }
+
+    //friend std::ostream & operator<<(std::ostream &os, const TelemetryRequest & gp);
 
     friend class boost::serialization::access;
+
     template<class Archive>
     void serialize(Archive & ar, const unsigned int version) {
         ar & BOOST_SERIALIZATION_NVP(addr);
@@ -80,6 +91,10 @@ struct TelemetryRequest {
     uint8_t crc8;
 
 };
+
+//std::ostream & operator<<(std::ostream &os, const TelemetryRequest& t) {
+//    return os << t.addr << t.packet_id << t.size << t.crc8;
+//}
 
 struct TelemetryResponse {
     static const int telemetryResponsePacketSize = 49;
@@ -230,6 +245,7 @@ struct TelemetryResponse {
     };
 
     friend class boost::serialization::access;
+
     template<class Archive>
     void serialize(Archive & ar, const unsigned int version) {
         ar & BOOST_SERIALIZATION_NVP(addr);
@@ -272,36 +288,131 @@ struct TelemetryResponse {
     }
 
 };
+using namespace boost::archive;
 
-template<typename TIArch, typename TOArch, typename TClass>
-void TestArch(const std::string & file, std::ios_base::openmode flags, const TClass & cont) {
+class fast_binary_oarchive :
+public binary_oarchive_impl<
+fast_binary_oarchive,
+std::ostream::char_type,
+std::ostream::traits_type
+> {
+    typedef fast_binary_oarchive derived_t;
+    typedef binary_oarchive_impl<fast_binary_oarchive, std::ostream::char_type,
+    std::ostream::traits_type> base_t;
+#ifndef BOOST_NO_MEMBER_TEMPLATE_FRIENDS
+public:
+#else
+    friend class boost::archive::detail::interface_oarchive<derived_t>;
+    friend class basic_binary_oarchive<derived_t>;
+    friend class basic_binary_oprimitive<
+    derived_t,
+    std::ostream::char_type,
+    std::ostream::traits_type
+    >;
+    friend class boost::archive::save_access;
+#endif
+    // add base class to the places considered when matching
+    // save function to a specific set of arguments.  Note, this didn't
+    // work on my MSVC 7.0 system using
+    // binary_oarchive_impl<derived_t>::load_override;
+    // so we use the sure-fire method below.  This failed to work as well
 
-    int flag = boost::archive::no_header|boost::archive::no_codecvt|boost::archive::no_tracking;
-    { // Сериализуем
-        std::ofstream ofs(file.c_str(), std::ios::out | flags);
-        TOArch oa(ofs, flag);
-        // make_nvp создаёт пару имя-значение, которая отразится в XML
-        // если не используем XML архив, то можно пару не создавать
-        oa << boost::serialization::make_nvp("Test_Object", cont);
+    template<class T>
+    void save_override(T & t, BOOST_PFTO int) {
+        base_t::save_override(t, 0);
+        //t.serialize(*this, 0);
+    }
+    void save_override(const boost::archive::class_name_type & t, int) {}
+    void save_override(const boost::archive::library_version_type & t, int) {}
+    void save_override(const boost::archive::version_type & t, int) {}
+    void save_override(const boost::archive::class_id_type & t, int) {}
+    void save_override(const boost::archive::class_id_reference_type & t, int) {}
+    void save_override(const boost::archive::class_id_optional_type & t, int) {}
+    void save_override(const boost::archive::object_id_type & t, int) {}
+    void save_override(const boost::archive::object_reference_type & t, int) {}
+    void save_override(const boost::archive::tracking_type & t, int) {}
+
+
+public:
+
+    fast_binary_oarchive(std::ostream & os, unsigned flags = 0) :
+    base_t(os, flags | boost::archive::no_header) {
     }
 
-//    TClass newg;
-//    { // Десериализуем
-//        std::ifstream ifs(file.c_str(), std::ios::in | flags);
-//        TIArch ia(ifs, flag);
-//        ia >> boost::serialization::make_nvp("Test_Object", newg);
-//    }
-//
-//    { // Еще раз сериализуем, чтобы потом сравнить результаты двух сериализаций
-//        // и убедиться, что десериализациия прошла корректно
-//        std::ofstream ofs((file + ".tmp").c_str(), std::ios::out | flags);
-//        TOArch oa(ofs, flag);
-//        oa << boost::serialization::make_nvp("Test_Object", cont);
-//    }
-}
+    fast_binary_oarchive(std::streambuf & bsb, unsigned int flags = 0) :
+    base_t(bsb, flags | boost::archive::no_header) {
+    }
+};
+
+class fast_binary_iarchive :
+// don't derive from binary_oarchive !!!
+public binary_iarchive_impl<
+fast_binary_iarchive,
+std::istream::char_type,
+std::istream::traits_type
+> {
+    typedef fast_binary_iarchive derived_t;
+    typedef binary_iarchive_impl<
+    fast_binary_iarchive,
+    std::istream::char_type,
+    std::istream::traits_type
+    > base_t;
+#ifndef BOOST_NO_MEMBER_TEMPLATE_FRIENDS
+public:
+#else
+    friend class boost::archive::detail::interface_iarchive<derived_t>;
+    friend class basic_binary_iarchive<derived_t>;
+    friend class basic_binary_iprimitive<
+    derived_t,
+    std::ostream::char_type,
+    std::ostream::traits_type
+    >;
+    friend class boost::archive::load_access;
+#endif
+    // add base class to the places considered when matching
+    // save function to a specific set of arguments.  Note, this didn't
+    // work on my MSVC 7.0 system using
+    // binary_oarchive_impl<derived_t>::load_override;
+    // so we use the sure-fire method below.  This failed to work as well
+
+    template<class T>
+    void load_override(T & t, BOOST_PFTO int) {
+        base_t::load_override(t, 0);
+    }
+
+    void load_override(const boost::archive::class_name_type & t, int) {}
+    void load_override(const boost::archive::library_version_type & t, int) {}
+    void load_override(const boost::archive::version_type & t, int) {}
+    void load_override(const boost::archive::class_id_type & t, int) {}
+    void load_override(const boost::archive::class_id_reference_type & t, int) {}
+    void load_override(const boost::archive::class_id_optional_type & t, int) {}
+    void load_override(const boost::archive::object_id_type & t, int) {}
+    void load_override(const boost::archive::object_reference_type & t, int) {}
+    void load_override(const boost::archive::tracking_type & t, int) {}
+
+    void load_override( boost::archive::class_name_type & t, int) {}
+    void load_override( boost::archive::library_version_type & t, int) {}
+    void load_override( boost::archive::version_type & t, int) {}
+    void load_override( boost::archive::class_id_type & t, int) {}
+    void load_override( boost::archive::class_id_reference_type & t, int) {}
+    void load_override( boost::archive::class_id_optional_type & t, int) {}
+    void load_override( boost::archive::object_id_type & t, int) {}
+    void load_override( boost::archive::object_reference_type & t, int) {}
+    void load_override( boost::archive::tracking_type & t, int) {}
+
+public:
+
+    fast_binary_iarchive(std::istream & is, unsigned int flags = 0) :
+    base_t(is, flags | boost::archive::no_header) {
+    }
+
+    fast_binary_iarchive(std::streambuf & bsb, unsigned int flags = 0) :
+    base_t(bsb, flags | boost::archive::no_header) {
+    }
+};
 
 int main(int argc, char* argv[]) {
-    std::ofstream ofs("filename");
+    //std::ofstream ofs("filename");
 
     TelemetryRequest t;
     t.crc8 = 0xFF;
@@ -309,9 +420,27 @@ int main(int argc, char* argv[]) {
     using namespace boost::archive;
     //std::ios_base::openmode mode_txt = static_cast<std::ios_base::openmode>(0);
     std::ios_base::openmode mode_bin = std::ios::binary;
+    std::string file("binary_arch.dump");
     //TestArch<text_iarchive, text_oarchive > ("text_arch.dump", mode_txt, t);
-    TestArch<binary_iarchive, binary_oarchive > ("binary_arch.dump", mode_bin, t);
+    //TestArch<binary_iarchive, binary_oarchive > ("binary_arch.dump", mode_bin, t);
     //TestArch<xml_iarchive, xml_oarchive > ("xml_arch.dump", mode_txt, t);
+
+    int flag = boost::archive::no_header;
+    { // Сериализуем
+        std::ofstream ofs(file.c_str(), std::ios::out | std::ios::binary);
+        //binary_oarchive oa(ofs, flag);
+        fast_binary_oarchive oa(ofs, flag);
+        // make_nvp создаёт пару имя-значение, которая отразится в XML
+        // если не используем XML архив, то можно пару не создавать
+        oa << t; //boost::serialization::make_nvp("Test_Object", t);
+    }
+
+    TelemetryRequest newg;
+    { // Десериализуем
+        std::ifstream ifs(file.c_str(), std::ios::in | std::ios::binary);
+        binary_iarchive ia(ifs, flag);
+        ia >> newg; //boost::serialization::make_nvp("Test_Object", newg);
+    }
 
     return 0;
 }

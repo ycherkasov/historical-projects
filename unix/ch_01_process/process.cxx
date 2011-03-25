@@ -3,8 +3,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <errno.h>
 #include <sys/wait.h>
 #include <iterator>
+
+// Вопросы:
+// 1. Waitpid опрашивается в цикле и возвращает управление или ждет?
 
 /*
  Семейство функций  exec...  загружает  и  запускает
@@ -41,63 +45,64 @@ e - показывает, что "дочернему" процессу може�
  *  */
 
 // define function-signal handler
-static void sig_interrupt(int){
+static void sig_interrupt(int) {
     std::cout << "interrupted\n%% ";
 }
 
 // analog of WinAPI CreateProcess
-void create_process(const char* procname){
+void create_process(const char* procname) {
     pid_t pid = 0;
     int status = 0;
-    
-    if( (pid = fork()) < 0 ){
-	throw std::runtime_error("fork() error");
+
+    if ((pid = fork()) < 0) {
+        throw std::runtime_error("fork() error");
     }
-    else if( pid == 0 ){
-	execlp( procname, procname, (char*)0 );
-	
-	// we should not be here if OK
-	std::cerr << "Unable to execute " << procname << std::endl;
-	exit(127);
+    else if (pid == 0) {
+        execlp(procname, procname, (char*) 0);
+
+        // we should not be here if OK
+        std::cerr << "Unable to execute " << procname << std::endl;
+        exit(127);
     }
-    
+
     // wait for child start
-    if( pid = waitpid(pid, &status, 0) < 0 ){
-	std::cerr << "waitpid() error" << std::endl;
+    if (pid = waitpid(pid, &status, 0) < 0) {
+        std::cerr << "waitpid() error" << std::endl;
     }
 }
 
 // class represent simple unix shell with promt string '%%'
-struct simple_shell{
-    
-    simple_shell(){
-	std::cout << "%% ";
+
+struct simple_shell {
+
+    simple_shell() {
+        std::cout << "%% ";
     }
-    
-    void start(){
-	
-	char buf[255];
-	while( NULL != fgets(buf, 255, stdin)  ){
 
-	    // set endline as '0'
-	    size_t s = strlen(buf) - 1;
-	    if (buf[s] == '\n'){
-		buf[s] = 0;
-	    }
+    void start() {
 
-	    create_process(buf);
-	    std::cout << "%% ";
-	}
-	
-	
+        char buf[255];
+        while (NULL != fgets(buf, 255, stdin)) {
+
+            // set endline as '0'
+            size_t s = strlen(buf) - 1;
+            if (buf[s] == '\n') {
+                buf[s] = 0;
+            }
+
+            create_process(buf);
+            std::cout << "%% ";
+        }
+
+
     }
 };
 
 int main(int ac, char* av[]) {
 
     // try to handle signal Ctrl-C
-    if( SIG_ERR == signal(SIGINT, sig_interrupt) ){
-	std::cout << "signal() function error" << std::endl;;
+    if (SIG_ERR == signal(SIGINT, sig_interrupt)) {
+        std::cout << "signal() function error" << std::endl;
     }
 
     simple_shell s;

@@ -17,11 +17,6 @@
 #include <boost/archive/impl/basic_binary_oarchive.ipp>
 #include <boost/archive/impl/basic_binary_iarchive.ipp>
 
-// включаем, чтобы сериализация работала с векторами
-#include <boost/serialization/vector.hpp>
-// включаем, чтобы нормально проходила сериализация XML
-#include <boost/serialization/nvp.hpp>
-
 #include <boost/utility/enable_if.hpp>
 
 using namespace boost::archive;
@@ -32,30 +27,6 @@ enum {
 
     e_TelemetryRequest = 0x10,
     e_TelemetryResponse = 0x11
-};
-
-class gps_position {
-private:
-    friend class boost::serialization::access;
-
-    template<class Archive>
-    void serialize(Archive & ar, const unsigned int version) {
-        // то же, что и make_nvp, только имя параметра выводится в макросе
-        ar & BOOST_SERIALIZATION_NVP(degrees);
-        ar & BOOST_SERIALIZATION_NVP(minutes);
-        ar & BOOST_SERIALIZATION_NVP(seconds);
-    }
-    int degrees;
-    int minutes;
-    float seconds;
-public:
-
-    gps_position() {
-    };
-
-    gps_position(int d, int m, float s) :
-    degrees(d), minutes(m), seconds(s) {
-    }
 };
 
 struct TelemetryRequest {
@@ -288,7 +259,6 @@ struct TelemetryResponse {
     }
 
 };
-using namespace boost::archive;
 
 class fast_binary_oarchive :
 public binary_oarchive_impl<
@@ -380,25 +350,25 @@ public:
         base_t::load_override(t, 0);
     }
 
-    void load_override(const boost::archive::class_name_type & t, int) {}
-    void load_override(const boost::archive::library_version_type & t, int) {}
-    void load_override(const boost::archive::version_type & t, int) {}
-    void load_override(const boost::archive::class_id_type & t, int) {}
-    void load_override(const boost::archive::class_id_reference_type & t, int) {}
-    void load_override(const boost::archive::class_id_optional_type & t, int) {}
-    void load_override(const boost::archive::object_id_type & t, int) {}
-    void load_override(const boost::archive::object_reference_type & t, int) {}
-    void load_override(const boost::archive::tracking_type & t, int) {}
+    void load_override(const boost::archive::class_name_type& t, int) {}
+    void load_override(const boost::archive::library_version_type& t, int) {}
+    void load_override(const boost::archive::version_type& t, int) {}
+    void load_override(const boost::archive::class_id_type& t, int) {}
+    void load_override(const boost::archive::class_id_reference_type& t, int) {}
+    void load_override(const boost::archive::class_id_optional_type& t, int) {}
+    void load_override(const boost::archive::object_id_type& t, int) {}
+    void load_override(const boost::archive::object_reference_type& t, int) {}
+    void load_override(const boost::archive::tracking_type& t, int) {}
 
-    void load_override( boost::archive::class_name_type & t, int) {}
-    void load_override( boost::archive::library_version_type & t, int) {}
-    void load_override( boost::archive::version_type & t, int) {}
-    void load_override( boost::archive::class_id_type & t, int) {}
-    void load_override( boost::archive::class_id_reference_type & t, int) {}
-    void load_override( boost::archive::class_id_optional_type & t, int) {}
-    void load_override( boost::archive::object_id_type & t, int) {}
-    void load_override( boost::archive::object_reference_type & t, int) {}
-    void load_override( boost::archive::tracking_type & t, int) {}
+    void load_override(boost::archive::class_name_type& t, int) {}
+    void load_override(boost::archive::library_version_type& t, int) {}
+    void load_override(boost::archive::version_type& t, int) {}
+    void load_override(boost::archive::class_id_type& t, int) {}
+    void load_override(boost::archive::class_id_reference_type& t, int) {}
+    void load_override(boost::archive::class_id_optional_type& t, int) {}
+    void load_override(boost::archive::object_id_type& t, int) {}
+    void load_override(boost::archive::object_reference_type& t, int) {}
+    void load_override(boost::archive::tracking_type& t, int) {}
 
 public:
 
@@ -428,7 +398,6 @@ int main(int argc, char* argv[]) {
     int flag = boost::archive::no_header;
     { // Сериализуем
         std::ofstream ofs(file.c_str(), std::ios::out | std::ios::binary);
-        //binary_oarchive oa(ofs, flag);
         fast_binary_oarchive oa(ofs, flag);
         // make_nvp создаёт пару имя-значение, которая отразится в XML
         // если не используем XML архив, то можно пару не создавать
@@ -438,7 +407,7 @@ int main(int argc, char* argv[]) {
     TelemetryRequest newg;
     { // Десериализуем
         std::ifstream ifs(file.c_str(), std::ios::in | std::ios::binary);
-        binary_iarchive ia(ifs, flag);
+        fast_binary_iarchive ia(ifs, flag);
         ia >> newg; //boost::serialization::make_nvp("Test_Object", newg);
     }
 

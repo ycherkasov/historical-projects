@@ -1,0 +1,39 @@
+PROGRAM =  
+LIBS = boost_system boost_thread boost_regex boost_serialization
+LIBDIRS = 
+INCDIRS = 
+
+#change to -ggdb for debugging -O2 for release
+COMPILER = g++
+COMPILEFLAGS = -ggdb
+COMPILE = $(COMPILER) $(COMPILEFLAGS)
+
+CLI_FILENAME = client
+CLI_SOURCES = $(CLI_FILENAME).cpp 
+CLI_OBJFILE = $(CLI_FILENAME).o 
+
+SRV_FILENAME = aserver
+SRV_SOURCES = $(SRV_FILENAME).cpp
+SRV_OBJFILE = $(SRV_FILENAME).o
+
+all: client server
+
+client: $(CLI_OBJFILE)
+	$(COMPILE) -o $(CLI_FILENAME) $(foreach incdir,$(INCDIRS),-I$(incdir)) $(CLI_OBJFILE) $(foreach slib,$(LIBS), -l$(slib) )
+
+server: $(SRV_OBJFILE)
+	$(COMPILE) -o $(SRV_FILENAME) $(foreach incdir,$(INCDIRS),-I$(incdir)) $(SRV_OBJFILE) $(foreach slib,$(LIBS), -l$(slib) )
+
+$(CLI_OBJFILE): $(CLI_SOURCES) telemetry.h raw_binary_archive.h
+	$(COMPILE) -c $(CLI_SOURCES)
+
+$(SRV_OBJFILE): $(SRV_SOURCES) telemetry.h raw_binary_archive.h
+	$(COMPILE) -c $(SRV_SOURCES)
+
+# abstract (phony) targets
+.PHONY: clean
+clean:
+	rm -rf $(CLI_FILENAME) $(SRV_FILENAME) $(CLI_OBJFILE) $(SRV_OBJFILE)
+
+.PHONY: rebuild
+rebuild: clean all

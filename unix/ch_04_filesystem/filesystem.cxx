@@ -14,7 +14,7 @@
  * 5. Use chown/fchown/lchown as same as bash commands
  * 6. Use truancete/ftruncate to cut file
  * 7. Use link()/unlink() for hard links
- * 8. Use symlinc() for symbolic links (and readlink() to open it)
+ * 8. Use symlinc() to create symbolic links (and readlink() to open it)
  * 9. Use utime() to change last access and modification time
  * 10. Use mkdir()/rmdir() as same as bash
  * 11. Use chdir()/fchdir() as bash 'cd', use getcwd() as bash pwd
@@ -122,6 +122,7 @@ int main(int argc, char* argv[]) {
 
     }
     catch(const std::exception& e){
+        std::cout << e.what() << std::endl;
     }
     return 0;
 }

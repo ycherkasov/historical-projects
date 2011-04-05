@@ -5,7 +5,7 @@ INCDIRS =
 
 #change to -ggdb for debugging
 COMPILER = g++
-COMPILEFLAGS = -O2
+COMPILEFLAGS = -ggdb
 COMPILE = $(COMPILER) $(COMPILEFLAGS)
 
 FILENAME = $(PROGRAM)
@@ -24,7 +24,7 @@ $(PROGRAM): $(OBJFILES)
 # abstract (phony) targets
 .PHONY: clean
 clean:
-	rm -rf $(PROGRAM) $(OBJFILES)
+	rm -rf $(PROGRAM) $(OBJFILES) test.txt
 
 .PHONY: rebuild
 rebuild: clean all

@@ -116,7 +116,6 @@ public:
     // work on my MSVC 7.0 system using
     // binary_oarchive_impl<derived_t>::load_override;
     // so we use the sure-fire method below.  This failed to work as well
-
     template<class T>
     void load_override(T & t, BOOST_PFTO int) {
         base_t::load_override(t, 0);

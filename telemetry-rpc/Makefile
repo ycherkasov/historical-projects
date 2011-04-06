@@ -1,5 +1,5 @@
 PROGRAM = 
-LIBS = boost_system boost_thread boost_regex boost_serialization thrift
+LIBS = boost_thread thrift
 LIBDIRS = 
 INCDIRS = /usr/local/include/thrift
 

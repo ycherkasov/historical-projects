@@ -19,11 +19,13 @@ public:
     /** @brief Start async receive on creation */
     udp_async_server(boost::asio::io_service& io_service, short port)
     : io_service_(io_service)
-    , request_()
-    //, response_()
+    , _port(port)
     , socket_(io_service, udp::endpoint(udp::v4(), port)) {
 
+        // use std::string as container
+        
         outbound_data_.reserve(max_length);
+        inbound_data_.reserve(max_length);
         socket_.async_receive_from(
                 boost::asio::buffer(&outbound_data_[0], max_length), sender_endpoint_,
                 boost::bind(&udp_async_server::handle_receive_from, this,
@@ -37,16 +39,20 @@ public:
 
         if (!error && bytes_recvd > 0) {
 
-            _tresp.crc8 = 0xFF;
-            std::cout << "handle_receive_from::async_send_to: "
-                    << _tresp.get_debug_info() << std::endl;
-            
+            // temporary: use crc8 field to identify packet
+            short a = _port / 10;
+            _tresp.crc8 = static_cast<uint8_t> (a);
+
+            // show telemetry responce
+            _tresp.print_debug_info(std::cout);
+
+            // pack it into binary archive
             std::ostringstream archive_stream;
-            //boost::archive::binary_oarchive archive(archive_stream);
             raw_binary_oarchive archive(archive_stream);
             archive << _tresp;
             outbound_data_ = archive_stream.str();
 
+            // send to client
             socket_.async_send_to(
                     boost::asio::buffer(&outbound_data_[0], TelemetryResponse::telemetryResponsePacketSize)
                     , sender_endpoint_
@@ -55,10 +61,9 @@ public:
                     , boost::asio::placeholders::bytes_transferred));
         }
         else {
-
-            // todo : handle with serialization
+            // something went wrong, try re-recieve
             socket_.async_receive_from(
-                    boost::asio::buffer(request_, max_length), sender_endpoint_,
+                    boost::asio::buffer(&inbound_data_[0], max_length), sender_endpoint_,
                     boost::bind(&udp_async_server::handle_receive_from, this,
                     boost::asio::placeholders::error,
                     boost::asio::placeholders::bytes_transferred));
@@ -69,21 +74,34 @@ public:
     void handle_send_to(const boost::system::error_code& /*error*/,
             size_t /*bytes_sent*/) {
 
-        std::cout << "handle_send_to::async_receive_from: "
-                << request_ << std::endl;
+        // as soon we send data, receive the next packet
 
-        // as soon we send data, receive the next
+        // get request from client here
+        TelemetryRequest t;
+        std::string archive_data(&inbound_data_[0]
+                , &inbound_data_[0] + TelemetryRequest::telemetryRequestPacketSize);
+
+        // deserialize it from packet
+        std::istringstream archive_stream(archive_data, std::ios::binary);
+        raw_binary_iarchive archive(archive_stream);
+        archive >> boost::serialization::make_nvp("Test_Object", t);
+        t.print_debug_info(std::cout);
+
+        // packet received successfully, wait for the next
         socket_.async_receive_from(
-                boost::asio::buffer(request_, max_length), sender_endpoint_,
+                boost::asio::buffer(&inbound_data_[0], max_length), sender_endpoint_,
                 boost::bind(&udp_async_server::handle_receive_from, this,
                 boost::asio::placeholders::error,
                 boost::asio::placeholders::bytes_transferred));
-        std::memset(request_, 0x0, max_length);
     }
 
 private:
+
     /** @brief Async services wrapper */
     boost::asio::io_service& io_service_;
+
+    /** @brief Listening port */
+    short _port;
 
     /** @brief UDP socket */
     udp::socket socket_;
@@ -92,10 +110,12 @@ private:
     udp::endpoint sender_endpoint_;
 
     /** @brief Request/response text buffer */
-    char request_[max_length];
-    //char response_[max_length];
-    TelemetryResponse _tresp;
+    std::string inbound_data_;
     std::string outbound_data_;
+
+    /** @brief Dummy telemetry response packet */
+    TelemetryResponse _tresp;
+
 };
 
 int main(int argc, char* argv[]) {

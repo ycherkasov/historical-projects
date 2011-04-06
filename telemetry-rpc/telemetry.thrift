@@ -86,5 +86,6 @@ service UavTelemetry extends shared.SharedService {
    void set_elevator(1:i32 p),
    void set_rudder(1:i32 p),
 
+   oneway void save()
 }
 

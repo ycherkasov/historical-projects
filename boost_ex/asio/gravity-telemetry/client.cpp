@@ -25,7 +25,9 @@ public:
     , _reply()
     , _io_service(io_service)
     , _work(io_service)
-    , _sock(io_service, udp::endpoint(udp::v4(), 0)) { }
+    , _sock(io_service, udp::endpoint(udp::v4(), 0)) { 
+        outbound_data_.reserve(max_length);
+    }
 
     /** @brief Use separate thread to put async task to io_service queue */
     void start_message_loop() {
@@ -52,11 +54,24 @@ public:
         udp::resolver::query query(udp::v4(), _host, _port);
         udp::resolver::iterator iterator = resolver.resolve(query);
 
-        const char* request = "Request";
-        size_t request_length = std::strlen(request);
-        std::cout << "Request is: " << request << std::endl;
-        _sock.send_to(boost::asio::buffer(request, request_length), *iterator);
+        // send request packet here
+        boost::mutex::scoped_lock some_lock(cout_mutex1);
+        TelemetryRequest t;
+        size_t request_length = TelemetryRequest::telemetryRequestPacketSize;
+        std::cout << "Request is: ";// << t.get_debug_info() << std::endl;
+        t.print_debug_info(std::cout);
 
+        // serialize it to network packet
+        std::ostringstream archive_stream;
+        raw_binary_oarchive archive(archive_stream);
+        archive << t;
+        outbound_data_ = archive_stream.str();
+
+        // send to server
+        _sock.send_to(boost::asio::buffer(&outbound_data_[0], request_length)
+                , *iterator);
+
+        // handle responce
         udp::endpoint sender_endpoint;
         _sock.async_receive_from(boost::asio::buffer(_reply)
                 , sender_endpoint
@@ -70,22 +85,22 @@ public:
             , std::size_t bytes_transferred) {
         if (!error || error == boost::asio::error::message_size) {
 
+            // lock for appropriate debug output while several clients procesing
+            boost::mutex::scoped_lock some_lock(cout_mutex2);
             try {
                 _packet_counter++;
                 std::cout << "Handled " << _packet_counter << " packets" << std::endl;
 
+                // deserialize response here
                 TelemetryResponse t;
                 std::string archive_data(_reply.elems
                         , _reply.elems + TelemetryResponse::telemetryResponsePacketSize);
-                std::cout << archive_data << std::endl;
 
+                // show response information
                 std::istringstream archive_stream(archive_data, std::ios::binary);
-                std::cout << archive_stream.str() << std::endl;
-
-                //boost::archive::binary_iarchive archive(archive_stream);
                 raw_binary_iarchive archive(archive_stream);
-                archive >> boost::serialization::make_nvp("Test_Object", t);;
-                std::cout << t.get_debug_info() << std::endl;
+                archive >> boost::serialization::make_nvp("Test_Object", t);
+                t.print_debug_info(std::cout);
 
             }
             catch (const std::exception& e) {
@@ -96,6 +111,11 @@ public:
     }
 
 private:
+
+    /** @brief Debug output synchronisation */
+    boost::mutex cout_mutex1;
+    boost::mutex cout_mutex2;
+
     /** @brief Just said that exit should be handled */
     bool _exit_flag;
 
@@ -119,22 +139,28 @@ private:
 
     /** @brief UDP socket */
     udp::socket _sock;
+
+    /** @brief Buffer for request */
+    std::string outbound_data_;
 };
 
 int main(int argc, char* argv[]) {
     try {
-        if (argc != 3) {
-            std::cerr << "Usage: nonblocking_udp_echo_client <host> <port>\n";
+        if (argc != 4) {
+            std::cerr << "Usage: nonblocking_udp_echo_client <host> <port1> <port2>\n";
             return 1;
         }
 
         std::string host(argv[1]);
-        std::string port(argv[2]);
+        std::string port1(argv[2]);
+        std::string port2(argv[3]);
 
         boost::asio::io_service io_service;
 
         // async client
-        udp_async_client c(io_service, host, port);
+        udp_async_client c1(io_service, host, port1);
+        udp_async_client c2(io_service, host, port2);
+
 
         // io_service::run must be performed
         // 1. After client creation (to let him put something to queue)
@@ -142,7 +168,8 @@ int main(int argc, char* argv[]) {
         boost::thread t(boost::bind(&boost::asio::io_service::run, &io_service));
 
         // start sending requests
-        c.start_message_loop();
+        c1.start_message_loop();
+        c2.start_message_loop();
         t.join();
 
     }

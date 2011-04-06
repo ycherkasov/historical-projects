@@ -15,6 +15,7 @@
 #include <boost/archive/binary_oarchive.hpp>
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/text_oarchive.hpp>
+#include "simple_log_archive.h"
 
 
 using namespace boost::archive;
@@ -34,10 +35,10 @@ struct TelemetryRequest {
     TelemetryRequest()
     : addr(0x01)
     , packet_id(e_TelemetryRequest)
-    , size(telemetryRequestPacketSize) {
-    }
+    , size(telemetryRequestPacketSize) { }
 
     friend class boost::serialization::access;
+
     template<class Archive>
     void serialize(Archive & ar, const unsigned int version) {
         ar & BOOST_SERIALIZATION_NVP(addr);
@@ -56,11 +57,10 @@ struct TelemetryRequest {
 
     uint8_t crc8;
 
-    std::string get_debug_info() {
-        char str[BUFSIZ];
-        snprintf(str, BUFSIZ, "TelemetryResponse: addr:%d, packet_id:%d, size:%d, crc:%d"
-                , addr, packet_id, size, crc8);
-        return str;
+    void print_debug_info(std::ostream& where) {
+        simple_log_archive log(where);
+        log << *this;
+        where << std::endl;
     }
 
 };
@@ -96,8 +96,7 @@ struct TelemetryResponse {
     , flapsChannel()
     , activeFPointId()
     , fdDeviation()
-    , nextPointDistance() {
-    }
+    , nextPointDistance() { }
 
     enum E_ControlState {
         e_idle = 0x01, // Ожидание готовности датчиков
@@ -206,13 +205,6 @@ struct TelemetryResponse {
     /** @brief CRC */
     uint8_t crc8;
 
-    enum E_Get_Control_Mode {
-        e_get_control_unknown,
-        e_get_control_mode_futaba,
-        e_get_control_mode_manual,
-        e_get_control_mode_auto,
-    };
-
     friend class boost::serialization::access;
 
     template<class Archive>
@@ -247,13 +239,10 @@ struct TelemetryResponse {
         ar & BOOST_SERIALIZATION_NVP(crc8);
     }
 
-    std::string get_debug_info() {
-        char str[BUFSIZ];
-        snprintf(str, BUFSIZ, "TelemetryResponse: addr:%d, packet_id:%d, size:%d, state:%x"
-                ", activeFPointId:%d, Deviation:%d, nextPointDistance:%d, crc:%d"
-                , addr, packet_id, size, currentState
-                , activeFPointId, fdDeviation, nextPointDistance, crc8);
-        return str;
+    void print_debug_info(std::ostream& where){
+        simple_log_archive log(where);
+        log << *this;
+        where << std::endl;
     }
 
 };

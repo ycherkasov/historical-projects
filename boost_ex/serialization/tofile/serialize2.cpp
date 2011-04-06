@@ -18,6 +18,9 @@
 #include <boost/archive/impl/basic_binary_iarchive.ipp>
 
 #include <boost/utility/enable_if.hpp>
+#include <boost/archive/xml_iarchive.hpp>
+#include <boost/archive/xml_oarchive.hpp>
+#include <boost/serialization/nvp.hpp>
 
 using namespace boost::archive;
 
@@ -38,8 +41,6 @@ struct TelemetryRequest {
     , packet_id(e_TelemetryRequest)
     , size(telemetryRequestPacketSize) {
     }
-
-    //friend std::ostream & operator<<(std::ostream &os, const TelemetryRequest & gp);
 
     friend class boost::serialization::access;
 
@@ -62,10 +63,6 @@ struct TelemetryRequest {
     uint8_t crc8;
 
 };
-
-//std::ostream & operator<<(std::ostream &os, const TelemetryRequest& t) {
-//    return os << t.addr << t.packet_id << t.size << t.crc8;
-//}
 
 struct TelemetryResponse {
     static const int telemetryResponsePacketSize = 49;
@@ -261,11 +258,7 @@ struct TelemetryResponse {
 };
 
 class fast_binary_oarchive :
-public binary_oarchive_impl<
-fast_binary_oarchive,
-std::ostream::char_type,
-std::ostream::traits_type
-> {
+public binary_oarchive_impl<fast_binary_oarchive, std::ostream::char_type, std::ostream::traits_type> {
     typedef fast_binary_oarchive derived_t;
     typedef binary_oarchive_impl<fast_binary_oarchive, std::ostream::char_type,
     std::ostream::traits_type> base_t;
@@ -382,7 +375,6 @@ public:
 };
 
 int main(int argc, char* argv[]) {
-    //std::ofstream ofs("filename");
 
     TelemetryRequest t;
     t.crc8 = 0xFF;
@@ -390,25 +382,28 @@ int main(int argc, char* argv[]) {
     using namespace boost::archive;
     //std::ios_base::openmode mode_txt = static_cast<std::ios_base::openmode>(0);
     std::ios_base::openmode mode_bin = std::ios::binary;
-    std::string file("binary_arch.dump");
+    //std::string file("binary_arch.dump");
+    std::string file("xml_arch.dump");
     //TestArch<text_iarchive, text_oarchive > ("text_arch.dump", mode_txt, t);
     //TestArch<binary_iarchive, binary_oarchive > ("binary_arch.dump", mode_bin, t);
     //TestArch<xml_iarchive, xml_oarchive > ("xml_arch.dump", mode_txt, t);
 
     int flag = boost::archive::no_header;
     { // Сериализуем
-        std::ofstream ofs(file.c_str(), std::ios::out | std::ios::binary);
-        fast_binary_oarchive oa(ofs, flag);
-        // make_nvp создаёт пару имя-значение, которая отразится в XML
-        // если не используем XML архив, то можно пару не создавать
-        oa << t; //boost::serialization::make_nvp("Test_Object", t);
+        std::ofstream ofs(file.c_str(), std::ios::out /*| std::ios::binary*/);
+        //fast_binary_oarchive oa(ofs, flag);
+        //boost::archive::binary_oarchive oa(ofs, flag);
+        boost::archive::xml_oarchive oa(ofs);
+        oa << boost::serialization::make_nvp("Test_Object", t);
     }
 
     TelemetryRequest newg;
     { // Десериализуем
-        std::ifstream ifs(file.c_str(), std::ios::in | std::ios::binary);
-        fast_binary_iarchive ia(ifs, flag);
-        ia >> newg; //boost::serialization::make_nvp("Test_Object", newg);
+        std::ifstream ifs(file.c_str(), std::ios::in /*| std::ios::binary*/);
+        //fast_binary_iarchive ia(ifs, flag);
+        //boost::archive::binary_iarchive ia(ifs, flag);
+        boost::archive::xml_iarchive ia(ifs);
+        ia >> boost::serialization::make_nvp("Test_Object", newg);
     }
 
     return 0;

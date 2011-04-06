@@ -20,6 +20,7 @@ using std::endl;
  * 1. Буфферизация м.б. полной, построчной и отсутствовать.
  * 2. Для создания временных фалов использовать tmpfile()/mkstemp().
  * 3. tmpnam/tempnam - non-thread-safe, deprecated
+ * 4. Дескриптор из FILE можно получить функцией int fileno(FILE*)
  */
 
 /** @brief Show bufferistion type */

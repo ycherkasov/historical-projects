@@ -5,6 +5,8 @@
 #include <fcntl.h>
 #include <sys/wait.h>
 #include <sys/ioctl.h>
+#include <sys/acct.h>
+#include <sys/times.h>
 #include <iostream>
 #include <stdexcept>
 
@@ -17,6 +19,8 @@ using std::endl;
 /*
  * Chapter 8 Stievens, Rago
  * Processes, fork, vfork, exec, wait, waitpid, system
+ *
+ * 1.
  */
 
 /** @brief show process and user ID */
@@ -405,14 +409,46 @@ void show_race_condition() { }
 // todo
 void show_exec() { }
 
+/** @brief set new UID and GID (must be run as sudo) */
+void show_suid() {
 
-void show_suid() { }
+    show_process_info();
+    cout << "Set new UID/GID" << endl;
+    if(-1 == setuid(1001) ){
+        throw std::runtime_error( strerror(errno) );
+    }
+    if(-1 == setgid(1001) ){
+        throw std::runtime_error( strerror(errno) );
+    }
 
-void show_system() { }
+    cout << "Set new effective UID/GID" << endl;
+    if(-1 == seteuid(1001) ){
+        throw std::runtime_error( strerror(errno) );
+    }
+    if(-1 == setegid(1001) ){
+        throw std::runtime_error( strerror(errno) );
+    }
 
-void show_acct() { }
+    show_process_info();
+}
 
-void show_times() { }
+/** @brief start as command string */
+void show_system() {
+    
+    // check if bash exist
+    if( system(NULL) ){
+        cout << "Bash exist" << endl;
+        system("ls");
+    }
+}
+
+void show_times() {
+    tms mytime = {};
+    cout << "Common time: " << times(&mytime) << endl;
+    cout << "System time: " << mytime.tms_stime << endl;
+    cout << "User time: " << mytime.tms_utime << endl;
+
+}
 
 int main(int argc, char* argv[]) {
 
@@ -426,7 +462,10 @@ int main(int argc, char* argv[]) {
         //show_exit_codes();
         //show_prevent_zombie();
         //show_waitid();
-        show_wait34();
+        //show_wait34();
+        //show_suid();
+        //show_system();
+        show_times();
     }
     catch (const std::exception& e) {
         cerr << e.what() << endl;

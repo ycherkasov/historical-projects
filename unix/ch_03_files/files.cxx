@@ -146,6 +146,14 @@ public:
         }
     }
 
+    /** @brief Truncate file */
+    void truncate(off_t offset) {
+        int ret = ::ftruncate(_handle, offset);
+        if ((-1) == ret) {
+            throw std::runtime_error(strerror(errno));
+        }
+    }
+
 private:
     int _handle;
 

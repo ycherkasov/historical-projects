@@ -24,10 +24,10 @@ client: $(CLI_OBJFILE)
 server: $(SRV_OBJFILE)
 	$(COMPILE) -o $(SRV_FILENAME) $(foreach incdir,$(INCDIRS),-I$(incdir)) $(SRV_OBJFILE) $(foreach slib,$(LIBS), -l$(slib) )
 
-$(CLI_OBJFILE): $(CLI_SOURCES) telemetry.h raw_binary_archive.h
+$(CLI_OBJFILE): $(CLI_SOURCES) telemetry.h raw_binary_archive.h simple_log_archive.h
 	$(COMPILE) -c $(CLI_SOURCES)
 
-$(SRV_OBJFILE): $(SRV_SOURCES) telemetry.h raw_binary_archive.h
+$(SRV_OBJFILE): $(SRV_SOURCES) telemetry.h raw_binary_archive.h simple_log_archive.h
 	$(COMPILE) -c $(SRV_SOURCES)
 
 # abstract (phony) targets

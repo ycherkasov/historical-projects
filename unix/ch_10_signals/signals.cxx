@@ -45,6 +45,7 @@ static void user_signal_handler(int signo) {
     reset_user_handlers();
     cout << "Signal " << signo << " == " << sys_siglist[signo]
             << ";" << strsignal(signo) << endl;
+    exit(0);
 }
 
 void reset_user_handlers() {
@@ -55,7 +56,6 @@ void reset_user_handlers() {
     if (signal(SIGUSR2, user_signal_handler) == SIG_ERR) {
         throw std::runtime_error(strerror(errno));
     }
-
 }
 
 /** @brief signal() is deprecated function: catch signals SIGUSR1,2 */

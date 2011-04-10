@@ -20,7 +20,35 @@ using std::endl;
  * Chapter 8 Stievens, Rago
  * Processes, fork, vfork, exec, wait, waitpid, system
  *
- * 1.
+ * 1. Get PID/UID/GID: getpid/getppid/getuid/getgid/geteuid/getegid
+ * 2. fork() inherits opened file handles, streams (output twice!), address space
+ * 3. vfork() guarantees child process start before parent process, doesn't copy
+ *    parent address space, and it is for usage with exec() only
+ * 4. Child send SIGCHLD when finishes
+ * 5. wait() wait for the first finished child process
+ * 6. waitpid() wait for concrete child PID, and can be unblocked (just ask if child finished)
+ * 7. Macroses can be used to analyze child exit code (exit() or abort() or signal)
+ * 8. fork() can be performed twice to prevent zombie process
+ *    (after 2-nd fork init becomes his parent )
+ * 9. waitid() can be used to analyse signal which finished child process
+ *    and for child process task management
+ * 10.wait3()/wait4() alse returns system information about child process.
+ *    wait3() is deprecated.
+ * 11.UID/GID can be changed by setuid/setgid/seteuid/setegid (must be root!)
+ * 12.System starts processes like bash (can not analyze pid and return code!)
+ * 13.init must be a parent of any process. Process without parent is a zombie.
+ * 14.fork() doesn't copies all address space imidiately.
+ *    It performs copy-on-write instead.
+ * 15.Flushing stream buffers prevent output duplicate after fork()
+ * 16.fork() uses in 2 cases: 1-exec() 2-multiprocess server (like multithread)
+ * 17.exit() flushes all buffers before exit. _exit() doesn't
+ * 18.system(NULL) used to check bash existance in system
+ * 19.Use getlogin() just to get logged user name
+ * 20.Use times() to get process and its child user and system time
+ *
+ * TODO :
+ * 1. Как работать с acct
+ * 2. Неправильно коапилируется пример с шаблонами
  */
 
 /** @brief show process and user ID */
@@ -447,7 +475,6 @@ void show_times() {
     cout << "Common time: " << times(&mytime) << endl;
     cout << "System time: " << mytime.tms_stime << endl;
     cout << "User time: " << mytime.tms_utime << endl;
-
 }
 
 int main(int argc, char* argv[]) {

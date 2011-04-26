@@ -32,7 +32,7 @@ using std::endl;
  * 10.Use kill() to send signal other process, raise() to send it to self process.
  * 11.Don't use sigprocmask() in muttithreaded application
  * 12.Use strsignal() ir sys_siglist[] to get string representation of signal.
- * 
+ * 13. 
  */
 
 typedef void sig_handler_t(int);

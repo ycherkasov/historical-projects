@@ -32,7 +32,7 @@ using std::endl;
  * 10.Use kill() to send signal other process, raise() to send it to self process.
  * 11.Don't use sigprocmask() in muttithreaded application
  * 12.Use strsignal() ir sys_siglist[] to get string representation of signal.
- * 13. 
+ * 13.You can check current signal handler via return value of signal() function.
  */
 
 typedef void sig_handler_t(int);
@@ -49,6 +49,7 @@ static void user_signal_handler(int signo) {
 }
 
 void reset_user_handlers() {
+    // note: signal() is deprecated, use sigaction instead
     // send kill -10, kill -12 for SIGUSR
     if (signal(SIGUSR1, user_signal_handler) == SIG_ERR) {
         throw std::runtime_error(strerror(errno));
@@ -133,6 +134,16 @@ void interrupt_long_operation() {
     alarm(0);
     exit(0);
  }
+
+void check_signal_handler(){
+
+    // set signal ignore if it haven't done yet
+    if (signal(SIGINT, SIG_IGN) != SIG_IGN)
+        signal(SIGINT, SIG_IGN);
+    if (signal(SIGQUIT, SIG_IGN) != SIG_IGN)
+        signal(SIGQUIT, SIG_IGN);
+
+}
 
 /** @brief Block signal SIGQUIT with sigprocmask() (single-thread only) */
 void block_signal(){

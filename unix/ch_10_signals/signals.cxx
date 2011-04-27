@@ -33,28 +33,38 @@ using std::endl;
  * 11.Don't use sigprocmask() in muttithreaded application
  * 12.Use strsignal() ir sys_siglist[] to get string representation of signal.
  * 13.You can check current signal handler via return value of signal() function.
+ * 14.pid > 0 - send to specific process
+ * 15.pid == 0 - broadcast
+ * 16.pid < 0 - send to all processes in group group_id = |pid|
+ * 17.pid == -1 - send to all processes except system (init and so on)
+ *
  */
 
 typedef void sig_handler_t(int);
 
 void reset_user_handlers();
 
-static void user_signal_handler(int signo) {
-
-    // re-set handler to prevent signal loss in multi-threaded environment
-    reset_user_handlers();
+void show_signal_name(int signo){
     cout << "Signal " << signo << " == " << sys_siglist[signo]
             << ";" << strsignal(signo) << endl;
+
+}
+
+
+static void show_signal_handler(int signo) {
+    // re-set handler to prevent signal loss in multi-threaded environment
+    reset_user_handlers();
+    show_signal_name(signo);
     exit(0);
 }
 
 void reset_user_handlers() {
     // note: signal() is deprecated, use sigaction instead
     // send kill -10, kill -12 for SIGUSR
-    if (signal(SIGUSR1, user_signal_handler) == SIG_ERR) {
+    if (signal(SIGUSR1, show_signal_handler) == SIG_ERR) {
         throw std::runtime_error(strerror(errno));
     }
-    if (signal(SIGUSR2, user_signal_handler) == SIG_ERR) {
+    if (signal(SIGUSR2, show_signal_handler) == SIG_ERR) {
         throw std::runtime_error(strerror(errno));
     }
 }
@@ -145,28 +155,173 @@ void check_signal_handler(){
 
 }
 
-/** @brief Block signal SIGQUIT with sigprocmask() (single-thread only) */
-void block_signal(){
-    // blocked signal will wait in queue!
+/** @brief Show signal set usage */
+void signal_set(){
+    
+    // signals set
+    sigset_t signals_set1 = {};
+    sigset_t signals_set2 = {};
+
+    // init signals set with one of these functions:
+
+    cout << "Init signals set" << endl;
+    // 1.init signals set as empty
+    ::sigemptyset(&signals_set1);
+
+    // 2.init signals set with all signals
+    ::sigfillset(&signals_set2);
+
+    // add signals to set
+    cout << "Add signals: SIGINT = " << SIGINT << " SIGUSR1 = " << SIGUSR1 << endl;
+    ::sigaddset(&signals_set1, SIGINT);
+    ::sigaddset(&signals_set1, SIGUSR1);
+
+    // delete signals from set
+    cout << "Delete signals: SIGCHLD = " << SIGCHLD << " SIGINT = " << SIGINT << endl;
+    ::sigdelset(&signals_set2, SIGCHLD);
+    ::sigdelset(&signals_set2, SIGINT);
+
+    // check if the signal exist, return 1 if True, 0 if False, -1 if error
+    int ret = ::sigismember(&signals_set1, SIGINT);
+    cout << "SIGINT exist: " << ret << endl;
+
+    // check if the signal set is empty
+    ret = ::sigisemptyset(&signals_set1);
+    cout << "signals_set1 is empty: " << ret << endl;
+
+
+    // get current process mask
+    sigset_t current_set = {};
+    ::sigprocmask(0, NULL, &current_set);
+
+    if( ::sigismember(&current_set, SIGUSR1) ){
+        show_signal_name(SIGUSR1);
+    }
+
 
 }
 
-void show_sigaction(){}
+/** @brief Do someting with all signals */
+void all_signals(sig_handler_t handler){
+    for(int i = 1 ; i <= SIGUNUSED ; i++){
+        handler(i);
+    }
+}
+
+/** @brief Enumarate all signal names */
+void show_all_signal_names(){
+    all_signals(show_signal_name);
+}
+
+/** @brief Check if signals is in sigset */
+
+/** @brief Block signal SIGQUIT with sigprocmask() (single-thread only) */
+void block_signal(){
+    // sigprocmask can get current signal mask or set the new one
+    // (except SIGKILL and SIGSTOP)
+    cout << "My PID is " << getpid() << endl;
+
+    // get current process mask
+    
+    // signal mask before blocking
+    sigset_t old_set = {};
+
+    // signal mask before blocking
+    sigset_t new_set = {};
+
+    // lock signal mask
+    sigset_t pending_set = {};
+    
+    // wait all signals except this mask
+    sigset_t waiting_set = {};
+
+    ::sigemptyset(&old_set);
+    ::sigemptyset(&new_set);
+    ::sigemptyset(&pending_set);
+    ::sigemptyset(&waiting_set);
+
+    // pass only these signals
+    ::sigaddset(&waiting_set, SIGUSR1);
+    ::sigaddset(&waiting_set, SIGUSR2);
+
+    // block SIGQUIT
+    ::sigaddset(&new_set, SIGQUIT);
+    ::sigprocmask(SIG_BLOCK, &new_set, &old_set);
+
+    // check if signal SIGQUIT blocked
+    ::sigpending(&pending_set);
+    if( ::sigismember(&pending_set, SIGQUIT) ){
+        show_signal_name(SIGQUIT);
+        cout << " is blocked" << endl;
+    }
+
+    // blocked untill all signals except SIGUSR1,2
+    ::sigsuspend(&waiting_set);
+
+    // restore old signal mask
+    ::sigprocmask(SIG_SETMASK, &old_set, NULL);
+    show_signal_name(SIGQUIT);
+    cout << " is unblocked" << endl;
+
+    // unblocked SIGQUIT finishes process here
+    sleep(5);
+    exit(0);
+}
+
+void show_sigaction() {
+    
+
+    // select all existing signals
+    sigset_t sigmask ;
+    sigfillset(&sigmask) ;
+
+    // set new signal action
+    struct sigaction sa;
+    sa.sa_handler = show_signal_name;
+    // restart system calls after signal call
+    sa.sa_flags = SA_RESTART;
+    ::sigemptyset(&sa.sa_mask);
+
+    // these signals will be locked while handler is working
+    sigaddset(&sa.sa_mask, SIGINT);
+    sigaddset(&sa.sa_mask, SIGTERM);
+    sigaddset(&sa.sa_mask, SIGQUIT);
+
+    // for every existing signal (except SIGSTOP and SIGKILL)
+    for (int sig = 0;32 != sig;++sig) {
+        if (1 == sigismember(&sigmask, sig)){
+            ::psignal(sig, "Handling signal");
+            sigaction(sig, &sa, NULL);
+        }
+            
+    }
+    sleep(10);
+}
+
 
 // TODO : TELL_WAIT and so on (10.16)
 
+
+//#define PID_NEEDED
 int main(int argc, char* argv[]) {
 
+#ifdef PID_NEEDED
     if (argc != 2) {
         std::cout << "Usage: program <filename>" << std::endl;
     }
     std::string pid(argv[1]);
-
+#endif
 
     try {
-        show_signal();
+        //show_signal();
+#ifdef PID_NEEDED
         //check_process_exist(boost::lexical_cast<pid_t > (pid.c_str()));
+#endif
         //interrupt_long_operation();
+        //signal_set();
+        //show_all_signal_names();
+        //block_signal();
+        show_sigaction();
     }
     catch(boost::bad_lexical_cast& e){
         cerr << e.what() << "(bad port name?)" << endl;

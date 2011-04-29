@@ -1,6 +1,9 @@
 #include <pthread.h>
+#include <string.h>
+#include <errno.h>
 #include <iostream>
 #include <stdexcept>
+
 
 using std::string;
 using std::cout;
@@ -73,6 +76,43 @@ public:
 private:
     pthread_attr_t _attr;
     pthread_t _tid;
+};
+
+class mutex_wrapper_t{
+public:
+    mutex_wrapper_t(){
+        if( 0 != pthread_mutex_init(&_mutex, NULL) ){
+            throw std::runtime_error( strerror(errno) );
+        }
+    }
+
+    ~mutex_wrapper_t(){
+        pthread_mutex_destroy(&_mutex);
+    }
+
+    void lock(){
+        pthread_mutex_lock(&_mutex);
+    }
+
+    void unlock(){
+        pthread_mutex_unlock(&_mutex);
+    }
+
+private:
+    pthread_mutex_t _mutex;
+};
+
+class scoped_lock_t{
+    scoped_lock_t(mutex_wrapper_t& mw):_mutex(mw){
+        _mutex.lock();
+    }
+
+    ~scoped_lock_t(){
+        _mutex.unlock();
+    }
+
+private:
+    mutex_wrapper_t& _mutex;
 };
 
 int main(){

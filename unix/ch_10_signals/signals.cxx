@@ -37,8 +37,16 @@ using std::endl;
  * 15.pid == 0 - broadcast
  * 16.pid < 0 - send to all processes in group group_id = |pid|
  * 17.pid == -1 - send to all processes except system (init and so on)
- *
+ * 18.Use sigset_t/sigemptyset()/sigfillset/sigaddset/sigdelset
+ *    to work with signal groups (block signal handling, wait for signals etc.)
+ * 19.Use sigprocmask() to set blocked signals
+ * 20.Use sigpending() to get blocked signals mask
+ * 21.Use sigpending() ??
+ * 22.Use strsignal() to get signal name string, use psignal()
+ *    to get signal name with custom message.
  */
+
+// TODO : what is sigpending() ?
 
 typedef void sig_handler_t(int);
 
@@ -290,6 +298,7 @@ void show_sigaction() {
     // for every existing signal (except SIGSTOP and SIGKILL)
     for (int sig = 0;32 != sig;++sig) {
         if (1 == sigismember(&sigmask, sig)){
+            // show signal name with custom message
             ::psignal(sig, "Handling signal");
             sigaction(sig, &sa, NULL);
         }

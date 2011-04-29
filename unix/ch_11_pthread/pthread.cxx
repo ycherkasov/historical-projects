@@ -98,6 +98,10 @@ public:
         pthread_mutex_unlock(&_mutex);
     }
 
+    bool try_lock(){
+        pthread_mutex_trylock(_mutex);
+    }
+
 private:
     pthread_mutex_t _mutex;
 };
@@ -113,6 +117,32 @@ class scoped_lock_t{
 
 private:
     mutex_wrapper_t& _mutex;
+};
+
+class rw_lock_wrapper_t{
+public:
+    rw_lock_wrapper_t(){
+        pthread_rwlock_init(&_lock, NULL);
+    }
+
+    ~rw_lock_wrapper_t(){
+        pthread_rwlock_destroy(&_lock);
+    }
+
+    void read_lock(){
+        pthread_rwlock_rdlock(&_lock);
+    }
+
+    void write_lock(){
+        pthread_rwlock_wrlock(&_lock);
+    }
+
+    void unlock(){
+        pthread_rwlock_unlock(&_lock);
+    }
+
+private:
+    pthread_rwlock_t _lock;
 };
 
 int main(){

@@ -1,5 +1,5 @@
 PROGRAM = pthread
-LIBS = 
+LIBS = pthread
 LIBDIRS = 
 INCDIRS = 
 

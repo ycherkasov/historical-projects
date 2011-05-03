@@ -27,6 +27,11 @@
  *    (only one writer allowed, all read and write calls blocked)
  * 13.Condition variables can be used for locks between threads (see examples)
  *
+ * See also:
+ * http://www.intuit.ru/department/se/posixthreads/7/
+ * https://computing.llnl.gov/tutorials/pthreads/
+ * http://en.wikipedia.org/wiki/Futex
+ *
  */
 
 using std::string;

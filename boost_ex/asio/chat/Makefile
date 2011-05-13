@@ -16,7 +16,7 @@ SRV_FILENAME = chat_server
 SRV_SOURCES = $(SRV_FILENAME).cpp
 SRV_OBJFILE = $(SRV_FILENAME).o
 
-all: $(CLI_FILENAME) $(SRV_FILENAME)
+all: client server
 
 client: $(CLI_OBJFILE) 
 	$(COMPILE) -o $(CLI_FILENAME) $(foreach incdir,$(INCDIRS),-I$(incdir)) $(CLI_OBJFILE) $(foreach slib,$(LIBS), -l$(slib) )

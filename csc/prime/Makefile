@@ -1,17 +1,18 @@
 PROGRAM = prime
-LIBS = 
+LIBS = ntl
 LIBDIRS = 
 INCDIRS = 
 
 #change to -ggdb for debugging
 COMPILER = g++
-COMPILEFLAGS = -ggdb
+#COMPILEFLAGS = -ggdb
+COMPILEFLAGS = -O2
 COMPILE = $(COMPILER) $(COMPILEFLAGS)
 
 FILENAME = $(PROGRAM)
 SOURCES = $(FILENAME).cpp 
 OBJFILE = $(FILENAME).o 
-INCLUDES = 
+INCLUDES = primetest_ntl.h
 
 all: $(PROGRAM)
 

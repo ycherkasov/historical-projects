@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <boost/lexical_cast.hpp>
 #include "primetest_ntl.h"
+#include "primetest_simple.h"
 
 using std::cout;
 using std::cerr;
@@ -19,9 +20,12 @@ void get_permutations(std::string& numbers) {
         unsigned check_me = boost::lexical_cast<unsigned>(numbers);
         if ((check_me % 2) == 1) {
             // todo : threaded pool
-            //if(Func(check_me)){
+#if 0
             aks_test aks(check_me);
             if (aks()) {
+#else
+            if(isPrimeAKSFaster(NTL::to_ZZ(check_me))){
+#endif
                 cout << check_me << endl;
             }
 
@@ -41,8 +45,11 @@ int main(int argc, char* argv[]) {
     try {
         string strnums(argv[1]);
         //get_permutations<aks_test>(strnums);
-        get_permutations(strnums);
+        double sttime;
+        sttime = NTL::GetTime();
 
+        get_permutations(strnums);
+        cout << "The Time taken in checking primality is " << NTL::GetTime() - sttime << endl;
         cout << endl;
     }
     catch (boost::bad_lexical_cast& e) {

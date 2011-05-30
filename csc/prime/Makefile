@@ -12,7 +12,7 @@ COMPILE = $(COMPILER) $(COMPILEFLAGS)
 FILENAME = $(PROGRAM)
 SOURCES = $(FILENAME).cpp 
 OBJFILE = $(FILENAME).o 
-INCLUDES = primetest_ntl.h
+INCLUDES = primetest_ntl.h primetest_simple.h
 
 all: $(PROGRAM)
 

@@ -19,9 +19,10 @@ void get_permutations(std::string& numbers) {
     do {
         unsigned check_me = boost::lexical_cast<unsigned>(numbers);
         if ((check_me % 2) == 1) {
+            
             // todo : threaded pool
-#if 0
-            aks_test aks(check_me);
+#if 1
+            aks_test1 aks(check_me);
             if (aks()) {
 #else
             if(isPrimeAKSFaster(NTL::to_ZZ(check_me))){
@@ -39,6 +40,7 @@ int main(int argc, char* argv[]) {
 
     if (argc != 2) {
         cout << "Usage: primetest <numbers>" << endl;
+        return 0;
     }
 
 #if 1

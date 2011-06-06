@@ -2,31 +2,32 @@
 #include <string.h>
 #include <iostream>
 #include <string>
+#include <vector>
 #include <cmath>
 #include <algorithm>
 #include <boost/lexical_cast.hpp>
 #include "primetest_ntl.h"
-#include "primetest_simple.h"
+
 
 using std::cout;
 using std::cerr;
 using std::endl;
 using std::string;
 
-//template <typename Func>
+
 void get_permutations(std::string& numbers) {
+
     std::sort(numbers.begin(), numbers.end());
     do {
+        if(*numbers.begin() == '0')
+            break;
         unsigned check_me = boost::lexical_cast<unsigned>(numbers);
         if ((check_me % 2) == 1) {
-            
+
             // todo : threaded pool
-#if 1
-            aks_test1 aks(check_me);
+
+            aks_test aks(check_me);
             if (aks()) {
-#else
-            if(isPrimeAKSFaster(NTL::to_ZZ(check_me))){
-#endif
                 cout << check_me << endl;
             }
 
@@ -34,6 +35,30 @@ void get_permutations(std::string& numbers) {
     }
     while (std::next_permutation(numbers.begin(), numbers.end()));
 }
+
+
+// Очень хотелось написать многопоточную версию, но к сожалению NTL не thred-safe
+#if NTL_WOULD_BE_THREAD_SAFE
+void get_permutations_parallel(std::string& numbers) {
+
+    std::sort(numbers.begin(), numbers.end());
+    tbb::concurrent_vector<unsigned> out;
+    tbb::task_list list;
+    do {
+        unsigned check_me = boost::lexical_cast<unsigned>(numbers);
+        cout << "check me: " << check_me << endl;
+        if ((check_me % 2) == 1) {
+            long_task* a = new (tbb::task::allocate_root())long_task(check_me, out);
+            list.push_back(*a);
+        }
+    }
+    while (std::next_permutation(numbers.begin(), numbers.end()));
+
+    tbb::task::spawn_root_and_wait(list);
+    list.clear();
+}
+#endif
+
 
 int main(int argc, char* argv[]) {
 
@@ -43,32 +68,18 @@ int main(int argc, char* argv[]) {
         return 0;
     }
 
-#if 1
-    try {
-        string strnums(argv[1]);
-        //get_permutations<aks_test>(strnums);
-        double sttime;
-        sttime = NTL::GetTime();
+    string strnums;
+    double sttime = NTL::GetTime();
 
-        get_permutations(strnums);
-        cout << "The Time taken in checking primality is " << NTL::GetTime() - sttime << endl;
-        cout << endl;
+    try {
+        strnums.assign(argv[1]);
     }
     catch (boost::bad_lexical_cast& e) {
         cerr << e.what() << "(not a number?)" << endl;
     }
-#else
-    string strnums(argv[1]);
-    unsigned check_me = boost::lexical_cast<unsigned>(strnums);
-    NTL::INIT_VAL_STRUCT t = {};
-    ntl_bigint bcheckme(t, check_me);
-    if (aks_test(bcheckme)) {
-        cout << check_me << " is prime" << endl;
-    }
-    else {
-        cout << check_me << " is composite" << endl;
-    }
-#endif
+    get_permutations(strnums);
+    cout << "The Time taken in checking primality is " << NTL::GetTime() - sttime << endl;
+    cout << endl;
 
     return 0;
 }

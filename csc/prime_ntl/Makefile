@@ -5,7 +5,7 @@ INCDIRS =
 
 #change to -ggdb for debugging
 COMPILER = g++
-COMPILEFLAGS = -ggdb
+COMPILEFLAGS = -O2
 COMPILE = $(COMPILER) $(COMPILEFLAGS)
 
 FILENAME = $(PROGRAM)

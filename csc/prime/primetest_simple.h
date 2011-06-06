@@ -12,8 +12,6 @@
 #include <NTL/ZZ_p.h>
 #include <NTL/ZZ_pX.h>
 
-NTL_CLIENT
-
 typedef NTL::ZZ ntl_bigint;
 typedef NTL::ZZ_p ntl_mod_bigint;
 typedef NTL::ZZ_pX ntl_polynome;
@@ -22,40 +20,46 @@ class aks_test1 {
 public:
 
     /** @brief Assign a number to check is it prime */
-    aks_test1(unsigned n) : _number( NTL::to_ZZ(n) ), _log2n(NTL::NumBits(_number)) {}
+    aks_test1(unsigned n) : _number(NTL::to_ZZ(n)), _log2n(NTL::NumBits(_number)) { }
 
+    /** @brief Main test performed as operator()  */
     bool operator()() {
 
+        // 1. check if n = a^b form -> COMPOSITE.
         if (is_power())
             return false;
 
-        ZZ r = find_r();
+        // 2. Find the smallest r such that Or(n) > 4 log^2(n)
+        ntl_bigint r = find_r();
 
         if (r == 0)
             return false;
         if (r >= _number)
             return true;
 
-        /////////////////////////
+        // 3. Compare (x-i)^n == (x^n- 1)(mod x^r - 1, n)
         ntl_mod_bigint::init(_number);
         ntl_polynome left_polynome, right_polynome, temp_polynome;
-        
-        //check for greater values out of range of long
-        long limit = NTL::to_long( SqrRoot(r) * _log2n );
 
-        //rhs = x^n%r
+        // check for greater values out of range
+        // sqr(r)*log2(n)
+        long limit = NTL::to_long(NTL::SqrRoot(r) * _log2n);
+
+        // right = x^n%r
         long modulo_r = NTL::to_long(_number % r);
-        SetCoeff(right_polynome, modulo_r, 1);
+        NTL::SetCoeff(right_polynome, modulo_r, 1);
 
-        //p = x
-        SetCoeff(temp_polynome, 1, 1);
+        // temp = x
+        NTL::SetCoeff(temp_polynome, 1, 1);
 
-        for (long i = 1;i <= limit;i++) {
-            //rhs = X^n%r+i
-            SetCoeff(right_polynome, 0, i);
+        // compare polynome pair
+        for (long i = 1; i <= limit; i++) {
 
-            //p = x+i;
-            SetCoeff(temp_polynome, 0, i);
+            //right = X^n%r+i
+            NTL::SetCoeff(right_polynome, 0, i);
+
+            // t = x+i;
+            NTL::SetCoeff(temp_polynome, 0, i);
 
             left_polynome = build_polynome(r, temp_polynome);
             if (left_polynome != right_polynome) {
@@ -65,10 +69,11 @@ public:
         return true;
     }
 
-    inline bool is_power() {
-        ZZ upper_bound, lower_bound, temp, the_power;
-        upper_bound = _number;
-        lower_bound = 1;
+protected:
+
+    /** @brief Check if number is in a^b form */
+    bool is_power() {
+        ntl_bigint upper_bound(_number), lower_bound(NTL::to_ZZ(1)), temp, the_power;
         for (long i = 1;i < NumBits(_number);i++) {
             while ((upper_bound - lower_bound) > 1) {
                 temp = (upper_bound + lower_bound) / 2;
@@ -84,14 +89,15 @@ public:
         return 0;
     }
 
-    inline ZZ find_r() {
+    /** @brief Find r coeff */
+    ntl_bigint find_r() {
         ntl_bigint q, r;
         ntl_bigint zero(NTL::to_ZZ(0));
         ntl_bigint j;
         ntl_bigint mods, nmodq, jmodq;
         bool foundr;
         q = _log2n + 1;
-        
+
         while (true) {
             foundr = true;
             for (j = 1;j <= _log2n;j++) {
@@ -115,68 +121,60 @@ public:
         }
         if (r >= _number)
             return _number;
-        ZZ a;
-        ZZ gcd;
+        ntl_bigint a;
+        ntl_bigint gcd;
         for (a = 2;a < r;a++) {
-            GCD(gcd, a, _number);
+            NTL::GCD(gcd, a, _number);
             if (!NTL::IsOne(gcd)) {
                 return zero;
             }
         }
         return r;
     }
-#if 0
-    inline long mod(long i, long r) {
-        // Returns the value of i mod r
-        long ret = i;
-        while (ret >= r) ret = ret - r;
-        return ret;
-    }
-#endif
-    inline void ModuloExponents(ZZ_pX &p, const ZZ &r) {
-        //p % x^r-1
-        long i = deg(p);
-        long rlong;
-        long imodr;
-        ZZ_p coff;
-        ZZ_p newcoff;
 
-        conv(rlong, r);//converting r to long as coefficient
+    /** @brief Evaluate p % x^r-1 */
+    void modulo_exponents(ntl_polynome &p, const ntl_bigint &r) {
+        long i = NTL::deg(p);
+        long imodr = 0;
+        ntl_mod_bigint coff;
+        ntl_mod_bigint newcoff;
+
+
+        //converting r to long as coeff
+        long rlong = NTL::to_long(r);
 
         while (i >= rlong) {
-            coff = coeff(p, i);
-            if (!IsZero(coff)) {
-                
+            coff = NTL::coeff(p, i);
+            if (!NTL::IsZero(coff)) {
+
                 //imodr = mod(i, rlong);
-                imodr = i%rlong;
+                imodr = i % rlong;
 
                 // Add the values of same power coefficient
-                newcoff = coeff(p, imodr);
-                add(newcoff, newcoff, coff);
+                newcoff = NTL::coeff(p, imodr);
+                NTL::add(newcoff, newcoff, coff);
 
                 // set the coeff to
-                SetCoeff(p, imodr, newcoff);
-                SetCoeff(p, i, 0);
+                NTL::SetCoeff(p, imodr, newcoff);
+                NTL::SetCoeff(p, i, 0);
             }
             i--;
         }
     }
 
-    inline ZZ_pX build_polynome(ZZ r, ZZ_pX p) {
-        long longr;
-        conv(longr, r);
-        ZZ_pX f;
+    /** @brief Make left-hand polynome */
+    ntl_polynome build_polynome(ntl_bigint r, ntl_polynome p) {
+        ntl_polynome f;
         f = 1;
         for (long i = _log2n;i != 0;i--) {
-            sqr(f, f);
-            if (bit(_number, i - 1) == 1) {
-                mul(f, f, p);
+            f = NTL::sqr(f);
+            if (NTL::bit(_number, i - 1) == 1) {
+                f = f * p;
             }
-            ModuloExponents(f, r);
+            modulo_exponents(f, r);
         }
         return f;
     }
-
 
 private:
     const ntl_bigint _number;

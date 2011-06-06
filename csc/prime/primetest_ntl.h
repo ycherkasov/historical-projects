@@ -20,20 +20,17 @@ class aks_test {
 public:
 
     /** @brief Assign a number to check is it prime */
-    aks_test(unsigned n) : _number(), _log2n() {
-        _number = n;
-        _log2n = NTL::NumBits(_number);
-    }
+    aks_test(unsigned n) : _number(NTL::to_ZZ(n)), _log2n(NTL::NumBits(_number)) { }
 
     /** @brief Main test performed as operator()  */
     bool operator()() {
 
         // 1. check if n = a^b form -> COMPOSITE.
         if (is_power())
-            return 0;
+            return false;
 
         // 2. Find the smallest r such that Or(n) > 4 log^2(n)
-        ntl_bigint r = find_r(_number);
+        ntl_bigint r = find_r();
 
         if (r == 0)
             return false;
@@ -46,11 +43,11 @@ public:
 
         // check for greater values out of range
         // sqr(r)*log2(n)
-        long limit = NTL::to_long(NTL::sqr(r) * _log2n);
+        long limit = NTL::to_long(NTL::SqrRoot(r) * _log2n);
 
         // right = x^n%r
-        long modullo_r = NTL::to_long(_number % r);
-        NTL::SetCoeff(right_polynome, modullo_r, 1);
+        long modulo_r = NTL::to_long(_number % r);
+        NTL::SetCoeff(right_polynome, modulo_r, 1);
 
         // temp = x
         NTL::SetCoeff(temp_polynome, 1, 1);
@@ -94,7 +91,7 @@ protected:
     }
 
     /** @brief Find r coeff */
-    ntl_bigint find_r(const ntl_bigint& n) {
+    ntl_bigint find_r() {
         ntl_bigint q, r;
         ntl_bigint zero(NTL::to_ZZ(0));
         ntl_bigint j;
@@ -106,7 +103,7 @@ protected:
             foundr = true;
             for (j = 1; j <= _log2n; j++) {
                 //nmodq = n%q
-                NTL::rem(nmodq, n, q);
+                NTL::rem(nmodq, _number, q);
 
                 //jmodq = j%q
                 NTL::rem(jmodq, j, q);
@@ -123,12 +120,12 @@ protected:
             }
             q++;
         }
-        if (r >= n)
-            return n;
+        if (r >= _number)
+            return _number;
         ntl_bigint a;
         ntl_bigint gcd;
         for (a = 2; a < r; a++) {
-            gcd = NTL::GCD(a, n);
+            gcd = NTL::GCD(a, _number);
             if (!NTL::IsOne(gcd)) {
                 return zero;
             }
@@ -149,6 +146,7 @@ protected:
         while (i >= rlong) {
             coff = NTL::coeff(p, i);
             if (!NTL::IsZero(coff)) {
+
                 imodr = i % rlong;
 
                 // Add the values of same power coefficient
@@ -178,7 +176,7 @@ protected:
     }
 
 private:
-    ntl_bigint _number;
+    const ntl_bigint _number;
     long _log2n;
 };
 

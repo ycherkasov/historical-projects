@@ -1,10 +1,12 @@
 #include <NTL/ZZ.h>
 #include <NTL/ZZ_p.h>
 #include <NTL/ZZ_pX.h>
+#include <algorithm>
 #include <fstream>
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <boost/lexical_cast.hpp>
 
 NTL_CLIENT
 
@@ -31,7 +33,7 @@ inline int isPower(ZZ n) {
             temp = (ub + lb) / 2;
             tp = pow(temp, i + 1);
             if (tp == n) {
-                cout << "The number " << n << " is not prime. " << n << " = " << temp << "^" << (i + 1) << "\n";
+                //cout << "The number " << n << " is not prime. " << n << " = " << temp << "^" << (i + 1) << "\n";
                 return 1;
             }
             if (tp > n) {
@@ -41,7 +43,7 @@ inline int isPower(ZZ n) {
                 lb = temp;
         }
     }
-    cout << "The no. " << n << " is not of form a^b \n";
+    //cout << "The no. " << n << " is not of form a^b \n";
     return 0;
 }
 
@@ -140,7 +142,7 @@ int isPrimeAKSFaster(ZZ n) {
     ZZ r;
     r = findR(n);
 
-    cout << endl << "the value of r is " << r << endl;
+    //cout << endl << "the value of r is " << r << endl;
     if (r == 0)
         return 0;
     if (r >= n)
@@ -184,67 +186,70 @@ int isPrimeAKSFaster(ZZ n) {
             break;
         }
     }
-    cout << endl;
+    //cout << endl;
     return flag;
 }
-#if 0
 
-void fileread() {
-    getchar();
-    ifstream in("c:\\check.txt");
-    ofstream out("c:\\output.txt");
-    string line;
-    //line = NULL;
-    ZZ n;
-    int count = 0;
-    while (getline(in, line)) {
-        char *pch, *cstr;
-        cstr = new char [line.size() + 1];
-        strcpy(cstr, line.c_str());
-        pch = strtok(cstr, " ");
-        while (pch != NULL) {
-            string lines = string(pch);
-            istringstream buffer(lines);
-            buffer >> n;
-            long bits = NumBits(n);
-            long sttime = GetTime();
-            int isp = isPrimeAKSFaster(n);
-            long tm = GetTime() - sttime;
-            out << tm << endl;
-            count++;
-            if (count % 10 == 0) {
-                count = 0;
-                cout << " " << n;
+using std::cout;
+using std::cerr;
+using std::endl;
+using std::string;
+
+//template <typename Func>
+void get_permutations(std::string& numbers) {
+    std::sort(numbers.begin(), numbers.end());
+    do {
+        unsigned check_me = boost::lexical_cast<unsigned>(numbers);
+        if ((check_me % 2) == 1) {
+            // todo : threaded pool
+#if 0
+            aks_test aks(check_me);
+            if (aks()) {
+#else
+            if(isPrimeAKSFaster(NTL::to_ZZ(check_me))){
+#endif
+                cout << check_me << endl;
             }
-            pch = strtok(NULL, " ,.-");
+
         }
     }
-    out.close();
+    while (std::next_permutation(numbers.begin(), numbers.end()));
 }
+
+int main(int argc, char* argv[]) {
+
+
+    if (argc != 2) {
+        cout << "Usage: primetest <numbers>" << endl;
+    }
+
+#if 1
+    try {
+        string strnums(argv[1]);
+        //get_permutations<aks_test>(strnums);
+        double sttime;
+        sttime = NTL::GetTime();
+
+        get_permutations(strnums);
+        cout << "The Time taken in checking primality is " << NTL::GetTime() - sttime << endl;
+        cout << endl;
+    }
+    catch (boost::bad_lexical_cast& e) {
+        cerr << e.what() << "(not a number?)" << endl;
+    }
+#else
+    string strnums(argv[1]);
+    unsigned check_me = boost::lexical_cast<unsigned>(strnums);
+    NTL::INIT_VAL_STRUCT t = {};
+    ntl_bigint bcheckme(t, check_me);
+    if (aks_test(bcheckme)) {
+        cout << check_me << " is prime" << endl;
+    }
+    else {
+        cout << check_me << " is composite" << endl;
+    }
 #endif
 
-int main() {
-    //fileread();
-    ZZ n, r;
-    double sttime, endtime;
-    cout << "********************************************************************************" << endl;
-    cout << "*			  AKS Primality Test" << "                                   *" << endl;
-    cout << "*							Developed By:-" << "	       *" << endl;
-    cout << "*							Akhand Pratap Singh" << "    *" << endl;
-    cout << "********************************************************************************" << endl;
-    while (!IsOne(n)) {
-        cout << endl << "Enter The No. For Primality Testing ";
-        cin >> n;
-        cout << "The no is a " << NumBits(n) << " bit no.";
-        sttime = GetTime();
-
-        int isPrime = isPrimeAKSFaster(n);
-
-        cout << "The Time taken in checking primality is " << GetTime() - sttime << endl;
-
-        if (isPrime)
-            cout << "The given no. is a prime " << endl;
-        else
-            cout << "The given no. is not a prime " << endl;
-    }
+    return 0;
 }
+

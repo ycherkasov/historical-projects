@@ -7,6 +7,11 @@ using std::string;
 using std::cout;
 using std::endl;
 
+/// Определите только один из дефайнов!!!
+
+#define _SIMPLE_
+//#define _MONEY_
+//#define _FROGS_
 
 /*
  * Задача о кузнечике - изветсная задача на динамическое программирование
@@ -77,7 +82,7 @@ private:
 
     /** @ brief Класс столбик*/
     struct column{
-        column():ways(),money(),frog(false){}
+        column():ways(),money(){}
         
         /** @ brief Количество путей, чтобы допрыгать до столбика */
         unsigned ways;
@@ -101,9 +106,25 @@ private:
 
 int main(int argc, char* argv[]) {
 
+#ifdef _FROGS_
+    if (argc < 3) {
+        std::cout << "Usage: program <stepsize> <frognum1> <frognum2> ... " << std::endl;
+    }
+#endif
+
+#ifdef _MONEY_
+    if (argc < 3) {
+        std::cout << "Usage: program <stepsize> <frognum1> <column-count> ... " << std::endl;
+    }
+#endif
+
+
+#ifdef _SIMPLE_
     if (argc != 2) {
         std::cout << "Usage: program <stepsize>" << std::endl;
     }
+#endif
+
     try {
 
         std::string step_str(argv[1]);

@@ -1,4 +1,4 @@
-PROGRAM = prime
+PROGRAM = prime_min
 LIBS = ntl
 LIBDIRS = 
 INCDIRS = 

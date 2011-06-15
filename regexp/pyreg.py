@@ -1,4 +1,4 @@
-# TODO comments
+# Script usage: python script.py <filename.html>
 import sys
 import re
 
@@ -36,6 +36,6 @@ if __name__ == "__main__":
     try:
         html_file = sys.argv[1]
     except:
-        print "Usage: python pyreg.ry <filename.html>"
+        print "Usage: python pyreg.py <filename.html>"
         sys.exit(1)
     main(html_file)

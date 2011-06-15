@@ -5,6 +5,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ch18_algorithm", "algorithm
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ch04_06_types", "ch04_06_types\ch04_06_types.vcxproj", "{1118DDB9-056C-44E3-8BA5-1C619736693D}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ch09_linkage", "ch09_linkage\ch09_linkage.vcxproj", "{F686D988-416C-46EA-89B3-55AE737C754B}"
+EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ch03_std_brief", "ostr_istr_iterators\ostr_istr_iterators.vcxproj", "{558DF0E4-7C15-42C5-8A21-E7B434E3EEA7}"
 EndProject
 Global
@@ -21,6 +23,10 @@ Global
 		{1118DDB9-056C-44E3-8BA5-1C619736693D}.Debug|Win32.Build.0 = Debug|Win32
 		{1118DDB9-056C-44E3-8BA5-1C619736693D}.Release|Win32.ActiveCfg = Release|Win32
 		{1118DDB9-056C-44E3-8BA5-1C619736693D}.Release|Win32.Build.0 = Release|Win32
+		{F686D988-416C-46EA-89B3-55AE737C754B}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F686D988-416C-46EA-89B3-55AE737C754B}.Debug|Win32.Build.0 = Debug|Win32
+		{F686D988-416C-46EA-89B3-55AE737C754B}.Release|Win32.ActiveCfg = Release|Win32
+		{F686D988-416C-46EA-89B3-55AE737C754B}.Release|Win32.Build.0 = Release|Win32
 		{558DF0E4-7C15-42C5-8A21-E7B434E3EEA7}.Debug|Win32.ActiveCfg = Debug|Win32
 		{558DF0E4-7C15-42C5-8A21-E7B434E3EEA7}.Debug|Win32.Build.0 = Debug|Win32
 		{558DF0E4-7C15-42C5-8A21-E7B434E3EEA7}.Release|Win32.ActiveCfg = Release|Win32

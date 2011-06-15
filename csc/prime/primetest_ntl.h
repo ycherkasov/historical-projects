@@ -24,6 +24,10 @@ public:
 
     /** @brief Main test performed as operator()  */
     bool operator()() {
+        return is_prime();
+    }
+
+    bool is_prime(){
 
         // 1. check if n = a^b form -> COMPOSITE.
         if (is_power())

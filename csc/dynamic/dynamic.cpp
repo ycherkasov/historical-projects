@@ -79,14 +79,11 @@ private:
     struct column{
         column():ways(),money(),frog(false){}
         
-        /** @ brief Количество путей, стобы допрыгать до столбика */
+        /** @ brief Количество путей, чтобы допрыгать до столбика */
         unsigned ways;
 
         /** @ brief Количество монет, которые дают или отбирают */
         int money;
-
-        /** @ brief Есть ли на столбике лягушка (прыгать на него нельзя) */
-        bool frog;
     };
     
     /// на сколько можем прыгать вперед
@@ -115,9 +112,8 @@ int main(int argc, char* argv[]) {
         g.print_path();
 
     }
-    catch (const boost::bad_lexical_cast& e) {
-    }
-    catch (const std::exception& e) {
-    }
+    catch (const boost::bad_lexical_cast& e) {}
+    catch (const std::exception& e) {}
+    
     return 0;
 }

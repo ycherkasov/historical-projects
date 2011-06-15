@@ -1,5 +1,7 @@
 #include <iostream>
 #include <string>
+#include <map>
+#include <set>
 #include <boost/lexical_cast.hpp>
 #include <iosfwd>
 
@@ -30,9 +32,14 @@ using std::endl;
 // 1   1   2   3   5
 // количество различных способов (в данном примере равно соотв. числу Фибоначчи)
 
+typedef std::set<int> frog_cols;
+typedef std::map<int, int> coins_cols;
+
 class grasshopper {
 public:
-    grasshopper(unsigned steps):_steps(steps),way(){
+
+    grasshopper(unsigned steps, frog_cols& frg, coins_cols& ccl)
+        :_steps(steps),way(){
 
         // совсем стартовые условия
         way[0].ways = 1;
@@ -43,10 +50,25 @@ public:
         if(steps > 2){
             //cout << "debug steps > 2" << endl;
             for(size_t i = 2 ; i < steps ; i++){
+
+#ifdef _FROG_
+                if(frg.find(i) != ccl.end()){
+                    way[i].ways = 0;
+                }
+                else{
+                    way[i].ways = last_count(i, i);
+                }
+#endif
                 // например, 2-я ячейка, сложить последние 2 (0 и 1)
                 way[i].ways = last_count(i, i);
+#ifdef _MONEY_
+                if(ccl.find(i) != ccl.end()){
+                    way[i].money = ccl.at(i);
+                }
+#endif
             }
         }
+
         //cout << "debug initial" << endl;
         print_path();
     }
@@ -104,8 +126,15 @@ private:
     column way[SIZE];
 };
 
+void parse_frogs(){}
+void parse_coins(){}
+
 int main(int argc, char* argv[]) {
 
+
+    std::set<int> frogs;
+    std::map<int, int> coins;
+    
 #ifdef _FROGS_
     if (argc < 3) {
         std::cout << "Usage: program <stepsize> <frognum1> <frognum2> ... " << std::endl;
@@ -125,10 +154,11 @@ int main(int argc, char* argv[]) {
     }
 #endif
 
+
     try {
 
         std::string step_str(argv[1]);
-        grasshopper g(boost::lexical_cast<unsigned>(step_str));
+        grasshopper g(boost::lexical_cast<unsigned>(step_str), frogs, coins);
         cout << g.path_count() << " ways to reach " << endl;
         g.print_path();
 

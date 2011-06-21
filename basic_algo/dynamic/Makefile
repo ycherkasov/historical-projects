@@ -5,7 +5,7 @@ INCDIRS =
 
 #change to -ggdb for debugging
 COMPILER = g++
-COMPILEFLAGS = -ggdb
+COMPILEFLAGS = -ggdb -std=c++0x
 COMPILE = $(COMPILER) $(COMPILEFLAGS)
 
 FILENAME = $(PROGRAM)
@@ -15,7 +15,7 @@ INCLUDES =
 
 all: $(PROGRAM)
 
-$(PROGRAM): $(OBJFILE) 
+$(PROGRAM): $(OBJFILE)
 	$(COMPILE) -o $(FILENAME) $(foreach incdir,$(INCDIRS),-I$(incdir)) $(OBJFILE) $(foreach slib,$(LIBS), -l$(slib) )
 
 $(OBJFILE): $(SOURCES) $(INCLUDES)

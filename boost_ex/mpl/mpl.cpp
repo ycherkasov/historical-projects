@@ -1,7 +1,6 @@
 #include <iostream>
 #include <boost/lexical_cast.hpp>
 #include <boost/mpl/vector_c.hpp>
-#include <boost/mpl/aux_/preprocessed/gcc/vector_c.hpp>
 
 using namespace boost;
 using std::cout;
@@ -16,8 +15,8 @@ struct S2{
     int a;
 };
 
-typedef boost::mpl::vector_c<S1, 50, 0> type1_t;
-typedef boost::mpl::vector_c<S2, 10, 5> type2_t;
+typedef boost::mpl::vector_c<int, 50, 0> type1_t;
+typedef boost::mpl::vector_c<int, 10, 5> type2_t;
 
 int main(int argc, char* argv[]) {
     

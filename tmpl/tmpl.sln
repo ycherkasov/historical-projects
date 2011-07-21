@@ -1,53 +1,21 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 9.00
-# Visual Studio 2005
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "part_01_basics", "part_01_basics\part_01_basics.vcproj", "{09076201-478B-4963-99F8-30F00F1F4CAC}"
-	ProjectSection(WebsiteProperties) = preProject
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.Debug = "False"
-	EndProjectSection
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "part_01_basics", "part_01_basics\part_01_basics.vcxproj", "{09076201-478B-4963-99F8-30F00F1F4CAC}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "part_01_models", "part_01_models\part_01_models.vcproj", "{C3CE7267-99C7-46CF-99FB-42D3A0C30BEE}"
-	ProjectSection(WebsiteProperties) = preProject
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.Debug = "False"
-	EndProjectSection
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "part_01_models", "part_01_models\part_01_models.vcxproj", "{C3CE7267-99C7-46CF-99FB-42D3A0C30BEE}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "part_01_debugging", "part_01_debugging\part_01_debugging.vcproj", "{19A1A078-021F-4CDE-8C89-A6742A9D68CB}"
-	ProjectSection(WebsiteProperties) = preProject
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.Debug = "False"
-	EndProjectSection
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "part_01_debugging", "part_01_debugging\part_01_debugging.vcxproj", "{19A1A078-021F-4CDE-8C89-A6742A9D68CB}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "part_02_params", "part_02_params\part_02_params.vcproj", "{D789AC52-1484-4D1F-9ECA-7A8D63D1498C}"
-	ProjectSection(WebsiteProperties) = preProject
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.Debug = "False"
-	EndProjectSection
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "part_02_params", "part_02_params\part_02_params.vcxproj", "{D789AC52-1484-4D1F-9ECA-7A8D63D1498C}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "part_02_names", "part_02_names\part_02_names.vcproj", "{616D8A8C-8379-4270-A6C5-491970D79A55}"
-	ProjectSection(WebsiteProperties) = preProject
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.Debug = "False"
-	EndProjectSection
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "part_02_names", "part_02_names\part_02_names.vcxproj", "{616D8A8C-8379-4270-A6C5-491970D79A55}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "part_02_instantiation", "part_02_instantiation\part_02_instantiation.vcproj", "{07DD8DB9-C983-4B35-84C9-99CE4EAA9744}"
-	ProjectSection(WebsiteProperties) = preProject
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.Debug = "False"
-	EndProjectSection
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "part_02_instantiation", "part_02_instantiation\part_02_instantiation.vcxproj", "{07DD8DB9-C983-4B35-84C9-99CE4EAA9744}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "part_03_properties", "part_03_properties\part_03_properties.vcproj", "{47F96FF3-0C43-4595-922A-28473763A32F}"
-	ProjectSection(WebsiteProperties) = preProject
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.Debug = "False"
-	EndProjectSection
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "part_03_properties", "part_03_properties\part_03_properties.vcxproj", "{47F96FF3-0C43-4595-922A-28473763A32F}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "part_03_inherit", "part_03_inherit\part_03_inherit.vcproj", "{45C5C63D-3164-429E-8501-2D4DD0A47042}"
-	ProjectSection(WebsiteProperties) = preProject
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.Debug = "False"
-	EndProjectSection
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "part_03_inherit", "part_03_inherit\part_03_inherit.vcxproj", "{45C5C63D-3164-429E-8501-2D4DD0A47042}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

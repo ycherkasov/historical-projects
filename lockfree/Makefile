@@ -20,7 +20,6 @@ $(PROGRAM): $(OBJFILES)
 %.o: %.cxx
 	$(COMPILE) -c $<
 
-
 # abstract (phony) targets
 .PHONY: clean
 clean:

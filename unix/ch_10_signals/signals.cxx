@@ -48,6 +48,7 @@ using std::endl;
  */
 
 // TODO : what is sigpending() ?
+// divide by zero (integer and FP)
 
 typedef void sig_handler_t(int);
 
@@ -315,13 +316,13 @@ double divide_by_z(double z){
   return zz/z;
 }
 
+/** @brief Divide by zero FPE handler */
 static void fpe_signal_handler(int signo) {
-    // re-set handler to prevent signal loss in multi-threaded environment
     show_signal_name(signo);
     exit(0);
 }
 
-
+/** @brief Perform divide by zero */
 void show_divide(){
 
     signal(SIGFPE, fpe_signal_handler);

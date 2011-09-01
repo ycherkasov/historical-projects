@@ -19,7 +19,7 @@ void test_autoptr(){
 		double b;
 	};
 
-	auto_ptr<test_auto> ap1 = new test_auto();
+	auto_ptr<test_auto> ap1 (new test_auto() ) ;
 
 	test_auto* pa = new test_auto();
 	

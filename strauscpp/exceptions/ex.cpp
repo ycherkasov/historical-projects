@@ -1,7 +1,5 @@
-#include <cmath>
 #include <string>
 #include <iostream>
-#include <float.h>			// объявление функций  для данных с плавающей точкой
 #include <vector>
 
 using std::vector;
@@ -14,29 +12,12 @@ using std::endl;
 
 
 
-int zero_div(){
-	double sn = sin(0.);
-	int isn = static_cast<int>(sn);
-	isn = 1/isn;
-	return isn;
-}
-
 int oor_exception(std::vector<int>& v){
 	return v.at(1000);
 }
 
 void oor_exception_ex(std::vector<int>& v){
 	oor_exception(v);
-}
-
-// warning C4996: '_controlfp': This function or variable may be unsafe
-void set_zero_div_exception(){
-	//---------- Настройка исключительных ситуаций
-	int status = 0;
-	status = _controlfp(0,0);		// получаем текущее состояние
-	status &= ~EM_ZERODIVIDE;	// будет генерироваться исключение при делении на 0
-	_controlfp(status,MCW_EM);	// установить
-	//---------- Конец настройки исключительных ситуаций
 }
 
 triangle::triangle(double a, double b, double c) : _a(a), _b(b), _c(c), _S(), _P(){

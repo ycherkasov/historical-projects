@@ -5,6 +5,7 @@
 #include <string>
 #include <algorithm>
 #include <iostream>
+#include <iterator>
 #include <cstdlib>
 
 // Учебно-методический комплекс для изучения и исследования стандартной библиотеки C++ STL

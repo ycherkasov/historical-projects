@@ -87,6 +87,7 @@
     <ClCompile Include="finished.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="sehhandler.cpp" />
+    <ClCompile Include="zero_divide.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="about.h" />
@@ -95,6 +96,7 @@
     <ClInclude Include="ex.h" />
     <ClInclude Include="finished.h" />
     <ClInclude Include="sehhandler.h" />
+    <ClInclude Include="zero_divide.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

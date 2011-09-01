@@ -1,5 +1,6 @@
 #include "intset_t.h"
 #include <algorithm>
+#include <iterator>
 
 intset_t::intset_t()
 {

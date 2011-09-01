@@ -4,11 +4,12 @@
 #include <errno.h>
 #include <signal.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <iostream>
 #include <map>
 #include <stdexcept>
-#include <boost/lexical_cast.hpp>
+//#include <boost/lexical_cast.hpp>
 
 using std::string;
 using std::cout;
@@ -308,8 +309,29 @@ void show_sigaction() {
 }
 
 
-// TODO : TELL_WAIT and so on (10.16)
+/** @brief Divide by some double (to check FPU signals) */
+double divide_by_z(double z){
+  double zz = 1.0;
+  return zz/z;
+}
 
+static void fpe_signal_handler(int signo) {
+    // re-set handler to prevent signal loss in multi-threaded environment
+    show_signal_name(signo);
+    exit(0);
+}
+
+
+void show_divide(){
+
+    signal(SIGFPE, fpe_signal_handler);
+    
+    double x = 0.0;
+    double ret = divide_by_z(x);
+    cout << "ret = " << ret << endl;
+}
+
+// TODO : TELL_WAIT and so on (10.16)
 
 //#define PID_NEEDED
 int main(int argc, char* argv[]) {
@@ -330,11 +352,12 @@ int main(int argc, char* argv[]) {
         //signal_set();
         //show_all_signal_names();
         //block_signal();
-        show_sigaction();
+        //show_sigaction();
+        show_divide();
     }
-    catch(boost::bad_lexical_cast& e){
-        cerr << e.what() << "(bad port name?)" << endl;
-    }
+//    catch(boost::bad_lexical_cast& e){
+//        cerr << e.what() << "(bad port name?)" << endl;
+//    }
     catch (const std::exception& e) {
         cerr << e.what() << endl;
     }

@@ -1,8 +1,10 @@
-#include "adapters.h"
-#include "predicates.h"
+#include <iterator>
 #include <algorithm>
 #include <vector>
 #include <string>
+
+#include "adapters.h"
+#include "predicates.h"
 
 using namespace std;
 
@@ -82,7 +84,7 @@ void show_predicates(){
 	// Демонстрация умножение двух векторов и записи в третий
 	// Используется арифметический предикат multiplies
 	transform( vi1.begin(), vi1.end(), vi2.begin(), 
-		back_inserter(res), multiplies<int>() );
+		std::back_inserter(res), multiplies<int>() );
 
 	// Демонстрация применения унарного минуса к вектору и запись его в тот же вектор
 	transform( vi1.begin(), vi1.end(), vi1.begin(), negate<int>() );

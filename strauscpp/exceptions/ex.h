@@ -3,9 +3,6 @@
 
 
 void oor_exception_ex(std::vector<int>& v);
-void set_zero_div_exception();
-int zero_div();
-
 
 // Класс треугольника
 class triangle{

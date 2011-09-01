@@ -9,6 +9,7 @@
 #include "finished.h"
 #include "sehhandler.h"
 #include "autoptr.h"
+#include "zero_divide.h"
 
 using std::vector;
 using std::cout;
@@ -101,11 +102,24 @@ void show_simple_ex(){
 void show_zero_div_exception(){
 	try{
 		set_zero_div_exception();
-		zero_div();
+		double ret = zero_div(0.);
+        cout << "Division by zero returned " << ret << endl;
 	}
 	catch(...){
 		cout << "Unknown exception" << endl;
 	}
+}
+
+void show_fpe_zero_div(){
+    try{
+        //set_zero_div_fpe_exception();
+        double ret = fpe_zero_div(0.);
+        cout << "Division by zero returned " << ret << endl;
+    }
+    catch (...){
+        cout << "Unknown exception" << endl;
+    }
+
 }
 
 // Контролируемый конструктор
@@ -141,16 +155,17 @@ void show_seh(){
 
 int main()
 {
-	show_base_type();
-	show_simple_ex();
-	show_out_of_range();
+	//show_base_type();
+	//show_simple_ex();
+	//show_out_of_range();
 	
 	// wtf zero div? SEH?
 	//show_zero_div_exception();
+    show_fpe_zero_div();
 	
 	//show_controlled();
 	//show_standard_handlers();
-	test_autoptr();
+	//test_autoptr();
 
 	return 0;
 }

@@ -5,6 +5,10 @@
 #include <boost/assign/list_of.hpp> // for 'list_of()'
 #include <boost/assign/std/vector.hpp> // for 'operator+=()'
 
+using std::cout;
+using std::cerr;
+using std::endl;
+
 int* show_memory_leak(){
     return new int[5];
 }
@@ -16,9 +20,19 @@ void show_out_of_range(){
     values[100] = 5;
 }
 
-void show_uninitialized_var(){}
+void show_uninitialized_var(){
+    bool check_me;
+    if(check_me){
+        cout << "I'm true!"<< endl;
+    }
+    else{
+        cout << "false!"<< endl;
+    }
+}
 
-void show_fpe(){}
+void show_fpe(){
+    
+}
 
 enum operation{
     memleak,
@@ -55,7 +69,7 @@ int main(int argc, char* argv[]) {
             ("fpe",fpe);
 
     if (argc != 2) {
-        std::cout << "Usage: program <mode>" << std::endl;
+        std::cout << "Usage: program memleak|oor|uninit|fpe" << std::endl;
         
     }
     try {

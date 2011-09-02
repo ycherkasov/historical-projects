@@ -56,6 +56,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <ExceptionHandling>Async</ExceptionHandling>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -87,6 +88,7 @@
     <ClCompile Include="finished.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="sehhandler.cpp" />
+    <ClCompile Include="structured_exception.cpp" />
     <ClCompile Include="zero_divide.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -96,6 +98,7 @@
     <ClInclude Include="ex.h" />
     <ClInclude Include="finished.h" />
     <ClInclude Include="sehhandler.h" />
+    <ClInclude Include="structured_exception.h" />
     <ClInclude Include="zero_divide.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

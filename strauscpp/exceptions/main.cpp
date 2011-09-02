@@ -10,6 +10,7 @@
 #include "sehhandler.h"
 #include "autoptr.h"
 #include "zero_divide.h"
+#include "structured_exception.h"
 
 using std::vector;
 using std::cout;
@@ -99,22 +100,36 @@ void show_simple_ex(){
 	delete pt1;
 }
 
+// Целочисленное деление на 0 
 void show_zero_div_exception(){
-	try{
+	// Транслируем SE в C++ exception (должен быть скомпилирован с /EHa)
+    structured_exception::enableStructuredExceptions();
+    try{
 		set_zero_div_exception();
+        cout << "Integer division by zero" << endl;
 		double ret = zero_div(0.);
         cout << "Division by zero returned " << ret << endl;
 	}
-	catch(...){
+    catch (const std::exception& e) {
+        cout << e.what() << endl;
+    }
+    catch(...){
 		cout << "Unknown exception" << endl;
 	}
 }
 
+// Деление на 0 с плавающей точкой
 void show_fpe_zero_div(){
+    // Транслируем SE в C++ exception (должен быть скомпилирован с /EHa)
+    structured_exception::enableStructuredExceptions();
     try{
-        //set_zero_div_fpe_exception();
+        set_zero_div_exception();
+        cout << "FP division by zero" << endl;
         double ret = fpe_zero_div(0.);
         cout << "Division by zero returned " << ret << endl;
+    }
+    catch (const std::exception& e) {
+        cout << e.what() << endl;
     }
     catch (...){
         cout << "Unknown exception" << endl;
@@ -169,3 +184,4 @@ int main()
 
 	return 0;
 }
+

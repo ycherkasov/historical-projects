@@ -39,22 +39,19 @@ void set_fpe_zero_div2(){
     }
 }
 
-void set_zero_div_fpe_exception(){
-    _clearfp();
-    unsigned int cw = _controlfp(0, 0); 
-    cw &=~(EM_OVERFLOW|EM_ZERODIVIDE|EM_DENORMAL|EM_INVALID);
-    unsigned int cwOriginal = _controlfp(cw, MCW_EM); //Set it.
-}
-
 // warning C4996: '_controlfp': This function or variable may be unsafe
 void set_zero_div_exception(){
-    //---------- Настройка исключительных ситуаций
+    // очистка выполняется перед каждым изменением FP word
     _clearfp();
-    int status = 0;
-    status = _controlfp(0,0);		// получаем текущее состояние
-    status &= ~EM_ZERODIVIDE;	// будет генерироваться исключение при делении на 0
-    _controlfp(status, MCW_EM);	// установить
-    //---------- Конец настройки исключительных ситуаций
+
+    // получаем текущее состояние
+    unsigned int cw = _controlfp(0, 0); 
+    
+    // будет генерироваться исключение при делении на 0, переполнении, неверной операции (0/0, inf/inf)
+    cw &=~(EM_OVERFLOW|EM_ZERODIVIDE|EM_DENORMAL|EM_INVALID);
+
+    // установить FP word
+    unsigned int cwOriginal = _controlfp(cw, MCW_EM); //Set it.
 }
 
 int zero_div(double s){

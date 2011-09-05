@@ -3,7 +3,6 @@
 % todo : make borders less
 
 \usepackage{amsmath}
-\usepackage{graphicx}
 \usepackage{amsfonts}
 \usepackage{amssymb}
 
@@ -15,11 +14,6 @@
 \setlength{\marginparwidth}{0in}
 \setlength{\parskip}{4pt}
 \setlength{\parindent}{0pt}
-\newcommand{\der}[0]{\partial}
-\newcommand{\Nf}{n_f}
-\newcommand{\Np}{n_p}
-\newcommand{\half}[0]{\frac{1}{2}}
-\newcommand{\bpsi}{{\boldsymbol\psi}}
 
 \begin{document}
 
@@ -43,7 +37,7 @@ Patterns \\
 
 2. $ \lim_{x\to x_0} \log_a{f(x)} =  \log_a {\lim_{x\to x_0} {f(x)} } =  $
 
-3. $ \lim_{x\to x_0} e^{f(x)} =  e^ {\lim_{x\to x_0} {f(x)} } =  $
+3. $ \lim_{x\to x_0} e^{f(x)} =  e^ {\lim_{x\to x_0} {f(x)} }  $ \\
 
 Remarkable limits \\
 1. $ \lim_{x\to 0} \frac{\sin{x}}{x} = 0 (\lim_{x\to 0} \frac{\tan{x}}{x} = 0) $ \\
@@ -100,14 +94,12 @@ $\lim_{x \to -\infty} a^x = 0 $ \\
 $\mbox{If } a < 1: \, $ \\
 $\lim_{x \to -\infty} a^x = \infty $ \\
 
-Trigonometric functions
-
+Trigonometric functions \\
 $\lim_{x \to a} \sin x = \sin a $ \\
 $\lim_{x \to a} \cos x = \cos a $ \\
 $\lim_{x \to 0} \frac{\sin x}{x} = 1 $ \\
 $\lim_{x \to 0} \frac{1-\cos x}{x} = 0 $ \\
 $\lim_{x \to 0} \frac{1-\cos x}{x^2} = \frac{1}{2} $ \\
 $\lim_{x \to n^\pm} \tan \left(\pi x + \frac{\pi}{2}\right) = \mp\infty \qquad \text{for any integer } n $ \\
-
 
 \end{document}

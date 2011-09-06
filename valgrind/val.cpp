@@ -67,7 +67,7 @@ int main(int argc, char* argv[]) {
             ("uninit",uninit)
             ("fpe",fpe);
 
-    if (argc != 2) {
+    if (argc < 3) {
         std::cout << "Usage: program memleak|oor|uninit|fpe" << std::endl;
     }
     try {

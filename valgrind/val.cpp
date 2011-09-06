@@ -1,7 +1,6 @@
 #include <iostream>
 #include <map>
 #include <vector>
-#include <boost/lexical_cast.hpp>
 #include <boost/assign/list_of.hpp> // for 'list_of()'
 #include <boost/assign/std/vector.hpp> // for 'operator+=()'
 
@@ -70,21 +69,20 @@ int main(int argc, char* argv[]) {
 
     if (argc != 2) {
         std::cout << "Usage: program memleak|oor|uninit|fpe" << std::endl;
-        
     }
     try {
+        typedef std::map<std::string, operation>::const_iterator map_cit;
         for (unsigned i = 1; i < argc; i++) {
             std::string mode(argv[i]);
-            std::map<std::string, operation>::const_iterator it = program_mode.begin();
+            map_cit it = program_mode.begin();
             if ((it = program_mode.find(mode)) != program_mode.end()) {
                 execute_example((*it).second);
             }
 
         }
     }
-    catch(const boost::bad_lexical_cast& e){
-    }
     catch(const std::exception& e){
+        cout << e.what() << endl;
     }
     return 0;
 }

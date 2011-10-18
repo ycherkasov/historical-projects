@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
-project(<assign_me> CXX)
-set(TARGET <assign_me>)
+project(static1 CXX)
+set(TARGET static1)
 
 ########################################################
 # source files
@@ -23,5 +23,4 @@ set(INCLUDE_DIRS ${INCLUDE_DIRS} .. )
 include_directories(${INCLUDE_DIRS})
 
 ########################################################
-#add_library(${TARGET} ${SOURCES})
-#add_executable(${TARGET} ${SOURCES})
+add_library(${TARGET} ${SOURCES})

@@ -1,6 +1,6 @@
 #include <iostream>
 #include <boost/lexical_cast.hpp>
-#include "shared/wrapper.h"
+#include "shared1/wrapper.h"
 
 // Use shared library as a wrapper under static1-2
 
@@ -10,6 +10,8 @@ int main(int argc, char* argv[]) {
         std::cout << "Usage: program <number>" << std::endl;
     }
     try{
+      show_extern();
+      c_function1();
     }
     catch(const boost::bad_lexical_cast& e){
     }

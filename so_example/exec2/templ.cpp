@@ -12,6 +12,8 @@ int main(int argc, char* argv[]) {
         std::cout << "Usage: program <number>" << std::endl;
     }
     try{
+      show_extern();
+      c_function1();
     }
     catch(const boost::bad_lexical_cast& e){
     }

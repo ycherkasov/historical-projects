@@ -1,7 +1,7 @@
+#include <cstdlib>
+
 #include "static1/file1.h"
 #include "static2/file2.h"
-
-#include <cstdlib>
 
 // Порядок определения глобальных переменных не определен
 int g = 0;

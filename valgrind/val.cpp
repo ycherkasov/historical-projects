@@ -59,7 +59,9 @@ void execute_example(operation op){
     }
 }
 
+
 int main(int argc, char* argv[]) {
+
 
     std::map<std::string,operation> program_mode
             = boost::assign::map_list_of("memleak",memleak)

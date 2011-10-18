@@ -1,3 +1,4 @@
+#include <cstdlib>
 #include "static1/file1.h"
 
 // int x определена в file2.cpp, но используется в качестве внешней в file2.cpp

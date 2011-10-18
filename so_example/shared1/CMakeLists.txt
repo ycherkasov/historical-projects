@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 2.8)
-project(<assign_me> CXX)
-set(TARGET <assign_me>)
+project(shared1 CXX)
+set(TARGET shared1)
+
+
+cmake_policy(SET CMP0015 NEW)
 
 ########################################################
 # source files

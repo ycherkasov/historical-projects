@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 2.8)
 project(exec1 CXX)
 set(TARGET exec1)
 
+cmake_policy(SET CMP0015 NEW)
+
 ########################################################
 # source files
 file(GLOB Files_src *.cpp)

@@ -1,5 +1,6 @@
 ﻿#include <cmath>
 #include <iostream>
+#include "gcd.h"
 
 using namespace std;
 /*
@@ -94,7 +95,7 @@ int extended_euclid(int a, int b, int& x_out, int& y_out){
 
 
 
-int main()
+int show_gcd()
 {
     cout << "gcd(60, 24) = " << gcd(60, 24) << endl;
     cout << "gcd2(60, 24) = " << gcd2(60, 24) << endl;

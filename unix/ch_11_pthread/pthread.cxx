@@ -234,7 +234,7 @@ private:
 
 
 // ------------ Condition variable example ------------
-// Prodicer - multi-consumer model
+// Producer - multi-consumer model
 
 /** @brief Long operatiopn to prodice some data */
 int produce(){

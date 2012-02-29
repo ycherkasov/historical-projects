@@ -35,7 +35,7 @@ using std::endl;
  * 10.wait3()/wait4() alse returns system information about child process.
  *    wait3() is deprecated.
  * 11.UID/GID can be changed by setuid/setgid/seteuid/setegid (must be root!)
- * 12.System starts processes like bash (can not analyze pid and return code!)
+ * 12.system() starts processes like bash (can not analyze pid and return code!)
  * 13.init must be a parent of any process. Process without parent is a zombie.
  * 14.fork() doesn't copies all address space imidiately.
  *    It performs copy-on-write instead.

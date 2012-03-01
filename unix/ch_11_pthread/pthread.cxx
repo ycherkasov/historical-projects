@@ -243,7 +243,7 @@ int produce(){
     return ret;
 }
 
-/** @brief Long operatiopn to process data fetched from prdusser */
+/** @brief Long operatiopn to process data fetched from produser */
 void consume(int data){
     sleep(data);
 }

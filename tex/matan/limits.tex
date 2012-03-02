@@ -47,8 +47,31 @@ Remarkable limits \\
 5. $ \lim_{x\to 0} \frac{(1 + x)^a - 1}{x} = a $ \\
 
 Landau symbols \\
-$ f(x) = o( \phi(x) ) \Leftrightarrow \lim_{x\to x_0} \frac{f(x)}{\phi(x) = 0} $ \\
-e.g. $\phi(x) >> f(x)$ in $U_x$
+$f = o(g) \Leftrightarrow \lim_{n to 0} \frac{f(x)}{g(x)} = 0$ \\
+e.g. $g(x) >> f(x)$ in $U_x$ \\
+
+$f = O(g) \Leftrightarrow |f(n)| \le C|g(n)|q $ \\
+e.g. $g(x) limited by f(x)$ in $U_x$ \\
+
+$f ~ g \Leftrightarrow \lim_{n to 0} \frac{f(x)}{g(x)} = 1 $ \\
+e.g. $g(x) and f(x)$ are equivalent \\
+
+O-notation formulas \\
+$o(f)+o(g) = o(f)$
+
+$o(f) \cdot o(g) = o(f \cdot g)$
+
+$o(o(f)) = o(f)$
+
+$o(f)+O(f) = O(f)$
+
+$o(f) \cdot O(f) = O(f \cdot g)$
+
+$O(f) \cdot O(g) = O(f \cdot g)$
+
+$O(o(f)) = o(f)$
+
+\newline
 
 $ \alpha < \beta $ \\
 $x^{\alpha} = o(x^{\beta}, x\to \infty ) $ \\

@@ -69,31 +69,29 @@ int lcm (int a, int b) {
 как линейную комбинацию a и b с целыми коэффициентами.
 */
 
-int extended_euclid(int a, int b, int& x_out, int& y_out){
-    int x = 0;
-    int y = 0;
-
-    if(b == 0){
-        return a;
+struct euclid_triple{
+    int _d, _x, _y;
+    euclid_triple(int d, int x, int y):_d(d),_x(x),_y(y){}
+    euclid_triple& operator=(const euclid_triple& rhs){
+        if(&rhs != this){
+            _d = rhs._d;
+            _x = rhs._x;
+            _y = rhs._y;
+        }
+        return *this;
     }
+};
 
-    int x2 = 1, x1 = 0;
-    int y2 = 0, y1 = 1;
-    while(b > 0){
-        int q = a % b;
-        int r = a - q*b;
-        x = x2 - q*x1;
-        y = y2 - q*y1;
-        a = b; b = r; x2 = x1; x1 = x; y2 = y1; y1 = y;
-    }
-    x_out = x2;
-    y_out = y2;
-    return a;
+euclid_triple extended_euclid(int a, int b){
+    if(b == 0) 
+        return euclid_triple(a,1,0);
+    euclid_triple ret(0,0,0);
+    euclid_triple triple = extended_euclid( b, a % b );
+    int fl = a/b;
+    ret = euclid_triple(triple._d, triple._y, triple._x - fl * triple._y);
+    return ret;
+
 }
-
-
-
-
 
 int show_gcd()
 {
@@ -119,10 +117,12 @@ int show_gcd()
     cout << endl;
     int x = 0;
     int y = 0;
-    //int d = extended_euclid(60, 24, x ,y);
-    //cout << "60 * " << x << " + 24 * " << y << " = " << d << endl;
-    //d = extended_euclid(30, 12, x ,y);
-    //cout << "12 * " << x << " + 30 * " << y << " = " << d << endl;
+    euclid_triple d = extended_euclid(60, 24);
+    cout << "60 * " << d._x << " + 24 * " << d._y << " = " << d._d << endl;
+    d = extended_euclid(30, 12);
+    cout << "30 * " << d._x << " + 12 * " << d._y << " = " << d._d << endl;
+    d = extended_euclid(99, 78);
+    cout << "99 * " << d._x << " + 78 * " << d._y << " = " << d._d << endl;
 
     return 0;
 }

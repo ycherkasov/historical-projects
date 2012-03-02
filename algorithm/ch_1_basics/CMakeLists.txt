@@ -1,10 +1,10 @@
 cmake_minimum_required(VERSION 2.8)
-project(gcd CXX)
-set(TARGET gcd)
+project(ch_1_basics CXX)
+set(TARGET ch_1_basics)
 
 ########################################################
 # source files
-file(GLOB Files_src *.cpp)
+file(GLOB Files_src *.cpp *.h)
 
 ########################################################
 # test source files

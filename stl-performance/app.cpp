@@ -10,7 +10,9 @@
 #include "test_result.h"
 #include "command_line_params.h"
 
+#ifdef _WIN32
 #include <Windows.h>
+#endif
 
 using namespace std;
 
@@ -176,7 +178,8 @@ void actions(const command_line_params& p){
 		// todo : cross-platform this!
 		// --- Передача результатов во внешнее приложение для анализа ---
 		if( !get_params()._application.empty() ){
-#if 1
+
+#ifdef _WIN32
 			PROCESS_INFORMATION pi = {};
 			STARTUPINFOA si = {};
 			string app_start;
@@ -201,7 +204,7 @@ void actions(const command_line_params& p){
 				&si,	// LPSTARTUPINFO
 				&pi );	// LPPROCESS_INFORMATION
 #else
-				FILE* b = popen(app_start.c_str(), "wb");
+			//FILE* b = popen(app_start.c_str(), "wb");
 #endif
 
 		}

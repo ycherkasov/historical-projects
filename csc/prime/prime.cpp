@@ -14,7 +14,7 @@ using std::cerr;
 using std::endl;
 using std::string;
 
-
+/// Count all prime numbers from permutations
 void get_permutations(std::string& numbers) {
 
     std::sort(numbers.begin(), numbers.end());
@@ -61,7 +61,6 @@ void get_permutations_parallel(std::string& numbers) {
 
 
 int main(int argc, char* argv[]) {
-
 
     if (argc != 2) {
         cout << "Usage: primetest <numbers>" << endl;

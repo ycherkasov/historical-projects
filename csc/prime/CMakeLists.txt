@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
-project(<assign_me> CXX)
-set(TARGET <assign_me>)
+project(prime CXX)
+set(TARGET prime)
 
 cmake_policy(SET CMP0015 NEW)
 SET(CMAKE_CXX_FLAGS "-ggdb -O0")
@@ -11,21 +11,14 @@ SET(CMAKE_CXX_FLAGS "-ggdb -O0")
 file(GLOB Files_src *.cpp)
 
 ########################################################
-# test source files
-set(Files_tests  
-  test1/test1.cpp
-  )
-
-########################################################
 # source files
 set(SOURCES ${SOURCES} ${Files_src})
-set(TEST_SOURCES ${TEST_SOURCES} ${Files_tests})
 
 ########################################################
 # include directories
-set(INCLUDE_DIRS ${INCLUDE_DIRS} .. . )
+set(INCLUDE_DIRS ${INCLUDE_DIRS} . )
 include_directories(${INCLUDE_DIRS})
+link_libraries( ${TARGET} ntl)
 
 ########################################################
-#add_library(${TARGET} ${SOURCES})
-#add_executable(${TARGET} ${SOURCES})
+add_executable(${TARGET} ${SOURCES})

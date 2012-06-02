@@ -7,7 +7,7 @@ INCDIRS =
 COMPILER = g++
 #change to -ggdb for debugging
 #COMPILEFLAGS = -O2
-COMPILEFLAGS = -ggdb -O0
+COMPILEFLAGS = -ggdb -O0 -pg
 COMPILE = $(COMPILER) $(COMPILEFLAGS)
 
 SOURCES = main.cpp app.cpp app.h net.cpp net.h network_service.cpp network_service.h server_handlers.cpp server_handlers.h

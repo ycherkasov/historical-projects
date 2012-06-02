@@ -1,0 +1,229 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Russian resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_RUS)
+#ifdef _WIN32
+LANGUAGE LANG_RUSSIAN, SUBLANG_DEFAULT
+#pragma code_page(1251)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_RUS)\r\n"
+    "LANGUAGE 25, 1\r\n"
+    "#pragma code_page(1251)\r\n"
+    "#include ""res\\ChartDemo2.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""     // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "res\\ChartDemo2.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_CHARTDEMO2_DIALOG DIALOGEX 0, 0, 543, 362
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_VISIBLE | WS_CAPTION
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "Osciloscope"
+FONT 8, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    PUSHBUTTON      "Выход",IDCANCEL,436,94,50,16
+    CONTROL         "Custom1",IDC_CUSTOM1,"ChartCtrl",WS_CLIPCHILDREN | WS_TABSTOP,7,165,529,190
+    CONTROL         "Выровнять по границам",IDC_CHECK_ALIGN,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,26,101,96,10
+    CONTROL         "",IDC_FUNC_LIST,"SysListView32",LVS_REPORT | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,262,27,121,91
+    PUSHBUTTON      "Добавить",IDC_BTN_ADDFUNC,189,29,62,14
+    PUSHBUTTON      "Удалить",IDC_BTN_RMFUNC,189,55,62,14
+    PUSHBUTTON      "Редактировать",IDC_BTN_EDITFUNC,189,82,62,14
+    RTEXT           "Среднее",IDC_AVG_STATIC,18,32,80,8
+    RTEXT           "Средний квадрат",IDC_AVGS_STATIC,18,45,80,8
+    RTEXT           "Дисперсия",IDC_DISP_STATIC,18,58,80,8
+    RTEXT           "СК отклонение",IDC_DEV_STATIC,18,71,80,8
+    LTEXT           "0",IDC_AVG_STATIC2,112,32,43,8
+    LTEXT           "0",IDC_AVGS_STATIC2,112,45,43,8
+    LTEXT           "0",IDC_DISP_STATIC2,112,58,54,8
+    LTEXT           "0",IDC_DEV_STATIC2,112,71,51,8
+    CONTROL         "",IDC_COUNT_PROGRESS,"msctls_progress32",WS_BORDER,253,144,251,11
+    LTEXT           "Расчет функций корреляции, подождите...",IDC_PROGRESS_STATIC,253,132,210,8
+    CONTROL         "Функции корреляции",IDC_CHECK_CORRELATE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,26,119,84,10
+    PUSHBUTTON      "Белый шум",IDC_WHITENOISE_BUTTON,436,50,50,16
+    GROUPBOX        "Управление гармониками",IDC_STATIC,183,14,212,113
+    GROUPBOX        "Статистические параметры",IDC_STATIC,16,14,158,78
+    PUSHBUTTON      "ВКФ",IDC_MUTUALCORR_BUTTON,436,28,50,16
+    PUSHBUTTON      "ДПФ",IDFFT,436,72,50,16
+END
+
+IDD_FUNC DIALOGEX 0, 0, 225, 146
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Dialog"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,32,125,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,145,125,50,14
+    CONTROL         "",IDC_SLIDER_F0,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | WS_TABSTOP,76,23,100,15
+    CONTROL         "",IDC_SLIDER_DT,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | WS_TABSTOP,76,53,100,15
+    LTEXT           "f0:",IDC_STATIC,20,23,10,8
+    LTEXT           "dt:",IDC_STATIC,20,53,10,8
+    LTEXT           "0",IDC_STATIC_F0,45,23,27,8
+    LTEXT           "0",IDC_STATIC_DT,45,53,27,8
+    LTEXT           "A0:",IDC_STATIC,19,81,12,8
+    CONTROL         "",IDC_SLIDER_A0,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | WS_TABSTOP,76,81,100,15
+    LTEXT           "0",IDC_STATIC_A0,45,81,27,8
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904e4"
+        BEGIN
+            VALUE "CompanyName", "TODO: <Company name>"
+            VALUE "FileDescription", "TODO: <File description>"
+            VALUE "FileVersion", "1.0.0.1"
+            VALUE "InternalName", "ChartDemo2.exe"
+            VALUE "LegalCopyright", "TODO: (c) <Company name>.  All rights reserved."
+            VALUE "OriginalFilename", "ChartDemo2.exe"
+            VALUE "ProductName", "TODO: <Product name>"
+            VALUE "ProductVersion", "1.0.0.1"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1252
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_CHARTDEMO2_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 536
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 355
+    END
+
+    IDD_FUNC, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 218
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 139
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MAIN_MENU MENU 
+BEGIN
+    POPUP "File"
+    BEGIN
+        MENUITEM "Open",                        ID_FILE_OPEN
+        MENUITEM "Save",                        ID_FILE_SAVE
+        MENUITEM "Exit",                        ID_FILE_EXIT
+    END
+END
+
+#endif    // Russian resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_RUS)
+LANGUAGE 25, 1
+#pragma code_page(1251)
+#include "res\ChartDemo2.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"     // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

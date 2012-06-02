@@ -24,6 +24,26 @@ void print_vector(const vector<T>& l){
 	cout << endl;
 }
 
+/// Pair values extraction functor
+/// Extracts 1-st value (key)
+template <typename Pair> struct select1st {
+    typedef Pair argument_type ;
+    typedef typename Pair::first_type result_type ;
+    const result_type& operator()(const argument_type& p) const {
+        return p.first ;
+    }
+};
+
+/// Pair values extraction functor
+/// Extracts 2-nd value
+template <typename Pair> struct select2nd {
+    typedef Pair argument_type ;
+    typedef typename Pair::second_type result_type ;
+    const result_type & operator()(const argument_type& p) const {
+        return p.second ;
+    }
+} ;
+
 // --------------- Немодифицирующие алгоритмы --------------- 
 // for_each 
 // find 

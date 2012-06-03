@@ -72,8 +72,8 @@ void execute_example(operation op){
             show_fpe();
             break;
         case cachemiss:
-	    show_cachemiss();
-	    break;
+	        show_cachemiss();
+	        break;
         default:
             return;
     }

@@ -141,7 +141,7 @@ $+ \left(  \dfrac{f^{(n)}(x)}{n-1!}(b-x)^{n-1} -  \dfrac{f^{(n-1)}(x)}{n-1!}(n-1
 
 $ \phi'(x) = \dfrac{f^{(n)}(x)}{n-1!}(b-x)^{n-1} - M n(b-x)^{n-1} $
 
-Найдем $ M $, использую теорему Ролля (привыполнении условий теоремы существует точка, где производная $ = 0 $)
+Найдем $ M $, используя теорему Ролля (при выполнении условий теоремы существует точка, где производная $ = 0 $)
 
 Первые два условия непрерывности и дифференцируемости очевидно выполняются.
 Значения функции на концах отрезка равно нулю (именно для этого 'поворачивали' исходную функцию как в теореме Лагранжа или Коши).
@@ -246,19 +246,19 @@ $e^{x} = 1 + \dfrac{x}{1!} + \dfrac{x^2}{2!} + \dfrac{x^3}{3!} + \cdots + \dfrac
 = \sum^{\infty}_{n=0} \dfrac{x^n}{n!}$
 
 \item
-$ \ln(1+x) = x - \dfrac{x^2}{2} + \dfrac{x^3}{3} - \cdots + (-1)^n\dfrac{ x^{n+1}}{n+1} + o(x^{n}
+$ \ln(1+x) = x - \dfrac{x^2}{2} + \dfrac{x^3}{3} - \cdots + (-1)^n\dfrac{ x^{n+1}}{n+1} + o(x^{n})
 = \sum^{\infty}_{n=0} (-1)^n\dfrac{ x^{n+1}}{n+1} =  \sum^{\infty}_{n=1} (- 1)^{n-1} \dfrac{x^n}{n} $
 
 \item
-$ \sin x =  x - \dfrac{x^3}{3!} + \dfrac{x^5}{5!} - \cdots\ + (-1)^n\dfrac{x^{2n+1}}{(2n+1)!} + o(x^{2n}
+$ \sin x =  x - \dfrac{x^3}{3!} + \dfrac{x^5}{5!} - \cdots\ + (-1)^n\dfrac{x^{2n+1}}{(2n+1)!} + o(x^{2n})
 = \sum^{\infty}_{n=0} (-1)^n \dfrac{x^{2n+1}}{(2n+1)!} $
 
 \item
-$ \cos x =  1 - \dfrac{x^2}{2!} + \dfrac{x^4}{4!} - \cdots + \dfrac{(-1)^n}{(2n)!} x^{2n} + o(x^{2n}
+$ \cos x =  1 - \dfrac{x^2}{2!} + \dfrac{x^4}{4!} - \cdots + \dfrac{(-1)^n}{(2n)!} x^{2n} + o(x^{2n})
 = \sum^{\infty}_{n=0} \dfrac{(-1)^n}{(2n)!} x^{2n} $
 
 \item
-$ (1+x)^\alpha = 1 + mx + \dfrac{m(m-1)}{2!}x^2 + \cdots + \dfrac{m(m-1)\cdots(m-n+1)}{n!}x^n + o(x)^{n}
+$ (1+x)^\alpha = 1 + mx + \dfrac{m(m-1)}{2!}x^2 + \cdots + \dfrac{m(m-1)\cdots(m-n+1)}{n!}x^n + o(x^{n})
 = \sum^{\infty}_{n=0} \binom{m}{n} x^n = \sum^{\infty}_{n=0} \dfrac{m!}{n!(n-m)!}x^n $
 
 \end{enumerate}

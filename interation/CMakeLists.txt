@@ -9,14 +9,17 @@ cmake_policy(SET CMP0015 NEW)
 # if unix
 #SET(CMAKE_CXX_FLAGS "-ggdb -O0")
 
+# TODO: INIT BOOST CORRECT WAY!
+
 FIND_PACKAGE(Boost)
 IF (Boost_FOUND)
-    INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIR})
-    ADD_DEFINITIONS( "-DHAS_BOOST" )
-ELSE()
-  SET(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} "C:/boost/boost_1_50_0/boost")
-  SET(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} "C:/boost/boost_1_50_0/stage")
+  INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIR})
+  ADD_DEFINITIONS( "-DHAS_BOOST" )
 ENDIF()
+
+SET(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} "C:/boost/boost_1_50_0/boost")
+SET(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} "C:/boost/boost_1_50_0/stage")
+
 
 
 ########################################################
@@ -36,8 +39,11 @@ set(SOURCES ${SOURCES} ${Files_src})
 
 ########################################################
 # include directories
-set(INCLUDE_DIRS ${INCLUDE_DIRS} .. . include)
+set(INCLUDE_DIRS ${INCLUDE_DIRS} .. . include "C:/boost/boost_1_50_0/boost")
 include_directories(${INCLUDE_DIRS})
+
+set(LINK_DIRS ${LINK_DIRS} .. . "C:/boost/boost_1_50_0/stage/lib")
+link_directories(${LINK_DIRS})
 
 ########################################################
 #add_library(${TARGET} ${SOURCES})

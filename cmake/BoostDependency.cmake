@@ -6,7 +6,7 @@ macro(BoostDependency REQUIRED_COMPONENTS)
   
   add_definitions(-DBOOST_ALL_NO_LIB)
 
-  find_package(Boost 1.41 REQUIRED COMPONENTS ${REQUIRED_COMPONENTS})
+  find_package(Boost 1.50 REQUIRED COMPONENTS ${REQUIRED_COMPONENTS})
 
   if(Boost_FOUND)
     include_directories(${Boost_INCLUDE_DIR})
@@ -20,7 +20,7 @@ macro(BoostHeaders)
 
   add_definitions(-DBOOST_ALL_NO_LIB)
 
-  find_package(Boost 1.41 REQUIRED )
+  find_package(Boost 1.50 REQUIRED )
 
   if(Boost_FOUND)
     include_directories(${Boost_INCLUDE_DIR})

@@ -28,7 +28,7 @@
 #
 # == Using Header-Only libraries from within Boost: ==
 #
-#   find_package( Boost 1.36.0 )
+#   find_package( Boost 1.50.0 )
 #   if(Boost_FOUND)
 #      include_directories(${Boost_INCLUDE_DIRS})
 #      add_executable(foo foo.cc)
@@ -39,7 +39,7 @@
 #
 #   set(Boost_USE_STATIC_LIBS   ON)
 #   set(Boost_USE_MULTITHREADED ON)
-#   find_package( Boost 1.36.0 COMPONENTS date_time filesystem system ... )
+#   find_package( Boost 1.50.0 COMPONENTS date_time filesystem system ... )
 #
 #   if(Boost_FOUND)
 #      include_directories(${Boost_INCLUDE_DIRS})
@@ -90,7 +90,7 @@
 # omit the 3rd version number from include paths if it is 0 although not all
 # binary Boost releases do so.
 #
-# SET(Boost_ADDITIONAL_VERSIONS "1.78" "1.78.0" "1.79" "1.79.0")
+# SET(Boost_ADDITIONAL_VERSIONS "1.50" "1.78" "1.78.0" "1.79" "1.79.0")
 #
 # ===================================== ============= ========================
 #

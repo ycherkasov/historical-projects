@@ -26,6 +26,9 @@ SET(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} "C:/boost/boost_1_50_0/stage")
 # source files
 file(GLOB Files_src src/*.cpp)
 
+# headers
+file(GLOB Files_h include/*.h)
+
 ########################################################
 # test source files
 #set(Files_tests  
@@ -35,7 +38,12 @@ file(GLOB Files_src src/*.cpp)
 ########################################################
 # source files
 set(SOURCES ${SOURCES} ${Files_src})
+set(HEADERS ${HEADERS} ${Files_h})
 #set(TEST_SOURCES ${TEST_SOURCES} ${Files_tests})
+
+source_group("Sources" FILES ${SOURCES})
+source_group("Headers" FILES ${HEADERS})
+
 
 ########################################################
 # include directories
@@ -47,4 +55,4 @@ link_directories(${LINK_DIRS})
 
 ########################################################
 #add_library(${TARGET} ${SOURCES})
-add_executable(${TARGET} ${SOURCES})
+add_executable(${TARGET} ${SOURCES} ${HEADERS})

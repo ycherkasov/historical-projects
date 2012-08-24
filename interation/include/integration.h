@@ -7,15 +7,19 @@
 #include <boost/thread/mutex.hpp>
 #include "async_threadpool.h"
 
+
 bool is_close_enough(double a, double b){
-    if (fabs(a-b) <= 16*DBL_EPSILON * std::max(fabs(a),fabs(b)))
+    if (fabs(a-b) <= 16 *DBL_EPSILON * std::max(fabs(a),fabs(b)))
     {
         return true;
     }
     return false;
 }
 
-
+struct integration_result{
+    double result;
+    double error;
+};
 
 class num_integrte{
 public:
@@ -54,7 +58,6 @@ public:
         double end = std::max(a, b);
 
         double interval = (end - begin)/steps;
-
         double result = (f(begin) + f(end))/2;
 
         for(size_t i = 1 ; i < (steps-1); i++){
@@ -86,10 +89,8 @@ public:
             double x_k = begin + interval*(i+1);
             // x(k-1)
             double x_k_1 = begin + interval*i;
-            double point1 = x_k;
-            double point2 = (x_k_1 + x_k)/2;
-            coeff1 += f(point1);
-            coeff2 += f(point2);
+            coeff1 += f(x_k);
+            coeff2 += f( (x_k_1 + x_k)/2 );
         }
         coeff1 -= f(end);
         result = h * (f(begin) + f(end) + 2*coeff1 + 4*coeff2);

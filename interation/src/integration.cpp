@@ -3,7 +3,7 @@
 #include <cmath>
 #include <iostream>
 #include <boost/lexical_cast.hpp>
-#include "integr.h"
+#include "integration.h"
 
 #define _MULTITHREAD
 
@@ -34,48 +34,83 @@ void usage(){
     exit(0);
 }
 
-void numerical_integration(size_t thread_count){
+void numerical_integration(){
 
+    cout << "Single-threaded versions" << endl;
     double result = 0.;
     const size_t steps = 1000000;
 
     // S-threaded
     num_integrte nint(f_sin);
 
+    cout << "Rectangular:" << endl;
     {
         clock_count c;
         result = nint.rectangle_integrate(0., M_PI, steps);
     }
-    cout << result << endl;
+    cout << "Result: " << result << endl << endl;
 
+    cout << "Trapezoidal:" << endl;
     {
         clock_count c;
         result = nint.trapezoidal_integrate(0., M_PI, steps);
     }
-    cout << result << endl;
+    cout << "Result: " << result << endl << endl;
 
+    cout << "Simpson:" << endl;
     {
         clock_count c;
         result = nint.simpson_integrate(0., M_PI, steps);
     }
-    cout << result << endl;
+    cout << "Result: " << result << endl << endl;
 
+
+
+
+}
+
+void threaded_numerical_integration(size_t thread_count){
+    
+    // M-Threaded
+    cout << "Multi-threaded versions" << endl;
+    double result = 0.;
+    const size_t steps = 1000000;
+
+
+    num_integrte_mt nint(f_sin, thread_count);
+
+    cout << "Rectangular:" << endl;
+    {
+        clock_count c;
+        result = nint.rectangle_integrate(0., M_PI, steps);
+    }
+    cout << "Result: " << result << endl << endl;
+
+    cout << "Trapezoidal:" << endl;
+    {
+        clock_count c;
+        result = nint.trapezoidal_integrate(0., M_PI, steps);
+    }
+    cout << "Result: " << result << endl << endl;
+
+    cout << "Simpson:" << endl;
+    {
+        clock_count c;
+        result = nint.simpson_integrate(0., M_PI, steps);
+    }
+    cout << "Result: " << result << endl << endl;
+
+}
+
+void monte_carlo_numerical_integration(){
+    
+    double result = 0.;
     {
         clock_count c;
         monte_carlo mc(f_sin);
         result = mc.monte_carlo_integrate(0., M_PI, 1.0, -1.0);
     }
-    cout << result << endl;
-
-    // M-Threaded
-
-    num_integrte_mt int_mt(f_sin, thread_count);
-
-    {
-        clock_count c;
-        result = int_mt.simpson_integrate(0., M_PI, steps);
-    }
-    cout << result << endl;
+    cout << "Result: " << result << endl << endl;
 }
 
 int main(int argc, char* argv[]) {
@@ -96,7 +131,8 @@ int main(int argc, char* argv[]) {
 
     try{
 
-        numerical_integration(thread_count);
+        numerical_integration();
+        threaded_numerical_integration(thread_count);
 
     }
     catch(const std::exception& e){

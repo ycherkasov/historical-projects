@@ -1,6 +1,6 @@
 package com.angelusworld.aks.algorithm;
 
-import com.angelusworld.aks.AKSView;
+import com.angelusworld.aks.algorithm.AKSView;
 import java.math.BigInteger;
 import nuim.cs.crypto.polynomial.PolynomialException;
 import nuim.cs.crypto.polynomial.big.BigPolynomial;

@@ -8,7 +8,8 @@ SET(CMAKE_CXX_FLAGS "-ggdb -O0")
 
 ########################################################
 # source files
-file(GLOB Files_src *.cpp)
+file(GLOB Files_src src/*.cpp)
+file(GLOB Files_h include/*.cpp)
 
 ########################################################
 # test source files
@@ -19,7 +20,13 @@ set(Files_tests
 ########################################################
 # source files
 set(SOURCES ${SOURCES} ${Files_src})
+set(HEADERS ${HEADERS} ${Files_h})
+
 set(TEST_SOURCES ${TEST_SOURCES} ${Files_tests})
+
+source_group("Sources" FILES ${SOURCES})
+source_group("Headers" FILES ${HEADERS})
+
 
 ########################################################
 # include directories

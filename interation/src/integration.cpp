@@ -2,9 +2,8 @@
 #define _USE_MATH_DEFINES
 #include <cmath>
 #include <iostream>
-
+#include <boost/lexical_cast.hpp>
 #include "integr.h"
-
 
 #define _MULTITHREAD
 
@@ -14,16 +13,16 @@ using std::endl;
 
 class clock_count {
 public:
-clock_count(){
-_clock_count = GetTickCount();
-}
-~clock_count(){
-_clock_count = GetTickCount() - _clock_count;
+    clock_count(){
+        _clock_count = GetTickCount();
+    }
+    ~clock_count(){
+        _clock_count = GetTickCount() - _clock_count;
         std::cout << "Timer: " << _clock_count << std::endl;
-}
+    }
 
 private:
-double _clock_count;
+    double _clock_count;
 };
 
 double f_sin(double x){
@@ -51,7 +50,7 @@ void numerical_integration(size_t thread_count){
 
     {
         clock_count c;
-        result = nint.trapeziodal_integrate(0., M_PI, steps);
+        result = nint.trapezoidal_integrate(0., M_PI, steps);
     }
     cout << result << endl;
 
@@ -62,6 +61,7 @@ void numerical_integration(size_t thread_count){
     cout << result << endl;
 
     {
+        clock_count c;
         monte_carlo mc(f_sin);
         result = mc.monte_carlo_integrate(0., M_PI, 1.0, -1.0);
     }
@@ -73,26 +73,25 @@ void numerical_integration(size_t thread_count){
 
     {
         clock_count c;
-        int_mt.mt_integrate(0., M_PI, steps, 10);
+        result = int_mt.simpson_integrate(0., M_PI, steps);
     }
     cout << result << endl;
 }
 
 int main(int argc, char* argv[]) {
-    
-    size_t thread_count = 6;
 
+    const size_t thread_count = 8;
 #if 0
-if (argc != 2) {
-usage();
-}
-try{
-thread_count = boost::lexical_cast<int>(argv[1]);
-}
-catch(const boost::bad_lexical_cast& e){
-cerr << e.what() << endl;
-usage();
-}
+    if (argc != 2) {
+        usage();
+    }
+    try{
+        thread_count = boost::lexical_cast<int>(argv[1]);
+    }
+    catch(const boost::bad_lexical_cast& e){
+        cerr << e.what() << endl;
+        usage();
+    }
 #endif
 
     try{

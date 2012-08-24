@@ -1,15 +1,21 @@
 #ifndef _integr_h_
 #define _integr_h_
 
-#include <boost/lexical_cast.hpp>
-#include <boost/thread/thread.hpp>
+
 #include <boost/random/lagged_fibonacci.hpp>
 #include <boost/random/uniform_real_distribution.hpp>
-// todo: replace with more concrete headers
-#include <boost/asio.hpp>
-#include <boost/thread.hpp>
+#include <boost/thread/mutex.hpp>
+#include "async_threadpool.h"
 
-#include <iostream>
+bool is_close_enough(double a, double b){
+    if (fabs(a-b) <= 16*DBL_EPSILON * std::max(fabs(a),fabs(b)))
+    {
+        return true;
+    }
+    return false;
+}
+
+
 
 class num_integrte{
 public:
@@ -19,13 +25,12 @@ public:
 
     double rectangle_integrate(double a, double b, size_t steps){
 
-        // todo: close enough
-        if(a == b){
+        if( is_close_enough(a, b)){
             return 0;
         }
 
-        double begin = (b>a)?a:b;
-        double end = (b>a)?b:a;
+        double begin = std::min(a, b);
+        double end = std::max(a, b);
 
         double interval = (end - begin)/steps;
         double half_int = interval/2;
@@ -39,14 +44,14 @@ public:
         return result;
     }
 
-    double trapeziodal_integrate(double a, double b, size_t steps){
-        // todo: close enough
-        if(a == b){
+    double trapezoidal_integrate(double a, double b, size_t steps){
+
+        if( is_close_enough(a, b)){
             return 0;
         }
 
-        double begin = (b>a)?a:b;
-        double end = (b>a)?b:a;
+        double begin = std::min(a, b);
+        double end = std::max(a, b);
 
         double interval = (end - begin)/steps;
 
@@ -62,13 +67,12 @@ public:
 
     double simpson_integrate(double a, double b, size_t steps){
 
-        // todo: close enough
-        if(a == b){
+        if( is_close_enough(a, b)){
             return 0;
         }
 
-        double begin = (b>a)?a:b;
-        double end = (b>a)?b:a;
+        double begin = std::min(a, b);
+        double end = std::max(a, b);
 
         double interval = (end - begin)/steps;
         double h = interval/6;
@@ -102,7 +106,6 @@ protected:
         return _function(x);
     }
 
-// todo: accessor
 protected:
     function_t _function;
 private:
@@ -115,56 +118,74 @@ public:
 
     num_integrte_mt(function_t func) :
       num_integrte(func),
-      result(),
-      _thread_count(1)
+          result(),
+          _thread_count(0)
       {}
 
-    num_integrte_mt(function_t func, size_t thread_count) :
+      num_integrte_mt(function_t func, size_t thread_count) :
       num_integrte(func),
-      result(),
-      _thread_count(thread_count)
+          result(),
+          _thread_count(thread_count)
       {}
 
-    double mt_integrate(double a, double b, size_t steps, size_t tasks){
+      double rectangle_integrate(double a, double b, size_t steps){
+          return mt_integrate<>(a, b, steps, 10, &num_integrte_mt::threaded_rectangular);
+      }
 
-        double begin = (b>a)?a:b;
-        double end = (b>a)?b:a;
-        double interval = (end - begin)/tasks;
+      double trapezoidal_integrate(double a, double b, size_t steps){
+          return mt_integrate<>(a, b, steps, 10, &num_integrte_mt::threaded_trapezoidal);
+      }
 
-        {
-            boost::asio::io_service io;
-            boost::asio::io_service::work asio_work(io);
-            boost::thread_group th_group;
-            for (size_t i = 0; i < _thread_count; ++i){
-                th_group.create_thread(boost::bind(&boost::asio::io_service::run, &io));
-            }
+      double simpson_integrate(double a, double b, size_t steps){
+          return mt_integrate<>(a, b, steps, 10, &num_integrte_mt::threaded_simpson);
+      }
 
-            for(size_t i = 0 ; i < tasks; i++){
-                double x0 = begin + (interval*i);
-                double x1 = begin + (interval*(i+1));
-                //cout << "x" << i << " = " << x0 << ", x" << i+1 << " = " << x1 << endl;
-                io.post(boost::bind(&num_integrte_mt::threaded_integrate, this, x0, x1, steps/tasks));
-            }
-            io.stop();
-            th_group.join_all();
-        }
-        return result;
-    }
+      template <typename Handler>
+      double mt_integrate(double a, double b, size_t steps, size_t tasks, Handler handler){
+          
+          if( is_close_enough(a, b)){
+              return 0;
+          }
 
-    void threaded_integrate(double a, double b, size_t steps){
-        //double subresult = rectangle_integrate(a, b, steps, func);
-        //double subresult = trapeziodal_integrate(a, b, steps, func);
-        double subresult = simpson_integrate(a, b, steps);
-        interlocked_add<double>(result, subresult);
-    }
+          result = 0.;
+          double begin = std::min(a, b);
+          double end = std::max(a, b);
+          double interval = (end - begin)/tasks;
 
+          async_threadpool pool(_thread_count);
+          
+          pool.start();
+          for(size_t i = 0 ; i < tasks; i++){
+              double x0 = begin + (interval*i);
+              double x1 = begin + (interval*(i+1));
+              pool.post_task(boost::bind(handler, this, x0, x1, steps/tasks));
+          }
+          pool.stop();
 
+          return result;
 
-    template <typename T>
-    void interlocked_add(volatile T& val, const T add){
-        boost::mutex::scoped_lock l(m);
-        val += add;
-    }
+      }
+
+      void threaded_simpson(double a, double b, size_t steps){
+          double subresult = num_integrte::simpson_integrate(a, b, steps);
+          interlocked_add<double>(result, subresult);
+      }
+
+      void threaded_rectangular(double a, double b, size_t steps){
+          double subresult = num_integrte::rectangle_integrate(a, b, steps);
+          interlocked_add<double>(result, subresult);
+      }
+
+      void threaded_trapezoidal(double a, double b, size_t steps){
+          double subresult = num_integrte::trapezoidal_integrate(a, b, steps);
+          interlocked_add<double>(result, subresult);
+      }
+
+      template <typename T>
+      void interlocked_add(volatile T& val, const T add){
+          boost::mutex::scoped_lock l(m);
+          val += add;
+      }
 
 private:
     boost::mutex m;
@@ -176,7 +197,7 @@ private:
 
 class monte_carlo {
 public:
-    
+
     typedef double (*function_t)(double);
 
     monte_carlo(function_t func):_function(func){}

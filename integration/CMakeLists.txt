@@ -2,11 +2,8 @@ cmake_minimum_required(VERSION 2.8)
 project(integration CXX)
 set(TARGET integration)
 
-#include("../cmake/BoostDependency.cmake")
-#include("../cmake/FindBoost.cmake")
-
-include("BoostDependency.cmake")
-include("FindBoost.cmake")
+include("../cmake/BoostDependency.cmake")
+include("../cmake/FindBoost.cmake")
 
 cmake_policy(SET CMP0015 NEW)
 # if unix

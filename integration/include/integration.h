@@ -217,13 +217,14 @@ public:
 
     double monte_carlo_integrate(double a, double b, double up, double low){
         // todo: close enough
-        if((a == b) || (up == low)){
+        if( is_close_enough(a, b) ){
             return 0;
         }
 
 
         double begin = (b>a)?a:b;
         double end = (b>a)?b:a;
+
         size_t in_function = 0;
         size_t total = 100000;
         double square = (end-begin)*(up-low);

@@ -5,6 +5,12 @@
 #include <boost/lexical_cast.hpp>
 #include "integration.h"
 
+#ifdef WIN32
+#include <Windows.h>
+#else
+#include <time.h>
+#endif
+
 #define _MULTITHREAD
 
 using std::cout;
@@ -14,10 +20,19 @@ using std::endl;
 class clock_count {
 public:
     clock_count(){
+#ifdef WIN32
         _clock_count = GetTickCount();
+#else
+        _clock_count = clock() / (CLOCKS_PER_SEC / 1000);
+#endif
     }
+
     ~clock_count(){
+#ifdef WIN32
         _clock_count = GetTickCount() - _clock_count;
+#else
+        _clock_count = clock() / (CLOCKS_PER_SEC / 1000) - _clock_count;
+#endif
         std::cout << "Timer: " << _clock_count << std::endl;
     }
 

@@ -81,6 +81,7 @@ protected:
 
         for (long i = 1; i < NTL::NumBits(_number); i++) {
             while ((upper_bound - lower_bound) > 1) {
+                
                 temp = (upper_bound + lower_bound) / 2;
                 the_power = NTL::power(temp, i + 1);
 

@@ -1,4 +1,4 @@
-package com.angelusworld.aks;
+package com.angelusworld.aks.algorithm;
 
 import com.angelusworld.aks.algorithm.AKSAlgorithm;
 import java.awt.Toolkit;

@@ -1,0 +1,4 @@
+bjam "-sZLIB_SOURCE=C:\zlib" --prefix=C:\boost_1_38_0_msvc-9.0-64 --toolset=msvc-9.0 link=static runtime-link=static address-model=64 instruction-set=opteron debug release install
+bjam "-sZLIB_SOURCE=C:\zlib" --prefix=e:\boost_1_38_0_msvc-9.0-64 --toolset=msvc-9.0 link=static runtime-link=shared address-model=64 instruction-set=opteron debug release install
+bjam "-sZLIB_SOURCE=C:\zlib" --prefix=C:\boost_1_38_0_msvc-9.0 --toolset=msvc-9.0 link=static runtime-link=static address-model=32 debug release install
+bjam "-sZLIB_SOURCE=C:\zlib" --prefix=e:\boost_1_38_0_msvc-9.0 --toolset=msvc-9.0 link=static runtime-link=shared address-model=32 debug release install

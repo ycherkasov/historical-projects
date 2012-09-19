@@ -21,7 +21,8 @@ struct range_error_t : public std::exception{
 	// кроме конструкторов по умолчанию string() throw();
 };
 
-/* Также shared_ptr — хорошее решение.
+/* Также shared_ptr — хорошее решение, т.к. исключение будет брошено 
+	не из самого объекта, а из умного указателя. и все отработает ок
 struct my_exception
 {
 	shared_ptr<string> m_pStr;

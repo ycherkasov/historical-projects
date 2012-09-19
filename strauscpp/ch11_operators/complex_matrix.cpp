@@ -100,10 +100,10 @@ complex_t& complex_matrix::operator()(unsigned index_x, unsigned index_y){
 	return _matrix[index_x][index_y];
 }
 
-complex_t* complex_matrix::operator[](unsigned index) const{
+const complex_t* complex_matrix::operator[](unsigned index) const{
 	return _matrix[index];
 }
 
-complex_t& complex_matrix::operator()(unsigned index_x, unsigned index_y) const{
+const complex_t& complex_matrix::operator()(unsigned index_x, unsigned index_y) const{
 	return _matrix[index_x][index_y];
 }

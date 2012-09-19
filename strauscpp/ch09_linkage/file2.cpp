@@ -1,7 +1,7 @@
 #include "file2.h"
 #include <iostream>
 
-// int x определена в file2.cpp, но используется в качестве внешней в file2.cpp
+// int x определена в file2.cpp, но используется в качестве внешней в file1.cpp
 int x = 1;
 
 // константы и typedef компонуются внутри единицы трансляции

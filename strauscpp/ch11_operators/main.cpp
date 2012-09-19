@@ -1,6 +1,8 @@
 #include "complex.h"
 using std::vector;
 
+#pragma pack(8)
+
 // Функция демонстрирует работу перегруженных операторов 
 // и неявного конструктора
 void show_overloads(){
@@ -43,13 +45,20 @@ void gimme_vector_by_val(vector<int> v){
 
 void show_vector_by_val(){
 	vector<int> v;
+	size_t s = sizeof(v);
 	v.push_back(1);
+	// рахмер вектора не увеличивается,
+	// т.к. все элементы в динамической памяти
+	s = sizeof(v);
 	v.push_back(2);
+	s = sizeof(v);
 	v.push_back(3);
 	v.push_back(4);
-	size_t s = sizeof v;
+	s = sizeof(v);
 	gimme_vector_by_val(v);
 }
+
+
 
 int main(){
 

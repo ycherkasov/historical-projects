@@ -34,7 +34,7 @@ std::map<std::string, int> word_counter::count_from_file(const string& filename)
 		void operator()(const std::string& s)
 		{
 			std::map<std::string, int>::iterator it = _word_counter.begin();
-			if( _word_counter.end() != _word_counter.find(s) )
+			if( _word_counter.end() != (it = _word_counter.find(s)) )
 				(*it).second++;
 			else
 				_word_counter.insert( make_pair(s, 1) );

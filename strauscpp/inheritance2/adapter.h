@@ -54,7 +54,7 @@ private:
 
 };
 
-// Те даннные, что в deque_t были protected и public стали d write_only_stack_t protected.
+// Те даннные, что в deque_t были protected и public стали в write_only_stack_t protected.
 class write_only_stack_t : public stack_t{
 public:
 	void push(int val);

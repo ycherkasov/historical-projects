@@ -105,6 +105,9 @@ void show_foreach()
 	vector<string> st;
 	st.push_back("atatat");
 	st.push_back("komatoza");
+	// for_each() возвращает указатель на функциональный объект,
+	// т.к. в нем может содержаться полезная информация по итогам
+	// работы алгоритма
 	for_each(st.begin(), st.end(),print_v);
 }
 

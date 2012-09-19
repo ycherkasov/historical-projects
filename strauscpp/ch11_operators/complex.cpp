@@ -1,7 +1,5 @@
-#include "complex.h"
-
 #include <exception>
-
+#include "complex.h"
 
 complex_t::complex_t(double r/* = 0.*/, double i /*= 0.*/) : re(r), im(i){}
 complex_t::complex_t(int r) : re(r), im(0){}
@@ -25,7 +23,7 @@ complex_t& complex_t::operator-=( const complex_t& a ){
 
 // ------------------------------
 complex_t& complex_t::operator*=( const complex_t& a ){
-	re += (re * a.re)-(im * a.im); 
+	re += (re * a.re) - (im * a.im); 
 	im += (re * a.im) + (im * a.re);
 	return *this;
 }
@@ -33,7 +31,7 @@ complex_t& complex_t::operator*=( const complex_t& a ){
 // ------------------------------
 complex_t& complex_t::operator/=( const complex_t& a ){
 	if(a == 0)
-		throw std::exception( "null division" );
+		throw std::runtime_error( "null division" );
 
 	double tmp = re*re + a.re*a.re;
 	re =  ((re * a.re) + (im * a.im))/tmp;

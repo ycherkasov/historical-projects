@@ -28,7 +28,6 @@ void show_simple_inheritance(){
 	// В этом случае допустимо явное приведение к производному классу
 	static_cast<Manager*>(pe1)->show_level();
 
-
 	// ------------------------------ 
 	Manager m2("Vatslav Melioratsya", 2, 4000);
 

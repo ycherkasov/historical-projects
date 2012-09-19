@@ -152,14 +152,9 @@ void shift_collect(short b){
 			fill1 <<= 1;
 		}
 	}
-	std::cout << std::endl << mask << std::endl;
-}
-
-void show_new_operator(){
-	// !!!
-	int x = 10;
-	while(x --> 0)
-		std::cout << x << std::endl;
+	std::cout << std::endl;
+	// вывести результат в двоичном виде
+	shift_output(mask);
 }
 
 void show_bits(){

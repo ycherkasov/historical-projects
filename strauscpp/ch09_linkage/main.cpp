@@ -2,6 +2,7 @@
 #include "file2.h"
 
 #include <cstdlib>
+#include <iostream>
 
 // ѕор€док определени€ глобальных переменных не определен
 int g = 0;
@@ -20,7 +21,8 @@ int& use_count()
 // Ќенадежна, т.к. возможно ограниченное количество вызовов atexit()
 void my_cleanup()
 {
-
+	// нельз€ увидеть из отладчика
+	std::cout << "cleanup handler" << std::endl;
 }
 
 int main()

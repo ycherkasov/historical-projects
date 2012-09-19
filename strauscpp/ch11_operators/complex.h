@@ -194,12 +194,13 @@ public:
 	// Неконстантный оператор operator[] в данном случае не имеет смысла,
 	// т.к. должен модифицировать указатель. Он приведен для примера.
 	complex_t* operator[](unsigned index);
-	complex_t* operator[](unsigned index) const;
+	const complex_t* operator[](unsigned index) const;
 
 	// В реализации многомерных матриц для индексации лучше использовать оператор ()
 	// вместо [], т.к. операция [] позволяет передачу только одного индекса
+	// ВОзвращаемое по ссылке значение тоже должно быть константным!
 	complex_t& operator()(unsigned index_x, unsigned index_y);
-	complex_t& operator()(unsigned index_x, unsigned index_y) const;
+	const complex_t& operator()(unsigned index_x, unsigned index_y) const;
 
 	// Друзей можно объявлять в закрытой или открытой части класса - не имеет значения.
 	// Друзьями также можно объявлять отдельные функции класса...

@@ -8,10 +8,9 @@
 intern g_intern;
 
 /** @brief 
-2 формы оператора new
+3 формы оператора new 
 1 - обычная(show_new1)
 2 - с замещением(show_new2 - i и j имеют одинаковые адреса)
-
 */
 
 void show_new1() {
@@ -115,7 +114,9 @@ void show_new_delete()
 	// третья, устаревшая форма оператора new
 	// В случае неудачи возвращает 0
 	MyClass* fPtr3 = new( nothrow ) MyClass;
-	if(fPtr3){ /*do something*/ }
+	if(fPtr3 == 0){
+		/*error*/ 
+	}
 	delete fPtr3;
 }
 

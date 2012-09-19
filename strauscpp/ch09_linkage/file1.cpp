@@ -1,8 +1,8 @@
 #include "file1.h"
 
-// int x определена в file2.cpp, но используетс€ в качестве внешней в file2.cpp
+// int x определена в file2.cpp, но используетс€ в качестве внешней в file1.cpp
 extern int x;
-extern int x; // и это не ошибка!
+extern int x; // и это не ошибка, т.к. extern ничего нового не объ€вл€ет!
 
 // функци€ show_extern также определена в file2.cpp
 extern void show_extern();

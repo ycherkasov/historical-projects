@@ -13,6 +13,7 @@ sizeof(N) <= sizeof(signed N) <= sizeof(unsigned N)
 enum enum1{dark, light};		// диапазон 0:1
 enum enum2{ a = 3, b = 9 };		// диапазон 0:15
 enum enum3{ c = 3, d = 900 };	// диапазон 0:1024
+enum enum4{ e = 3, f = 5000000000 };	// диапазон 0:2^32 - не входит!
 
 void show_enumerations(){
 
@@ -23,14 +24,18 @@ void show_enumerations(){
 	//enum1 e3 = enum1(20); - компилируется, но неверно -
 	// 20 не принадлежит перечислению enum1
 	
-	// Размер перечисления архитектурозависим,
-	// но должен содержать диапазон перечисления
+	// Размер перечисления архитектурозависим
 	size_t sz = sizeof(enum1);
 	sz = sizeof(enum2);
 	sz = sizeof(enum3);
+
+	// Здесть значение enum будет обрезано!
+	//enum4 e4 = enum4::f;
+	//sz = sizeof(e4);
+	//long long l = e4;
 }
 
-int g_global = 0;
+static int g_global = 5;
 
 void show_name_convensions(int a){
 	// Давайте переменным с большой областью видимости 
@@ -38,8 +43,9 @@ void show_name_convensions(int a){
 	static int test_counter = a;
 
 	// А с малой - короткие однобуквенные
-	for ( int i = 0 ; i < test_counter ; i++ )
-		test_counter += 5;
+	for ( int i = 0 ; i < test_counter ; i++ ){
+		::g_global += test_counter;
+	}
 
 	// обращение к глобальной
 	::g_global = 0;
@@ -55,8 +61,8 @@ void show_pointer(){
 
 	// Гарантируется, что нет объектов с нулевым адресом.
 
-	// замещение макроса NULL
-	const int NULL = 0;
+	// замещение макроса NULL (нулевой указатель)
+	const void* NULL = 0;
 
 	// строковый литерал - это указатель
 	size_t sz = sizeof("aaa");
@@ -101,6 +107,5 @@ int main(){
 	show_name_convensions(5);
 	show_pointer();
 	show_references();
-	show_new_operator();
 	return 0;
 }

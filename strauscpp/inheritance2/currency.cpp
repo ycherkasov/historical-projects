@@ -16,14 +16,17 @@ currency_t& currency_t::operator+=(const currency_t& c){
 	_currency += c._currency;
 	return *this;
 }
+
 currency_t& currency_t::operator -=(const currency_t& c){
 	_currency -= c._currency;
 	return *this;
 }
+
 currency_t& currency_t::operator *=(const currency_t& c){
 	_currency *= c._currency;
 	return *this;
 }
+
 currency_t& currency_t::operator /=(const currency_t& c){
 	_currency /= c._currency;
 	return *this;

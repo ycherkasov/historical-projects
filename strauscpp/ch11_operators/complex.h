@@ -40,8 +40,8 @@ public:
 	complex_t(int r);
 
 	// --- Вспомогательные функции --- 
-	inline double real();
-	inline double imag();
+	inline double real() const;
+	inline double imag() const;
 
 	// --- Перегруженные операторы --- 
 	// Операторы, которые лучше перегружать методом
@@ -94,10 +94,22 @@ public:
 	
 	// Также важно то, что объявление дружественной функции м.б. единственным
 	// т.е. не видным вне определенного класса, и даже может совпадать с определением
+	// (см. пример с умноженеим и делением)
 	friend complex_t operator+( const complex_t& a, const complex_t& b );
 	friend complex_t operator-( const complex_t& a, const complex_t& b );
-	friend complex_t operator*( const complex_t& a, const complex_t& b );
-	friend complex_t operator/( const complex_t& a, const complex_t& b );
+
+	// обьявление дружественной функции совпадает с определением
+	friend complex_t operator*( const complex_t& a, const complex_t& b ){
+		complex_t tmp(a);
+		return tmp *= b;
+	}
+
+	// обьявление дружественной функции совпадает с определением
+	friend complex_t operator/( const complex_t& a, const complex_t& b ){
+		complex_t tmp(a);
+		return tmp /= b;
+	}
+
 
 	// Радиус-вектор комплексного числа
 	friend double r_vector(const complex_t& c){
@@ -198,18 +210,22 @@ public:
 
 	// В реализации многомерных матриц для индексации лучше использовать оператор ()
 	// вместо [], т.к. операция [] позволяет передачу только одного индекса
-	// ВОзвращаемое по ссылке значение тоже должно быть константным!
+	// Возвращаемое по ссылке значение тоже должно быть константным!
 	complex_t& operator()(unsigned index_x, unsigned index_y);
 	const complex_t& operator()(unsigned index_x, unsigned index_y) const;
 
 	// Друзей можно объявлять в закрытой или открытой части класса - не имеет значения.
 	// Друзьями также можно объявлять отдельные функции класса...
-	friend double complex_t::real();
-	friend double complex_t::imag();
+	friend double complex_t::real() const;
+	friend double complex_t::imag() const;
 
 	// ...или весь класс (хотя в этом случае лучше применить открытый интерфейс
 	// , композицию или наследование)
 	friend class complex_t;
+
+	// Класс-друг должен быть объявлен в охватывающей области видимости
+	// Функуция друг также должна быть объявлена в охватывающей области видимости,
+	// ЛИБО иметь аргумент этого класса (пример с коммутативными операторами)
 
 private:
 	size_t _count_x;

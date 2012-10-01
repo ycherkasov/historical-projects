@@ -3,6 +3,20 @@ using std::vector;
 
 #pragma pack(8)
 
+
+// продемонстрируем перегрузку перечислений
+enum Wday{ mon = 1, tus, wed, thr, frd, sat, sun };
+
+Wday& operator++(Wday& d){
+	return d = (d == sun) ? mon : Wday(d+1);
+}
+
+void show_enum_overload(){
+	Wday d = sun;
+	d++;
+	d++;
+}
+
 // Функция демонстрирует работу перегруженных операторов 
 // и неявного конструктора
 void show_overloads(){
@@ -47,7 +61,7 @@ void show_vector_by_val(){
 	vector<int> v;
 	size_t s = sizeof(v);
 	v.push_back(1);
-	// рахмер вектора не увеличивается,
+	// размер вектора не увеличивается,
 	// т.к. все элементы в динамической памяти
 	s = sizeof(v);
 	v.push_back(2);
@@ -65,5 +79,6 @@ int main(){
 	show_vector_by_val();
 	show_dynamic();
 	show_overloads();
+	show_enum_overload();
 	return 0;
 }

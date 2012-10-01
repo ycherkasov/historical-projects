@@ -4,8 +4,8 @@
 complex_t::complex_t(double r/* = 0.*/, double i /*= 0.*/) : re(r), im(i){}
 complex_t::complex_t(int r) : re(r), im(0){}
 
-double complex_t::real(){ return re; }
-double complex_t::imag(){ return im; }
+double complex_t::real() const { return re; }
+double complex_t::imag() const { return im; }
 
 
 
@@ -90,6 +90,7 @@ complex_t::operator double(){
 
 // ------------------------------
 // Секция глобальных дружественных функций
+// (* и / определены для примера в теле класса)
 // ------------------------------
 complex_t operator+( const complex_t& a, const complex_t& b ){
 	complex_t tmp(a);
@@ -100,18 +101,6 @@ complex_t operator+( const complex_t& a, const complex_t& b ){
 complex_t operator-( const complex_t& a, const complex_t& b ){
 	complex_t tmp(a);
 	return tmp -= b;
-}
-
-// ------------------------------
-complex_t operator*( const complex_t& a, const complex_t& b ){
-	complex_t tmp(a);
-	return tmp *= b;
-}
-
-// ------------------------------
-complex_t operator/( const complex_t& a, const complex_t& b ){
-	complex_t tmp(a);
-	return tmp /= b;
 }
 
 complex_t& get_cache()

@@ -3,6 +3,8 @@
 using std::cout;
 using std::endl;
 
+#pragma pack(1)
+
 //--------------------------------------
 code_generator_base::code_generator_base(int i) : _i(i){
 	cout << "code_generator_base() construction" << endl;
@@ -61,7 +63,8 @@ void php_code_generator::f1(){
 //--------------------------------------
 // ѕри виртуальном наследовании конструктор базового класса 
 // вызываетс€ последним производным классом в иерархии
-code_formatter::code_formatter(int i) : cpp_code_generator(i)
+code_formatter::code_formatter(int i) : 
+	  cpp_code_generator(i)
 	, java_code_generator(i)
 	, php_code_generator(i)
 	, code_generator_base(i){
@@ -75,4 +78,17 @@ code_formatter::~code_formatter(){
 void code_formatter::generate(lang l){
 	code_generator_base::generate(l);
 	cout << "code_formatter::generate()" << endl;
+}
+
+/////////////////////////////////////////
+void Final::f_base(){
+	cout << "Final::f_base()" << endl;
+}
+
+void Final::f1(){
+	cout << "Final::f1()" << endl;
+}
+
+void Final::f2(){
+	cout << "Final::f2()" << endl;
 }

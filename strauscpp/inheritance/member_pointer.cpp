@@ -23,6 +23,10 @@ void member_derived::resume(){
 	cout << "member_derived::resume" << endl;
 }
 
+void member_derived::static_init(){
+
+}
+
 //void* member_derived::operator new(size_t sz){
 //
 //	cout << "member_derived::operator new(size_t sz)" << endl;

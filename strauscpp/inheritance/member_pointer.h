@@ -22,6 +22,8 @@ public:
 	virtual void suspend();
 	virtual void resume();
 
+	static void static_init();
+
 	// операторы new и delete не€вно €вл€ютс€ статическими членами
 	//void* operator new(size_t sz);
 	//void* operator new[](size_t sz);
@@ -30,5 +32,8 @@ public:
 };
 
 // ”казатель на член member_pointer
-typedef void(member_pointer::* p_mem)();
+typedef void(member_pointer:: *p_mem)();
+
+// ”казатель на статический член
+typedef void(*static_member_pointer)();
 

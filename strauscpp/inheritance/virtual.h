@@ -1,3 +1,4 @@
+#pragma once
 // Демонстрация виртуального множественного наследования
 
 enum lang{
@@ -77,4 +78,27 @@ public:
 protected:
 
 private:
+};
+
+
+// Еще одна иерархия, где участвует виртуальное и невиртуальное наследование
+class Base{
+public:
+	virtual void f_base() = 0;
+};
+
+// Наследование ромбовидное, но один из классов наследован невиртуально
+class Derived1 : public Base{
+	virtual void f1() = 0;
+};
+
+class Derived2 : virtual public Base{
+	virtual void f2() = 0;
+};
+
+class Final : public Derived1, public Derived2{
+public:
+	virtual void f_base();
+	virtual void f1();
+	virtual void f2();
 };

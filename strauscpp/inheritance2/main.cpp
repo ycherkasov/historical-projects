@@ -148,6 +148,31 @@ void show_linkage(){
 	ret = dv.call_protected_function(5);	// 26
 }
 
+// демонстрация различных возвращаемых значений
+// в прототипах виртуальных функций и значений по умолчанию в их параметрах
+void show_virtual_def_values(){
+	Base1 b;
+	Derived1 d;
+	Base1* b1 = &b;
+	Base1* d1 = &d;
+
+	// в функции Base1::g(i = 10)  
+	b1->f(1);
+	b1->f(1.0);
+	b1->g();
+	A_virt* av1 = b1->pf();
+
+	// в функции Derived1::g(i = 10)
+	// однако параметр по умолчанию наследуется
+	d1->g();
+	// вируальная функция в наследующем классе
+	// может возвращать различный тип указателя или ссылки,
+	// если она приводится к базовому
+	B_virt* av2 = d1->pf();
+	delete av1;
+	delete av2;
+}
+
 void show_adapter(){
 
 	// Базовый класс
@@ -195,6 +220,7 @@ int main(){
 	show_operators();
 	show_virtual_construct();
 	show_linkage();
+	show_virtual_def_values();
 	show_adapter();
 	show_abstract_destructor();
 	return 0;

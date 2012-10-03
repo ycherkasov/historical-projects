@@ -8,7 +8,9 @@ currency_t::currency_t(const currency_t& c) : _currency(c._currency){}
 currency_t::~currency_t(){}
 
 currency_t& currency_t::operator =(const currency_t& c){
-	_currency = c._currency;
+	if(this != &c){
+		_currency = c._currency;
+	}
 	return *this;
 }
 

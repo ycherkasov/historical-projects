@@ -170,17 +170,17 @@ void show_seh(){
 
 int main()
 {
-	//show_base_type();
-	//show_simple_ex();
-	//show_out_of_range();
+	show_base_type();
+	show_simple_ex();
+	show_out_of_range();
 	
-	// wtf zero div? SEH?
-	//show_zero_div_exception();
+	// int and float zero div exception
+	show_zero_div_exception();
     show_fpe_zero_div();
 	
-	//show_controlled();
+	show_controlled();
 	//show_standard_handlers();
-	//test_autoptr();
+	test_autoptr();
 
 	return 0;
 }

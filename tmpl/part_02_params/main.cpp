@@ -4,6 +4,7 @@
 #include "arguments.h"
 #include "sfinae.h"
 #include "friends.h"
+
 // Возможны шаблоны объединений
 // Например, такой:
 template <typename T>
@@ -30,6 +31,7 @@ void test_virtual(){
 	b.open(5);
 
 	derived<double> d;
+	base<double>* pd = &d;
 	d.open(7);
 }
 
@@ -57,7 +59,7 @@ void test_sfinae(){
 	bool b = type_has_member_type_X(test_X);
 	b = type_has_member_type_X(char);
 	
-	test_sfinae_int();
+ 	test_sfinae_int();
 }
 
 int main(){
@@ -66,7 +68,6 @@ int main(){
 	test_virtual();
 	test_functions_family();
 	test_arguments();
-	test_functions_family();
 	test_sfinae();
 	test_argument_types();
 	test_friends_odr();

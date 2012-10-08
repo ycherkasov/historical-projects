@@ -84,6 +84,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="about.h" />
+    <ClInclude Include="by_request.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

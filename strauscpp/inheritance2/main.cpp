@@ -168,7 +168,7 @@ void show_virtual_def_values(){
 	// вируальная функция в наследующем классе
 	// может возвращать различный тип указателя или ссылки,
 	// если она приводится к базовому
-	B_virt* av2 = d1->pf();
+	A_virt* av2 = d1->pf();
 	delete av1;
 	delete av2;
 }
@@ -213,7 +213,67 @@ void show_abstract_destructor(){
 	vd.pure();
 }
 
+
+// Задачки из теста Дойчебанка
+struct A{
+	A(){
+		cout << "A ";
+	}
+	A(const A& a){
+		cout << "copy-A ";
+	}
+	A& operator=(const A& b){
+		cout << "=A ";
+	}
+	~A(){	// деструктор невиртуальный!
+		cout << "~A ";
+	}
+};
+
+struct B : public A{
+
+	B(){
+		cout << "B";
+	}
+	B(const B& b){
+		cout << "copy-B ";
+	}
+	B& operator=(const B& b){
+		cout << "=B ";
+	}
+	~B(){
+		cout << "~B";
+	}
+};
+
+void fff(A a){
+
+}
+
+void ff1(){
+	// Вопрос на внимание к деталям
+	// В умный указатель передается объект B по указателю A
+	// Но в классе A *невиртуальный* деструктор, так что будет вызван *только*
+	// деструтктор базового класса
+	std::auto_ptr<A> o(new B);
+}
+
+void ff2(){
+	// AB~A~A~B~A (откуда два деструктора?)
+	// добавив copy ctor, получаем ожидаемый эффект со срезкой:
+	// При передаче параметра по значению вызывается copy ctor
+	// для A-части класса B и создается временный объект.
+	// A B copy-A ~A ~B~A
+	B b;
+	fff(b);
+}
+
+
 int main(){
+
+	
+	//ff1();
+	ff2();
 
 	show_simple_inheritance();
 	show_abstract();

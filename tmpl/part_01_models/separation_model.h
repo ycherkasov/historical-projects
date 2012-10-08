@@ -1,5 +1,7 @@
 #pragma once
 
+// didn't inplemented anywhere
+
 #define _USE_EXPORT
 
 #ifdef _USE_EXPORT

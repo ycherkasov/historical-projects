@@ -22,7 +22,7 @@ template <typename T>
 class comrade_t;
 
 class comrades{
-	
+public:
 	// ќбъ€вление друга совпадает с определением
 	friend void comrade(int){}
 

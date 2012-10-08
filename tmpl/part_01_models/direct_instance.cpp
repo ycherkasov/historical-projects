@@ -6,6 +6,9 @@
 template class direct_instance<int>;
 template class direct_instance<double>;
 
+// Можно инстанцировать как весь класс, так и отдельную функцию
+// Если класс уже инстанцирован, функцию инстанцировать нельзя
+
 template <typename T>
 direct_instance<T>::direct_instance(const T& t) : _x(t) {}
 

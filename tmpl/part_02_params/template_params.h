@@ -17,7 +17,7 @@ public:
 	const T& top() const;
 	bool empty() const;
 
-	// ўаблонный метод
+	// Ўаблонный метод
 	template<typename TCOPY,template <typename, typename> class CONT_COPY>
 	tmpl_stack<T,CONT>& operator=(const tmpl_stack<TCOPY,CONT_COPY>& s);
 

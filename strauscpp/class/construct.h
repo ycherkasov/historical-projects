@@ -37,6 +37,7 @@ public:
 
 	// Но лучше делать как следующий конструктор без комментария
 	construct(int i/* = 0*/);
+	// компилятор не сгенерирует константный operator=(const A&) если явно определен неконстантный operator=(A&)!
 	construct( const construct& c );
 	~construct();
 

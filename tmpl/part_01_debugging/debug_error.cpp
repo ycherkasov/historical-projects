@@ -108,7 +108,7 @@ public:
 	// Пустая функция, подавляющая оптимизацию -
 	// иначе параметр не используется
 	static void ignore(const T& p){ T a = p; }
-	static void check_pointer(T ptr){
+	static void check_is_pointer(T ptr){
 		ignore(*ptr);
 	}
 };
@@ -121,7 +121,7 @@ void up1(const T& env){
 	typename T::index_t p();
 	
 	// Сработает проверка на указатель:
-	// shallow_checks<T::index_t>::check_pointer(p);// - раскомментировать для ошибки 2
+	// shallow_checks<T::index_t>::check_is_pointer(p);// - раскомментировать для ошибки 2
 	// error C2100: illegal indirection
 	// middle(p);									// - раскомментировать для ошибки 2
 }

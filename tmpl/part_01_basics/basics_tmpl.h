@@ -65,18 +65,18 @@ public:
 
 		// Никогда не не рассматривает exit() из класса base()
 
-/*
-Запись this->exit() заставляет компиляторы думать, что "у данного класса должен быть член exit". 
-Поскольку это долженствование не определено до самого момента воплощения (мало ли, как будет специализирован 
-Base для конкретных параметров), весь остальной смысловой разбор откладывается на потом.
-Аналогичные намёки — это Derived::exit() и Base::exit().
+		/*
+		Запись this->exit() заставляет компиляторы думать, что "у данного класса должен быть член exit". 
+		Поскольку это долженствование не определено до самого момента воплощения (мало ли, как будет специализирован 
+		Base для конкретных параметров), весь остальной смысловой разбор откладывается на потом.
+		Аналогичные намёки — это Derived::exit() и Base::exit().
 
-В противном случае gcc пытается с самого начала найти имя exit в текущем контексте. А текущий контекст — это
-— тело функции Derived<T>::g()
-— объявление класса Derived<T> за исключением белого пятна в виде базы Base<T>
-— пространство имён ::, в котором объявлен Derived
-Такое имя там есть. Это extern "C" void exit(int exitcode) из <stdlib.h>
-*/
+		В противном случае gcc пытается с самого начала найти имя exit в текущем контексте. А текущий контекст — это
+		— тело функции Derived<T>::g()
+		— объявление класса Derived<T> за исключением белого пятна в виде базы Base<T>
+		— пространство имён ::, в котором объявлен Derived
+		Такое имя там есть. Это extern "C" void exit(int exitcode) из <stdlib.h>
+		*/
 		// Надо
 		this->exit();
 		// или так
@@ -105,7 +105,7 @@ public:
 	const T& top() const;
 	bool empty() const;
 
-	// Щаблонный метод
+	// Шаблонный метод
 	template<typename TCOPY>
 	copyable_stack<T>& operator=(const copyable_stack<TCOPY>& s);
 
@@ -163,7 +163,7 @@ copyable_stack<T>& copyable_stack<T>::operator=( const copyable_stack<TCOPY>& s 
 // контейнера, на котором основан стек, примерно так:
 template < 
 	typename T, 
-	// Т.к. CONT определяет имя класса, а не тип, используется ключевое слово class
+	// Т.к. CONT определяет имя класса, а не тип (?), используется ключевое слово class
 	// Имена неиспользуемых параметров можно опустить (... typename = std::allocator)
 	template <typename ELEM, typename = std::allocator<ELEM> > class CONT = std::deque >
 class tmpl_stack {
@@ -174,7 +174,7 @@ public:
 	const T& top() const;
 	bool empty() const;
 
-	// Щаблонный метод
+	// Шаблонный метод
 	template<typename TCOPY,template <typename, typename> class CONT_COPY>
 	tmpl_stack<T,CONT>& operator=(const tmpl_stack<TCOPY,CONT_COPY>& s);
 

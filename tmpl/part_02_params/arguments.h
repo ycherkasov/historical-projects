@@ -41,15 +41,16 @@ T multi(T* t){
 
 void test_functions_family(){
 	// Раскомментировать для ошибки
-	// apply(multi<int>, 3);
-	// apply(multi<int>, 5);
+	// error C2784: 'void apply(Func,T)' : could not deduce template argument for 'overloaded function type' from 'overloaded function type'
+	//apply(multi<int>, 3);
+	//apply(multi<int>, 5);
 	// Обе перегруженные функции подходят, хотя и введено полное определение типов
 }
 
 // ------------------- Аргументы типов -------------------
 // Аргументами типов не могут быть:
 // 1. Локальные классы и перечисления (объвленные в пределах функции)
-// 2. Неименованные классы и перечисления (кромеименованных через typedef)
+// 2. Неименованные классы и перечисления (кроме именованных через typedef)
 // Например:
 template <typename T>
 class List_t{

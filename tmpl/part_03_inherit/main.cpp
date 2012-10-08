@@ -25,11 +25,11 @@ void show_crtp(){
 }
 
 void show_tmpl_virtuality(){
-	auto_ptr< Base<non_virtual> >  p1 = new Derived<non_virtual>();
-	Base<my_virtual>* p2 = new Derived<my_virtual>();
-	p1->foo();
-	p2->foo();
-	delete p2;
+	//auto_ptr< Base<non_virtual> >  p1 = new Derived<non_virtual>();
+	//Base<my_virtual>* p2 = new Derived<my_virtual>();
+	//p1->foo();
+	//p2->foo();
+	//delete p2;
 }
 
 int main(){

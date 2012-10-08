@@ -116,6 +116,7 @@ void show_zero_div_exception(){
     catch(...){
 		cout << "Unknown exception" << endl;
 	}
+	_clearfp();
 }
 
 // ƒеление на 0 с плавающей точкой
@@ -134,7 +135,7 @@ void show_fpe_zero_div(){
     catch (...){
         cout << "Unknown exception" << endl;
     }
-
+	_clearfp();
 }
 
 //  онтролируемый конструктор
@@ -144,6 +145,7 @@ void show_controlled() {
 		c.controlled_method();
 	}
 	catch (const std::exception& e) {
+		// исключение из конструктора будет проброшено сюда
 		cout << e.what() << endl;
 	}
 	catch (...) {

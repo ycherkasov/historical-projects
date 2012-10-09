@@ -20,3 +20,56 @@ size_t object_counter<T>::count = 0;
 // (разных инстансов одного шаблона)
 class count1 : public object_counter< count1 >{};
 class count2 : public object_counter< count2 >{};
+
+// С помощью CRTP можно реализовать статический полиморфизм
+
+template <typename Derived>
+class BasicPacket{
+public:
+	template<class T>
+	void method(T& t) {
+		// здесь общий код для наследуемых классов
+		get_derived().method(t);
+	}
+
+	const Derived& get_derived() const {
+		static_cast<const Derived&>(this);
+	}
+
+	Derived& get_derived() {
+		return static_cast<Derived&>(this);
+	}
+
+	// еще методы
+};
+
+class SpecificPacket1 : public BasicPacket<SpecificPacket1> {
+public:
+
+	template<class T>
+	int method(T& t) {
+		// имплементация
+		return 1;
+	}
+};
+
+class SpecificPacket2 : public BasicPacket<SpecificPacket2> {
+public:
+
+	template<class T>
+	int method(T& t) {
+		// имплементация
+		return 2;
+	}
+};
+
+/*
+Когда надо использовать CRTP? Например, когда есть два класса, которые не обязаны быть связанными 
+в одну иерархию посредством общего базового класса, но которые имеют общий код. 
+Статический полиморфизм позволяет этот код продублировать, написав всего лишь раз. 
+Плюсы: нет накладных расходов на вызов через VMT, нет препятствий для inlining'а, 
+нет увеличения объёма объекта из-за указателя на VMT. 
+Минусы: вынесение кода шаблонного класса в хэдер, раздувание кода. 
+Но во многих случаях это даже желательно — встраивать маленькие функции, 
+поэтому для небольших классов дублирование „базовых классов“ несущественно.
+*/

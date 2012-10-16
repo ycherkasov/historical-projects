@@ -53,8 +53,8 @@ public:
 	}
 
 	size_t size() const {
-		assert((op1.size() == 0) || (op2.size() == 0) || (op1.size() == op2.size()));
-		return (op1.size() == 0) ? op2.size() : op1.size();
+		//assert(op2.size() == 0);
+		return op2.size();
 	}
 
 };
@@ -79,8 +79,7 @@ public:
 	}
 
 	size_t size() const {
-		assert((op1.size() == 0) || (op2.size() == 0) || (op1.size() == op2.size()));
-		return (op1.size() == 0) ? op2.size() : op1.size();
+		return op2.size();
 	}
 
 };

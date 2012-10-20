@@ -1,0 +1,44 @@
+#include "simple_array.h"
+#include "efficient_array.h"
+
+
+// Демонстрируем самый неоптимальный способ векторной арифметики
+// Все объекты складываются и умножаются "в лоб", с генерацией всех
+// временных объектов
+void show_unefficient(){
+
+	SArray<double> x(10);
+	SArray<double> y(10);
+	x[0] = 1.0; x[3] = 2.0; x[6] = 3.0;
+	y[0] = 2.0; y[3] = 4.0; y[6] = 2.0;
+
+	print_debug("start expression");
+	x = 1.2*x + x*y;
+	print_debug("end expression");
+	// 3 временных объекта и 4 операции копирования
+	// на векторах размерности 1000 это будет накладно!
+}
+
+// попытаемся перенести часть вычислений на этап компиляции
+void show_efficient(){
+
+	Array<double> x(10);
+	Array<double> y(10);
+	x[0] = 1.0; x[3] = 2.0; x[6] = 3.0;
+	y[0] = 2.0; y[3] = 4.0; y[6] = 2.0;
+
+	print_debug("start expression");
+	x = 1.2*x + x*y;
+	print_debug("end expression");
+	// Все операции свернуты в единственный оператор присваивания
+	// Остальное выполняется "на месте"
+}
+
+int main(){
+
+
+	show_unefficient();
+	show_efficient();
+
+	return 0;
+}

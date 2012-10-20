@@ -24,7 +24,7 @@ set(SOURCES ${SOURCES} prime.cpp prime-mt.cpp prime-mt.h )
 
 ########################################################
 # include directories
-link_libraries( ${TARGET} flint )
+link_libraries( ${TARGET} flint mpir mpfr gmp )
 
 ########################################################
 add_executable(${TARGET} ${SOURCES})

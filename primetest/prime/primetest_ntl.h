@@ -35,6 +35,7 @@ public:
 
         // 2. Find the smallest r such that Or(n) > 4 log^2(n)
         ntl_bigint r = find_r();
+		std::cout << "smallest r such that Or(n) > 4 log^2(n) = " << NTL::to_long(r);
 
         if (r == 0)
             return false;

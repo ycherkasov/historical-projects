@@ -12,6 +12,10 @@ extern void show_extern();
 const int y = 2;
 typedef  int T;
 
+extern const int x1 = 10;
+//It defines a global constant variable that can be referenced from other modules.
+//This is correct (C++ Standard 7.1.1/6).
+
 void use_extern(){
 	show_extern();
 	x = 10;

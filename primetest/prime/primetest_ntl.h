@@ -8,6 +8,8 @@
 #ifndef PRIMETEST_NTL_H
 #define	PRIMETEST_NTL_H
 
+#include <iostream>
+
 #include <NTL/ZZ.h>
 #include <NTL/ZZ_p.h>
 #include <NTL/ZZ_pX.h>
@@ -20,7 +22,10 @@ class aks_test {
 public:
 
     /** @brief Assign a number to check is it prime */
-    aks_test(unsigned n) : _number(NTL::to_ZZ(n)), _log2n(NTL::NumBits(_number)) { }
+    aks_test(unsigned n) : _number(NTL::to_ZZ(n)), _log2n(NTL::NumBits(_number)) {
+		long tst = NTL::NumBits(_number);
+		__asm nop
+	}
 
     /** @brief Main test performed as operator()  */
     bool operator()() {
@@ -171,10 +176,14 @@ protected:
     ntl_polynome build_polynome(ntl_bigint r, ntl_polynome p) {
         ntl_polynome f;
         f = 1;
+		std::cout << f << std::endl;
         for (long i = _log2n; i != 0; i--) {
-            f = NTL::sqr(f);
+            std::cout << f << std::endl;
+			f = NTL::sqr(f);
+			std::cout << f << std::endl;
             if (NTL::bit(_number, i - 1) == 1) {
                 f = f * p;
+				std::cout << f << std::endl;
             }
             modulo_exponents(f, r);
         }

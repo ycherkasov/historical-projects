@@ -36,6 +36,14 @@ void get_permutations(std::string& numbers) {
     while (std::next_permutation(numbers.begin(), numbers.end()));
 }
 
+/// Just check primality
+void check_primality(unsigned check_me) {
+
+	aks_test aks(check_me);
+	if (aks.is_prime()) {
+		cout << check_me << " is prime" << endl;
+	}
+}
 
 // Очень хотелось написать многопоточную версию, но к сожалению NTL не thred-safe
 #if NTL_WOULD_BE_THREAD_SAFE
@@ -69,14 +77,21 @@ int main(int argc, char* argv[]) {
 
     string strnums;
     double sttime = NTL::GetTime();
+	unsigned check_me = 0;
 
     try {
         strnums.assign(argv[1]);
+		check_me = boost::lexical_cast<unsigned>(strnums);
     }
     catch (boost::bad_lexical_cast& e) {
         cerr << e.what() << "(not a number?)" << endl;
     }
+
+#if 0
     get_permutations(strnums);
+#endif
+
+	check_primality(check_me);
     cout << "The Time taken in checking primality is " << NTL::GetTime() - sttime << endl;
     cout << endl;
 

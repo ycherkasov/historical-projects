@@ -20,11 +20,17 @@ SET(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} "C:/boost/boost_1_50_0/stage")
 
 ########################################################
 # source files
-set(SOURCES ${SOURCES} prime.cpp prime-mt.cpp prime-mt.h )
+set(SOURCES ${SOURCES} 
+    prime.cpp 
+    prime-mt.cpp 
+    prime-mt.h
+    uint-big.h
+    polynome-big.h
+)
 
 ########################################################
 # include directories
-link_libraries( ${TARGET} flint mpir mpfr gmp )
+link_libraries( ${TARGET} flint )
 
 ########################################################
 add_executable(${TARGET} ${SOURCES})

@@ -3,233 +3,66 @@
 
 #include <string>
 #include <stdexcept>
-extern "C"{
-#include "fmpz.h"
-}
-
-class uint_big{
-public:
-    uint_big(ulong n = 0){
-        fmpz_init(x);
-        fmpz_set_ui(x, n);
-    }
-
-    uint_big(const char* str){
-        fmpz_init(x);
-        fmpz_set_str(x, const_cast<char*>(str), 10);
-    }
-    
-    uint_big(const uint_big& rhs){
-        fmpz_init(x);
-        fmpz_set(x, rhs.x);
-    }
-    
-    uint_big& operator=(const uint_big& rhs){
-        if(this != &rhs){
-            fmpz_set(x, rhs.x);
-        }
-        return *this;
-    }
-    
-    uint_big& operator=(ulong n){
-        fmpz_set_ui(x, n);
-        return *this;
-    }
-    
-    void swap(uint_big& rhs){
-        fmpz_swap(x, rhs.x);
-    }
-    
-    ~uint_big(){
-        fmpz_clear(x);
-    }
-    
-    // random generation: todo
-    
-    // conversions
-    ulong get_ulong() const {
-        return fmpz_get_ui(x);
-    }
-    
-    std::string get_string() const {
-        char* buf = fmpz_get_str( 0 ,10 , x );
-        if(buf){
-            std::string ret(buf);
-            free(buf);
-            return ret;
-        }
-        else{
-            throw std::runtime_error("unable to converl big uint to string");
-        }
-    }
-    
-    // properties
-    size_t num_digits() const {
-        return fmpz_sizeinbase(x, 10);
-    }
-
-    size_t num_bits() const {
-        return fmpz_bits(x);
-    }
-    
-    bool is_even() const {
-        return fmpz_is_even(x);
-    }
-    
-    bool is_odd() const {
-        return fmpz_is_odd(x);
-    }
-    
-        
-    bool is_one() const {
-        return fmpz_is_one(x);
-    }
-    
-    bool is_zero() const {
-        return fmpz_is_zero(x);
-    }
-    
-    // operators
-    bool operator > (const uint_big& other) const {
-        return (fmpz_cmp(x, other.x) > 0);
-    }
-  
-    bool operator <(const uint_big& other) const {
-        return (fmpz_cmp(x, other.x) < 0);
-    }
-    
-    bool operator >= (const uint_big& other) const {
-        return ((fmpz_equal(x, other.x)) 
-                || (fmpz_cmp(x, other.x) > 0));
-    }
-  
-    bool operator <=(const uint_big& other) const {
-        return ((fmpz_equal(x, other.x)) 
-                || (fmpz_cmp(x, other.x) < 0));
-    }
-    
-    bool operator ==(const uint_big& other) const {
-        return (fmpz_equal(x, other.x) == 1);
-    }
-    
-    bool operator != (const uint_big& other) const {
-        return !(*this == other);
-    }
-    
-    uint_big& operator ++ () {
-        //x += 1;
-        fmpz_add_ui(x, x, 1);
-        return *this;
-    }
-    
-    uint_big operator ++ (int) {
-        uint_big tmp(*this);
-        //x += 1;
-        fmpz_add_ui(x, x, 1);
-        return tmp;
-    }
-
-    friend uint_big operator+(const uint_big& a, const uint_big& b){
-        fmpz_t ret;
-        fmpz_add(ret, a.x, b.x);
-        return uint_big(ret);
-    }
-
-    
-    friend uint_big operator-(const uint_big& a, const uint_big& b){
-        fmpz_t ret;
-        fmpz_sub(ret, a.x, b.x);
-        return uint_big(ret);
-    }
-    
-    friend uint_big operator*(const uint_big& a, const uint_big& b){
-        fmpz_t ret;
-        fmpz_mul(ret, a.x, b.x);
-        return uint_big(ret);
-    }
-
-
-    friend uint_big operator/(const uint_big& a, const uint_big& b){
-        fmpz_t ret;
-        fmpz_init(ret);
-        fmpz_fdiv_q(ret, a.x, b.x);
-        return uint_big(ret);
-    }
-    
-        
-    friend uint_big operator%(const uint_big& a, const uint_big& b){
-        fmpz_t ret;
-        fmpz_init(ret);
-        fmpz_mod(ret, a.x, b.x);
-        return uint_big(ret);
-    }
-    
-    void power(ulong p){
-        fmpz_t tmp;
-        fmpz_init(tmp);
-        fmpz_set(tmp, x);
-        fmpz_pow_ui(x, tmp, p);
-    }
-    
-        
-    void power_mod(ulong p, const uint_big& mod){
-        fmpz_t tmp;
-        fmpz_init(tmp);
-        fmpz_set(tmp, x);
-        fmpz_powm_ui(x, tmp, p, mod.x);
-    }
-    
-        
-    void power_mod(const uint_big& p, const uint_big& mod){
-        fmpz_t tmp;
-        fmpz_init(tmp);
-        fmpz_set(tmp, x);
-        fmpz_powm(x, tmp, p.x, mod.x);
-    }
-    
-        
-    uint_big gcd(const uint_big& n){
-        fmpz_t tmp;
-        fmpz_init(tmp);
-        fmpz_set(tmp, x);
-        fmpz_gcd(tmp, x, n.x);
-        return tmp;
-    }
-
-
-private:
-        
-    // constructor with direct access to fmpz representation
-    // for binary operators only
-    uint_big(const fmpz_t rhs){
-        fmpz_init(x);
-        fmpz_set(x, rhs);
-    }
-public:
-    fmpz_t x;
-};
-
-
-
-
-
+#include "uint-big.h"
+#include "polynome-big.h"
 
 class aks_test_mt{
 public:
     
-    aks_test_mt(const uint_big& n)
+    aks_test_mt(const big_int& n)
         : _number(n)
-        , _log2n(n.num_bits()){}
+        , _log2n(n.num_bits()){
+            _log2n = n.num_bits();
+        }
     
-    //bool is_prime();
+    bool is_prime(){
+        
+        // 1. check if n = a^b form -> COMPOSITE.
+        if (is_power())
+            return false;
+
+        // 2. Find the smallest r such that Or(n) > 4 log^2(n)
+        big_int r = find_r();
+
+        if (r.is_zero())
+            return false;
+        if (r >= _number)
+            return true;
+
+        // 3. Compare (x-i)^n == (x^n- 1)(mod x^r - 1, n)
+        polynome_big left_polynome;
+        polynome_big right_polynome;
+        polynome_big temp_polynome;
+        
+
+        // check for greater values out of range
+        // sqr(r)*log2(n)
+        ulong limit = r.sqr_root().get_long() * _log2n;
+
+        // right = x^n%r
+        big_int modulo = _number % r;
+        long modulo_r = modulo.get_long();
+        right_polynome.set_coeff(modulo_r, 1);
+
+        // temp = x
+        temp_polynome.set_coeff(1, 1);
+        
+
+        // compare polynome pair
+        for (long i = 1; i <= limit; i++) {
+        }
+        return true;
+    }
+
+
     
 public:
 //protected:
 
     bool is_power(){
-        uint_big upper_bound(_number);
-        uint_big lower_bound(1);
-        uint_big temp, the_power;
+        big_int upper_bound(_number);
+        big_int lower_bound(1);
+        big_int temp, the_power;
 
         for (ulong i = 1; i < _log2n; i++) {
             while ((upper_bound - lower_bound) > 1) {
@@ -249,12 +82,12 @@ public:
         return false;
     }
 
-    uint_big find_r(){
-        uint_big q, r;
-        uint_big zero;
+    big_int find_r(){
+        big_int q, r;
+        big_int zero;
         //uint_big j;
         long j;
-        uint_big mods, nmodq, jmodq;
+        big_int mods, nmodq, jmodq;
         bool foundr;
         q = _log2n + 1;
 
@@ -287,8 +120,8 @@ public:
         }
         if (r >= _number)
             return _number;
-        uint_big a;
-        uint_big gcd;
+        big_int a;
+        big_int gcd;
         for (a = 2; a < r; a++) {
             gcd = a.gcd(_number);
             if (!gcd.is_one()) {
@@ -304,7 +137,7 @@ public:
     //polynome_t build_polynome(bigint_t r, polynome_t p);
     
 private:
-    const uint_big _number;
+    const big_int _number;
     long _log2n;
 };
 

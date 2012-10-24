@@ -25,6 +25,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "part_03_types", "part_03_ty
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "part_04_smartptr", "part_04_smartptr\part_04_smartptr.vcxproj", "{41BC0CC8-2032-4D23-9F59-11A863341E2A}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "part_04_tuples", "part_04_tuples\part_04_tuples.vcxproj", "{32CBF34E-C681-421F-B77F-EF89C9FC853A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -79,6 +81,10 @@ Global
 		{41BC0CC8-2032-4D23-9F59-11A863341E2A}.Debug|Win32.Build.0 = Debug|Win32
 		{41BC0CC8-2032-4D23-9F59-11A863341E2A}.Release|Win32.ActiveCfg = Release|Win32
 		{41BC0CC8-2032-4D23-9F59-11A863341E2A}.Release|Win32.Build.0 = Release|Win32
+		{32CBF34E-C681-421F-B77F-EF89C9FC853A}.Debug|Win32.ActiveCfg = Debug|Win32
+		{32CBF34E-C681-421F-B77F-EF89C9FC853A}.Debug|Win32.Build.0 = Debug|Win32
+		{32CBF34E-C681-421F-B77F-EF89C9FC853A}.Release|Win32.ActiveCfg = Release|Win32
+		{32CBF34E-C681-421F-B77F-EF89C9FC853A}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

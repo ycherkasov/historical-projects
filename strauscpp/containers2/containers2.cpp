@@ -37,15 +37,17 @@ template<typename TKey>
 void print_map(const map<TKey, string>& m ){
 	map<TKey, string>::const_iterator it = m.begin();
 	while( it != m.end() ) {
-		cout << (*it).first << '/t' << (*it).second.c_str() ;
+		cout << (*it).first << '\t' << (*it).second.c_str() ;
 		++it;
 	}
 	cout << endl;
 }
+
 bool is6(int v){
 	return v == 6;
 }
 
+// Предикат, проверяющий первую букву в строке
 class initial{
 public:
 	initial(const char c) : ic(c){}
@@ -288,6 +290,10 @@ void show_map()
 	string s1("onotole");
 	string s2("chake");
 	is_map m1;
+
+	// map требует наличия у элемента операции <
+	// unordered(hash) map требует наличия  !=
+
 	_insert_to_map<is_map, int, string>(m1,1,s1);
 	_insert_to_map<is_map, int, string>(m1,1,s1);
 
@@ -385,7 +391,7 @@ void show_multimap(){
 	// Первый элемент с ключом 2
 	is_mmap_it p1 = m2.lower_bound(2);
 
-	// Последний элемент с ключом 1
+	// Следующий за последним элементом с ключом 1
 	p1 = m2.upper_bound(1);
 
 	// пара итераторов ограничивающих все элементы с ключом 2

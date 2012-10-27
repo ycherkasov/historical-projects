@@ -53,9 +53,10 @@ void show_bitset(){
 	b5 = b6 >> 5;	// сдвиг с присвоением
 
 	try {
-		b1[16] = 1;	// любое обращение по индексу - с проверкой
+		//b1[16] = 1;	// любое обращение по индексу - с проверкой
+		// здесь не exception, а debug assert
 	}
-	catch (const std::out_of_range& e) {
+	catch (const std::exception& e) {
 		cout << e.what() << endl;
 	}
 

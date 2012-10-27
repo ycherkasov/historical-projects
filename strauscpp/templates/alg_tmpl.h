@@ -24,8 +24,11 @@ namespace alg_func_pointer{
 	bool greater_func(const T& a,const T& b){return a < b;}
 
 	template< typename InputIterator, typename OutputIterator, typename T >
-	void copy_if_greater(InputIterator first, InputIterator last, OutputIterator out
-		,bool comparer( const T& a, const T& b ) , const T& val){
+	void copy_if_greater(InputIterator first
+		, InputIterator last
+		, OutputIterator out
+		, bool comparer( const T& a, const T& b ) // интересная форма передачи указателя на функцию-шаблон
+		, const T& val){
 			while( first != last )	{
 				// если соответствует условию 'comparer', скопировать в out
 				if( comparer(val, *first) ){
@@ -89,8 +92,10 @@ namespace alg_functor{
 	};
 
 	template< typename InputIterator, typename OutputIterator, typename Predicate >
-	void copy_if(InputIterator first, InputIterator last, OutputIterator out
-		,Predicate comparer){
+	void copy_if(InputIterator first
+		, InputIterator last
+		, OutputIterator out
+		, Predicate comparer){
 			while( first != last )	{
 				// если соответствует условию 'comparer', скопировать в out
 				if( comparer(*first) ){

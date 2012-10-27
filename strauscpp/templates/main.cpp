@@ -40,9 +40,10 @@ void show_internals(){
 }
 
 void show_inherit(){
-	Xclass<int> a,b,c;
-	Xclass<double> e,f;
-	unsigned long l = common_counter::count;
+	Xclass a,b,c;
+	Yclass e,f;
+	unsigned long l1 = Xclass::count;
+	unsigned long l2 = Yclass::count;
 }
 
 void show_algirithms_pointer(){

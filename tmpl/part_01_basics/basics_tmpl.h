@@ -187,25 +187,27 @@ private:
 
 // Определение методов класса с шаблонным параметром
 // (Имена неиспользуемых параметров можно опустить)
-template <typename T, template <typename, typename> class CONT>
+#define TEMPLATE_METHOD template <typename T, template <typename, typename> class CONT>
+
+TEMPLATE_METHOD
 tmpl_stack<T,CONT>::tmpl_stack(){}
 
-template <typename T, template <typename, typename> class CONT>
+TEMPLATE_METHOD
 void tmpl_stack<T,CONT>::push(const T &p){
 	_copyable_stack.push_back(p);
 }
 
-template <typename T, template <typename, typename> class CONT>
+TEMPLATE_METHOD
 void tmpl_stack<T,CONT>::pop(){
 	_copyable_stack.pop_back();
 }
 
-template <typename T, template <typename, typename> class CONT>
+TEMPLATE_METHOD
 const T& tmpl_stack<T,CONT>::top() const {
 	return _copyable_stack.back();
 }
 
-template <typename T, template <typename, typename> class CONT>
+TEMPLATE_METHOD
 bool tmpl_stack<T,CONT>::empty() const{
 	return _copyable_stack.empty();
 }

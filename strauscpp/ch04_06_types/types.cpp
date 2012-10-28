@@ -67,7 +67,7 @@ void show_pointer(){
 	// замещение макроса NULL (нулевой указатель)
 	//const void* NULL = 0;
 	const int* m;
-	int*& o = m;
+	const int*& o = m;
 
 	// строковый литерал - это указатель
 	size_t sz = sizeof("aaa");
@@ -130,7 +130,7 @@ void todo(){
 
 // This is correct.  The else actually matches with the second if (C++ Standard 6.4.1/1).
 // f(-1) ret 0
-int f(int x){
+int f1(int x){
 	if(x > 0)
 		if(x > 100)
 			return 1;

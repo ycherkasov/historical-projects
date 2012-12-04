@@ -148,6 +148,31 @@ void show_linkage(){
 	ret = dv.call_protected_function(5);	// 26
 }
 
+// демонстрация различных возвращаемых значений
+// в прототипах виртуальных функций и значений по умолчанию в их параметрах
+void show_virtual_def_values(){
+	Base1 b;
+	Derived1 d;
+	Base1* b1 = &b;
+	Base1* d1 = &d;
+
+	// в функции Base1::g(i = 10)  
+	b1->f(1);
+	b1->f(1.0);
+	b1->g();
+	A_virt* av1 = b1->pf();
+
+	// в функции Derived1::g(i = 10)
+	// однако параметр по умолчанию наследуется
+	d1->g();
+	// вируальная функция в наследующем классе
+	// может возвращать различный тип указателя или ссылки,
+	// если она приводится к базовому
+	A_virt* av2 = d1->pf();
+	delete av1;
+	delete av2;
+}
+
 void show_adapter(){
 
 	// Базовый класс
@@ -188,13 +213,74 @@ void show_abstract_destructor(){
 	vd.pure();
 }
 
+
+// Задачки из теста Дойчебанка
+struct A{
+	A(){
+		cout << "A ";
+	}
+	A(const A& a){
+		cout << "copy-A ";
+	}
+	A& operator=(const A& b){
+		cout << "=A ";
+	}
+	~A(){	// деструктор невиртуальный!
+		cout << "~A ";
+	}
+};
+
+struct B : public A{
+
+	B(){
+		cout << "B";
+	}
+	B(const B& b){
+		cout << "copy-B ";
+	}
+	B& operator=(const B& b){
+		cout << "=B ";
+	}
+	~B(){
+		cout << "~B";
+	}
+};
+
+void fff(A a){
+
+}
+
+void ff1(){
+	// Вопрос на внимание к деталям
+	// В умный указатель передается объект B по указателю A
+	// Но в классе A *невиртуальный* деструктор, так что будет вызван *только*
+	// деструтктор базового класса
+	std::auto_ptr<A> o(new B);
+}
+
+void ff2(){
+	// AB~A~A~B~A (откуда два деструктора?)
+	// добавив copy ctor, получаем ожидаемый эффект со срезкой:
+	// При передаче параметра по значению вызывается copy ctor
+	// для A-части класса B и создается временный объект.
+	// A B copy-A ~A ~B~A
+	B b;
+	fff(b);
+}
+
+
 int main(){
+
+	
+	//ff1();
+	ff2();
 
 	show_simple_inheritance();
 	show_abstract();
 	show_operators();
 	show_virtual_construct();
 	show_linkage();
+	show_virtual_def_values();
 	show_adapter();
 	show_abstract_destructor();
 	return 0;

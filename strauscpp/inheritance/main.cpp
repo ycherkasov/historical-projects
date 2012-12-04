@@ -7,6 +7,8 @@
 #include "multimethod.h"
 #include "member_pointer.h"
 
+#pragma pack(1)
+
 using std::cout;
 using std::endl;
 
@@ -18,7 +20,7 @@ void show_simple(){
 	{
 		control_t control;
 		// Здесь и далее считаем размер класса
-		// control_t = 8
+		// control_t = 8 (2x int)
 		sz = sizeof(control);
 		control.draw();
 		control.hide();
@@ -43,7 +45,7 @@ void show_simple(){
 
 	{
 		slider_t slider;
-		// в объект входит control_t + slider_t = 20
+		// в объект входит control_t + slider_t = 20 (5x int)
 		sz = sizeof(slider);
 		
 		// вызывается свой метод
@@ -60,6 +62,7 @@ void show_simple(){
 		// последовательность такая:
 		// control_t->slider_t->control_t->button_t->window_draw
 		// Т.е. конструкторы вызываются в порядке, прописаном при наследовании 
+		// Конструктор control_t вызывавется дважды
 		// (см. simple.h)
 		window_draw drawer;
 
@@ -82,8 +85,119 @@ void show_simple(){
 // Демонстрация виртуального множественного наследования
 void show_vitrual(){
 
+	size_t sz = 0;
 	code_formatter formatter(1);
 	formatter.generate(cpp_lang);
+	sz = sizeof(code_generator_base);	// 8 (int + vtbl)
+	sz = sizeof(cpp_code_generator);	// 20 (???)
+	sz = sizeof(formatter);				// 36 (???)
+
+	// Наследование ромбовидное, но один из классов наследован невиртуально
+	Final f;
+	sz = sizeof(Base);		// 4 (vtbl)
+	sz = sizeof(Derived1);	// 4 (vtbl)
+	sz = sizeof(Derived2);	// 12 (vtbl + 2*vtbl)
+	sz = sizeof(f);			// 16
+}
+
+void show_sizes(){
+	
+	size_t sz = 0;
+	
+	{
+		// 4 пустых класса связаны ромбовидным наследованием
+		class A{};
+		class B1 : public A{};
+		class B2 : public A{};
+		class C : public B1, public B2{};
+
+		// каждый класс размером 1
+		sz = sizeof(A);
+		sz = sizeof(B1);
+		sz = sizeof(B2);
+		sz = sizeof(C);
+	}
+
+		
+	{
+		// добавим поле 2 байта в базовый класс
+		class A{ short a;};
+		class B1 : public A{};
+		class B2 : public A{};
+		class C : public B1, public B2{};
+
+		sz = sizeof(A);	// 2
+		sz = sizeof(B1);// 2 (от базового)
+		sz = sizeof(B2);// 2 (от базового)
+		sz = sizeof(C);	// 4 (2 копии базового)
+	}
+
+		
+	{
+		// сделаем одну из веток наследования виртуальной
+		class A{ short a;};
+		class B1 : virtual public A{};
+		class B2 : public A{};
+		class C : public B1, public B2{};
+
+		// теперь в нижнем классе по прежнему 2 копии базового,
+		// но появился еще указатель на виртуальное наследование
+		sz = sizeof(A);	// 2
+		sz = sizeof(B1);// 6 (2 от базового + указатель)
+		sz = sizeof(B2);// 2 (от базового)
+		sz = sizeof(C);	// 8 (2 от базового по невиртуальной ветке, 6 по виртуальной)
+	}
+
+		
+	{
+		// сделаем обе верки наследования виртуальными
+		class A{ short a;};
+		class B1 : virtual public A{};
+		class B2 : virtual public A{};
+		class C : public B1, public B2{};
+
+		// теперь в нижнем классе 1 копия базового и 2 указателя vtbl
+		sz = sizeof(A);	// 2
+		sz = sizeof(B1);// 6 (2 от базового + указатель)
+		sz = sizeof(B2);// 6 (2 от базового + указатель)
+		sz = sizeof(C);	// 10 (2 от базового + 2 указателя)
+	}
+	
+	{
+		// добавим еще одну ветку виртуального наследования
+		class A{ short a;};
+		class B1 : virtual public A{};
+		class B2 : virtual public A{};
+		class B3 : virtual public A{};
+		class C : public B1, public B2, public B3{};
+
+		// теперь в результирующем классе 3 указателя
+		sz = sizeof(A);		// 2
+		sz = sizeof(B1);	// 6 (2 от базового + указатель)
+		sz = sizeof(B2);	// 6 (2 от базового + указатель)
+		sz = sizeof(B3);	// 6 (2 от базового + указатель)
+		sz = sizeof(C);		// 14 (2 от базового + 3 указателя)
+	}
+
+	{
+		// добавим в базовый класс виртуальный деструктор
+		class A{ 
+		public:
+			short a; 
+			virtual ~A(){} 
+		};
+		class B1 : virtual public A{};
+		class B2 : virtual public A{};
+		class B3 : virtual public A{};
+		class C : public B1, public B2, public B3{};
+
+		// теперь размер базового класса на 4 болье - еще один vtbl
+		sz = sizeof(A);	// 6 (2 - данные + 4 - vtbl)
+		sz = sizeof(B1);// 10 (6 от базового + 4 - vtbl)
+		sz = sizeof(B2);// 10 (6 от базового + 4 - vtbl)
+		sz = sizeof(B3);// 10 (6 от базового + 4 - vtbl)
+		sz = sizeof(C);	// 18 (6 от базового + 3*4 - vtbl)
+	}
 }
 
 // Демонстрация запрещения наследования
@@ -114,14 +228,22 @@ void show_typeid_rtti(){
 
 	// перекрестное преобразование (crosscast)
 	php_code_generator* php_gen = dynamic_cast<php_code_generator*>(cpp_gen);
+	// при перекрестном преобразовании результирующий тип не обязан быть полиморфным
 
 	// повышающее преобразование (upcast)
-	code_generator_base* bs = dynamic_cast<php_code_generator*>(php_gen);
+	code_generator_base* bs = dynamic_cast<code_generator_base*>(php_gen);
 
 	// понижающее преобразование (downcast)
 	code_formatter* cf = dynamic_cast<code_formatter*>(bs);
+	// если динамическое преобразование неоднозначно
+	// (в случае нескольких копий базового класса)
+	// возвращается 0 или бросается bad_cast
 
-	// Если преобразование запрещено, то возвращаенися 0-указатель
+	// Приведение к void* с помощью dynamic_cast применяется для нахождения адреса
+	// начала объекта полиморфного типа (в очень низкоуровневом коде!)
+	void* cfvoid = dynamic_cast<void*>(cf);
+
+	// Если преобразование запрещено, то возвращается 0-указатель
 	final* fin = dynamic_cast<final*>(cf);
 	if( fin == 0 )
 		cout << "Wrong dynamic cast" << endl;
@@ -147,8 +269,18 @@ void show_typeid_rtti(){
 	// Для базового типа
 	const type_info& ti3 = typeid(int);
 	cout << ti3.name() << endl;
-
+	
 	// Символьное представление зависит от реализации
+
+	// При попытке получить тип нулевого полиморфного указателя бросается исключение bad_typeid (???)
+	try	{
+		code_generator_base* bs = 0;
+		const type_info& ti = typeid(bs);
+		cout << ti.name() << endl;
+	}
+	catch ( const std::bad_typeid& e)	{
+		cout << e.what() << endl;
+	}
 
 	// Метод before нужен для сортировки
 	int b = ti1.before(ti2);
@@ -193,8 +325,15 @@ void show_member_pointer(member_pointer* p){
 	member_derived md;
 	(md.*s)();
 
+	static_member_pointer sp = &member_derived::static_init;
+
 	// Указатель на функцию можно использовать, когда имя функции неизвестно
 	// Можно присвоить указатель на член базового класса указателю на производный
+	// Указатели на метод могут быть виртуальными и невиртуальными
+	// В виртуальном слечае они задают смещение в vtbl
+
+	// Указатель на статический член является указателем на обычную функцию,
+	// т.к. не привязан к this
 }
 
 void show_new_delete(){
@@ -206,6 +345,7 @@ int main(){
 
 	show_simple();
 	show_vitrual();
+	show_sizes();
 	show_final();
 	show_typeid_rtti();
 	show_multimethod();

@@ -5,6 +5,8 @@
 #include <exception>
 #include <stdexcept>
 
+// В этом хедере описан класс, "заворачивающий" SEH в исключения C++
+
 #define NOTHROW throw()
 #define THROWS(X) throw(X)
 

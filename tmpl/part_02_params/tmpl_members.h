@@ -64,7 +64,7 @@ void tmpl_members<T>::copy(const T2& t){
 template <typename T>
 double tmpl_members<T>::s_dbl = 0.;
 
-// Определение метода вложенного класса
+// Определение метода (конструктора) вложенного класса
 template <typename T>
 tmpl_members<T>::self::self(int i) : _i(i){}
 
@@ -87,6 +87,7 @@ public:
 template <typename T>
 class derived : public base<T> {
 public:
+	// меотд вызовется виртуально даже для base<double>
 	virtual void open(const T& t){
 		cout << "derived::open "<< typeid(t).name() << endl;		
 	}

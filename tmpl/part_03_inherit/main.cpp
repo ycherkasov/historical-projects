@@ -22,13 +22,22 @@ void show_crtp(){
 	count2 b21, b22;
 	cout << "live objects count1 " << count1::live() << endl;
 	cout << "live objects count2 " << count2::live() << endl;
+
+	SpecificPacket1 sp1;
+	SpecificPacket2 sp2;
+
+	int i = 1;
+	char c = 'a';
+	sp1.method(i);
+	sp2.method(c);
 }
 
 void show_tmpl_virtuality(){
-	auto_ptr< Base<non_virtual> >  p1 = new Derived<non_virtual>();
+	Base<non_virtual>*  p1 = new Derived<non_virtual>();
 	Base<my_virtual>* p2 = new Derived<my_virtual>();
 	p1->foo();
 	p2->foo();
+	delete p1;
 	delete p2;
 }
 

@@ -1,43 +1,26 @@
-<<<<<<< HEAD
-macro(BoostDependency REQUIRED_COMPONENTS)
-  set(Boost_USE_STATIC_LIBS ON)
-=======
-
 
 macro(BoostDependency REQUIRED_COMPONENTS)
-  set(Boost_USE_STATIC_LIBS   ON)
->>>>>>> 41b4fbbf754e882c361d70ddb09b868828cb78b0
-  set(Boost_USE_MULTITHREADED ON)
+set(Boost_USE_STATIC_LIBS ON)
+set(Boost_USE_MULTITHREADED ON)
   
-  add_definitions(-DBOOST_ALL_NO_LIB)
+add_definitions(-DBOOST_ALL_NO_LIB)
 
-<<<<<<< HEAD
-  find_package(Boost 1.50 REQUIRED COMPONENTS ${REQUIRED_COMPONENTS})
-=======
-  find_package(Boost 1.41 REQUIRED COMPONENTS ${REQUIRED_COMPONENTS})
->>>>>>> 41b4fbbf754e882c361d70ddb09b868828cb78b0
+find_package(Boost 1.51 REQUIRED COMPONENTS ${REQUIRED_COMPONENTS})
 
-  if(Boost_FOUND)
+if(Boost_FOUND)
     include_directories(${Boost_INCLUDE_DIR})
-  endif()
+endif()
+
 endmacro(BoostDependency)
 
 
 macro(BoostHeaders)
-<<<<<<< HEAD
   set(Boost_USE_STATIC_LIBS ON)
-=======
-  set(Boost_USE_STATIC_LIBS   ON)
->>>>>>> 41b4fbbf754e882c361d70ddb09b868828cb78b0
   set(Boost_USE_MULTITHREADED ON)
 
   add_definitions(-DBOOST_ALL_NO_LIB)
 
-<<<<<<< HEAD
-  find_package(Boost 1.50 REQUIRED )
-=======
-  find_package(Boost 1.41 REQUIRED )
->>>>>>> 41b4fbbf754e882c361d70ddb09b868828cb78b0
+  find_package(Boost 1.51 REQUIRED )
 
   if(Boost_FOUND)
     include_directories(${Boost_INCLUDE_DIR})
@@ -45,10 +28,6 @@ macro(BoostHeaders)
 endmacro(BoostHeaders)
 
 function(BoostDependencyLink TARGET)
-<<<<<<< HEAD
-# message("Boost_LIBRARIES=${Boost_LIBRARIES}")
-=======
-#  message("Boost_LIBRARIES=${Boost_LIBRARIES}")
->>>>>>> 41b4fbbf754e882c361d70ddb09b868828cb78b0
+  message("Boost_LIBRARIES=${Boost_LIBRARIES}")
   target_link_libraries(${TARGET} ${Boost_LIBRARIES})
 endfunction(BoostDependencyLink)

@@ -22,8 +22,9 @@ void show_traits(){
 	int i_sum = traits_accumulate<int>(iarr , iarr + sizeof(iarr)/sizeof(int) );
 	cout << "traits accumulate integer: " << i_sum << endl;
 
+	typedef simple_accumulator_traits<char>::AccType RetType;
 	char name[] = "templates";
-	char ch_sum = traits_accumulate<char>( name , name + sizeof(name) - 1 );
+	RetType ch_sum = traits_accumulate<char>( name , name + sizeof(name) - 1 );
 	cout << "traits accumulate character: " << ch_sum << endl;
 }
 
@@ -46,7 +47,7 @@ void show_strategies(){
 	int isum = strategy_accumulator_traits<int>::accum( iarr , iarr + sizeof(iarr)/sizeof(int) );
 
 	// Как видно, аккумулирование умножением дает 0, т.к. аккумулирующий элемент инициализируется нулем
-	// Вероятно, необходим эдемент = 1, а также нулевой элемент, являющийся частью стратегии
+	// Вероятно, необходим элемент = 1, а также нулевой элемент, являющийся частью стратегии
 	int imlpl = strategy_accumulator_traits<int, MultPolicy>::accum( iarr , iarr + sizeof(iarr)/sizeof(int) );
 }
 

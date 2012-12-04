@@ -76,6 +76,11 @@ template <typename T, T def_val> class cont;
 // - вложенный шаблон в классе или шаблоне
 // - вложенный класс в классе или шаблоне
 
+// Шаблон не может быть определен внутри функции!
+// Также нельзя совместить объявление вложенного шаблонного класса
+// с определением - непонятно чем его инстанцировать
+
+
 // 1.Класс
 class no_templ{
 public:
@@ -84,6 +89,8 @@ public:
 	no_templ() : _intern(5){}
 
 	// Шаблонный конструктор в классе
+	// Шаблонные конструкторы и операторы копирования 
+	// никогда не замещают конструкторов о операторов по умолчанию
 	template <typename T>
 	no_templ(const T& t): _intern(5){}
 
@@ -94,6 +101,7 @@ public:
 		T2 _param;
 	} /*_internal - нельзя определить шаблон в классе -
 	  непонятно чем инстанцировать */;
+
 	internal_no_templ<int> _intern;
 };
 
@@ -113,6 +121,7 @@ public:
 		internal_no_templ(const T2& t) : _param(t){}
 		T2 _param;
 	} /*_internal - нельзя определить шаблон в классе */;
+
 	internal_no_templ<T> _intern;
 };
 
@@ -123,21 +132,26 @@ public:
 
 // 1.Шаблон от класса
 // Статический счетчик в базовом классе
+template<typename T>
 struct common_counter{
 	common_counter(){++count;}
 	~common_counter(){--count;}
 	static unsigned long count;
 };
 
-unsigned long common_counter::count = 0;
+template<typename T>
+unsigned long common_counter<T>::count = 0;
 
-template<typename T> 
-class Xclass : public common_counter{
+
+class Xclass : public common_counter<Xclass>{
 public:
 	Xclass(){}
-	T param;
 };
 
+class Yclass : public common_counter<Yclass>{
+public:
+	Yclass(){}
+};
 // 2. Класс от шаблона - см. CRTP.h в проекте к книге Джосаттиса
 
 // 3.Шаблон от шаблона - см. пример в tmpl.h

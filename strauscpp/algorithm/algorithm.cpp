@@ -62,6 +62,9 @@ void show_non_modif() {
 	// ѕредикатом может быть все, к чему примен€етс€ операци€ ()
 	it = find_if(vi.begin(), vi.end(), my_less_predivate(7) );
 
+	// —уффикс _if добавлен из-за сложности перегрузки шаблона алгоритма
+	// Ќапример, если на вход поступает контейнер bool
+
 	// --- for_each ---
 	// »спользование for_each() в качесстве аккумул€тора с соответствующим функтором
 	// for_each() - немодифицирующий алгоритм!
@@ -320,7 +323,8 @@ void show_sort(){
 	// до тех пор, пока не будет отсортировани перва€ часть
 	partial_sort(vi.begin(), vi.begin() + 3, vi.end());
 
-	// ???
+	// ѕосдедовательность разбиваетс€ на 2 части, копируетс€ в выходную последовательность
+	// и сортировка продолжаетс€ до тех пор, пока не будет отсортировани перва€ часть
 	partial_sort_copy(vi.begin(), vi.end(),vi1.begin(), vi1.begin() + 3);
 
 	vi.assign( arr, arr + sizeof(arr)/sizeof(int) );
@@ -357,9 +361,8 @@ void show_sort(){
 	res.reserve(100);	// чтоб не перераспредел€ть пам€ть
 
 	copy(vi.begin(), vi.end(), back_inserter(res));
-	v_iit it1 = res.end() - 1;
 	copy(vi1.begin(), vi1.end(), back_inserter(res));
-	// inplace_merge(res.begin(), it1, res.end());	(??? wtf)
+	inplace_merge(res.begin(), res.begin()+vi.size() , res.end());	//(??? wtf)
 
 	// --- partition,stable_partition --- 
 	// –азделение контейнера - помещение всех элементов,
@@ -372,7 +375,7 @@ void show_sort(){
 // make_heap, sort_heap
 // push_heap, pop_heap
 void show_heap(){
-	// todo : –азобратьс€!
+
 }
 
 

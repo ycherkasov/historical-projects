@@ -80,10 +80,10 @@ def grasshopper3():
     # a[i] - maximum number of coins we can collect reaching column 'i'
     a = [0] * n
     a[0] = 0
-
+    # этот пример работает не до конца
+    result_dict = {}
     for i in range(0, n):
         max_amount = 0
-        result_dict = {}
         for j in range(max(i - k, 0), i):
             if a[i] <= (a[i - j] + d[i]):
                 a[i] = a[i - j] + d[i]

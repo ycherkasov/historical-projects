@@ -23,7 +23,7 @@ unsigned lagrest_multiple(unsigned num){
 }
 
 void init_simple(unsigned* arr, size_t siz){
-    for(int i = 0 ; i < siz ; i++)
+    for(size_t i = 0 ; i < siz ; i++)
         arr[i] = i+1;
 }
 

@@ -70,6 +70,16 @@ complex_matrix& complex_matrix::operator =( const complex_matrix& c ){
 // Этот вариант более эффективен, т.к. всю работу по выделению памяти и очистке 
 // выполняет конструктор копирования и ф-ция clear()
 complex_matrix& complex_matrix::operator =( const complex_matrix& c ){
+	
+	// Мейерс 1 Правило 17
+	// Проверка в операторе присваивания самому себе - возможна ситуация, когда ресурсы будут уже освобождениы,
+	// и присваивать будет нечего
+	// можно также сравнивать объекты (при помощи operator==()), а не указатели - это повысит эффективность
+	// В случае пулов объектов можно сравнивать по некеому ID
+	if(this == &c){
+		return *this;
+	}
+
 	complex_matrix* tmp = new complex_matrix(c);
 	clear();
 	_matrix = tmp->_matrix;
@@ -77,6 +87,8 @@ complex_matrix& complex_matrix::operator =( const complex_matrix& c ){
 }
 #endif // _NO_SWAP
 
+// Также, в любых других функциях, принимающих ссылку на собственный класс,
+// не нужно забывать о совмещении значений
 
 
 complex_matrix::~complex_matrix(){

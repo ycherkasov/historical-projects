@@ -69,6 +69,19 @@ int printf();
 }
 */
 
+// Мейерс 1 Правило 28
+// Пока член пространства имен не используется, он не сможет вызвать неоднозначность
+// Т.е.
+namespace A{
+	int aaa;
+}
+
+namespace B{
+	int aaa;
+}
+
+using namespace A;
+using namespace B;
 
 void show_namespaces()
 {

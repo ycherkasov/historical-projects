@@ -3,7 +3,8 @@
 
 #include <iostream>
 #include <cstdio>
-#include <new>
+
+using namespace std;
 
 intern g_intern;
 
@@ -42,13 +43,65 @@ user_allooc::~user_allooc(void)
 	std::cout << "~user_allooc()" << std::cout;
 }
 
-void* user_allooc::operator new(size_t s, void* p) throw(){
-	//return _alloca(s);
+void* user_allooc::operator new(size_t s) {
+	
+	void* p = 0;
+	// При реализации оператора new надо придерживаться нескольких простых правил
+	// 1. Проверка на 0
+	// Стандартный трюк - подменить 0 на 1 или выйти
+	if(0 == s){
+		s = 1;
+	}
+
+	// 2. Обработка ситуации нехватки памяти
+	while(true){
+		p = alloca(s);
+		if(p){
+			return p;
+		}
+		else{
+			new_handler globalHandler = set_new_handler(0);
+			if(0 == globalHandler){
+				// не вызывать обработчик, просто кидать исключение
+				throw bad_alloc();
+			}
+			else{
+
+				set_new_handler(globalHandler);
+				globalHandler();
+			}
+
+		}
+	}
+
 	return p;
 }
 
 void user_allooc::operator delete(void* p){
-	//free(p);
+	// Мейерс 1 Правило 8
+	// Для operator delete() необходимо гарантировать проверку на ноль
+	if(0 == p)
+		return;
+	free(p);
+}
+
+// Перегруженная форма замещающего оператора new
+void* user_allooc::operator new(size_t s, void* p){
+	return p;
+}
+
+void user_allooc::operator delete(void* p, size_t s){
+}
+
+// Форма new с замещением new_handler
+void* user_allooc::operator new(size_t s, new_handler handler){
+	new_handler oldHandler = set_new_handler(handler);
+	void* p = alloca(s);
+	if(p){
+		return p;
+	}
+	// в случае неудачи будет вызван новый обработчик
+	return nullptr;
 }
 
 // new_op_new.cpp
@@ -120,3 +173,37 @@ void show_new_delete()
 	delete fPtr3;
 }
 
+
+void no_more_memory(){
+	cout << "no more memory: new_handler" << endl;
+	// Мейерс 1 Правило 8
+	//На самом деле operator new() пытается выделить память более одного раза,
+	//предполагая, что функция-обработчик в промежутках что-то попытается сделать для ее освобождения
+
+	// Обработчик вызывается непрерывно, поэтому он должен делать следующее
+	// 1. попытаться освободить память
+	// 2. выйти из программы
+	// 3. установить обработчик set_new_handler()
+	// 4. установить set_new_handler(0) - тогда будет просто брошено исклучение bad_alloc
+
+	// exit вызовет деструкторы!
+	exit(1);
+}
+
+void allocate_a_lot(){
+	size_t large_memory = 4000000000;
+	long* l = new long[large_memory];
+}
+
+void show_bad_alloc(){
+	try{
+		allocate_a_lot();
+	}
+	catch(bad_alloc&){
+		cout << "no more memory: bad_alloc handler" << endl;
+	}
+
+
+	set_new_handler(no_more_memory);
+	allocate_a_lot();
+}

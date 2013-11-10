@@ -92,13 +92,13 @@ complex_t::operator double(){
 // Секция глобальных дружественных функций
 // (* и / определены для примера в теле класса)
 // ------------------------------
-complex_t operator+( const complex_t& a, const complex_t& b ){
+const complex_t operator+( const complex_t& a, const complex_t& b ){
 	complex_t tmp(a);
 	return tmp += b;
 }
 
 // ------------------------------
-complex_t operator-( const complex_t& a, const complex_t& b ){
+const complex_t operator-( const complex_t& a, const complex_t& b ){
 	complex_t tmp(a);
 	return tmp -= b;
 }

@@ -8,6 +8,26 @@
 
 construct g_construct;
 
+//typedef с массивом не работает!
+//typedef good_weekday_t[7] week_array;
+
+// иначе можно было бы сделать вот так:
+//week_array* s = new week_array;
+//delete s; // неправильно! нужен delete[], но мы об этом не знаем!
+
+
+// –азрешаетс€ определ€ть структуру и не структуры одного имени 
+// (то же дл€ class, enum, union)
+void struct_one_name(){
+	struct A{
+		int a;
+	};
+
+	A aa;
+	aa.a = 2;
+	int A = 1;
+}
+
 // ‘ункци€ демонстрирует инициализацию и работу 
 // с константными объектами и mutable-членами
 void show_const(){
@@ -183,11 +203,21 @@ void bool_logics(){
 	set_sum = set1 * set2;
 }
 
+// Task from B.Batkin
+void show_word_counter(){
+	std::string s( "test.txt" );
+	word_counter::count_from_file( s );
+}
+
 int main(){
 
-	word_counter w;
-	std::string s( "test.txt" );
-	w.count_from_file( s );
+	//show_word_counter();
+
+	struct_one_name();
+	
+	// should be reproduced in release
+	//show_bad_alloc();
+	//return 0;
 
 	show_const_pointers();
 

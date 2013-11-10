@@ -13,8 +13,8 @@ Wday& operator++(Wday& d){
 
 void show_enum_overload(){
 	Wday d = sun;
-	d++;
-	d++;
+	++d;
+	++d;
 }
 
 // Функция демонстрирует работу перегруженных операторов 

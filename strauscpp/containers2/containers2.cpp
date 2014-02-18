@@ -7,6 +7,7 @@
 #include <queue>
 #include <deque>
 #include <algorithm>
+#include <functional>
 #include <cctype>
 #include <string>
 #include <string>

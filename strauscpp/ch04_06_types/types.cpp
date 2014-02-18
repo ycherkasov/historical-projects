@@ -139,12 +139,6 @@ int f1(int x){
 	return 0;
 }
 
-namespace{
-	int i;
-}
-// "i" has external linkage.
-// This is correct.  Even though "i" is not visible outside the compilation unit, 
-// it still has external linkage (C++ Standard 7.3.1.1/1 - See footnote).
 
 // short is system dependent
 

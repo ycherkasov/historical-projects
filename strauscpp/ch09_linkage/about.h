@@ -8,7 +8,16 @@ One definition rule. Стражи включения.
 
 /* 
 Вопросы:
+1. extarnal & internal linkage и видимость из других модулей
 */
+
+namespace{
+	int i;
+}
+// "i" has external linkage.
+// This is correct.  Even though "i" is not visible outside the compilation unit, 
+// it still has external linkage (C++ Standard 7.3.1.1/1 - See footnote).
+
 
 
 /*

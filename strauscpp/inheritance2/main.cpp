@@ -6,6 +6,7 @@
 
 #include <vector>
 #include <algorithm>
+#include <functional>
 
 void show_simple_inheritance(){
 	Employee e1("Helmut Komatoza");
@@ -272,8 +273,6 @@ void ff2(){
 int main(){
 
 	
-	//ff1();
-	ff2();
 
 	show_simple_inheritance();
 	show_abstract();
@@ -283,5 +282,9 @@ int main(){
 	show_virtual_def_values();
 	show_adapter();
 	show_abstract_destructor();
+
+	ff1();
+	ff2();
+
 	return 0;
 }

@@ -46,12 +46,13 @@ void show_istr_iter()
 // Демонстрирует оба вида итераторов (ввода и вывода) и основные алгоритмы
 int show_iterators()
 {
-	// Прочитать имена файлов
+	// Итератор для вывода приглашений
 	ostream_iterator<string> out_iter(cout);
 
 	// вывели первую строчку
 	*out_iter = "Input file:";
 
+	// Прочитать имена файлов
 	// Инициализируем итератор потоком ввода
 	istream_iterator<string> iinput_iter(cin);
 	string from = *iinput_iter;

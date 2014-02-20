@@ -7,6 +7,9 @@ wchar_t (_t - наследие от ANSI C)
 Битовые операции.
 */
 
+/*
+1. See strange example in show_pointer() with "reverted" array
+*/
 
 /*
 Советы:
@@ -21,6 +24,7 @@ wchar_t (_t - наследие от ANSI C)
 9. Пользуйтесь NULL для нулевого указателя, в новом стандарте - nullptr
 10. Используйте константные ссылки для передачи параметров.
 11. typedef с массивом не работает!
+12. short is system dependent
 
 
 void* лучше использовать на нижнем уровне. 

@@ -81,6 +81,13 @@ void show_const_pointers(){
 	delete[] pp3;
 	delete[] pp4;
 	delete[] pp5;
+
+	//X* x = new Y[2];
+	// delete[] x; 
+	//It invokes undefined behavior.
+	//This is correct.  
+	//When deleting an array, the dynamic and the static type of the object must be the same, 
+	//or the behavior is undefined (C++ Standard 5.3.5/3).
 }
 
 // Способы вызова конструктора объекта:

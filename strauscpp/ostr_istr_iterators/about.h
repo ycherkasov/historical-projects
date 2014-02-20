@@ -40,3 +40,30 @@
 	помнить, что наследование - это re-use интерфейсов, а не кода как такового
 	не слишком верить компил€тору ;-) (—тив их писал и знает, что они могут и подставить)
 */
+
+// TODO
+
+/*
+print("%08x\n", 42);
+cout << setw(8) << setfill('0') << hex << 42 << endl;
+This is the correct answer.  
+The field width is set to 8, padding is set to the character 0 
+and the output for integers is set to hexadecimal.  
+This is the exact equivalent of the "%08x" format specification in the "printf()" C library function.
+*/
+
+/*
+cin >> line1;
+getline(cin, line2);
+cout << "EOF\n";
+
+It will print out: 
+Line 1: Hello 
+Line 2:  world! 
+EOF
+This is the correct answer.  
+Although std::skipws is issued in the stream, 
+std::getline() bypasses that mechanism, 
+and the space that terminated the extraction will be read in.  
+In addition, std::getline() never keeps the terminating newline in the destination string.
+*/

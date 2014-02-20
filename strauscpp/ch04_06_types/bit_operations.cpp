@@ -157,6 +157,11 @@ void shift_collect(short b){
 	shift_output(mask);
 }
 
+// !(!a && !b)
+//a || b
+//This is correct.  NOT (NOT A  AND  NOT B) equals A OR B.  Conversely, NOT (NOT A  OR  NOT B) equals A AND B.
+
+
 void show_bits(){
 
 	show_and(50);

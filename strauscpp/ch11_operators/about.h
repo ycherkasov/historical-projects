@@ -60,3 +60,9 @@
 25.Новые операции можно объявлять, реализовав класс-обертку над встроенным типом
    (например double - class real, и в нем реализовать возведение в степень)
 */
+
+// Deep copying classes
+// A copy constructor, assignment operator, and a virtual destructor
+// This is the correct answer.  It is essential to remember these requirements.  (Stroustrup 10.4.1, 10.4.4.1, 12.4.2.)
+
+// The language does not allow for changing operator precedence or associativity.

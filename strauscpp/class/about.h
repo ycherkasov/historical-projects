@@ -15,6 +15,8 @@ mutable, временные объекты, объединения.
 1. operator new() со сборкой мусора
 2. Memory pool (see user_alooc.h), Мейерс Глава 2 Правило 10
 
+// A default constructor may have parameters that have default values.
+
 Советы
 1. Представляйте все концепции в виде классов.
 2. Пользуйтесь структурами если класс маленький 

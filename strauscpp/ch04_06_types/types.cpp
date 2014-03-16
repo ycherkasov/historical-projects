@@ -62,6 +62,10 @@ void show_name_convensions(int a){
 
 void show_pointer(){
 
+	// как работает typedef для массива
+	typedef int MyNumbers[10];
+	MyNumbers numbers = {1,2,3};
+
 	// Гарантируется, что нет объектов с нулевым адресом.
 
 	// замещение макроса NULL (нулевой указатель)

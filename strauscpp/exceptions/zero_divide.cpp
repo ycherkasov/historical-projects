@@ -2,7 +2,6 @@
 #include <cmath>
 #include "zero_divide.h"
 
-// todo : разобраться с примером
 void set_fpe_zero_div2(){
     //Set the x86 floating-poiant control word according to what
     //exceptions you want to trap.

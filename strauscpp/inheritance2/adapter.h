@@ -33,7 +33,9 @@ private:
 // ≈сли же мы хотим дальше наследовать от stack_t - лучше использовать protected
 // “е данные, что в deque_t были protected и public, стали private в stack_t.
 
-class stack_t : /*public*/ /*protected*/ private deque_t{
+// ¬ случае закрытого наследование также не работает приведение по ссылку-указателю к базовому классу.
+
+class stack_t : /*public*/ protected /*private*/ deque_t{
 public:
 	stack_t();
 	~stack_t();

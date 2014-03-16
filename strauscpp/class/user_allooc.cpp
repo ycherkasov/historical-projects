@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <cstdio>
+#include<new>
 
 using namespace std;
 
@@ -60,6 +61,8 @@ void* user_allooc::operator new(size_t s) {
 			return p;
 		}
 		else{
+			// set_new_handler defines what to do in case of
+			// lack of memory
 			new_handler globalHandler = set_new_handler(0);
 			if(0 == globalHandler){
 				// не вызывать обработчик, просто кидать исключение
@@ -106,8 +109,6 @@ void* user_allooc::operator new(size_t s, new_handler handler){
 
 // new_op_new.cpp
 // compile with: /EHsc
-#include<new>
-#include<iostream>
 
 using namespace std;
 
@@ -190,6 +191,37 @@ void no_more_memory(){
 	exit(1);
 }
 
+// Mixtury class defenition that replaces standard
+// new_handler
+new_handler NewHandlerSupport::_current_handler = 0;
+
+new_handler NewHandlerSupport::set_new_handler(new_handler p)
+{
+	new_handler old_handler = _current_handler;
+	_current_handler = p;
+	return old_handler;
+}
+
+void* NewHandlerSupport::operator new(size_t sz)
+{
+	new_handler global_handler = std::set_new_handler(_current_handler);
+	void* mem = nullptr;
+
+	try{
+		mem = ::operator new(sz);
+	}
+	catch(const std::bad_alloc&){
+		set_new_handler(global_handler);
+		throw;
+	}
+	set_new_handler(global_handler);
+	return mem;
+}
+
+void NewHandlerSupport::operator delete(void* p){
+	::operator delete(p);
+}
+
 void allocate_a_lot(){
 	size_t large_memory = 4000000000;
 	long* l = new long[large_memory];
@@ -203,7 +235,7 @@ void show_bad_alloc(){
 		cout << "no more memory: bad_alloc handler" << endl;
 	}
 
-
 	set_new_handler(no_more_memory);
 	allocate_a_lot();
 }
+

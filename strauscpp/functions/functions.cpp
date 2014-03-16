@@ -112,10 +112,12 @@ int __fastcall fastcall_func(char a, short b)
 }
 
 
-// Если стек очищает вызываемая функция
+// Если стек очищает вызывающая функция
 // можно передавать переменное число параметров
 // 0 - ограничитель списка параметров
-int __stdcall var_param_func(int a, ...)
+// The Microsoft Visual Studio C/C++ compiler resolves this conflict 
+// by silently converting the calling convention to __cdecl
+int __cdecl var_param_func(int a, ...)
 {
 	va_list argptr;
 	va_start(argptr, a);

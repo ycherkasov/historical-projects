@@ -1,5 +1,6 @@
 #pragma once
 #include <exception>
+#include <iostream>
 
 // Структура исключения
 struct range_error_t : public std::exception{
@@ -7,11 +8,13 @@ struct range_error_t : public std::exception{
 
 	// Конструктор определен таким образом для отладки
 	range_error_t(int r) throw() { // не бросает исключений
+		std::cout << "range_error_t(int r)\n";
 		_range = r;
 	}
 
 	// Конструктор копирования вызывается только если ловить по значению
 	range_error_t(const range_error_t& r)  throw()  { // не бросает исключений
+		std::cout << "range_error_t(const range_error_t& r)\n";
 		_range = r._range;
 	}
 	// Объект исключения может копироваться сколько угодно раз, 

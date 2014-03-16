@@ -8,6 +8,7 @@
 
 #include <vector>
 #include <string>
+#include <iostream>
 
 using namespace std;
 
@@ -29,24 +30,24 @@ public:
 template<typename Symbols>
 class lexigraphical : public compare_str<Symbols>{
 public:
-	void compare(const basic_string<Symbols>& str);
+	virtual void compare(const basic_string<Symbols>& str);
 };
 
 template<typename Symbols>
 class no_case : public compare_str<Symbols>{
 public:
-	void compare(const basic_string<Symbols>& str);
+	virtual void compare(const basic_string<Symbols>& str);
 };
 
 // --------------- реализация методов --------------- 
 template<typename Symbols>
 void lexigraphical<Symbols>::compare(const basic_string<Symbols>& str){
-
+	std::cout << "lexigraphical<Symbols>::compare()" << '\n';
 }
 
 template< typename Symbols >
 void no_case<Symbols>::compare(const basic_string<Symbols> &str){
-
+	std::cout << "no_case<Symbols>::compare()" << '\n';
 }
 // ----------------------------------
 

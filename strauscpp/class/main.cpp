@@ -8,13 +8,6 @@
 
 construct g_construct;
 
-//typedef с массивом не работает!
-//typedef good_weekday_t[7] week_array;
-
-// иначе можно было бы сделать вот так:
-//week_array* s = new week_array;
-//delete s; // неправильно! нужен delete[], но мы об этом не знаем!
-
 
 // Разрешается определять структуру и не структуры одного имени 
 // (то же для class, enum, union)
@@ -81,6 +74,12 @@ void show_const_pointers(){
 	delete[] pp3;
 	delete[] pp4;
 	delete[] pp5;
+
+	// осторожно прменять typedef к массивам
+	typedef good_weekday_t week_array[7];
+	good_weekday_t* s = new week_array;
+	//delete s; - неправильно! нужен delete[], но мы об этом не знаем!
+	delete[] s;
 
 	//X* x = new Y[2];
 	// delete[] x; 
@@ -178,7 +177,8 @@ void show_construct_destruct(){
 		// использование замещающего оператора new
 		// объект будет создан по адресу buf
 		user_allooc* ua = new(buf)user_allooc;
-		delete ua;
+		// delete operator for the replacement new?
+		//delete ua;
 	}
 	
 

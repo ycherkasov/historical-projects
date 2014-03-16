@@ -10,6 +10,10 @@ enum lang{
 
 // Множественное наследование хорошо управлемо в случае 
 // абстрактного базового класса
+// От этого класса наследуются виртуально
+// т.е. делают его виртуальным базовым классом
+// такой класс реализуется не объектом, а указателем на объект
+// таким образом может встречаться в иерархии сколько угодно раз
 class code_generator_base{
 public:
 	code_generator_base(int i);
@@ -25,6 +29,16 @@ protected:
 private:
 	int _i;
 };
+
+// В памяти объект включающий вируальный базовый класс представляется примерно так
+// cpp_code_generator
+// pointer to code_generator_base
+// java_code_generator
+// pointer to code_generator_base
+// php_code_generator
+// pointer to code_generator_base
+// code_formatter
+// code_generator_base
 
 class cpp_code_generator : public virtual code_generator_base {
 public:
@@ -102,3 +116,6 @@ public:
 	virtual void f1();
 	virtual void f2();
 };
+
+// Интересный паттерн, когда класс наследует от класса интерфейса публично,
+// а от реализации приватно

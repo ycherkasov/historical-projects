@@ -86,11 +86,17 @@ void show_simple(){
 void show_vitrual(){
 
 	size_t sz = 0;
+	// Объект содержит 3 указателя на базовый класс, сам базовый класс и производный класс
 	code_formatter formatter(1);
+
 	formatter.generate(cpp_lang);
+	sz = sizeof(formatter);				// 36 ()
+	cout << "code_formatter size = " << sz << endl;
 	sz = sizeof(code_generator_base);	// 8 (int + vtbl)
-	sz = sizeof(cpp_code_generator);	// 20 (???)
-	sz = sizeof(formatter);				// 36 (???)
+	cout << "code_generator_base size = " << sz << endl;
+	sz = sizeof(cpp_code_generator);	// 20 ()
+	cout << "cpp_code_generator size = " << sz << endl;
+	
 
 	// Наследование ромбовидное, но один из классов наследован невиртуально
 	Final f;

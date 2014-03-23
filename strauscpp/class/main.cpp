@@ -174,9 +174,10 @@ void show_construct_destruct(){
 	{
 		void* buf = reinterpret_cast<void*>(0xF00F);
 
+		// TODO: example
 		// использование замещающего оператора new
 		// объект будет создан по адресу buf
-		user_allooc* ua = new(buf)user_allooc;
+		//user_allooc* ua = new(buf)user_allooc;
 		// delete operator for the replacement new?
 		//delete ua;
 	}

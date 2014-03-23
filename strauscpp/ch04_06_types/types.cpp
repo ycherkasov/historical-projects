@@ -48,6 +48,7 @@ void show_name_convensions(int a){
 	// А с малой - короткие однобуквенные
 	for ( int i = 0 ; i < test_counter ; i++ ){
 		::g_global += test_counter;
+		cout << ::g_global << endl;
 	}
 
 	// обращение к глобальной

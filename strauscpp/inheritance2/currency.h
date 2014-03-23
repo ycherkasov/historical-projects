@@ -23,10 +23,10 @@ public:
 	virtual currency_t& operator*=( const currency_t& c );
 	virtual currency_t& operator/=( const currency_t& c );
 
-	friend currency_t operator+( const currency_t& a, const currency_t& b );
-	friend currency_t operator-( const currency_t& a, const currency_t& b );
-	friend currency_t operator*( const currency_t& a, const currency_t& b );
-	friend currency_t operator/( const currency_t& a, const currency_t& b );
+	friend const currency_t operator+( const currency_t& a, const currency_t& b );
+	friend const currency_t operator-( const currency_t& a, const currency_t& b );
+	friend const currency_t operator*( const currency_t& a, const currency_t& b );
+	friend const currency_t operator/( const currency_t& a, const currency_t& b );
 
 	
 

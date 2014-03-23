@@ -220,7 +220,7 @@ private:
 	mutable long _current_total;
 };
 
-int test_amazon(){
+void test_amazon(){
 	RunningAverage r(3); // object should keep track of the average of the last three numbers in the stream
 
 	long retval = 0;

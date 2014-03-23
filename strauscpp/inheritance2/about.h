@@ -12,6 +12,7 @@
 
 /** Сделать:
 1. Пример из Страуструпа с защищенным наследованием( стр. 363 )
+2. Примеры со счетчиком ссылок (Мейерс 2-29)
 */
 
 // Абстрактные классы широко применяются в паттернах проектирования и технологии COM.
@@ -35,6 +36,49 @@
 Правило 3: Необходимо учитывать, что, за время исходящего вызова, состояние объекта может быть изменено.
 */
 
+	/*
+	In order to control these types of conversions between classes, 
+	we have four specific casting operators: 
+	dynamic_cast, reinterpret_cast, static_cast and const_cast. 
+	Their format is to follow the new type enclosed between angle-brackets (<>) and immediately after, 
+	the expression to be converted between parentheses.
+
+	dynamic_cast <new_type> (expression)
+	reinterpret_cast <new_type> (expression)
+	static_cast <new_type> (expression)
+	const_cast <new_type> (expression)
+
+	The traditional type-casting equivalents to these expressions would be:
+
+	(new_type) expression
+	new_type (expression)
+
+	static_cast can perform conversions between pointers to related classes, 
+	not only upcasts (from pointer-to-derived to pointer-to-base), 
+	but also downcasts (from pointer-to-base to pointer-to-derived). 
+	No checks are performed during runtime to guarantee that the object being converted 
+	is in fact a full object of the destination type. 
+	Therefore, it is up to the programmer to ensure that the conversion is safe. 
+	On the other side, it does not incur the overhead of the type-safety checks of dynamic_cast.
+
+	dynamic_cast can only be used with pointers and references to classes (or with void*). 
+	Its purpose is to ensure that the result of the type conversion points to a valid 
+	complete object of the destination pointer type.
+	This naturally includes pointer upcast (converting from pointer-to-derived to pointer-to-base), 
+	in the same way as allowed as an implicit conversion.
+	But dynamic_cast can also downcast (convert from pointer-to-base to pointer-to-derived) 
+	polymorphic classes (those with virtual members) if -and only if- 
+	the pointed object is a valid complete object of the target type.
+
+
+	reinterpret_cast converts any pointer type to any other pointer type, even of unrelated classes. 
+	The operation result is a simple binary copy of the value from one pointer to the other. 
+	All pointer conversions are allowed: neither the content pointed nor the pointer type itself is checked.
+
+	This type of casting manipulates the constness of the object pointed by a pointer,
+	*/
+
+
 /*
 Советы:
 1. Не используйте поля хранящие информацию о типе.
@@ -56,7 +100,7 @@
 13.В производном списке инициализации нельзя инициализировать члены базовых классов, но можно в теле конструктора
 14.Методы базового класса можно вызывать явно.
 15.Пользуйтеся закрытым или защищенным наследованием для сокрытия интерфейса базового класса (паттерн Адаптер)
-16.Для этого же можно пользоваться агрегированим (композицией)
+16.Для этого же можно пользоваться агрегированием (композицией)
 17.Иерархия классов может быть нециклическим графом. Глубина иерархии ничем не ограничена.
 18.В базовом классе необходимо хранить только _самые_ общие данные во избежание дополнительных зависимостей
 19.В производных классах виртуальные функции реализуются только если в этом есть необходимость
@@ -65,9 +109,9 @@
 21.В абстрактном классе можно реализовать не чисто виртуальные методы и вызывать их для производных классов.
 22.Можно "виртуализировать" внешние функции (например друзья) путем передачи ссылки 
    на базовый класс с виртуальностью.
-23. Можно указывать using::f, чтобы переопределить родительский метод вместо собственного в классе
-24. Значения по умолчанию в списке параметров виртуальной функции наследуются!
-25. Возвращаемое значение виртуальной функции в разных классах может отличаться, если это:
+23.Можно указывать using::f, чтобы переопределить родительский метод вместо собственного в классе
+24.Значения по умолчанию в списке параметров виртуальной функции наследуются!
+25.Возвращаемое значение виртуальной функции в разных классах может отличаться, если это:
   - указатель или ссылка
   - они приводятся друг к другу
 26. Операторы могут быть виртуальными.

@@ -38,22 +38,22 @@ void currency_t::print(){
 	std::cout << _currency << " dollars" << std::endl;
 }
 
-currency_t operator+( const currency_t& a, const currency_t& b ){
+const currency_t operator+( const currency_t& a, const currency_t& b ){
 	currency_t tmp(a);
 	return tmp += b;
 }
 
-currency_t operator-( const currency_t& a, const currency_t& b ){
+const currency_t operator-( const currency_t& a, const currency_t& b ){
 	currency_t tmp(a);
 	return tmp -= b;
 }
 
-currency_t operator*( const currency_t& a, const currency_t& b ){	
+const currency_t operator*( const currency_t& a, const currency_t& b ){
 	currency_t tmp(a);
 	return tmp *= b;
 }
 
-currency_t operator/( const currency_t& a, const currency_t& b ){
+const currency_t operator/( const currency_t& a, const currency_t& b ){
 	currency_t tmp(a);
 	return tmp /= b;
 }

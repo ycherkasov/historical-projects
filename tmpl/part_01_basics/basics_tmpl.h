@@ -253,7 +253,7 @@ inline const T& str_max_ref( const T& a,const T& b ){
 	return (a > b) ? a : b;
 }
 
-// 1. Версия с передачей по значению
+// 2. Версия с передачей по значению
 template <typename T>
 inline const T str_max_val( const T a,const T b ){
 	return (a > b) ? a : b;

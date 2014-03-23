@@ -101,6 +101,6 @@ class contain_pointer{
 
 	// Параметр по умолчанию может также содержать инициализацию указателя
 	// или любую другую функцию
-	contain_pointer( construct* pc = new construct ) : _pc(){}
+	contain_pointer( construct* pc = new construct ) : _pc(pc){}
 	~contain_pointer(){ delete _pc; }
 };

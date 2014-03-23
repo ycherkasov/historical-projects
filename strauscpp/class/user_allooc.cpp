@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <cstdio>
-#include<new>
+#include <new>
 
 using namespace std;
 

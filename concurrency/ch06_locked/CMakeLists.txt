@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
-project(ch07_lockfree CXX)
-set(TARGET ch07_lockfree)
+project(ch06_locked CXX)
+set(TARGET ch06_locked)
 
 cmake_policy(SET CMP0015 NEW)
 SET(CMAKE_CXX_FLAGS "-std=c++11 -pthread")

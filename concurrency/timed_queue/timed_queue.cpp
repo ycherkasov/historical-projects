@@ -42,6 +42,7 @@ public:
         T* res = _queue.front().release();
         _queue.pop_front();
         --_counter;
+        _cond.notify_one();
         return res;
     }
  

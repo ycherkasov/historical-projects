@@ -24,11 +24,6 @@ public:
         return _counter.load();
     }
  
-    bool empty() const {
-        std::lock_guard<std::mutex> l(_mutex);
-        return _queue.empty();
-    }
- 
     /// Puts the item into the queue. 
     /// @note if the queue is full then this method blocks until there is the room for the item again.
     void enqueue(T* item){
@@ -39,6 +34,69 @@ public:
         _cond.notify_one();
     }
  
+    /// Removes and returns the item at the beginning of the Queue.
+    /// @note if the queue is empty then this method blocks until there is an item again.
+    T* dequeue(){
+        std::unique_lock<std::mutex> l(_mutex);
+        _cond.wait( l, [this]{return _counter.load() > 0;} );
+        T* res = _queue.front().release();
+        _queue.pop_front();
+        --_counter;
+        return res;
+    }
+ 
+private:
+    std::condition_variable _cond;
+    mutable std::mutex _mutex;
+    std::list< std::unique_ptr<T> > _queue;
+    std::atomic<size_t> _counter;
+    const size_t _max_counter;
+};
+ 
+ 
+static SharedQueue<int> q(128);
+ 
+ 
+////////////////////////////////////////////////////
+void add_queue_values(){
+    srand (time(NULL));
+    int counter = 0;
+    while (true)
+    {
+        std::cout << counter << '\n';
+        int* i = new int( rand() );
+        q.enqueue(i);
+        ++counter;
+    }
+}
+ 
+void read_queue_values(){
+    int counter = 0;
+    while (true)
+    {
+        std::cout << counter << '\n';
+        int* i = q.dequeue();
+        delete i;
+        --counter;
+    }
+}
+
+ 
+int main(int argc, char* argv[]) {
+    
+    try{
+        std::thread t1(add_queue_values);
+        std::thread t2(read_queue_values);
+        t1.join();
+        t2.join();
+    }
+    catch(const std::exception& e){
+    }
+    return 0;
+}
+
+
+#if 0
     /// Puts the item into the queue. 
     /// @param millisecondsTimeout Numbers of milliseconds to wait.
     /// @return 'true' if the operation was completed successfully, 'false' if the operation timed out.
@@ -60,19 +118,8 @@ public:
         }
  
     }
- 
-    /// Removes and returns the item at the beginning of the Queue.
-    /// @note if the queue is empty then this method blocks until there is an item again.
-    T* dequeue(){
-        std::unique_lock<std::mutex> l(_mutex);
-        _cond.wait( l, [this]{return _counter.load() > 0;} );
-        T* res = _queue.front().release();
-        _queue.pop_front();
-        --_counter;
-        return res;
-    }
- 
-    /// Removes and returns the item at the beginning of the Queue. 
+
+        /// Removes and returns the item at the beginning of the Queue. 
     /// @param millisecondsTimeout Numbers of milliseconds to wait.
     /// @returns The item at the betting of the Queue or NULL if the operation timed out.	
     /// @note if the queue is empty then this method blocks until there is an item again or the operation timed out.
@@ -92,54 +139,5 @@ public:
             return nullptr;
         }
     }
-private:
-    std::condition_variable _cond;
-    mutable std::mutex _mutex;
-    std::list< std::unique_ptr<T> > _queue;
-    std::atomic<size_t> _counter;
-    const size_t _max_counter;
-};
- 
- 
-static SharedQueue<int> q(128);
- 
- 
-////////////////////////////////////////////////////
-void add_queue_values(){
-    srand (time(NULL));
-    int counter = 0;
-    while (true)
-    {
-        int* i = new int( rand() );
-        q.enqueue(i);
-        ++counter;
-        if(counter % 10000) std::cout << counter << '\n';
-    }
-}
- 
-void read_queue_values(){
-    int counter = 0;
-    while (true)
-    {
-        int* i = q.dequeue();
-        delete i;
-        --counter;
-        if(counter % 10000) std::cout << counter << '\n';
-    }
-}
- 
-#if 0
+
 #endif
- 
-int main(int argc, char* argv[]) {
-    
-    try{
-        std::thread t1(add_queue_values);
-        std::thread t2(read_queue_values);
-        t1.join();
-        t2.join();
-    }
-    catch(const std::exception& e){
-    }
-    return 0;
-}

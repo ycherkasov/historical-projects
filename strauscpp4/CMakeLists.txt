@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
-project(strauscpp CXX)
-set(TARGET strauscpp)
+project(strauscpp3 CXX)
+set(TARGET strauscpp3)
 
 
 ########################################################

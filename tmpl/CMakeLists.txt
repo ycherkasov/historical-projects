@@ -5,8 +5,6 @@ set(TARGET templates_vandervoode)
 
 add_subdirectory(part_01_basics)
 add_subdirectory(part_01_debugging)
-add_subdirectory(part_01_basics)
-add_subdirectory(part_01_debugging)
 add_subdirectory(part_01_models)
 add_subdirectory(part_02_instantiation)
 add_subdirectory(part_02_names)

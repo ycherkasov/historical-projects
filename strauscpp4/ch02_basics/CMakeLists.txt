@@ -24,4 +24,4 @@ set(INCLUDE_DIRS ${INCLUDE_DIRS} . )
 include_directories(${INCLUDE_DIRS})
 
 ########################################################
-add_executable(${TARGET} ${SOURCES} ${HEADERS})
+add_executable(${TARGET} ${SOURCES})

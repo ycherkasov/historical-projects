@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
-project(ch01_intro CXX)
-set(TARGET ch01_intro)
+project(ch_07_functions CXX)
+set(TARGET ch_07_functions)
 
 ########################################################
 # source files

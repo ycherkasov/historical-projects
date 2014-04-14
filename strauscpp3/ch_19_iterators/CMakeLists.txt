@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
-project(ch01_intro CXX)
-set(TARGET ch01_intro)
+project(ch_19_iterators CXX)
+set(TARGET ch_19_iterators)
 
 ########################################################
 # source files

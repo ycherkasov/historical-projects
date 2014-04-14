@@ -1,5 +1,8 @@
 import os, sys
 
+solution_name = 'strauscpp4'
+path = '.'
+
 base_cmake_text = '''cmake_minimum_required(VERSION 2.8)
 project({0} CXX)
 set(TARGET {1})
@@ -11,7 +14,6 @@ if(UNIX)
 elseif("WIN32")
   message("Windows configuration")
   set(CMAKE_CXX_FLAGS "/EHsc")
-  set(MY_BOOST_DIR ${{WINDOWS_BOOST_DIR}})
 
 endif()
 
@@ -91,10 +93,8 @@ def mass_create_cmake(root_path, solution_name):
 
 def main(argv):
     try:
-        solution_name = argv[1]
-        path = argv[2]
         mass_create_cmake(path, solution_name)
-        return 0
+        return os.system('cmake .')
     except IndexError:
         print("Usage: python create_cmake.py <solution_name> <solution_path>")
 #    except Exception as e:

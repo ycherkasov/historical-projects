@@ -4,17 +4,21 @@ set(TARGET ch_10_classes)
 
 ########################################################
 # source files
+# source files
 file(GLOB Files_src *.cpp)
 
 # headers
 file(GLOB Files_h *.h)
 
+
+########################################################
+# source files
 set(SOURCES ${SOURCES} ${Files_src})
 set(HEADERS ${HEADERS} ${Files_h})
 
 source_group("Sources" FILES ${SOURCES})
 source_group("Headers" FILES ${HEADERS})
-                                              
+
 ########################################################
 # include directories
 set(INCLUDE_DIRS ${INCLUDE_DIRS} . )

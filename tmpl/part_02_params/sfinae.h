@@ -41,6 +41,26 @@ template <typename T> RT2 test_sfinae_x(...){
 template <int N> int get_int(){ return N; }
 template <int* P> int get_int(){ return *P; }
 
+// 100% работающий пример со SFINAE
+struct Test {
+	typedef int foo;
+};
+
+template <typename T>
+void f(typename T::foo) {
+	std::cout << "Definition #1" << std::endl;
+} // Definition #1
+
+template <typename T>
+void f(T) {
+	std::cout << "Definition #2" << std::endl;
+}                // Definition #2
+
+void test_sfinae() {
+	f<Test>(10); // Call #1.
+	f<int>(10);  // Call #2. Without error (even though there is no int::foo) thanks to SFINAE.
+}
+
 int test_sfinae_int(){
 	// Раскомментировать для ошибки
 	//return get_int<1>();

@@ -33,10 +33,8 @@ void show_tuple(){
 	Tuple<bool> t1 = make_tuple(true);
 	Tuple<bool, int> t2 = make_tuple(true, 10);
 	Tuple<bool, int, char> t3 = make_tuple(true, 10, 'a');
-	Tuple<bool, int, char, long> t4 = make_tuple(true, 10, 'a', static_cast<long>(-1000));
-	Tuple<bool, int, char, long, unsigned> t5 = make_tuple(true, 10, 'a'
-		, static_cast<long>(-1000)
-		, static_cast<unsigned>(1));
+	Tuple<bool, int, char, long> t4 = make_tuple(true, 10, 'a', -1000L);
+	Tuple<bool, int, char, long, unsigned> t5 = make_tuple(true, 10, 'a', -1000L, 1U);
 }
 
 int main(){

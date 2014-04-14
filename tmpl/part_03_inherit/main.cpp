@@ -45,5 +45,6 @@ int main(){
 	show_name_params();
 	show_size_empty();
 	show_crtp();
+	show_tmpl_virtuality();
 	return 0;
 }

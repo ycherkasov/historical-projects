@@ -48,14 +48,30 @@ public:
 		return (*this);
 	}
 
-	// Операции указателя
-	inline T* operator->() const {
+	// Операции указателя (константные)
+	inline const T* operator->() const {
 		return _ptr;
 	};
 
-	inline T& operator*() const {
+	inline const T& operator*() const {
 		return *_ptr;
 	};
+
+	// Операции указателя (неконстантные)
+	inline T* operator->() {
+		// неконстантная операция! отсоединяем объект, создаем новый
+		this->detach();
+		this->init(this->clone());
+		return _ptr;
+	};
+
+	inline T& operator*() {
+		// неконстантная операция! отсоединяем объект, создаем новый
+		this->detach();
+		this->init(this->clone());
+		return *_ptr;
+	};
+
 private:
 	// защищенные функции-хелперы
 
@@ -88,6 +104,11 @@ private:
 				deletion_policy::dispose(this->_ptr);
 			}
 		}
+	}
+
+	// копируем объект при отсоединении
+	T* clone(){
+		return new T(*_ptr);
 	}
 
 private:

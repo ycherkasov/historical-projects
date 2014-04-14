@@ -38,7 +38,7 @@ public:
 template <typename T, typename OP1, typename OP2>
 class A_Add{
 private:
-	// Ссылки на операнды
+	// Ссылки на операнды (op1 + op2)
 	typename A_Traits<OP1>::ExprRef op1;
 	typename A_Traits<OP2>::ExprRef op2;
 public:
@@ -48,6 +48,7 @@ public:
 		:op1(a),op2(b) {}
 
 	// "Отложенное" вычисление операции
+	// Т.е. сумма вычисляется по требованию, при обращении к элементу массива
 	T operator[](size_t i) const {
 		return op1[i] + op2[i];
 	}
@@ -74,6 +75,7 @@ public:
 		:op1(a),op2(b) {}
 
 	// "Отложенное" вычисление операции
+	// Т.е. произведение вычисляется по требованию, при обращении к элементу массива
 	T operator[](size_t i) const {
 		return op1[i] * op2[i];
 	}

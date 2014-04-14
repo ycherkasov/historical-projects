@@ -30,28 +30,28 @@ public:
 	void init(T*){
 		_counter = alloc_counter();
 		(*_counter) = 1;
-		cout << "counter = 1" << endl;
+		cout << _counter << ", counter = 1" << endl;
 	}
 
 	// освобождение счетчика (где-то удалена последн€€ копи€ объекта)
 	template <typename T>
 	void dispose(T*){
 		free_counter(_counter);
-		cout << "dispose counter" << endl;
+		cout << _counter << ", dispose counter" << endl;
 	}
 
 	// инкремент (где-то скопирован объект)
 	template <typename T>
 	void increment(T*){
 		(*_counter)++;
-		cout << "counter = " << (*_counter) << endl;
+		cout << _counter << ", counter = " << (*_counter) << endl;
 	}
 
 	// декремент (где-то удален объект)
 	template <typename T>
 	void decrement(T*){
 		(*_counter)--;
-		cout << "counter = " << (*_counter) << endl;
+		cout << _counter << ", counter = " << (*_counter) << endl;
 	}
 
 	// проверка на 0

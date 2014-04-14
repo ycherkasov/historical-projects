@@ -48,9 +48,10 @@ void test_arguments(){
 	// т.к. тип передаваемого значения первый в списке
 	double d = implicit_cast2<int, double>(2);
 }
-
+#if 0
 void test_sfinae(){
-	/*RT1*/RT2 rt1 = test_sfinae_x<test_X>();
+	const test_X tx;
+	RT1/*RT2*/ rt1 = test_sfinae_x<test_X>(tx);
 	size_t sz1 = sizeof(rt1);
 
 	RT2 rt2 = test_sfinae_x<char>();
@@ -61,7 +62,7 @@ void test_sfinae(){
 	
  	test_sfinae_int();
 }
-
+#endif
 int main(){
 	test_union_template();
 	test_members();

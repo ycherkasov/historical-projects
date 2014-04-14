@@ -2,6 +2,9 @@
 #include "simple_array.h"
 #include "expressions.h"
 
+// Параметр Rep в данном шаблоне может быть как массивом, так и 
+// шаблоном "отложенных вычислений", 
+// который валидируется только при обращении к operator[]
 template <typename T, typename Rep = SArray<T> >
 class Array{
 private:
@@ -33,6 +36,7 @@ public:
 		print_debug("=");
 		assert(size() == rhs.size());
 		for(size_t i = 0; i < size(); ++i){
+			// при каждом обращении к [] будет один раз вычислено выражение
 			expr_rep[i] = rhs[i];
 		}
 		return *this;
@@ -59,7 +63,8 @@ public:
 template <typename T, typename R1, typename R2>
 Array<T, A_Add<T, R1, R2> >		// return value
 operator+(Array<T, R1> const& a, Array<T, R2> const& b){
-
+	// здесь не вычисляется выражение, а только формируется шаблон,
+	// вычисляющий его по запросу в operator[]
 	return Array<T, A_Add<T, R1, R2> >( A_Add<T, R1, R2>(a.rep(), b.rep()) );
 }
 

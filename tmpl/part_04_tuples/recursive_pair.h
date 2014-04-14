@@ -30,12 +30,20 @@ struct recursive_tuple{
 	typedef void Result;
 };
 
+/* Визуализация типов
+	  .
+	 / \
+	/  /\
+	A  B C
+*/
+
 // Специализация для n-го типа
 // основывается на факте, что n-й тип рекурсивной пары - это n-1 тип пары, содержащейся в ней
 template <int N, typename A, typename B, typename C>
 struct recursive_tuple<N, Pair<A, Pair<B, C> > >{
 	typedef typename recursive_tuple<N-1, Pair<B,C> >::Result Result;
 };
+
 
 // Специализация для 2-го типа рекурсивной пары
 template <typename A, typename B, typename C>

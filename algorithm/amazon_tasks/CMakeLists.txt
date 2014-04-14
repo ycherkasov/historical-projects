@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
-project(ch_1_basics CXX)
-set(TARGET ch_1_basics)
+project(amazon_tasks CXX)
+set(TARGET amazon_tasks)
 
 ########################################################
 # source files

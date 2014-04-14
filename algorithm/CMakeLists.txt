@@ -3,4 +3,5 @@ project(algorithms CXX)
 set(TARGET algorithms)
 
 
+add_subdirectory(amazon_tasks)
 add_subdirectory(ch_1_basics)

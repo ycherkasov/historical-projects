@@ -72,10 +72,10 @@ void show_func_ptr_wrapper(){
 	custom_sort(v1,fp);
 }
 
-
 int main(){
-	//show_function_pointers();
-	//show_simple_predicate();
+	show_function_pointers();
+	show_simple_predicate();
 	show_func_ptr_wrapper();
 	return 0;
 }
+

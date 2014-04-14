@@ -12,6 +12,7 @@ struct my_less{
 
 
 // Функтор может быть как аргументом шаблона, так и параметром функции
+// (в последнем случае функтор надо копировать)
 template <typename Func>
 void custom_sort(std::vector<int>& sort_me, Func predicate = Func()){
 	std::sort(sort_me.begin(), sort_me.end(), predicate);

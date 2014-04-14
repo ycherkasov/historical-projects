@@ -36,12 +36,12 @@ void show_new2() {
 
 user_allooc::user_allooc(void)
 {
-	cout << "user_allooc()" << cout;
+	cout << "user_allooc()" << endl;
 }
 
 user_allooc::~user_allooc(void)
 {
-	cout << "~user_allooc()" << cout;
+	cout << "~user_allooc()" << endl;
 }
 
 void* user_allooc::operator new(size_t s) {

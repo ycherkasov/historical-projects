@@ -2,8 +2,11 @@
 #include <cmath>
 #include "zero_divide.h"
 
+// suppress floating-point warnings
+#define _CRT_SECURE_NO_WARNINGS
+
 void set_fpe_zero_div2(){
-    //Set the x86 floating-poiant control word according to what
+    //Set the x86 floating-point control word according to what
     //exceptions you want to trap.
     _clearfp(); //Always call _clearfp before setting the control word
 

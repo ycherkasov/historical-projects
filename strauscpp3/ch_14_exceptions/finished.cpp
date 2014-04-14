@@ -44,7 +44,8 @@ void finished::terminate(){
 
 // Функция генерирует исключение в обход спецификации
 // Должен вызваться std::unexpected() - кроме VC++
-void finished::test_custom_unexpected() throw(int) {
+void finished::test_custom_unexpected() throw() {
+	// warning
 	throw double(1);	
 }
 

@@ -4,7 +4,7 @@ void structured_exception::enableStructuredExceptions() NOTHROW {
     _set_se_translator(structured_exception::handlerStructuredException);
 }
 
-void structured_exception::handlerStructuredException(unsigned int, EXCEPTION_POINTERS* ep) THROWS(structured_exception){
+void structured_exception::handlerStructuredException(unsigned int, EXCEPTION_POINTERS* ep) {
     switch(ep->ExceptionRecord->ExceptionCode)	
     {	
     case EXCEPTION_ACCESS_VIOLATION:

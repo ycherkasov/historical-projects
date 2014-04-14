@@ -8,7 +8,6 @@
 // В этом хедере описан класс, "заворачивающий" SEH в исключения C++
 
 #define NOTHROW throw()
-#define THROWS(X) throw(X)
 
 // If you want your C++ exception code to catch SEH exceptions, 
 // you need to build the code with /EHa.
@@ -32,6 +31,6 @@ public:
     static void enableStructuredExceptions() NOTHROW;
 
 private:
-    static void handlerStructuredException(unsigned int, EXCEPTION_POINTERS*) THROWS(structured_exception);
+    static void handlerStructuredException(unsigned int, EXCEPTION_POINTERS*);
 };
 #endif	//	DEFINE_STRUCTREDEXCEPTION_H//

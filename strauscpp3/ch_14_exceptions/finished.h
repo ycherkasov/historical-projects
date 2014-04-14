@@ -18,7 +18,7 @@ public:
 	void terminate();
 
 	// Тестируем бросок неописанного в спецификации исключения
-	void test_custom_unexpected() throw(int);
+	void test_custom_unexpected();
 
 	// Тестируем неперехваченное исключение
 	void test_custom_terminate();

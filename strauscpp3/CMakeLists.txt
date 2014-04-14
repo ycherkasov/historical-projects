@@ -2,6 +2,17 @@ cmake_minimum_required(VERSION 2.8)
 project(strauscpp3 CXX)
 set(TARGET strauscpp3)
 
+if(UNIX)
+  message("Unix configuration")
+  set(CMAKE_CXX_FLAGS "-std=c++11")
+
+elseif("WIN32")
+  message("Windows configuration")
+  set(CMAKE_CXX_FLAGS "/EHsc")
+  set(MY_BOOST_DIR ${WINDOWS_BOOST_DIR})
+
+endif()
+
 
 ########################################################
 

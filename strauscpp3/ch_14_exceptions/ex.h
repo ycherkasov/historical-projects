@@ -71,8 +71,8 @@ public:
 	// в VC не работает, но дает warning ((
 	// warning C4297: 'triangle::test_nothrow' : function assumed not to throw an exception but does
 	void test_nothrow() const throw();
-	void test_throw_some1() const throw(test_triangle_ex);
-	void test_throw_some2() const throw(triangle_exception);
+	void test_throw_some1() const;
+	void test_throw_some2() const;
 
 private:
 	int* _test;

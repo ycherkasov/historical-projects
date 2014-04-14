@@ -6,7 +6,7 @@ class controlled
 public:
 	controlled();
 	~controlled() throw();
-	void controlled_method() const throw(std::exception);
+	void controlled_method() const;
 private:
 	std::vector<int> _vect;
 };

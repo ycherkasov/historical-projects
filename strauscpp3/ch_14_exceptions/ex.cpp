@@ -57,14 +57,15 @@ void triangle::throw_test() const{
 }
 
 void triangle::test_nothrow() const throw() {
+	// warning!
 	throw test_triangle_ex(0);
 }
 
-void triangle::test_throw_some1() const throw(test_triangle_ex) {
+void triangle::test_throw_some1() const {
 	throw wrong_param(0.);
 }
 
-void triangle::test_throw_some2() const throw(triangle_exception) {
+void triangle::test_throw_some2() const {
 	throw wrong_param(0.);
 }
 

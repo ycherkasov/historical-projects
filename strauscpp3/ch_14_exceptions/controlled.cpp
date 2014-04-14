@@ -30,7 +30,7 @@ controlled::~controlled() throw() {}
 
 // --------------------------------------
 // Контролируемый метод
-void controlled::controlled_method() const throw(std::exception) try{
+void controlled::controlled_method() const try{
 	throw exception("controlled method exception");
 }
 catch( std::exception& e ){

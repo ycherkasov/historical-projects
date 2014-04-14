@@ -8,7 +8,8 @@ set(TARGET ch_03_basics)
 file(GLOB Files_src *.cpp)
 
 # headers
-file(GLOB Files_h *.h *.txt)
+file(GLOB Files_h *.h)
+file(GLOB Files_txt *.txt)
 
 ########################################################
 # source files

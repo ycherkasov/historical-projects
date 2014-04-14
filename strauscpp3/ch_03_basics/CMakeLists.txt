@@ -9,7 +9,6 @@ file(GLOB Files_src *.cpp)
 
 # headers
 file(GLOB Files_h *.h)
-file(GLOB Files_txt *.txt)
 
 ########################################################
 # source files
@@ -25,4 +24,4 @@ set(INCLUDE_DIRS ${INCLUDE_DIRS} . )
 include_directories(${INCLUDE_DIRS})
 
 ########################################################
-add_executable(${TARGET} ${SOURCES})
+add_executable(${TARGET} ${SOURCES} ${HEADERS})

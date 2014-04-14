@@ -1,1 +1,0 @@
-void test_std_vector();

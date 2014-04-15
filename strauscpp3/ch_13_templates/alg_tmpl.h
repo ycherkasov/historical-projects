@@ -86,7 +86,7 @@ namespace alg_functor{
 		T _val;
 		less_then() : _val(){}
 		less_then(const T& val) : _val(val){}
-		bool operator()(const int i){
+		bool operator()(const T i){
 			return i < _val;
 		}
 	};

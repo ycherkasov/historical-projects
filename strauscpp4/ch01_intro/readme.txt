@@ -45,7 +45,7 @@ I first designed and implementedautoin 1983 but had to remove itbecause of C com
 an expression: §3.4.3, §11.4; Jaakko Jarvi.
 * Move semantics, a way of transmitting information without copying: §3.3.2, §17.5.2;
 Howard Hinnant.
-* A way of stating that a function may not throw exceptionsnoexcept: §13.5.1.1; David Abrahams, Rani Sharoni, and Doug Gregor.
+* A way of stating that a function may not throw exceptions noexcept: §13.5.1.1; David Abrahams, Rani Sharoni, and Doug Gregor.
 * A proper name for the null pointer, §7.2.2; Herb Sutter and Bjarne Stroustrup.
 * The range-forstatement: §2.2.5, §9.5.1; Thorsten Ottosen and Bjarne Stroustrup.
 * Override controls:finalandoverride: §20.3.4.  Alisdair Meredith, Chris Uzdavinis, and Ville

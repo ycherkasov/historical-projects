@@ -18,6 +18,10 @@ void structured_exception::handlerStructuredException(unsigned int, EXCEPTION_PO
     case EXCEPTION_INT_DIVIDE_BY_ZERO:
         throw structured_exception("Int Divide By Zero: The thread tried to divide an integer value by an integer divisor of zero.");
     case EXCEPTION_FLT_DIVIDE_BY_ZERO:
+	case STATUS_FLOAT_MULTIPLE_TRAPS:
+		// When generating SSE code you sometimes see STATUS_FLOAT_MULTIPLE_TRAPS 
+		// instead of STATUS_FLOAT_DIVIDE_BY_ZERO. 
+		// This is slightly less helpful, but the root cause should be straightforward to determine.
         throw structured_exception("Float Divide By Zero: The thread tried to divide a floating-point value by a floating-point divisor of zero.");
     default:
         throw structured_exception("Unknown Windows Structured Exception");	

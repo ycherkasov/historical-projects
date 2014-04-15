@@ -9,6 +9,7 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include <algorithm>
 
 using namespace std;
 
@@ -21,7 +22,7 @@ using namespace std;
 template<typename Symbols>
 class compare_str{
 public:
-	virtual void compare(const basic_string<Symbols>& str) = 0;
+	virtual bool compare(const basic_string<Symbols>& str1, const basic_string<Symbols>& str2) = 0;
 };
 
 // ----------------------------------
@@ -30,24 +31,27 @@ public:
 template<typename Symbols>
 class lexigraphical : public compare_str<Symbols>{
 public:
-	virtual void compare(const basic_string<Symbols>& str);
+	virtual bool compare(const basic_string<Symbols>& str1, const basic_string<Symbols>& str2);
 };
 
 template<typename Symbols>
 class no_case : public compare_str<Symbols>{
 public:
-	virtual void compare(const basic_string<Symbols>& str);
+	virtual bool compare(const basic_string<Symbols>& str1, const basic_string<Symbols>& str2);
 };
 
 // --------------- реализаци€ методов --------------- 
 template<typename Symbols>
-void lexigraphical<Symbols>::compare(const basic_string<Symbols>& str){
-	std::cout << "lexigraphical<Symbols>::compare()" << '\n';
+bool lexigraphical<Symbols>::compare(const basic_string<Symbols>& str1, const basic_string<Symbols>& str2){
+	return str1 > str2;
 }
 
 template< typename Symbols >
-void no_case<Symbols>::compare(const basic_string<Symbols> &str){
-	std::cout << "no_case<Symbols>::compare()" << '\n';
+bool no_case<Symbols>::compare(const basic_string<Symbols> &str1, const basic_string<Symbols>& str2){
+	std::string nocase1, nocase2;
+	std::transform(str1.begin(), str1.end(), std::back_inserter(nocase1), ::tolower);
+	std::transform(str2.begin(), str2.end(), std::back_inserter(nocase2), ::tolower);
+	return str1 > str2;
 }
 // ----------------------------------
 
@@ -73,7 +77,7 @@ container<Symbols, Comparer>::container(basic_string<Symbols>& str) :
 // »спользуем переданный тип класса дл€ сравнени€ строк
 template<typename Symbols, typename Comparer>
 void container<Symbols, Comparer>::compare(basic_string<Symbols>& str){
-	_c.compare(_str);
+	_c.compare(str, _str);
 }
 
 // ѕример - частичной специализации - 

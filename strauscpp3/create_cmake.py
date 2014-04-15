@@ -12,7 +12,7 @@ if(UNIX)
 
 elseif("WIN32")
   message("Windows configuration")
-  set(CMAKE_CXX_FLAGS "/EHsc")
+  set(CMAKE_CXX_FLAGS "/EHa")
 
 endif()
 
@@ -33,7 +33,7 @@ set(TARGET {1})
 file(GLOB Files_src *.cpp)
 
 # headers
-file(GLOB Files_h *.h)
+file(GLOB Files_h *.h *.txt)
 
 
 ########################################################

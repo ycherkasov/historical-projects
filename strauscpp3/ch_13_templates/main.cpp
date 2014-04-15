@@ -76,13 +76,13 @@ void show_algirithms_fuctor(){
 	size_t sz = sizeof(a)/sizeof(int);
 
 	// Скопировать только четные
-	copy_if( a, a + sz, b, is_odd() );
+	alg_functor::copy_if(a, a + sz, b, is_odd());
 
 	// Скопировать больше 6
-	copy_if( a, a + sz, b, greater_then(6) );
+	alg_functor::copy_if(a, a + sz, b, greater_then(6));
 
 	// Скопировать меньше 8
-	copy_if( a, a + sz, b, less_then<int>(8) );
+	alg_functor::copy_if(a, a + sz, b, less_then<int>(8));
 
 }
 

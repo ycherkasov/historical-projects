@@ -12,6 +12,10 @@ extern void show_extern();
 const int y = 2;
 typedef  int T;
 
+// Согласно стандарту, как старому, так и новому, 
+// если переменная объявлена с модификатором const и при этом явно не объявлена как extern, 
+// то она получает внутренне связывание(т.е. static)
+
 extern const int x1 = 10;
 //It defines a global constant variable that can be referenced from other modules.
 //This is correct (C++ Standard 7.1.1/6).

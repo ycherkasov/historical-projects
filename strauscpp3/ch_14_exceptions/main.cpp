@@ -180,8 +180,12 @@ int main()
 	show_zero_div_exception();
     show_fpe_zero_div();
 	
+	show_seh();
 	show_controlled();
+	
+	// does not work with VC++
 	//show_standard_handlers();
+
 	test_autoptr();
 
 	return 0;

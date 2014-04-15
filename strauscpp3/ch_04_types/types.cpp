@@ -102,9 +102,15 @@ void show_pointer(){
 	// error C2166: l-value specifies const object
 	//x["ABCDEF"] = 'Z';
 
+	// 1[array] == array[1], грубо говор€ 
+	// 1 + *pointer == *pointer + 1
 	// correct!
 	x[p_arr] = 'Z';
 }
+
+//Ўироко распространенное заблуждение. ѕочему-то люд€м кажетс€, что если массив не€вно преобразуетс€ к указателю, то адрес массива и сам массив Ч это одно и тоже
+//Ќет. ¬ыражени€ &array и array имеют разные типы, не подлежащие даже сравнению.
+//http://rsdn.ru/forum/cpp/5458937.flat#5458937
 
 void show_references(){
 	

@@ -61,3 +61,41 @@
 - адрес функции или NULL, если виртуальная
 - коррекция указателя this
 - индекс, если функция виртуальная
+
+http://blogs.msdn.com/b/oldnewthing/archive/2004/02/09/70002.aspx
+http://www.codeproject.com/Articles/7150/Member-Function-Pointers-and-the-Fastest-Possible
+
+// Borland, also used by Watcom
+struct BorlandMFP { 
+   CODEPTR m_func_address;
+   int delta;
+   int vindex; // or 0 if no virtual inheritance
+};
+if (vindex==0) adjustedthis = this + delta; 
+else adjustedthis = *(this + vindex -1) + delta
+CALL funcadr
+
+// GNU g++ uses a tricky space optimisation, also adopted by IBM's VisualAge and XLC.
+struct GnuMFP {
+   union {
+     CODEPTR funcadr; // always even
+     int vtable_index_2; //  = vindex*2+1, always odd
+   };
+   int delta;
+};
+adjustedthis = this + delta
+if (funcadr & 1) CALL (* ( *delta + (vindex+1)/2) + 4)
+else CALL funcadr
+
+// Microsoft and Intel use this for the 'Unknown' case.
+// Microsoft also use it when the /vmg option is used
+// In VC1.5 - VC6, this structure is broken! See below. 
+struct MicrosoftUnknownMFP{
+   FunctionPointer m_func_address; // 64 bits for Itanium.
+   int m_delta;
+   int m_vtordisp;
+   int m_vtable_index; // or 0 if no virtual inheritance
+};
+ if (vindex=0) adjustedthis = this + delta
+ else adjustedthis = this + delta + vtordisp + *(*(this + vtordisp) + vindex)
+ CALL funcadr

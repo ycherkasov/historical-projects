@@ -5,7 +5,9 @@
 using std::cout;
 using std::endl;
 
-
+// Функция-фильтр или транслятор. Транслятор принимает SE, 
+// определяемое данным кодом исключения code, а также info.
+// Транслятор в свою очередь может возбудить C++ исключение
 int sehhandler::filter( unsigned code, struct _EXCEPTION_POINTERS* ep ){
 	
 	// Сгенерировано это исключение (Access violation)
@@ -19,6 +21,7 @@ int sehhandler::filter( unsigned code, struct _EXCEPTION_POINTERS* ep ){
 	}
 
 }
+// В многопоточной программе каждый поток имеет отдельный транслятор
 
 void sehhandler::test_seh(){
 	int* p = 0x0;
@@ -42,6 +45,8 @@ void sehhandler::test_seh(){
 			BOOL abnormal = AbnormalTermination();
 			cout << "Abnormal = " << abnormal << endl;
 		}
+
+		// Внутри __try части блока try вы можете использовать предложение leave
 
 	}
 	// А сюда - в зависимости от кода возврата filter (см. MSDN __except keyword [C])

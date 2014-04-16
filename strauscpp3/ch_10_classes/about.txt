@@ -15,6 +15,7 @@ mutable, временные объекты, объединения.
 Сделать:
 1. operator new() со сборкой мусора
 2. Memory pool (see user_alooc.h), Мейерс Глава 2 Правило 10
+3. Замещающий delete можно подробно увидеть в серии статей про исключения, части 6-9
 
 // A default constructor may have parameters that have default values.
 

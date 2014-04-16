@@ -34,3 +34,9 @@ void* лучше использовать на нижнем уровне.
 Побитовые операторы применяются к интегральным типам.
 Операторы - это то, что можно перегрузить. Остальное - инструкции (statements)
 
+Aliasing is when more than one lvalue refers to the same memory location 
+(when you hear lvalue, think of things (variables) that can be on the left-hand side of assignments), 
+i.e. that are modifiable. As an example:
+
+int anint = 0;
+int *intptr=&anint;

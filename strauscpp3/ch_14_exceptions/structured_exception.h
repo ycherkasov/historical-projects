@@ -33,4 +33,10 @@ public:
 private:
     static void handlerStructuredException(unsigned int, EXCEPTION_POINTERS*);
 };
+
+// You can expand your own hierarchy, e.g.
+// class access_violation : public structured_exception
+// class divide_by_zero : public structured_exception
+// etc.
+
 #endif	//	DEFINE_STRUCTREDEXCEPTION_H//

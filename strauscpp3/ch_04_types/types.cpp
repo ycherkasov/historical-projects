@@ -106,11 +106,108 @@ void show_pointer(){
 	// 1 + *pointer == *pointer + 1
 	// correct!
 	x[p_arr] = 'Z';
+
+	// Ещё со времён C, для массивов 1[x] тождественно равно *(1 + x)
+	// ISO / IEC 9899:TC2 : 6.5.2.1 Array subscripting
+
+	// Thus, &*E is equivalent to E (even if E is a null pointer), and &(E1[E2]) to ((E1)+(E2))
+	
+	// ...a pointer to a nonarray object behaves the same as a pointer to the
+	// first element of an array of length one with the type of the object as its element type
 }
 
-//Широко распространенное заблуждение. Почему-то людям кажется, что если массив неявно преобразуется к указателю, то адрес массива и сам массив — это одно и тоже
-//Нет. Выражения &array и array имеют разные типы, не подлежащие даже сравнению.
+
 //http://rsdn.ru/forum/cpp/5458937.flat#5458937
+// Широко распространенное заблуждение. 
+// Почему-то людям кажется, что если массив неявно преобразуется к указателю, 
+// то адрес массива и сам массив — это одно и тоже
+// Нет. Выражения &array и array имеют разные типы, не подлежащие даже сравнению.
+
+
+// Для иллюстрации примера в show_array_pointers()
+int stack_address_increment(int i)
+{
+	// значение на стеке по нулевому смещению от i (0)
+	int a = 0[&i];
+
+	// значение на стеке по смещению 1 от i (0xcccccccc в msvc)
+	int b = 1[&i];
+
+	// Memory dump 0[&i]       1[&i] ...
+	// 0x002CF9E8  00 00 00 00 cc cc cc cc cc cc cc cc 00 00 00 00 00 fa 2c 00 c8 56 26 01 50
+	// 0x002CFA01  fa 2c 00 89 64 26 01 01 00 00 00 28 81 49 00 70 6e 49 00 8c 37 2a 52 00 00
+
+	// возвращаем данные за стековым значением,
+	// переданным в функцию
+
+	// выражения *(1 + &i) и 1[&i] ЭКВИВАЛЕНТНЫ
+	return 1[&i];
+	//return *(&i + 1);
+}
+
+// Размер массива
+// Для иллюстрации примера в show_array_pointers()
+template <typename T, std::size_t N>
+inline std::size_t countof(T(&arr)[N]) {
+	return N;
+}
+
+
+void show_array_pointers(){
+	
+	// 1.
+	int i = 0;
+	// найдем содержимое по смещению + 1 на стеке
+	int ii1 = stack_address_increment(i);
+	int ii2 = stack_address_increment(1);
+
+	// 2.
+	// Массив и указатель на массив - разные типы, их нельзя даже сравнивать
+	// они молча приводятся друг к другу, но сравнивать их нельзя
+
+	int array[42] = {};
+
+	int* ii3 = array;
+
+	// Размер массива вшит в его тип!
+	// cannot convert from 'int (*)[42]' to 'int *'
+	// int* ii31 = &array;
+	int(*ii4)[42] = &array;
+
+	// Похоже, что это один и тот же указатель
+	ptrdiff_t diff1 = reinterpret_cast<int*>(ii4)-ii3;
+
+	std::cout << std::hex << ii4 << '-' << ii3 << '=' << std::dec << diff1 << '\n';
+
+	// 3.
+	// но если попробовать прибавить 1, получим интересный эффект
+	int* ii5 = 1 + array;
+
+	// cannot convert from 'int (*)[42]' to 'int *'
+	// int* ii31 = 1 + &array;
+	int(*ii6)[42] = 1 + &array;
+
+	// diff2 равен 41. Т.е. (&array + 1) указывает на последний элемент + смещение 1
+	ptrdiff_t diff2 = reinterpret_cast<int*>(ii6) - ii5;
+
+	std::cout << std::hex << ii6 << '-' << ii5 << '=' << std::dec <<  diff2 << '\n';
+
+	// 4.
+	// Модифицируем два предыдущих примера, чтобы получить размер массива
+	// &array+1 будет указывать на элемент, следующий за массивом
+	// &array[0] - на первый элемент
+	ptrdiff_t diff3 = (1[&array] - &array[0]);
+
+	// компилятор расставит приоритеты следующим образом:
+	// 1( [&array] ) - &( array[0] ) == ( 1 + &array ) - &(0 + array)
+
+	std::cout << std::hex << 1[&array] << '-' << &array[0] << '=' << std::dec << diff3 << '\n';
+
+	// 5.
+	// Но лучше использовать compile-time вычисление, тем более размер зашит в тип
+	std::cout << countof(array) << '\n';
+}
+
 
 void show_references(){
 	
@@ -144,6 +241,10 @@ int show_ifs(int x){
 
 
 int main(){
+
+	// example from rsdn
+	show_array_pointers();
+
 	show_bits();
 	show_enumerations();
 	show_name_convensions(5);

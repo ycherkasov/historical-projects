@@ -8,8 +8,9 @@ wchar_t (_t - наследие от ANSI C)
 
 
 TODO
-1. See strange example in show_pointer() with "reverted" array
 2. Operations order
+3. Int and float IEEE standard
+4. Fixed point
 
 
 Советы:

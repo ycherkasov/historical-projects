@@ -1,5 +1,6 @@
 #include <iostream>
 #include "bit_operations.h"
+
 /*
 Размеры типов:
 1 = sizeof(char) <= sizeof(short) <= sizeof(int) <= sizeof(long)
@@ -241,6 +242,11 @@ int show_ifs(int x){
 
 
 int main(){
+
+	//show_floating_point();
+	//show_cmath_fpoint_operations();
+	show_fp_coltrol();
+	
 
 	// example from rsdn
 	show_array_pointers();

@@ -8,12 +8,34 @@ One definition rule. Стражи включения.
 1. extarnal & internal linkage и видимость из других модулей
 
 
+Linkage types
+1. Internal linkage, in which case they refer only to program elements inside their own translation units; 
+they are not shared with other translation units.
+The same name in another translation unit may refer to a different object or a different class.
+
+// The static keyword ensures internal linkage.
+static int i;   
+
+2. External linkage, in which case they can refer to program elements 
+in any translation unit in the program — the program element is shared among the translation units.
+
 namespace{
 	int i;
 }
 // "i" has external linkage.
 // This is correct.  Even though "i" is not visible outside the compilation unit, 
 // it still has external linkage (C++ Standard 7.3.1.1/1 - See footnote).
+
+3. No linkage, in which case they refer to unique entities. 
+The same name in another scope may not refer to the same object. An example is an enumeration. 
+
+C supports four different kinds of scope: 
+file scope, block scope, function prototype scope, and function scope. 
+C++ generalizes file scope into namespace scope, and adds class scope.
+
+A name’s linkage affects whether two or more declarations for that name are valid, 
+and if so, whether they refer to the same entity (such as a function or an object). 
+Understanding linkage clears up a number of misconceptions about the behavior of C and C++ programs.
 
 Советы.
 1. Избегайте определний функций в хедерах.

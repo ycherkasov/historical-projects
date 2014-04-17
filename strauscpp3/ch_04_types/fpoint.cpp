@@ -1,0 +1,406 @@
+#define _USE_MATH_DEFINES
+#include <iostream>
+#include <iomanip>
+#include <bitset>
+#include <cmath>
+
+//This header also defines the following macro constants :
+//MATH_ERRNO
+//MATH_ERREXCEPT	
+//Bitmask value with the possible values math_errhandling can take.
+//
+//FP_FAST_FMA
+//FP_FAST_FMAF
+//FP_FAST_FMAL	
+//Each, if defined, identifies for which type fma is at least as efficient as x*y + z.
+//
+//FP_INFINITE
+//FP_NAN
+//FP_NORMAL
+//FP_SUBNORMAL
+//FP_ZERO	
+//The possible values returned by fpclassify.
+//
+//FP_ILOGB0
+//FP_ILOGBNAN	
+//Special values the ilogb function may return.
+
+#include <cfenv>
+
+// for atan2
+#include <valarray>
+
+#include "bit_operations.h"
+
+using namespace std;
+
+
+
+/*
+http://en.wikipedia.org/wiki/Floating_point
+
+Число с плавающей запятой состоит из:
+Знака мантиссы(указывающего на отрицательность или положительность числа)
+Мантиссы(выражающей значение числа без учёта порядка) (Significand)
+Знака порядка
+Порядка(выражающего степень основания числа, на которое умножается мантисса) (Exponint)
+
+Нормальной формой числа с плавающей запятой называется такая форма, в которой мантисса 
+(без учёта знака) в десятичной системе находится на полуинтервале [0; 1). 
+Такая форма записи имеет недостаток: некоторые числа записываются неоднозначно
+
+
+На 64 битах, мантисса составляет 1 бит знак + 52 бита, показатель — 1 бит знак + 10 бит.
+Таким образом получаем диапазон точности примерно 
+от 4.94 * 10^-324 до 1.79 * 10^308 (от 2^-52 * 2^-1024 до 1*2^1024)
+
+В отличие от чисел с фиксированной запятой, сетка чисел, 
+которые способна отобразить арифметика с плавающей запятой, неравномерна: 
+она более густая для чисел с малыми порядками и более редкая — для чисел с большими порядками.
+Т.е. представимы только те сверхбольшие числа, в которых много нулей
+
+Машинной эпсилон называется наименьшее положительное число, что (1 +/- Epsilon) != 1
+DBL_EPSILON стандартной библиотеки примерно равен 10^-16
+
+FP также имеют несколько специальных значений +/- INF и NaN (Not a number)
+Two kinds of NaN: a quiet NaN (qNaN) and a signaling NaN (sNaN)
+
+Представление согласно стандарта:
+32 бит: 7 чисел	 e +/- 96
+64 бит: 16 чисел e +/- 384
+
+Системы компьютерной алгебры, как Maxima или Mathematica, часто "знают" точное представление
+основных трансцендентных чисел (e, pi, sqrt(2), sqrt(3),...)
+*/
+
+void print_double_binary(double d1){
+	
+	long long* double_hack = reinterpret_cast<long long*>(&d1);
+	static_assert(sizeof(d1) == sizeof(*double_hack), "Double and long long should have equal size");
+
+	cout << "Double representation " << d1 << " has size " << sizeof(d1) << '\n';
+	cout << "Long long" << std::hex << *double_hack << " has size " << sizeof(*double_hack) << '\n';
+	cout << "Binary representation of " << *double_hack
+		<< " is " << bitset<64>(*double_hack) << '\n';
+}
+
+void show_floating_point(){
+
+	// Число с плавающей запятой состоит из набора отдельных двоичных разрядов, 
+	// условно разделенных на так называемые знак, порядок и мантиссу.
+	// В наиболее распространённом формате(стандарт IEEE 754) 
+	// число с плавающей запятой представляется в виде набора битов, 
+	// часть из которых кодирует собой мантиссу числа, другая часть — 
+	// показатель степени, и ещё один бит используется для указания знака числа
+	// (0 - если число положительное, 1 - если число отрицательное).
+	// При этом порядок записывается как целое число в коде со сдвигом, 
+	// а мантисса - в нормализованном виде, своей дробной частью в двоичной системе счисления.
+
+	// Порядок записан со сдвигом - 15. 
+	// То есть чтобы получить актуально значение порядка нужно вычесть из него сдвиг.
+	// Сдвиг можно получить по формуле 2^(b-1) - 1, 
+	// где b - число бит, отведенное на хранение порядка 
+	// (в случае числа одинарной точности b=8, двойной b=11).
+
+	//Целые от нуля до 2048 передаются как есть.
+	//Целые от 2049 до 4096 округляются к ближайшему чётному целому.
+	//Целые от 4097 до 8192 округляются до ближайшего целого, делящегося нацело на 4.
+	//Целые от 8193 до 16384 округляются до ближайшего целого, делящегося на 8.
+	//Целые от 16385 до 32768 округляются до ближайшего целого, делящегося на 16.
+	//Целые от 32769 до 65535 округляются до ближайшего целого, делящегося на 32.
+
+	// 1.0 = 0011 1111 1111 0000
+	print_double_binary(1.0);
+
+	// -1.0 = 1011 1111 1111 0000 (changed sign bit)
+	print_double_binary(-1.0);
+
+	// 1.5 = 0011 1111 1111 1000
+	print_double_binary(1.5);
+
+	// 2.0 = 0100 0000 0000 0000
+	print_double_binary(2.0);
+
+
+	// 0100 0001 1100 1101  1100 1101 0110 0101
+	print_double_binary(1000000000.0);
+
+	// 0100 0001 1101 0110  0101 1010 0000 1011  1100
+	print_double_binary(1500000000.0);
+
+	// 0100 0001 1101 1101  1100 1101 0110 0101  0000
+	print_double_binary(2000000000.0);
+
+}
+
+void print_roundings_header(){
+	cout 
+		<< "val" << '\t'
+		<< "ceil" << '\t'
+		<< "floor" << '\t'
+		<< "trunc" << '\t'
+		<< "round" << '\t'
+		<< "lround" << '\t'
+		<< "rint" << '\t'
+		<< "lrint" << '\t'
+		<< "nearbyint" << '\n';
+}
+
+
+void print_roundings(double val){
+	cout << fixed;
+	cout << setprecision(4);
+	cout 
+		<< val << '\t'
+		<< ceil(val) << '\t'
+		<< floor(val) << '\t'
+		<< trunc(val) << '\t'
+		<< round(val) << '\t'
+		<< lround(val) << '\t'
+		<< rint(val) << '\t'
+		<< lrint(val) << '\t'
+		<< nearbyint(val) << '\n';
+}
+
+void print_fpclassify(double val){
+	int val_type = fpclassify(val);
+	cout << val << " is ";
+	switch (val_type)
+	{
+	case FP_INFINITE:  cout << "infinite" << endl;  break;
+	case FP_NAN:       cout << "NaN" << endl;       break;
+	case FP_ZERO:      cout << "zero" << endl;      break;
+	case FP_SUBNORMAL: cout << "subnormal" << endl; break;
+	case FP_NORMAL:    cout << "normal";
+
+	if (signbit(val))
+	{
+		cout << " negative" << endl;
+	}
+	else
+	{
+		cout << " positive or unsigned" << endl;
+	}
+	break;
+	default:
+		cout << "Error! Should not be here!" << endl;
+	}
+}
+
+void show_cmath_fpoint_operations(){
+
+	//
+	// Trigonometric
+	double pi = M_PI;
+
+	double c1 = cos(pi);
+	cout << "cos PI = " << c1 << '\n';
+
+	double s1 = sin(pi); // close to 0, but not a 0
+	cout << "sin PI = " << s1 << '\n';
+
+	double t1 = tan(pi);
+	cout << "tan PI = " << t1 << '\n';
+
+	double ac1 = acos(c1);
+	cout << "acos c1 = " << ac1 << '\n';
+
+	double as1 = asin(s1);
+	cout << "asin s1 = " << as1 << '\n';
+
+	double at1 = atan(t1);
+	cout << "atan t1 = " << at1 << '\n';
+
+	double at2 = atan2( 1.0, 2.0 );
+	cout << "atan2 1/2 = " << at2 << '\n';
+
+	// Hyperbolic supported as well
+
+	// Exponential
+	double param = 5.0;
+
+	double result = exp(param);
+	cout << "exp (" << param << ") = " << result << "\n";
+
+	// Breaks the floating point number x into its binary significand
+	// (a floating point value between 0.5(included)and 1.0(excluded)) 
+	// and an integral exponent for 2, such that :
+	// x = significand * 2^exponent 
+	int n = 0;
+	param = 8.0;
+	result = frexp(param, &n);
+	cout << param << " = " << result << "*2^" << n << '\n';
+
+	// Compose value back
+	double back = ldexp(result, n);
+	cout << back << " = " << result << "*2^" << n << '\n';
+
+	// ln and lg are calculated as well
+
+	// modf() splits value
+	double fractpart = 0.0;
+	double intpart = 0.0;
+	fractpart = modf(pi, &intpart);
+	cout << pi << " = " << intpart << " + " << fractpart << '\n';
+
+	// exp2() returns the base-2 exponential function of x
+	// which is 2 raised to the power x
+	param = 8.0;
+	double e2 = exp2(param);
+	cout << "2 ^ " << param << " = " << e2 << '\n';
+
+	// expm1() returns e raised to the power x minus one : e^x - 1
+	cout << "expm1(1.0) = e^x - 1 = " << expm1(1.0) << '\n';
+
+	// logb() returns the integral part of the logarithm of |x|, using FLT_RADIX as base
+	// log1p() returns the natural logarithm of one plus x (log(1+x))
+	// log2() returns the binary(base - 2) logarithm of x
+	cout << "log(10.0) = " << log(10.0) << '\n';
+	cout << "logb(10.0) = " << ilogb(10.0) << '\n';
+	cout << "log1p(10.0) = log(1+x) = " << log1p(10.0) << '\n';
+	cout << "log2(1024) = " << log2(1024) << '\n';
+
+	// scalbn(x, n) = x * FLT_RADIX^n
+	// scalbln(x, n) = ?
+	double x = 2.0;
+	int n1 = 4;
+	cout << "FLT_RADIX = " << FLT_RADIX << '\n';
+	cout << "x = " << x << '\n';
+	cout << "n1 = " << n1 << '\n';
+	cout << "scalbn(x, n) = x * FLT_RADIX^n = " << scalbn(x, n1) << '\n';
+	cout << "scalbln(x, n) (?)= " << scalbln(x, n1) << '\n';
+
+	// Roundings
+	print_roundings_header();
+	print_roundings(0.0);
+	print_roundings(0.3);
+	print_roundings(0.5);
+	print_roundings(0.8);
+	print_roundings(1.3);
+	print_roundings(2.3);
+	print_roundings(2.5);
+	print_roundings(2.8);
+
+	// Power functions
+	cout << "sqrt(2.0) = " << sqrt(2.0) << '\n';
+	cout << "cbrt(2.0) = " << cbrt(2.0) << '\n';
+
+	// hypot() returns the hypotenuse of a right - angled triangle whose legs are x and y
+	cout << "Hypotenuse of (3, 4) =" << hypot(3, 4) << '\n';
+
+	// Error function/Gamma function (probability, statistics, PDE)
+	// http://en.wikipedia.org/wiki/Error_function
+	// http://en.wikipedia.org/wiki/Gamma_function
+	cout << "Error function of 1 =" << erf(1.0) << '\n';
+	cout << "Complimentary error function of 1 =" << erfc(1.0) << '\n';
+	cout << "Gamma function of 1 =" << tgamma(1.0) << '\n';
+	cout << "Log of Gamma function of 1 =" << tgammal(1.0) << '\n';
+
+	// copysign copies sign of second value to the first
+	cout << "copysign(-10.0, 1.0)" << copysign(-10.0, 1.0) << '\n';
+	cout << "copysign(-10.0, -1.0)" << copysign(-10.0, -1.0) << '\n';
+	cout << "copysign(10.0, -1.0)" << copysign(10.0, -1.0) << '\n';
+
+	// nextafter() returns the next representable value after x in the direction of y
+	cout << "Next representable value after 0 = " << nextafter(0.0, 1.0) << '\n';
+	cout << "Next representable value before 0 = " << nextafter(0.0, -1.0) << '\n';
+	// nexttoward() the same with long y
+	
+	// NAN (not a number)
+	// he NaN values are used to identify undefined or non-representable values 
+	// for floating-point elements, such as the square root of negative numbers or the result of 0/0
+	// Generate quiet NAN
+	double nn = nan("");
+	float nf = nanf("");
+	cout << "For " << nn << " isnan(nn) = " << isnan(nn) << '\n';
+	cout << "For " << nf << " isnan(nf) = " << isnan(nf) << '\n';
+	cout << "For " << "isnan sqrt(-1.0) = " << isnan(sqrt(-1.0)) << '\n';
+	// isnormal is opposite to isnan, but also checks for INF and 0
+	cout << "For " << "isnormal sqrt(-1.0) = " << isnormal(sqrt(-1.0)) << '\n';
+
+	// isunordered() check at least one of values is NAN
+	if (isunordered(sqrt(-1.0), 0.0))
+		cout << "sqrt(-1.0) and 0.0 cannot be ordered\n";
+
+	double myinf = INFINITY;
+	if ((1 / sin(0.0) == myinf) && (!isnormal(myinf)))
+	{
+		cout << "1/0 is " << myinf << '\n';
+	}
+
+	// Value is too large
+	double huge = pow(10.0, 1000000000);
+	if (huge == HUGE_VAL)
+	{
+		cout << huge << " is HUGE_VAL\n";
+	}
+
+	// fpclassify() returns a value of type int that matches one of the classification macro constants
+	//FP_INFINITE	Positive or negative infinity(overflow)
+	//FP_NAN	Not - A - Number
+	//FP_ZERO	Value of zero
+	//FP_SUBNORMAL	Sub - normal value(underflow)
+	//FP_NORMAL	Normal value(none of the above)
+	print_fpclassify( 1/sin(0.0) );
+	print_fpclassify(sin(0.0) / sin(0.0));
+	print_fpclassify( 0.0 );
+	print_fpclassify(1.0);
+	print_fpclassify(-1.0);
+
+	// subnormal numbers could not be representet a normal double
+	// (less than minimal double)
+	// requires expanded representation, works slower (10-100 times)
+	double subnorm = 1.0;
+	while (fpclassify(subnorm) != FP_SUBNORMAL)
+	{
+		subnorm /= 2;
+	}
+	print_fpclassify(subnorm);
+
+}
+
+void show_fp_coltrol(){
+
+	/*
+	The floating-point environment maintains a series of status flags and specific control modes. 
+	Specific about the contents of the floating-point environment depend on the implementation, 
+	but the status flags generally include the floating-point exceptions and their associated information, 
+	and the control modes include at least the rounding direction.
+	*/
+
+	// FE_* macro - floating point exceptions and rounding rules
+	//FE_DIVBYZERO Pole error exception(macro)
+	//FE_INEXACT Inexact result exception(macro)
+	//FE_INVALID Invalid argument exception(macro)
+	//FE_OVERFLOW Overflow range error exception(macro)
+	//FE_UNDERFLOW Underflow range error exception(macro)
+	//FE_ALL_EXCEPT All exceptions(macro)
+
+	//FE_DOWNWARD Downward rounding direction mode
+	//FE_TONEAREST To - nearest rounding direction mode(macro)
+	//FE_TOWARDZERO Toward - zero rounding direction mode(macro)
+	//FE_UPWARD Upward rounding direction mode(macro)
+
+	// FP exception rules
+
+	int ret = 0;
+
+	// TODO: it seems fenv functions does not work
+	// Check it on Linux!
+	// http://www.intuit.ru/studies/courses/53/53/lecture/1585?page=9
+	// http://ru.wikipedia.org/wiki/Fenv.h
+	// http://www.cplusplus.com/reference/cfenv/
+#if 0
+	// env format depends on implementation
+	fenv_t env;
+	ret = fegetenv(&env);
+	cout << "fegetenv() returned " << ret << ", CTL = " << env._Fe_ctl << ", STAT = " << env._Fe_stat << '\n';
+
+	fexcept_t flag = 0;
+	ret = fegetexceptflag(&flag, FE_ALL_EXCEPT);
+	
+	int mask = FE_ALL_EXCEPT;
+	cout << "fegetexceptflag() returned " << ret << ", mask = " << mask << ", flag = " << flag << '\n';
+
+#endif
+}

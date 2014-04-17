@@ -5,7 +5,6 @@ One definition rule. Стражи включения.
 Глобальные переменные. Выход из программы.
 
 Вопросы:
-1. extarnal & internal linkage и видимость из других модулей
 
 
 Linkage types
@@ -27,7 +26,11 @@ namespace{
 // it still has external linkage (C++ Standard 7.3.1.1/1 - See footnote).
 
 3. No linkage, in which case they refer to unique entities. 
-The same name in another scope may not refer to the same object. An example is an enumeration. 
+The following kinds of identifiers have no linkage:
+* Names that have neither external or internal linkage
+* Names declared in local scopes (with exceptions like certain entities declared with the extern keyword)
+* Identifiers that do not represent an object or a function, including labels, enumerators, typedef names
+
 
 C supports four different kinds of scope: 
 file scope, block scope, function prototype scope, and function scope. 
@@ -36,6 +39,66 @@ C++ generalizes file scope into namespace scope, and adds class scope.
 A name’s linkage affects whether two or more declarations for that name are valid, 
 and if so, whether they refer to the same entity (such as a function or an object). 
 Understanding linkage clears up a number of misconceptions about the behavior of C and C++ programs.
+
+1. Внешняя линковка (external linkage) означает, что одинаковые имена, используемые в разных файлах, 
+трактуются линковщиком как один объект. 
+Для имен функций и переменных, объявленных вне функций, внешняя линковка применяется по умолчанию.
+
+2. Внутренняя линковка (internal linkage) для переменной x или функции f() из файла a.c означает, 
+что указанные объекты является "собственностью" этого файла, а переменные или функции 
+с такими же именами, но объявленные в других файлах, являются другими объектами.
+
+3. Отсутствие линковки
+
+Для обозначения внешней линковки используется ключевое слово extern, тогда как для внутренней 
+используется ключевое слово static. Это может вызвать путаницу.
+В области видимости клоза или класса static - это модель памяти.
+В глобальной области видимости - тип линковки.
+Обычная переменная const - всегла static
+C++ implicitly treats any const namespace-scope variable as having internal linkage 
+unless it is explicitly declared extern, unlike C.
+
+Совместимость C и C++
+http://en.wikipedia.org/wiki/Compatibility_of_C_and_C%2B%2B
+* C allows a void* pointer to be assigned to any pointer type without a cast
+int *j = malloc(sizeof(int) * 5);
+
+* C++ prohibit using goto or switch jumping over an initialization
+void fn(void)
+{
+  goto flack;
+  int i = 1;
+flack:
+  return;
+}
+
+* C does not allow a given typedef to be duplicated in the same scope, whereas C++ allows repeated typedef
+* enum values are always of type int in C, whereas they are distinct types in C++ and may have a size different from that of int
+* C++ also changes some C standard library functions to add additional functions with const qualifiers
+* in C++, a nested struct is defined only within the scope/namespace of the outer struct
+* Non-prototype ("K&R"-style) function declarations are not allowed in C++
+* In C, a function prototype without arguments, e.g. int foo();, implies that the parameters are unspecified
+* C++ is more strict than C about pointer assignments that discard a const qualifier
+* C++ allows to use const variable in case: operator, C doesn't
+* character literals such as 'a' are of type int in C and of type char in C++
+* C++ implicitly treats any const global as file scope unless it is explicitly declared extern, 
+  unlike C in which extern is the default
+* In C++, an object declaration is also a definition unless it contains an extern specifier and no initializer
+* Conversely, inline functions in C are of file scope whereas they have external linkage by default in C++
+* C requiring struct in front of structure tags (and so sizeof(T) refers to the variable), but C++ allowing it to be omitted
+extern int T;
+int size(void)
+{
+    struct T {  int i;  int j;  };
+ 
+    return sizeof(T);
+    /* C:   return sizeof(int)
+     * C++: return sizeof(struct T)
+     */
+}
+
+* in C99, a new keyword, _Bool, is introduced as the new boolean type
+* C compilers do not name mangle symbols in the way that C++ compilers do
 
 Советы.
 1. Избегайте определний функций в хедерах.
@@ -48,11 +111,15 @@ Understanding linkage clears up a number of misconceptions about the behavior of
    Нет гарантированного порядка инициализации глобальных переменных в разных единицах трансляции.
 6. Пользуйтесь соглашением по компоновке extern "C" для межъязыкового взаимодействия.
 7. Используйте при этом макрос #ifdef __cplusplus.
-8. При передаче между модулями указателей на функции также пользуйтесь extern "C".
+8. При передаче между модулями указателей на функции также пользуйтесь extern "C" для функций,
+   которые передаются в указателе.
 9. При объявлении мелких структур и множества POD-типов объединяйте их 
    в один h-файл для предотвращения путаницы и ускорения компиляции.
 10.При аварийном завершении программы предпочитайте exit(), а не abort() - 
     он хотя бы вызовет деструкторы.
 11. Согласно стандарту, как старому, так и новому, если переменная объявлена с модификатором const
     и при этом явно не объявлена как extern, то она получает внутренне связывание (т.е. static)
-
+12. inline-функции имеют внешнее связывание в C++. Из всех inline-функций с одним и тем же именем 
+    линковщик выберет только одну реализацию (механизм selectany). 
+	Чтобы определить метод, описанный за пределами класса или обычную функцию как inline, 
+	нужно написать: inline void f()

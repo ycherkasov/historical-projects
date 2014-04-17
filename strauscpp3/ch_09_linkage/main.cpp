@@ -25,6 +25,27 @@ void my_cleanup()
 	std::cout << "cleanup handler" << std::endl;
 }
 
+// Static and extern examples:
+// in namespace or global scope
+int i; // extern by default
+const int ci; // static by default
+extern const int eci; // explicitly extern
+static int si; // explicitly static
+
+// the same goes for functions (but there are no const functions)
+int foo(); // extern by default
+static int bar(); // explicitly static 
+
+// Note that instead of using static for internal linkage 
+// it is better to use anonymous namespaces into which you can also put classes.
+// The linkage for anonymous namespaces has changed between C++98 and C++11 
+// but the main thing is that they are unreachable from other translation units.
+
+namespace {
+	int i; // external linkage but unreachable from other translation units.
+	class invisible_to_others { }; // external linkage but unreachable 
+}
+
 int main()
 {
 	// Здесь используются внешние определения

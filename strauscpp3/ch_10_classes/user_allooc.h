@@ -4,6 +4,30 @@
 // В этом хедере демонстрируется создание объекта 
 // при помощи пользовательского аллокатора
 
+// Мейерс 1 Правило 7
+// Можно замещать стандартный обработчик по нехватке памяти
+// Стандартно set_new_handler() вызывается, 
+// пока память не будет освобождена или программа не завершена
+// Пользовательский обработчик может:
+// * сделать доступным необходимое количество памяти
+// * установить другой обработчик new
+// * установить нулевой обработчик (т.е. исключение bad_alloc) или бросить bad_alloc вручную
+// * завершить программу по abort()/exit()
+
+
+// Можно для каждого конкретного класса реализовать свой обработчик set_new_handler()
+// Можно создать класс-примесь (mixture) чтобы наследовать от него оператор и обработчик new
+// или параметризовать класс им
+class NewHandlerSupport{
+public:
+	static new_handler set_new_handler(new_handler p);
+	static void* operator new(size_t size);
+	static void operator delete(void* p);
+private:
+	static new_handler _current_handler;
+};
+
+
 // Мейерс 1 Правило 10
 // operator new() и operator delete() перегружаются обычно для повышения эффективности
 // это особенно верно для приложений, размещающих много маленьких объектов
@@ -53,19 +77,6 @@ public:
 
 
 };
-
-// Можно для каждого конкретного класса реализовать свой обработчик set_new_handler()
-// Можно создать класс-примесь (mixture) чтобы наследовать от него оператор и обработчик new
-// или параметризовать класс им
-class NewHandlerSupport{
-public:
-	static new_handler set_new_handler(new_handler p);
-	static void* operator new(size_t size);
-	static void operator delete(void* p);
-private:
-	static new_handler _current_handler;
-};
-
 
 
 // Класс-пул памяти

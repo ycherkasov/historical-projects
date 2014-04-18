@@ -3,6 +3,7 @@
 #include "user_allooc.h"
 #include "intset_t.h"
 #include "word_counter.h"
+#include "new_forms.h"
 
 #include <iostream>
 

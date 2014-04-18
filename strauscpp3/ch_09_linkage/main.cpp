@@ -27,10 +27,10 @@ void my_cleanup()
 
 // Static and extern examples:
 // in namespace or global scope
-int i; // extern by default
-const int ci; // static by default
+int i = 0; // extern by default
+const int ci = 0; // static by default
 extern const int eci; // explicitly extern
-static int si; // explicitly static
+static int si = 0; // explicitly static
 
 // the same goes for functions (but there are no const functions)
 int foo(); // extern by default

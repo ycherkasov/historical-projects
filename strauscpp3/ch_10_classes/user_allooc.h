@@ -13,11 +13,6 @@
 // Функция просто выделяет память, оператор вызывает конструктор
 // Функция delete() и оператор delete() соотносятся примерно так же
 
-void show_new1();
-void show_new2();
-void show_new_delete(); 
-void show_bad_alloc();
-
 class user_allooc
 {
 public:

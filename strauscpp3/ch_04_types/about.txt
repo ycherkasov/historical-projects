@@ -10,6 +10,7 @@ wchar_t (_t - наследие от ANSI C)
 TODO
 1. fenv.h functions does not work on MSVC. Check it on Linux, maybe ask on the forum.
 (see show_fp_coltrol() in fpoint.cpp)
+2. Пример с приведением к fixed point (fpoint.cpp)
 
 
 Советы:

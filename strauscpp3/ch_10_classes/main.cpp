@@ -1,11 +1,13 @@
 #include "construct.h"
 #include "class.h"
 #include "user_allooc.h"
-#include "intset_t.h"
 #include "word_counter.h"
 #include "new_forms.h"
+#include "memory_pool.h"
 
 #include <iostream>
+
+using namespace std;
 
 construct g_construct;
 
@@ -173,14 +175,7 @@ void show_construct_destruct(){
 
 	// 8. Объект, сконструированный пользовательским аллокатором.
 	{
-		void* buf = reinterpret_cast<void*>(0xF00F);
-
-		// TODO: example
-		// использование замещающего оператора new
-		// объект будет создан по адресу buf
-		//user_allooc* ua = new(buf)user_allooc;
-		// delete operator for the replacement new?
-		//delete ua;
+		// см. show_user_alloc()
 	}
 	
 
@@ -189,38 +184,142 @@ void show_construct_destruct(){
 	// потому что непонятно какой из них вызывать
 }
 
-void bool_logics(){
-
-	// Демонстрирует упражнение с реализацией булевых операций на множестве
-	std::vector<int> v1;
-	v1.push_back(1);
-	v1.push_back(2);
-	v1.push_back(3);
-	v1.push_back(4);
-
-	std::vector<int> v2;
-	v2.push_back(3);
-	v2.push_back(4);
-	v2.push_back(5);
-	v2.push_back(6);
-
-	intset_t set1(v1);
-	intset_t set2(v2);
-
-	intset_t set_sum = set1 + set2;
-	set_sum = set1 - set2;
-	set_sum = set1 * set2;
-}
-
 // Task from B.Batkin
 void show_word_counter(){
-	std::string s( "test.txt" );
+	string s( "test.txt" );
 	word_counter::count_from_file( s );
 }
 
-int main(){
 
-	//show_word_counter();
+
+void show_placement_delete(){
+	
+	struct X {
+		X() {
+			throw std::runtime_error("X object never be created");
+		}
+		// custom placement new
+		static void* operator new(std::size_t sz, bool b){
+			std::cout << "custom placement new called, b = " << b << '\n';
+			return ::operator new(sz);
+		}
+		// custom placement delete
+		// could be called in functional form only
+		// however, pair delete could be found in case of exception
+		static void operator delete(void* ptr, bool b)
+		{
+			std::cout << "custom placement delete called, b = " << b << '\n';
+			::operator delete(ptr);
+		}
+	};
+
+	try {
+		X* p1 = new (true) X;
+	}
+	catch (const std::exception& e) {
+		cout << e.what();
+	}
+}
+
+void test_placement_new_handler(){
+	printf("No more memory!\n");
+	throw bad_alloc();
+
+}
+
+void show_user_alloc(){
+
+	// разные версии перегруженных new() и delete()
+
+	// simple new overload
+	{
+		cout << "Test simple new overload" << endl;
+		user_alloc* x = new user_alloc();
+		x->test();
+		delete x;
+	}
+
+	// new for array overload
+	{
+		cout << "Test array new overload" << endl;
+		user_alloc* x = new user_alloc[10];
+		x[1].test();
+		delete[] x;
+}
+
+	// placement new overload
+	{
+		cout << "Test placement new overload" << endl;
+		user_alloc* x = new user_alloc();
+		x->test();
+		x->~user_alloc();
+
+		user_alloc* y = new(x)user_alloc();
+		// could be directly called in functional form only!
+		// will be implecetly called in case of exception
+		user_alloc::operator delete(y, x);
+		delete x;
+	}
+
+	// new_handler replacement new overload
+	{
+		cout << "Test placement new overload" << endl;
+		user_alloc* x = new (test_placement_new_handler)user_alloc();
+		x->test();
+		delete x;
+	}
+}
+
+void show_new_handler(){
+	
+	// Продемонстируем, как пользоваться mixture-классом из Мейерс 1-7,
+	// замещающим глобальный new_handler своим
+
+	// попробуем с очень большим объектом
+	try{
+		LargeObject::set_new_handler(NewHandlerSupport<LargeObject>::no_more_memory);
+		LargeObject* x = new LargeObject();
+		delete x;
+	}
+	catch (const std::bad_alloc& e){
+		cerr << "Lack of memory: " << e.what() << '\n';
+	}
+	
+	// попробуем с обычным объектом
+	try{
+		SmallObject::set_new_handler(NewHandlerSupport<SmallObject>::no_more_memory);
+		SmallObject* x = new SmallObject();
+		delete x;
+	}
+	catch (const std::bad_alloc& e){
+		cerr << "Lack of memory: " << e.what() << '\n';
+	}
+
+}
+
+void show_memory_pool(){
+
+	// allocated from pool, addr = 0x003789d0
+	memory_pool_item* mpi1 = new memory_pool_item();
+	mpi1->test();
+
+	// allocated from pool, addr = 0x003789d8 (prev + sizeof memory_pool_item)
+	memory_pool_item* mpi2 = new memory_pool_item();
+	mpi2->test();
+
+	// deallocated both from pool
+	delete mpi1;
+	delete mpi2;
+
+	// allocated from pool again, should again addr = 0x003789d0
+	// (block 0 free again)
+	memory_pool_item* mpi3 = new memory_pool_item();
+	mpi3->test();
+	delete mpi3;
+
+}
+
+int main(){
 
 	struct_one_name();
 	
@@ -234,17 +333,21 @@ int main(){
 	int aa = a.get_int6();
 	show_const();
 	show_construct_destruct();
+
+	show_user_alloc();
+	show_new_handler();
+	show_placement_delete();
+	show_memory_pool();
 	
 	// Статический метод можно вызывать как для класса, так и для объекта
 	construct::out_static_array();
 	construct c;
 	c.out_static_array();
 
-	// Демонстрация перегруженных операторов new
+	// Демонстрация стандартных перегруженных операторов new
 	show_new1();
 	show_new2();
 	show_new_delete();
-	bool_logics();
 
 
 	return 0;

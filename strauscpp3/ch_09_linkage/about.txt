@@ -72,6 +72,8 @@ flack:
   return;
 }
 
+С/C++ difference
+
 * C does not allow a given typedef to be duplicated in the same scope, whereas C++ allows repeated typedef
 * enum values are always of type int in C, whereas they are distinct types in C++ and may have a size different from that of int
 * C++ also changes some C standard library functions to add additional functions with const qualifiers
@@ -99,6 +101,19 @@ int size(void)
 
 * in C99, a new keyword, _Bool, is introduced as the new boolean type
 * C compilers do not name mangle symbols in the way that C++ compilers do
+* C can recursively call main()
+  C++ 5.2.2/9
+  Recursive calls are permitted, except to the function named main (3.6.1).
+* Макросы с переменным числом аргуменотов (параметр __VA_ARGS__).
+* Можно использовать прагмы в макроподстановках (_Pragma).
+* Встроенные типы _Complex и _Imaginary.
+* Квалификатор restrict.
+* Вызывать функцию, которая не была до этого декларирована
+* массивы переменного размера
+void function(int size)
+{
+   char a[size];
+}
 
 Советы.
 1. Избегайте определний функций в хедерах.

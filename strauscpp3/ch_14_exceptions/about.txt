@@ -10,6 +10,20 @@ http://www.gamasutra.com/view/news/169203/Exceptional_floating_point.php
 2. Пример с исключением из конструктора сложного объекта (наследование, вложенные объекты)
 3. Прочитать Саттера
 
+4. Реализовать
+На самом деле, бросаться исключениями нельзя в конструкторе копирования исключения.
+А если исключение возникло в выражении throw MakeSomeException(), где MakeSomeException() — 
+конструктор или порождающая функция — никаких проблем.
+Поэтому shared_ptr — хорошее решение:
+
+struct my_exception
+{
+    shared_ptr<string> m_pStr;
+public:
+    explicit my_exception(const string& str) : m_pStr(new string(str)) {}
+    const string& what() const { return *m_pStr; }
+};
+
 Вопросы:
 
 

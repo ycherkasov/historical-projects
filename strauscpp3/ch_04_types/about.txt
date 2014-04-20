@@ -42,6 +42,29 @@ i.e. that are modifiable. As an example:
 int anint = 0;
 int *intptr=&anint;
 
+Выравнивание:
+struct S { char c; int i; };
+bool is_equal(S a, S b) { return 0 == memcmp(&a, &b, sizeof(S)); }
+
+Почему rand() - очень медленная функция?
+Я имею в виду вызов Enter/LeavCriticalSection или что-то такого же, 
+что блокирует шину данных, когда зовём rand при линковке с многопоточной библиотекой.
+Если перенести этот код на многопроцессорную машину, где лок шины данных будет настоящий, а не "понарошку" - то я не знаю сколько будет. Вот код для тестирования:
+#include <stdlib.h>
+#include <time.h>
+#include <iostream>
+int main()
+{
+    volatile int x;
+    int n = 10000000;
+    clock_t t = clock();
+    for (int i = 0; i < n; ++i) x = rand();
+    std::cout << int(double(n) * CLOCKS_PER_SEC / (clock() - t));
+}
+
+for (int i = 0; i <= vector.size()-1; ++i)
+i < -1 тут воспринимается как i < (unsigned)-1, то есть i < 0xFFFFFFFF
+
 Приоритет операций
 1	
 ::			Область видимости	 Слева-направо

@@ -9,13 +9,13 @@ mutable, временные объекты, объединения.
 
 Вопросы:
 1. Нужно ли явно определять деструктор(в случае 1 в том числе)?
-2. Delete operator for the replacement new
-3. new и наследование (Мейерс 1)
+2. Почитать про memory pool
+3. Почитать про memory allocation algorithm
 
 Сделать:
-1. operator new() со сборкой мусора
-2. Memory pool (see user_alooc.h), Мейерс Глава 2 Правило 10
-3. Замещающий delete можно подробно увидеть в серии статей про исключения, части 6-9
+
+Пример реализации memory pool
+http://www.pjsip.org/pjlib/docs/html/files.htm
 
 // A default constructor may have parameters that have default values.
 
@@ -84,3 +84,11 @@ mutable, временные объекты, объединения.
  Какие стандартные операторы?
  Кто должен иметь доступ? Друзья?
  Насколько новый тип общий?
+
+operator delete is unique in being a non-member or static member function that is dynamically dispatched
+A type with a virtual destructor performs the call to its own delete from the most derived destructor
+http://en.cppreference.com/w/cpp/memory/new/operator_new
+http://en.cppreference.com/w/cpp/language/delete
+http://en.cppreference.com/w/cpp/memory/new/operator_delete
+
+Я просто подчеркнул разницу между оператором new и выражением new. Их регулярно путают

@@ -1,0 +1,72 @@
+Тред про безопасность исключений
+http://rsdn.ru/forum/cpp/2704484.aspx	
+
+Пара вопросов про полиморфизм
+http://www.rsdn.ru/forum/cpp/2803940.flat.aspx	
+
+Что можно сделать в C, что нельзя в C++
+http://www.rsdn.ru/forum/cpp/1671446.1.aspx
+
+Возвращение по ссылке, реаллокация в веторе (конец треда)
+http://www.rsdn.ru/forum/cpp/1550645.aspx
+
+http://rsdn.ru/forum/message/139904.aspx
+http://rsdn.ru/forum/message/1597816.aspx
+
+http://rsdn.ru/forum/message/3126672.1.aspx
+http://rsdn.ru/Forum/message/3068558.1.aspx
+http://rsdn.ru/forum/message/2993324.1.aspx
+http://rsdn.ru/forum/message/2916641.1.aspx
+
+Матрица компетентности программиста
+http://habrahabr.ru/post/37707/
+
+Align
+http://www.gamedev.ru/community/ps2dev/forum/?id=1189
+
+Очень хороший тред с вопросами на собеседовании
+http://sim0nsays.livejournal.com/8896.html
+
+// Вопросы по CPU optimization
+http://www.techinterviews.com/cpu-engineer-interview-questions
+
+// Несколько вопросов по алгоритмам
+http://www.techinterviews.com/c-algorithm-specific-interview-questions
+
+Вопросы Б.Баткина
+http://blog.gamedeff.com/?p=64
+
+Win32 questions
+http://www.techinterviews.com/microsoft-win32-interview-questions
+
+Intel interview questions
+http://the-name-less-blog.blogspot.ru/2006/02/intel-interview-questions.html
+
+Amazon interview questions
+http://www.techinterviews.com/amazon-interview-questions
+
+Google interview questions
+http://www.techinterviews.com/google-interview-questions
+
+http://www.osp.ru/os/2004/07/184985/
+
+Битовая арифметика (en)
+http://graphics.stanford.edu/~seander/bithacks.html#IntegerLogObvious
+
+Полезные функции (lo lower etc)
+http://www.richelbilderbeek.nl/CppString.htm
+
+Реализация EASTL (от Electronic Arts)
+http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2007/n2271.html
+
+Memory pool examples
+http://www.codeproject.com/Articles/27487/Why-to-use-memory-pool-and-how-to-implement-it
+http://www.codeproject.com/Articles/15527/C-Memory-Pool
+
+http://rsdn.ru//?article/interview/?cpp.xml
+
+http://aruslan.livejournal.com/44635.html
+
+http://www.codenet.ru/progr/cpp/
+http://www.codeproject.com/KB/stl/stl_by_code_walk.aspx
+

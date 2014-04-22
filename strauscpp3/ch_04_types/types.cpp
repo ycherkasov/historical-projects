@@ -1,4 +1,6 @@
 #include <iostream>
+#include <cmath>
+#include <bitset>
 #include "bit_operations.h"
 
 /*
@@ -10,6 +12,7 @@ sizeof(float) <= sizeof(double) <= sizeof(long double)
 sizeof(N) <= sizeof(signed N) <= sizeof(unsigned N)
 */
 
+using std::bitset;
 using std::cout;
 using std::endl;
 
@@ -237,21 +240,81 @@ int show_ifs(int x){
 	return 0;
 }
 
+int my_negate(int i){
+	return ~(i-1);
+}
 
+int my_abs(int i){
+	// x32 specific!
+	return (i & 0x10000000) ? my_negate(i) : i;
+}
 
+// дл€ положительных чисел битовый сдвиг числа вправо на n равносилен целочисленному делению на 2^n
+// јналогично, битовый сдвиг влево на n бит равносилен(дл€ положительных чисел) умножению на 2^n
+int divide_2(int i){
+	return i >> 1;
+}
+
+int multiply_2(int i){
+	return i << 1;
+}
+
+void show_integers(){
+	const int intsize = sizeof(int) * 8;
+	// Ѕитовое представление 1
+	int i = 1;
+	cout << bitset<intsize>(i) << '\n';
+
+	// Ѕитовое представление 2^8
+	i = pow(2, 8);
+	cout << bitset<intsize>(i) << '\n';
+
+	// Ѕитовое представление 2^16
+	i = pow(2, 16);
+	cout << bitset<intsize>(i) << '\n';
+
+	// Ѕитовое представление -1
+	i = -1;
+	cout << bitset<intsize>(i) << '\n';
+
+	// Ѕитовое представление -2
+	i = -2;
+	cout << bitset<intsize>(i) << '\n';
+
+	// ѕроверим ручной negate
+	i = my_negate(1);
+	i = my_negate(-1);
+	i = my_negate(-2);
+
+	// ѕроверим ручной abs
+	i = my_abs(1);
+	i = my_abs(-1);
+	i = my_abs(-2);
+
+	// ѕроверим ручное деление-умножение на 2
+	i = divide_2(10);
+	i = divide_2(64);
+	i = multiply_2(10);
+	i = multiply_2(64);
+}
 
 
 int main(){
 
-	//show_floating_point();
-	//show_cmath_fpoint_operations();
-	show_fp_coltrol();
+	show_floating_point();
+	return 0;
+
+	show_bits();
+	show_integers();
+
 	
+	show_cmath_fpoint_operations();
+	show_fp_coltrol();
 
 	// example from rsdn
 	show_array_pointers();
 
-	show_bits();
+	
 	show_enumerations();
 	show_name_convensions(5);
 	show_pointer();

@@ -319,13 +319,78 @@ void show_memory_pool(){
 
 }
 
+//delete вместо delete[] привеодит к падению, если у типа есть нетривиальный деструктор(почему ? ).
+class class_with_non_trivial_destructor
+{
+private:
+	size_t s;
+	int * data;
+public:
+	class_with_non_trivial_destructor(size_t new_s = 10)
+		:
+		s(new_s)
+	{
+		printf("class_with_non_trivial_destructor\n");
+		data = new int[s];
+	}
+
+	~class_with_non_trivial_destructor()
+	{
+		printf("~class_with_non_trivial_destructor\n");
+		if (data) delete[] data;
+	}
+private:
+	class_with_non_trivial_destructor(const class_with_non_trivial_destructor&);
+	class_with_non_trivial_destructor &
+		operator = (const class_with_non_trivial_destructor&);
+};
+
+//=============================================================================
+void crash()
+{
+	class_with_non_trivial_destructor * bad_array =
+		new class_with_non_trivial_destructor[10];
+
+	// в дебаге срабатывает ассерт _ASSERTE(_BLOCK_TYPE_IS_VALID(pHead->nBlockUse));
+	// в релизе падает
+	delete bad_array;
+}
+//=============================================================================
+// По поводу new[] - в случае, если деструктор нетривиальный, то надо в delete[] знать, 
+// у скольких объектов позвать деструктор.Где же хранить эту информацию, 
+// если delete получает на вход просто указатель, по которому лежит хз сколько объектов ? 
+// Компиляторы обычно хранят эту информацию в 4 - х байтах перед массивом
+void array_size_info()
+{
+	A *pa = new class_with_non_trivial_destructor[100];
+	int *pi = reinterpret_cast<int*>(pa);
+	std::cout << pi[-1];
+	delete[] pa;
+}
+// delete, в отличие от delete[], не знает об этом 4-байтовом смещении, 
+// 
+// Да, и new / delete, и низкоуровневый менеджер памяти(по умолчанию - malloc / free) -
+// это два слоя, которые никак не зависят друго от друга.
+// + 4 байта добавляет компилятор, а не malloc / free, которые библиотека 
+// а не язык(компилятор)и в memory manager при освобождении засовывается не тот указатель, 
+// который он выдал, а смещённый на 4 - ре байта
+
+// Втроая задачка: когда и почему delete на объект приводит к падению из-за забытого виртуального деструктора?
+
 int main(){
+
+	// delete/delete[] crash
+	//crash();
+	//return 0;
+	array_size_info();
 
 	struct_one_name();
 	
 	// should be reproduced in release
 	//show_bad_alloc();
 	//return 0;
+
+	
 
 	show_const_pointers();
 

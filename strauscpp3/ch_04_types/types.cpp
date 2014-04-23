@@ -260,6 +260,9 @@ int multiply_2(int i){
 }
 
 void show_integers(){
+
+	// !!! x86 of today use little - endian storage for all types of data(integer, floating point, BCD)
+
 	const int intsize = sizeof(int) * 8;
 	// Битовое представление 1
 	int i = 1;
@@ -298,6 +301,62 @@ void show_integers(){
 	i = multiply_2(64);
 }
 
+void show_close_enough(){
+
+	// nextafter() returns the next representable value after x in the direction of y
+	double d = 1.0;
+	double e = nextafter(d, 1000.0);
+	if (close_enough(d, e))
+		cout << d << " == " << e << endl;
+
+
+	d = 0.00000000000000000001;
+	e = nextafter(d, 1.0);
+	if (close_enough(d, e))
+		cout << d << " == " << e << endl;
+}
+
+void show_fast_float2int(){
+	float f = 1.0;
+	int i = fast_float2int(f);
+	cout << f << " -> " << i << endl;
+
+	f = 1.1;
+	i = fast_float2int(f);
+	cout << f << " -> " << i << endl;
+
+	f = 1.5;
+	i = fast_float2int(f);
+	cout << f << " -> " << i << endl;
+
+	f = 2.0;
+	i = fast_float2int(f);
+	cout << f << " -> " << i << endl;
+
+	f = 10.0;
+	i = fast_float2int(f);
+	cout << f << " -> " << i << endl;
+}
+
+void show_fast_sqrt(){
+
+	float f = 4.0;
+	float i = Q_rsqrt(f);
+	cout << "sqrt " << f << " = " << 1 / i << endl;
+
+	f = 16.0;
+	i = Q_rsqrt(f);
+	cout << "sqrt " << f << " = " << 1 / i << endl;
+
+	f = 2.0;
+	i = Q_rsqrt(f);
+	cout << "sqrt " << f << " = " << 1 / i << endl;
+
+	f = -1.0;
+	i = Q_rsqrt(f);
+	cout << "sqrt " << f << " = " << 1 / i << endl;
+}
+
 
 int main(){
 
@@ -309,6 +368,10 @@ int main(){
 	show_floating_point();
 	show_cmath_fpoint_operations();
 	show_fp_coltrol();
+
+	show_close_enough();
+	show_fast_float2int();
+	show_fast_sqrt();
 
 	// example from rsdn
 	show_array_pointers();

@@ -252,6 +252,11 @@ void show_float(){
 
 void show_double(){
 
+	// Double slower than float (single-precision)
+	//  On average, on a PC of year 2012 build, 
+	// on CPUs calculations with double precision are 1.1–1.6 times slower than with single precision
+	// on GPUs calculations with double precision are 3 to 8 times slower than float
+
 	// 1.0 = 0 01111111111 0000000000000000000000000000000000000000000000000000
 	// s = 0 (+)
 	// E = 01111111111(2)-1023(10) = 1023-1023 = 0
@@ -298,6 +303,13 @@ void show_double(){
 
 	// 2e9 = 0 10000011101 1101110011010110010100000000000000000000000000000000
 	print_double_binary(2000000000.0);
+
+	//0x 0000 0000 0000 0000 = 0
+	//0x 8000 0000 0000 0000 = -0
+	//0x 7ff0 0000 0000 0000 = Infinity
+	//0x fff0 0000 0000 0000 = -Infinity
+	//0x 7fff ffff ffff ffff = NaN
+
 }
 
 
@@ -709,3 +721,24 @@ int fast_float2int(float x)
 Замерь сам сколько занимает каст и сколько конверсия волшебным числом.
 И кроме того сишный каст и даже инлайн ассемблер(который по определению непереносим) не могут сконвертить к фиксд пойнту.
 */
+
+// http://en.wikipedia.org/wiki/Fast_inverse_square_root
+// return 1/sqrt(number)
+float Q_rsqrt(float number)
+{
+	long i;
+	float x2, y;
+	const float threehalfs = 1.5F;
+
+	x2 = number * 0.5F;
+	y = number;
+	i = *(long *)&y;                       // evil floating point bit level hacking
+	i = 0x5f3759df - (i >> 1);               // what the fuck?
+	y = *(float *)&i;
+	y = y * (threehalfs - (x2 * y * y));   // 1st iteration
+	//      y  = y * ( threehalfs - ( x2 * y * y ) );   // 2nd iteration, this can be removed
+
+	return y;
+}
+
+

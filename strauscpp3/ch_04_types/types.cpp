@@ -301,13 +301,12 @@ void show_integers(){
 
 int main(){
 
-	show_floating_point();
-	return 0;
+	
 
 	show_bits();
 	show_integers();
 
-	
+	show_floating_point();
 	show_cmath_fpoint_operations();
 	show_fp_coltrol();
 

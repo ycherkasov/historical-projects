@@ -99,20 +99,16 @@ void print_double_binary(double d1){
 	long long* double_hack = reinterpret_cast<long long*>(&d1);
 	static_assert(sizeof(d1) == sizeof(*double_hack), "Double and long long should have equal size");
 
-	cout << "Double representation " << d1 << " has size " << sizeof(d1) << '\n';
-	cout << "Long long" << std::hex << *double_hack << " has size " << sizeof(*double_hack) << '\n';
-	cout << "Binary representation of " << *double_hack
-		<< " is " << bitset<sizeof(double)*8>(*double_hack) << '\n';
+	cout << "Binary representation of " << d1 << " =\n\t " << *double_hack
+		<< " =\n\t " << bitset<sizeof(double)*8>(*double_hack) << '\n';
 }
 
 void print_float_binary(float f1){
 	long* float_hack = reinterpret_cast<long*>(&f1);
 	static_assert(sizeof(f1) == sizeof(*float_hack), "Float and long should have equal size");
 
-	cout << "Float representation " << f1 << " has size " << sizeof(f1) << '\n';
-	cout << "Long " << std::hex << *float_hack << " has size " << sizeof(*float_hack) << '\n';
-	cout << "Binary representation of " << *float_hack
-		<< " is " << bitset<sizeof(float)* 8>(*float_hack) << '\n';
+	cout << "Binary representation of " << f1 << " =\n\t " << *float_hack
+		<< " =\n\t " << bitset<sizeof(float)* 8>(*float_hack) << '\n';
 }
 
 // ѕор€док записан со сдвигом - 15. 
@@ -129,62 +125,185 @@ void print_float_binary(float f1){
 //÷елые от 32769 до 65535 округл€ютс€ до ближайшего целого, дел€щегос€ на 32.
 
 
+// Bit access to float
+// http://en.wikipedia.org/wiki/Single-precision_floating-point_format
+// (see russian version)
+// TODO: unclear with extracting mantissa (masks, whatever...)
+
+#if BITWISE_ACCESS_CLEAR
+// fraction same as mantissa 
+template <typename T>
+struct floating_point_traits{};
+
+template <>
+struct floating_point_traits<float>{
+	static const size_t mantissa = 23;
+	static const size_t exponent = 31;
+};
+
+template <>
+struct floating_point_traits<double>{
+	static const size_t mantissa = 52;
+	static const size_t exponent = 63;
+};
+
+// TODO: add masks for double
+template <typename T>
+void extract_fp_components(T val){
+
+	static const size_t exponent = floating_point_traits<T>::exponent;
+	static const size_t fraction = floating_point_traits<T>::mantissa;
+
+	union
+	{
+		T fl;
+		long dw;
+	} f;
+	f.fl = val;
+	int s = (f.dw >> exponent) ? -1 : 1;
+	int e = (f.dw >> fraction) & 0xFF;
+	int m =
+		e ?
+		(f.dw & 0x7FFFFF) | 0x800000 :
+		(f.dw & 0x7FFFFF) << 1;
+
+	e -= 127;
+	cout << "sign = " << s
+		<< " mantissa = " << m
+		<< " exponent = " << e << endl;
+}
+
+void extract_fp_components(float val){
+	
+	static_assert( sizeof(long) == sizeof(float), "sizeof(long) should be equal sizeof(float)" );
+
+	union
+	{
+		float fl;
+		long dw;
+	} f;
+
+	f.fl = val;
+
+	int s = (f.dw >> 31) ? -1 : 1;
+	int e = (f.dw >> 23) & 0xFF;
+	
+	bitset<32> b(0x7FFFFF);
+	cout << b << endl;
+	
+	// сбросить все биты до мантиссы
+	long mask = f.dw & (0x7FFFFF);
+
+	bitset<32> b2(0x800000);
+	cout << b2 << endl;
+
+	long man = mask | 0x800000;
+	int m =
+		e ?
+		(f.dw & 0x7FFFFF) | 0x800000 :
+		(f.dw & 0x7FFFFF) << 1;
+
+	e -= 127;
+}
+#endif // BITWISE_ACCESS_CLEAR
+
 void show_float(){
+
 	// ѕеред мантиссой всегда 1.!
 	// Ёффективный пор€док определ€етс€ как E-127!
+
+	// see float conversion formula at
+	// http://en.wikipedia.org/wiki/Single-precision_floating-point_format
 
 	//       s E        M
 	// 1.0 = 0 01111111 00000000000000000000000
 	// E = 01111111 = 127 - 127 = 0
 	// 1.0 = (-1)^s * 1.M * 2^E = (1-)^0 * 1.000 * 2^0 = 1.0
-	print_float_binary(1.0);
+	float d = 1.0;
+	print_float_binary(d);
+#if BITWISE_ACCESS_CLEAR
+	extract_fp_components(d);
+#endif
 
 	//       s E        M
 	// 1.5 = 0 01111111 10000000000000000000000
 	// E = 01111111 = 127 - 127 = 0
 	// 1.1(2) = 2^0 + 2^(-1) = 1 + 1/2 = 1.5
 	// 1.5 = (-1)^s * 1.M * 2^E = (1-)^0 * 1.1(2) * 2^0 = 1.5
-	print_float_binary(1.5);
+	d = 1.5;
+	print_float_binary(d);
+#if BITWISE_ACCESS_CLEAR
+	extract_fp_components(d);
+#endif
 
 	// 0.15 = 0 01111100 00110011001100110011010
 	// E = 01111100 = 124-127 = -3
 	// 1.00110011001100110011010 = 2^(-3) + 0^(-4) + 0^(-5) + 2^(-5) + 2^(-6) + ...
 	// 0.15 = (-1)^s * 1.M * 2^E = (1-)^0 * 1.00110011001100110011010(2) * 2^(-3) = 1.5
-	print_float_binary(0.15);
+	d = 0.15;
+	print_float_binary(d);
+#if BITWISE_ACCESS_CLEAR
+	extract_fp_components(d);
+#endif
 }
+
+
 
 
 void show_double(){
 
-	// 1.0 = 
+	// 1.0 = 0 01111111111 0000000000000000000000000000000000000000000000000000
+	// s = 0 (+)
+	// E = 01111111111(2)-1023(10) = 1023-1023 = 0
+	// M = 0
+	// 1.0 = s * 1.M * 2^E = 1 * 1.0 * 2^0
 	print_double_binary(1.0);
-
+	
 	// changed sign bit
-	// -1.0 = 
+
+	//-1.0 = 1 01111111111 0000000000000000000000000000000000000000000000000000
+	// s = 1 (-)
+	// E = 01111111111(2)-1023(10) = 1023-1023 = 0
+	// M = 0
+	//-1.0 = s * 1.M * 2^E = -1 * 1.0 * 2^0
 	print_double_binary(-1.0);
 
-	// 1.5 = 
+	// 1.5 = 0 01111111111 1000000000000000000000000000000000000000000000000000
+	// s = 0 (+)
+	// E = 01111111111(2)-1023(10) = 1023-1023 = 0
+	// M = 1(2) = 1 * 2^(-1) = 1/2 = 0.5
+	// 1.0 = s * 1.M * 2^E = 1 * 1.M * 2^0 = 1 * 1.5 * 2^0
 	print_double_binary(1.5);
 
-	// 2.0 = 
+	// 2.0 = 0 10000000000 0000000000000000000000000000000000000000000000000000
+	// s = 0 (+)
+	// E = (2)-1023(10) = 1024-1023 = 1
+	// M = 0
+	// 2.0 = s * 1.M * 2^E = 1 * 1.M * 2^E = 1 * 1.0 * 2^1
 	print_double_binary(2.0);
 
 
-	// 
+	// 1e9 = 0 10000011100 1101110011010110010100000000000000000000000000000000
+	// s = 0 (+)
+	// E = 10000011100(2)-1023(10) = 1052-1023 = 29
+	// M = 1101110011010110010100000000000000000000000000000000
+	// 1.1101110011010110010100000000000000000000000000000000 = 1*2^(-29) + 1*2^(-28) + 0*2^(-27) + ...
+	// 1e9 = s * 1.M * 2^E
 	print_double_binary(1000000000.0);
 
-	// 
+	// etc
+
+	//1.5e9= 0 10000011101 0110010110100000101111000000000000000000000000000000
 	print_double_binary(1500000000.0);
 
-	// 
+	// 2e9 = 0 10000011101 1101110011010110010100000000000000000000000000000000
 	print_double_binary(2000000000.0);
-
 }
 
 
 void show_floating_point(){
 	show_float();
-	//show_double();
+	show_double();
 }
 
 void print_roundings_header(){

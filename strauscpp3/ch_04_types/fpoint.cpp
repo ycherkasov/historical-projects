@@ -128,9 +128,7 @@ void print_float_binary(float f1){
 // Bit access to float
 // http://en.wikipedia.org/wiki/Single-precision_floating-point_format
 // (see russian version)
-// TODO: unclear with extracting mantissa (masks, whatever...)
 
-#if BITWISE_ACCESS_CLEAR
 // fraction same as mantissa 
 template <typename T>
 struct floating_point_traits{};
@@ -173,39 +171,32 @@ void extract_fp_components(T val){
 		<< " exponent = " << e << endl;
 }
 
+// объяснение формата мантиссы
+// http://www.rsdn.ru/forum/cpp/5573790.1
 void extract_fp_components(float val){
-	
-	static_assert( sizeof(long) == sizeof(float), "sizeof(long) should be equal sizeof(float)" );
+
+	static_assert(sizeof(long) == sizeof(float), "sizeof(long) should be equal sizeof(float)");
 
 	union
 	{
 		float fl;
 		long dw;
-	} f;
+	}f;
 
 	f.fl = val;
 
 	int s = (f.dw >> 31) ? -1 : 1;
 	int e = (f.dw >> 23) & 0xFF;
-	
-	bitset<32> b(0x7FFFFF);
-	cout << b << endl;
-	
-	// сбросить все биты до мантиссы
-	long mask = f.dw & (0x7FFFFF);
 
-	bitset<32> b2(0x800000);
-	cout << b2 << endl;
-
-	long man = mask | 0x800000;
 	int m =
 		e ?
 		(f.dw & 0x7FFFFF) | 0x800000 :
 		(f.dw & 0x7FFFFF) << 1;
 
+	cout << std::hex << "s = " << s << "; e =  " << e << "; m = " << m << endl;
 	e -= 127;
 }
-#endif // BITWISE_ACCESS_CLEAR
+
 
 void show_float(){
 
@@ -221,9 +212,8 @@ void show_float(){
 	// 1.0 = (-1)^s * 1.M * 2^E = (1-)^0 * 1.000 * 2^0 = 1.0
 	float d = 1.0;
 	print_float_binary(d);
-#if BITWISE_ACCESS_CLEAR
 	extract_fp_components(d);
-#endif
+
 
 	//       s E        M
 	// 1.5 = 0 01111111 10000000000000000000000
@@ -232,9 +222,7 @@ void show_float(){
 	// 1.5 = (-1)^s * 1.M * 2^E = (1-)^0 * 1.1(2) * 2^0 = 1.5
 	d = 1.5;
 	print_float_binary(d);
-#if BITWISE_ACCESS_CLEAR
 	extract_fp_components(d);
-#endif
 
 	// 0.15 = 0 01111100 00110011001100110011010
 	// E = 01111100 = 124-127 = -3
@@ -242,9 +230,7 @@ void show_float(){
 	// 0.15 = (-1)^s * 1.M * 2^E = (1-)^0 * 1.00110011001100110011010(2) * 2^(-3) = 1.5
 	d = 0.15;
 	print_float_binary(d);
-#if BITWISE_ACCESS_CLEAR
 	extract_fp_components(d);
-#endif
 }
 
 
@@ -544,6 +530,10 @@ void show_cmath_fpoint_operations(){
 
 }
 
+// Switch on access to floating-point environment
+//http://www.cplusplus.com/reference/cfenv/FENV_ACCESS/
+#pragma STDC FENV_ACCESS ON
+
 void show_fp_coltrol(){
 
 	/*
@@ -554,6 +544,8 @@ void show_fp_coltrol(){
 	*/
 
 	// FE_* macro - floating point exceptions and rounding rules
+
+	// 1. State (exception) flags
 	//FE_DIVBYZERO Pole error exception(macro)
 	//FE_INEXACT Inexact result exception(macro)
 	//FE_INVALID Invalid argument exception(macro)
@@ -561,33 +553,45 @@ void show_fp_coltrol(){
 	//FE_UNDERFLOW Underflow range error exception(macro)
 	//FE_ALL_EXCEPT All exceptions(macro)
 
+	// 2. Rounding rules
 	//FE_DOWNWARD Downward rounding direction mode
 	//FE_TONEAREST To - nearest rounding direction mode(macro)
 	//FE_TOWARDZERO Toward - zero rounding direction mode(macro)
 	//FE_UPWARD Upward rounding direction mode(macro)
 
-	// FP exception rules
-
 	int ret = 0;
 
-	// TODO: it seems fenv functions does not work
-	// Check it on Linux!
 	// http://www.intuit.ru/studies/courses/53/53/lecture/1585?page=9
 	// http://ru.wikipedia.org/wiki/Fenv.h
 	// http://www.cplusplus.com/reference/cfenv/
-#if 0
-	// env format depends on implementation
-	fenv_t env;
-	ret = fegetenv(&env);
-	cout << "fegetenv() returned " << ret << ", CTL = " << env._Fe_ctl << ", STAT = " << env._Fe_stat << '\n';
-
-	fexcept_t flag = 0;
-	ret = fegetexceptflag(&flag, FE_ALL_EXCEPT);
 	
-	int mask = FE_ALL_EXCEPT;
-	cout << "fegetexceptflag() returned " << ret << ", mask = " << mask << ", flag = " << flag << '\n';
+	// default FP environment (system-dependent!)
+	fenv_t fenv = *FE_DFL_ENV;
 
-#endif
+	ret = fegetenv(&fenv);
+	cout << "fegetenv() returned " << ret << endl;
+
+	// pair function setting fenv_t
+	//fesetenv(&fenv)
+
+	// Attempts to clear the floating-point exceptions specified
+	feclearexcept(FE_ALL_EXCEPT);
+
+	// feholdexcept() saves exception flags clears 
+	double x = sin(0.0); // = 0
+	fenv_t fe;
+	feholdexcept(&fe);
+	x = log(x); // should raise exception, but fenv is clear
+
+	// Функция feupdateenv() выполняет еще более сложные действия. 
+	// Она сохраняет в своей локальной памяти информацию о текущей исключительной ситуации, 
+	// устанавливает новую среду по аргументу fenvp и затем пытается возбудить в ней сохраненное исключение.
+	// Подобные манипуляции полезны, когда массовые вычисления производятся в безостановочном режиме, 
+	// а затем режим меняется и обрабатывается все то нехорошее, что накопилось за это время.
+	feupdateenv(&fe);
+	cout << "log 0 = " << x << endl;
+	if (!fetestexcept(FE_ALL_EXCEPT))
+		cout << "no exceptions raised" << endl;
 }
 
 /*
@@ -659,13 +663,13 @@ bool close_enough(double a, double b){
 /*
 Оказалось что очень просто работает. Флоаты в IEEE стандарте лежат так - в младших битах мантиса, 
 потом экспонента со смещением, и самый старший - знак. Вся соль фокуса в том, как лежит мантиса - 
-лежит она без целой части, которая всеравно всегда единица. Зная это можно сконвертировать вообще 
+лежит она без целой части, которая все равно всегда единица. Зная это можно сконвертировать вообще 
 без плавающих операций - дописать единичку и сдвинуть мантису вправо на столько разрядов, 
 сколько всего в мантисе минус то, что в экспоненте и, в случае отрицательного числа, 
 отнять полученное от нуля. Эт конечно гимморой, но, к великому счастью, такие операции делает сам ФПУ.
 
 Во-первых сдвиг ФПУ делает, когда хочит провести какую - нибудь операцию над двумя аргументами 
-с разными экспонентами и двигает мантису меньшего числа вправо пока экспонента у него не повыстися 
+с разными экспонентами и двигает мантису меньшего числа вправо пока экспонента у него не повысится 
 до экспоненты большего числа. То есть двигает вправо на разницу, если поставить экспоненту в большем 
 числе равной числу разрядов в мантисе то как раз будет сдвиг на столько разрядов, сколько надо!
 Приведу пример в десятичной системе : допустим у нас есть 5 разрядов мантисы и есть число 36.72, 
@@ -724,7 +728,7 @@ int fast_float2int(float x)
 
 // http://en.wikipedia.org/wiki/Fast_inverse_square_root
 // return 1/sqrt(number)
-float Q_rsqrt(float number)
+float quick_rsqrt(float number)
 {
 	long i;
 	float x2, y;

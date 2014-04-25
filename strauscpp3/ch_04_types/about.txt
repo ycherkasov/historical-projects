@@ -7,13 +7,8 @@ wchar_t (_t - наследие от ANSI C)
 Битовые операции.
 
 Вопросы: 
-1. Как работает шаблон побитового доступа из
-http://en.wikipedia.org/wiki/Single-precision_floating-point_format
-(см. русская версия страницы)
 
 TODO
-1. fenv.h functions does not work on MSVC. Check it on Linux, maybe ask on the forum.
-(see show_fp_coltrol() in fpoint.cpp)
 2. Пример с приведением к fixed point (fpoint.cpp)
 
 

@@ -341,19 +341,19 @@ void show_fast_float2int(){
 void show_fast_sqrt(){
 
 	float f = 4.0;
-	float i = Q_rsqrt(f);
+	float i = quick_rsqrt(f);
 	cout << "sqrt " << f << " = " << 1 / i << endl;
 
 	f = 16.0;
-	i = Q_rsqrt(f);
+	i = quick_rsqrt(f);
 	cout << "sqrt " << f << " = " << 1 / i << endl;
 
 	f = 2.0;
-	i = Q_rsqrt(f);
+	i = quick_rsqrt(f);
 	cout << "sqrt " << f << " = " << 1 / i << endl;
 
 	f = -1.0;
-	i = Q_rsqrt(f);
+	i = quick_rsqrt(f);
 	cout << "sqrt " << f << " = " << 1 / i << endl;
 }
 

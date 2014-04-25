@@ -63,10 +63,13 @@ Memory pool examples
 http://www.codeproject.com/Articles/27487/Why-to-use-memory-pool-and-how-to-implement-it
 http://www.codeproject.com/Articles/15527/C-Memory-Pool
 
-http://rsdn.ru//?article/interview/?cpp.xml
+Exception safety
+http://users.livejournal.com/_winnie/32542.html
+
 
 http://aruslan.livejournal.com/44635.html
 
 http://www.codenet.ru/progr/cpp/
+
 http://www.codeproject.com/KB/stl/stl_by_code_walk.aspx
 

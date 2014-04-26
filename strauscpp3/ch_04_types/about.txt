@@ -7,6 +7,10 @@ wchar_t (_t - наследие от ANSI C)
 Битовые операции.
 
 Вопросы: 
+1. Разобраться с быстрым приведением float->int, double->int
+* Статья Хеккера в cpp_base
+* http://stereopsis.com/sree/fpu2006.html
+2. Разобраться с floating point exvironment/exception
 
 TODO:
 

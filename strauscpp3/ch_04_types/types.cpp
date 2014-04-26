@@ -319,23 +319,32 @@ void show_close_enough(){
 void show_fast_float2int(){
 	float f = 1.0;
 	int i = fast_float2int(f);
+	int i1 = fast_float2int_debug(f);
 	cout << f << " -> " << i << endl;
+	
 
 	f = 1.1;
 	i = fast_float2int(f);
+	i1 = fast_float2int_debug(f);
 	cout << f << " -> " << i << endl;
 
 	f = 1.5;
 	i = fast_float2int(f);
+	i1 = fast_float2int_debug(f);
 	cout << f << " -> " << i << endl;
 
 	f = 2.0;
 	i = fast_float2int(f);
+	i1 = fast_float2int_debug(f);
 	cout << f << " -> " << i << endl;
 
 	f = 10.0;
 	i = fast_float2int(f);
 	cout << f << " -> " << i << endl;
+
+	double d = 1.0;
+	i = fast_double2int(d);
+	cout << d << " -> " << i << endl;
 }
 
 void show_fast_sqrt(){

@@ -380,6 +380,8 @@ void array_size_info()
 
 
 void show_ref_count(){
+
+
 	rc_string s1("Skotobaza");
 	rc_string s2(s1);
 	const rc_string s3 = s1;
@@ -388,6 +390,13 @@ void show_ref_count(){
 	const char c1 = s1[0];
 	const char c2 = s3[0];
 	char c3 = s2[0];
+
+	rc_string ss1("Komatoza");
+	char* p = &ss1[0];
+	rc_string ss2 = ss1;
+	// without 'shared' flag both version have changed
+	*p = 'C';
+
 }
 
 int main(){

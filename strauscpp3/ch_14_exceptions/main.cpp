@@ -27,6 +27,8 @@ void show_base_type_ex(int b){
 	else
 		throw double(0.);
 	// Лучше не кидать исключения базовых типов
+	// и не выделять память из кучи
+	//throw new int(1);
 }
 
 void show_base_type(){
@@ -39,6 +41,10 @@ void show_base_type(){
 	}
 	catch (const double e) {
 		cout << "double " << e << endl;
+	}
+	// эта конструкция ловит вообще все исключения по указателю!
+	catch (const void* p){
+		delete p;
 	}
 
 }

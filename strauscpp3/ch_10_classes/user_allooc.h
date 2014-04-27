@@ -53,6 +53,11 @@ void NewHandlerSupport<T>::no_more_memory(){
 	throw bad_alloc();
 }
 
+// Мейерс 2 Правило 8
+// Различайте оператор new - он выделяет память и вызывает конструктор. Его переопределять нельзя
+// и функцию operator new() - она изменяет способ выделения памяти, и переопределять ее можно
+// Аналогично с оператором delete и функцией operator delete()
+
 
 template <typename T>
 void* NewHandlerSupport<T>::operator new(size_t sz)

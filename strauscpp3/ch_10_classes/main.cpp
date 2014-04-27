@@ -4,6 +4,7 @@
 #include "word_counter.h"
 #include "new_forms.h"
 #include "memory_pool.h"
+#include "ref_count.h"
 
 #include <iostream>
 
@@ -362,7 +363,7 @@ void crash()
 // Компиляторы обычно хранят эту информацию в 4 - х байтах перед массивом
 void array_size_info()
 {
-	A *pa = new class_with_non_trivial_destructor[100];
+	class_with_non_trivial_destructor *pa = new class_with_non_trivial_destructor[100];
 	int *pi = reinterpret_cast<int*>(pa);
 	std::cout << pi[-1];
 	delete[] pa;
@@ -377,7 +378,22 @@ void array_size_info()
 
 // Втроая задачка: когда и почему delete на объект приводит к падению из-за забытого виртуального деструктора?
 
+
+void show_ref_count(){
+	rc_string s1("Skotobaza");
+	rc_string s2(s1);
+	const rc_string s3 = s1;
+	s2 = s3;
+
+	const char c1 = s1[0];
+	const char c2 = s3[0];
+	char c3 = s2[0];
+}
+
 int main(){
+	
+	show_ref_count();
+	return 0;
 
 	// delete/delete[] crash
 	//crash();

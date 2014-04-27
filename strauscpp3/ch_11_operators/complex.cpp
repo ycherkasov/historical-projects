@@ -103,6 +103,14 @@ const complex_t operator-( const complex_t& a, const complex_t& b ){
 	return tmp -= b;
 }
 
+// в коммутативных операторах для повышения производительности иногда стоит отказаться от неявных приведений
+// Т.е. явно оперделить
+// const complex_t operator+( const complex_t& a, int b )
+// const complex_t operator+( int a, const complex_t& b )
+// const complex_t operator+( const complex_t& a, double b )
+// ...
+// или воспользоваться шаблоном и специализациями
+
 complex_t& get_cache()
 {
 	static const int cache_size = 10;

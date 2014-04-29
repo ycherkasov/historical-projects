@@ -378,30 +378,33 @@ void array_size_info()
 
 // Втроая задачка: когда и почему delete на объект приводит к падению из-за забытого виртуального деструктора?
 
-
+template <typename RCString>
 void show_ref_count(){
 
-
-	rc_string s1("Skotobaza");
-	rc_string s2(s1);
-	const rc_string s3 = s1;
+	RCString s1("Skotobaza");
+	RCString s2(s1);
+	const RCString s3 = s1;
 	s2 = s3;
 
+	// in that point ref count == 3
 	const char c1 = s1[0];
+	// detached s1, s1.ref_count == 1
 	const char c2 = s3[0];
+	// previous operation is non-modifying
 	char c3 = s2[0];
+	// detached s2 as well
 
-	rc_string ss1("Komatoza");
+	RCString ss1("Komatoza");
 	char* p = &ss1[0];
-	rc_string ss2 = ss1;
+	RCString ss2 = ss1;
 	// without 'shared' flag both version have changed
 	*p = 'C';
-
 }
 
 int main(){
 	
-	show_ref_count();
+	show_ref_count<rc_string>();
+	show_ref_count<rc_string2>();
 	return 0;
 
 	// delete/delete[] crash

@@ -5,6 +5,7 @@
 #include "new_forms.h"
 #include "memory_pool.h"
 #include "ref_count.h"
+#include "proxy.h"
 
 #include <iostream>
 
@@ -380,7 +381,7 @@ void array_size_info()
 
 template <typename RCString>
 void show_ref_count(){
-
+	using namespace meyers_refcount;
 	RCString s1("Skotobaza");
 	RCString s2(s1);
 	const RCString s3 = s1;
@@ -401,11 +402,26 @@ void show_ref_count(){
 	*p = 'C';
 }
 
+void show_proxy(){
+	using namespace meyers_proxy;
+	rc_string2 s1("Skotobaza");
+	rc_string2 s2(s1);
+	const rc_string2 s3 = s1;
+	s2 = s3;
+
+	// all these operations do not detach value now
+	const char c1 = s1[0];
+	const char c2 = s3[0];
+	char c3 = s2[0];
+
+	// detach s2
+	s2[0] = 'C';
+
+	// detach s1
+	s1[1] = s2[0];
+}
+
 int main(){
-	
-	show_ref_count<rc_string>();
-	show_ref_count<rc_string2>();
-	return 0;
 
 	// delete/delete[] crash
 	//crash();
@@ -417,8 +433,6 @@ int main(){
 	// should be reproduced in release
 	//show_bad_alloc();
 	//return 0;
-
-	
 
 	show_const_pointers();
 
@@ -442,6 +456,9 @@ int main(){
 	show_new2();
 	show_new_delete();
 
+	show_ref_count<meyers_refcount::rc_string>();
+	show_ref_count<meyers_refcount::rc_string2>();
+	show_proxy();
 
 	return 0;
 }

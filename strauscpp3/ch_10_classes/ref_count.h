@@ -1,10 +1,13 @@
 #pragma once
 #include <cstring>
 
+
+namespace meyers_refcount {
+
 // See Meyers 2-29
 // Ref count string example
 
-class rc_string{
+class rc_string {
 public:
 
 	// constructor from char, crates a new string
@@ -275,3 +278,5 @@ private:
 
 	rc_ptr<string_value> _value;
 };
+
+} //namespace meyers_refcount

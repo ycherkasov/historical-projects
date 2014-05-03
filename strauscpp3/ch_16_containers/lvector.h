@@ -13,7 +13,7 @@ public:
 	/** ветор размером n*/
 	lvector(int n);
 
-	/** ветор */
+	/** вектор */
 	lvector(int n, const T& x);
 	lvector(const lvector& v);
 	~lvector();
@@ -43,11 +43,11 @@ public:
 			--m_p;
 			return *this;
 		}
-		bool operator==(const iterator& it)
+		bool operator==(const iterator& it) const
 		{
 			return m_p == it.m_p;
 		}
-		bool operator!=(const iterator& it)
+		bool operator!=(const iterator& it) const
 		{
 			return m_p != it.m_p;
 		}
@@ -62,38 +62,34 @@ public:
 	}
 };
 
-template<typename T> lvector<T>::lvector()
+template<typename T> 
+lvector<T>::lvector() :m_p(), m_n(){}
+
+template<typename T> 
+lvector<T>::lvector(int n) : m_p(new T[n]), m_n(n){}
+
+template<typename T> 
+lvector<T>::lvector(int n, const T& x) : m_p(new T[n]), m_n(n)
 {
-	m_p = 0;
-	m_n = 0;
+	for(int i = 0; i < n; i++) 
+		m_p[i] = x;
 }
 
-template<typename T> lvector<T>::lvector(int n)
+template<typename T> 
+lvector<T>::lvector(const lvector& v) : m_p(new T[n]), m_n(n)
 {
-	m_n = n;
-	m_p = new T[m_n];
+	for(int i = 0; i < m_n; i++) 
+		m_p[i] = v.m_p[i];
 }
 
-template<typename T> lvector<T>::lvector(int n, const T& x)
-{
-	m_n = n;
-	m_p = new T(x)[m_n];
-  //for(int i = 0; i < n; i++) m_p[i] = x;
-}
-
-template<typename T> lvector<T>::lvector(const lvector& v)
-{
-	m_n = v.m_n;
-	m_p = new T[m_n];
-	for(int i = 0; i < m_n; i++) m_p[i] = v.m_p[i];
-}
-
-template<typename T> lvector<T>::~lvector()
+template<typename T> 
+lvector<T>::~lvector()
 {
 	delete[] m_p;
 }
 
-template<typename T> void lvector<T>::clear()
+template<typename T> 
+void lvector<T>::clear()
 {
 	delete m_p[];
 	m_n = 0;
@@ -107,18 +103,21 @@ template<typename T> int lvector<T>::size()
 
 template<typename T> T& lvector<T>::front()
 {
-	if(m_n) return *m_p;
+	if(m_n) 
+		return *m_p;
 }
 
 template<typename T> T& lvector<T>::back()
 {
-	if(m_n) return m_p[m_n - 1];
+	if(m_n) 
+		return m_p[m_n - 1];
 }
 
 template<typename T> T& lvector<T>::at(int n)
 {
-	if((i>0) && (i<m_n)) return m_p[i];
-	else throw std::out_of_range();
+	if((i>0) && (i<m_n))
+		return m_p[i];
+	throw std::out_of_range();
 }
 
 template<typename T> T& lvector<T>::operator[](int n)
@@ -128,8 +127,10 @@ template<typename T> T& lvector<T>::operator[](int n)
 
 template<typename T> void lvector<T>::push_back(const T& t)
 {
+	// reallocate every push_back!
 	T* pNew = new T[m_n + 1];
-	for(int i = 0; i < m_n; i++) pNew[i] = m_p[i];
+	for(int i = 0; i < m_n; i++) 
+		pNew[i] = m_p[i];
 	pNew[m_n++] = t;
 	delete[] m_p;
 	m_p = pNew;

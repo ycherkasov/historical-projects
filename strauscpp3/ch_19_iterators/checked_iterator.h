@@ -70,13 +70,11 @@ public:
 
 	// Функции итератора - operator[]
 	reference operator[]( difference_type d ) const {
-		if(  
-			// если при индексации уезжаем за конец или хотя бы достигаем его
-			( ( cont->end() - iter) <= d  ) || 
+		// если при индексации уезжаем за конец или хотя бы достигаем его
+		if( ( ( cont->end() - iter) <= d  ) || 
 			// или до начала
 			(d < -(iter  - cont->begin()) ) ){ 
-
-				throw std::out_of_range("OOR");	// исключение
+				throw_oor();
 		}
 		// Создать итератор
 		return iter[d];

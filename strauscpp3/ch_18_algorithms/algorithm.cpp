@@ -7,22 +7,22 @@
 #include <iostream>
 #include <iterator>
 #include <cstdlib>
-
-// Учебно-методический комплекс для изучения и исследования стандартной библиотеки C++ STL
+#include <cctype>       // std::tolower
 
 using namespace std;
 typedef vector<int> v_int;
 typedef vector<int>::iterator v_iit;
 
-template<typename T>
-void print_vector(const vector<T>& l){
-	vector<T>::const_iterator it = l.begin();
-	while( it != l.end() ){
+template<typename T, template <typename ELEM, typename = std::allocator<ELEM> > class CONT >
+void print_container(const CONT<T>& c){
+	CONT<T>::const_iterator it = c.begin();
+	while (it != c.end()){
 		cout << (*it) << ' ';
 		++it;
 	}
 	cout << endl;
 }
+
 
 /// Pair values extraction functor
 /// Extracts 1-st value (key)
@@ -148,7 +148,7 @@ void show_modif(){
 	// Использование вставок не позволяет выйти за пределы контейнера 
 	// и позволяет удобно записывать в конец
 	vector<int> v_copy;
-	copy(vi.begin(), vi.end(),back_inserter(v_copy));
+	copy(vi.begin(), vi.end(), back_inserter(v_copy));
 
 	// Входная и выходная последовательности могут перекрываться
 	// Если начало ВЫХОДНОЙ последовательности находится ВНУТРИ ВХОДНОЙ
@@ -222,21 +222,21 @@ void show_modif(){
 	// Семейство remove перемещает элементы (в последовательности или вне ее),
 	// основываясь на значении или предикате
 	// Простой remove просто записывает в начало (или конец???) последовательности (удалять вручную)
-	print_vector(vi);
+	print_container(vi);
 	v_iit it = remove( vi.begin(), vi.end(), 5 );
-	print_vector(vi);
+	print_container(vi);
 	// todo : print vector
 
 	// remove_if - по предикату
 	it = remove_if( vi.begin(), vi.end(), bind2nd( less<int>(), 4 ) );
-	print_vector(vi);
+	print_container(vi);
 	// todo : print vector
 
 	// remove_copy_if - эдемент помещается на выход, 
 	// если он не удовлетворяет условию по предикату
 	vector<int> vi3;
 	remove_copy_if( vi1.begin(), vi1.end(), back_inserter(vi3), bind2nd( less<int>(), 2 ) );
-	print_vector(vi3);
+	print_container(vi3);
 
 	// --- fill,fill_n ---
 	// Семейство функций заполняет значениями контейнер
@@ -343,7 +343,7 @@ void show_sort(){
 	// lower_bound и upper_bound - возвращают
 	// верхнюю и нижнюю границу одинаковых элементов 
 	// отсортированной последовательности
-	v_iit it =lower_bound(vi.begin(), vi.end(),7);
+	v_iit it = lower_bound(vi.begin(), vi.end(),7);
 	it = upper_bound(vi.begin(), vi.end(),7);
 
 	// --- merge,inplace_merge --- 
@@ -375,13 +375,41 @@ void show_sort(){
 // make_heap, sort_heap
 // push_heap, pop_heap
 void show_heap(){
+	
+	// на основе кучи строится priority_queue
 
+	vector<int> v({ 0, 2, 5, 1, 5, 3, 8, 3, 6, 5 });
+	print_container(v);
+
+	// сделать из вектора кучу
+	make_heap(v.begin(), v.end());
+	print_container(v);
+
+	// внести элемент в кучу
+	// вносится всегда последний элемент
+	v.push_back(3);	
+	push_heap(v.begin(), v.end());
+	print_container(v);
+
+	// вынести элемент из кучи
+	// выносится тоже последний элемент
+	pop_heap(v.begin(), v.end());
+	v.pop_back();
+	print_container(v);
+
+	// отсортировать кучу (после сортировки последовательногсть перестает быть кучей)
+	sort_heap(v.begin(), v.end());
+	print_container(v);
 }
 
 
 // --------------- Min|Max --------------- 
 // min, max, max_element, min_element
 // lexigraphical_compare
+bool no_case(char c1, char c2){
+	return std::tolower(c1) < std::tolower(c2);
+}
+
 void show_min_max(){
 	// --- min, max, max_element, min_element ---
 	double m = max(1.2, 2.5);
@@ -394,8 +422,10 @@ void show_min_max(){
 	const char* A = "AAA";
 
 	// lexigraphical_compare - сравнение строк
+	// true if the first range compares lexicographically less than than the second.
+	// false otherwise(including when all the elements of both ranges are equivalent).
 	bool diff = lexicographical_compare(a , a + strlen(a), b , b + strlen(b) );
-	diff = lexicographical_compare(a , a + strlen(a), A , b + strlen(A)/*, no_case()*/ );
+	diff = lexicographical_compare(a, a + strlen(a), A, A + strlen(A), no_case);
 }
 
 // ------------------- Set -------------------
@@ -408,8 +438,10 @@ void show_set(){
 	// особенно эффективны с контейнерами set и multiset
 	int arr[] =  { 0,4,1,9,3,7,3,7,3,8 };
 	int arr1[] = { 7,3,7,4,5,2,8,8,0,4 };
+
 	set<int> s( arr, arr + sizeof(arr)/sizeof(int) );
 	multiset<int> ms( arr1, arr1 + sizeof(arr1)/sizeof(int) );
+	set<int> s1(ms.begin(), ms.end());
 
 	// --- includes ---
 	// Проверяет, являются ли все члены первой последовательности
@@ -418,20 +450,25 @@ void show_set(){
 
 	// --- set_union, set_intersection ---
 	// Объединение и пересечение соответственно 
-	multiset<int> union_out;
-	multiset<int> intersection_out;
-	//set_union(s.begin(), s.end(),ms.begin(), ms.end(), union_out.begin() ); (??? wtf)
-	//set_intersection(s.begin(), s.end(),ms.begin(), ms.end(), intersection_out.begin() );(??? wtf)
+	vector<int> union_out;
+	vector<int> intersection_out;
+	set_union(s.begin(), s.end(), s1.begin(), s1.end(), back_inserter(union_out)); //(??? wtf)
+	set_intersection(s.begin(), s.end(), ms.begin(), ms.end(), back_inserter(intersection_out));
 
 	// --- set_difference, set_symmetric_difference ---
-	multiset<int> diff_out;
-	multiset<int> symm_out;
+	vector<int> diff_out;
+	vector<int> symm_out;
+
+	vector<int> v1(arr, arr + sizeof(arr) / sizeof(int));
+	vector<int> v2(arr1, arr + sizeof(arr1) / sizeof(int));
+	sort(v1.begin(), v1.end());
+	sort(v2.begin(), v2.end());
 
 	// set_difference - последовательность входящих в первую, но не входящих во вторую элементов
-	//set_difference(s.begin(), s.end(),ms.begin(), ms.end(), diff_out.begin() );(??? wtf)
+	set_difference(v1.begin(), v1.end(), v2.begin(), v2.end(), back_inserter(diff_out));
 
 	// set_symmetric_difference - последовательность входящих в только одну из последовательностей элементов
-	//set_symmetric_difference(s.begin(), s.end(),ms.begin(), ms.end(), symm_out.begin() );(??? wtf)
+	set_symmetric_difference(v1.begin(), v1.end(), v2.begin(), v2.end(), back_inserter(symm_out));
 }
 
 // --------------- Permutations --------------- 
@@ -449,8 +486,8 @@ void show_permutations(){
 // --------------- C algorithms --------------- 
 // qsort, bsearch
 int c_compare( const void* arg1, const void* arg2 ){
-	/* Compare all of both strings: */
-	return (*static_cast<const int*>(arg1)) > (*static_cast<const int*>(arg2));
+	/* Compare by subtracting (ret>0, ret==0, ret<0)*/
+	return (*static_cast<const int*>(arg1)) - (*static_cast<const int*>(arg2));
 }
 
 void c_algorithms(){

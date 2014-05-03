@@ -38,20 +38,20 @@ void binders_test()
 	vector<int>::iterator::difference_type result1a
 		 = count_if(v1.begin(), v1.end(), bind1st(less<int>(), 10));
 
-	cout << "The number of elements in v1 greater than 10 is: "
+	cout << "The number of elements in v1 less than 10 is: "
 		<< result1a << "." << endl;
 
 	// Количество целых > 5
 	vector<int>::iterator::difference_type result1b
 		 = count_if(v1.begin(), v1.end(), greaterthan5());
 	
-	cout << "The number of elements in v1 greater than 15 is: "
+	cout << "The number of elements in v1 greater than 5 is: "
 		<< result1b << "." << endl;
 
 	// Количество целых < 10
 	vector<int>::iterator::difference_type result2
-		= count_if(v1.begin(), v1.end(), bind2nd(less<int>(), 10));
+		= count_if(v1.begin(), v1.end(), bind2nd(greater<int>(), 10));
 	
-	cout << "The number of elements in v1 less than 10 is: "
+	cout << "The number of elements in v1 greater than 10 is: "
 		<< result2 << "." << endl;
 }

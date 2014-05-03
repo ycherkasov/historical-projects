@@ -67,8 +67,6 @@ void show_functors(){
 	vshape1.push_back(circle(20));
 	vshape1.push_back(circle(30));
 	for_each( vshape1.begin(), vshape1.end(), mem_fun_ref( &circle::draw ) );
-
-	
 }
 
 // --------------- Предикаты --------------- 

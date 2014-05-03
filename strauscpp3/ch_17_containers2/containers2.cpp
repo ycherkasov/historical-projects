@@ -14,10 +14,10 @@
 
 using namespace std;
 
-template<typename T>
-void print_list(const list<T>& l){
-	list<T>::const_iterator it = l.begin();
-	while( it != l.end() ){
+template<typename T, template <typename ELEM, typename = std::allocator<ELEM> > class CONT >
+void print_container(const CONT<T>& c){
+	CONT<T>::const_iterator it = c.begin();
+	while( it != c.end() ){
 		cout << (*it) << ' ';
 		++it;
 	}
@@ -28,17 +28,7 @@ template<typename TKey, typename TVal>
 void print_map(const map<TKey, TVal>& m	) {
 	map<TKey, TVal>::const_iterator it = m.begin();
 	while( it != m.end() ) {
-		cout << (*it).first << '/t' << (*it).second;
-		++it;
-	}
-	cout << endl;
-}
-
-template<typename TKey>
-void print_map(const map<TKey, string>& m ){
-	map<TKey, string>::const_iterator it = m.begin();
-	while( it != m.end() ) {
-		cout << (*it).first << '\t' << (*it).second.c_str() ;
+		cout << (*it).first << '=/t' << (*it).second;
 		++it;
 	}
 	cout << endl;
@@ -69,6 +59,18 @@ const std::string string_to_lower(const std::string& s) {
 template<typename T>
 struct no_case: public binary_function<T, T, bool>{};
 
+template<>
+struct no_case<const char*>
+	: public binary_function<const char*, const char*, bool>{
+	bool operator()(const char* ls, const char* rs) const
+	{
+		do{
+			if (tolower(*ls) != tolower(*rs))
+				return false;
+		} while (*(++ls) && *(++rs));
+		return true;
+	}
+};
 
 template<>
 struct no_case<string>
@@ -108,13 +110,13 @@ void show_list(){
 	list<int> l1;
 	l.assign(arr, arr + sizeof(arr)/sizeof(int));
 	l1.assign(vi1.begin(), vi1.begin() + vi1.size());
-	print_list(l);
-	print_list(l1);
+	print_container(l);
+	print_container(l1);
 
 	// Используйте встроенную сортировку списка вместо алгоритма
 	// т.к. алгоритм требует рандомные итераторы
 	l.sort();
-	print_list(l);
+	print_container(l);
 
 	list<string> ls;
 	list<string> ug;
@@ -122,7 +124,7 @@ void show_list(){
 	ls.push_back("chake");
 	ls.push_back("leonide");
 	ug.push_back("ermakove");
-	print_list(ls);
+	print_container(ls);
 
 	// Операция "удалить и вставить"
 	// Может принимать данные из списков
@@ -130,17 +132,17 @@ void show_list(){
 
 	// куда вставить, какой список вставить
 	ls.splice(ls.begin(), ug);
-	print_list(ls);
+	print_container(ls);
 
 	// куда вставить, из какого списка, какой элемент
 	ug.splice(ug.begin(), ls, ls.begin() );
-	print_list(ug);
+	print_container(ug);
 
 	// куда вставить, из какого списка, с какого по какой элемент 
 	// (найдем первый элемент, у которого первая буква 'c' и вставим с начала по этот элемент)
 	list<string>::iterator p = find_if(ls.begin(), ls.end(), initial('c'));
 	ug.splice(ug.begin(), ls, ls.begin(), p );
-	print_list(ug);
+	print_container(ug);
 
 	// Так - ошибка, потому что не рандомный итератор
 	//ug.splice(ug.begin(), ls, ls.begin(), ls.begin()+2 );
@@ -155,7 +157,7 @@ void show_list(){
 	// то лучше предпочитать операции с конца - 
 	// тогда список можно заменить, например, на вектор
 
-	// обмен векторов - также дешевая операция, не происходит копирования
+	// обмен списков - также дешевая операция, не происходит копирования
 	ug.swap(ls);
 
 	// слияние отсортированных списков с сохранением порядка:
@@ -179,7 +181,6 @@ void show_list(){
 	// Сортировка с предикатом no_case
 	ls.sort( no_case<string>() );
 
-	// !!! Непонятно, вернуться сюда:
 	// удалить последовательные повторы,
 	// удовлетворяющие предикату
 	ls.unique( initial2('o') );
@@ -193,6 +194,13 @@ void show_list(){
 	// первый и последний
 	string first = ls.front();
 	string last = ls.back();
+	
+	// Списки наиболее надежны в плане исключений
+	// Базовую гарантию предоставляет только sort()
+	// все остальные операции предоставляют сильную
+	// При этом предикаты не должны кидать исключений
+	
+	// Итераторы списка всегда валидны
 }
 
 // ------------ deque ------------ 
@@ -203,7 +211,7 @@ void show_deque(){
 	deque<int> d;
 	d.insert(d.begin(),arr,arr + sizeof(arr)/sizeof(int));
 	int a = d.at(1);
-
+	// Гарантии исключений аналогичный вектору
 }
 
 // ------------ Адаптеры последовательностей ------------ 
@@ -232,12 +240,13 @@ void show_adapters(){
 	q1.pop();
 	
 	// --- Очередь с приоритетом
+	// По умолчанию основана на heap
 	priority_queue<int> pq1;
 	pq1.push(1);
 	pq1.push(9);
 	pq1.push(2);
 	pq1.push(8);
-	pq1.pop();
+	pq1.pop();	// выталкивается наибольший!
 	pq1.push(5);
 	pq1.pop();
 	pq1.pop();
@@ -253,7 +262,7 @@ void show_adapters(){
 	pq2.push("shmele");
 	pq2.pop();
 
-	// Очередь с катомным контейнером и предикатом сравнения
+	// Очередь с кастомным контейнером и предикатом сравнения
 	priority_queue<string, deque<string>, no_case<string> > pq3;
 	pq3.push("AaAa");
 	pq3.push("aaaa");
@@ -295,6 +304,9 @@ void show_map()
 	// map требует наличия у элемента операции <
 	// unordered(hash) map требует наличия  !=
 
+	// ключи map (и элементы set) напрямую менять нельзя
+	// нужно удалить старый и вставить новый
+
 	_insert_to_map<is_map, int, string>(m1,1,s1);
 	_insert_to_map<is_map, int, string>(m1,1,s1);
 
@@ -307,6 +319,11 @@ void show_map()
 
 	pair<is_map_it, bool> p = m1.insert( make_pair(2,"chake") );
 	p = m1.insert( make_pair(2,"chake2!") );
+
+	// Предикат сортировки может быть передан параметром конструктора
+	// Это позволяет задавать предикат в runtime
+	si_nocase_map pred;
+	map<string, int, si_nocase_map> mm(pred);
 
 	// При вставке элемента можно указать, после какого элемента его лучше вставить
 	// При больших объемах данных это может быть полезно
@@ -324,14 +341,12 @@ void show_map()
 	string s = m1[2];
 
 	// Когда ключ по операции [] не находится,
-	// создается знаяение по умолчанию
+	// создается значение по умолчанию
 	// создать новый индекс с пустым значением
 	s = m1[3];
 	
 	// создать новый индекс со значением
 	m1[4] = "leonide";
-
-	// todo : пример с nocase
 
 	// Если у элемента пары нет конструктора по умолчанию,
 	// его всегда нужно инициализировать явно
@@ -352,18 +367,16 @@ void show_map()
 	// - по одному
 	m1.erase( m1.find(1) );
 
-	// - диапазонами
+	// - диапазонами [)
 	m1.erase( m1.find(2), m1.find(3) );
+	// после вызова erase() итераторы, указывавшие на них,
+	// инвалидируются
 
 	size_t sz = m1.size();
-	sz = m1.max_size();
+	size_t msz = m1.max_size();
+	// map и set предоставляют сильную гарантию исключений,
+	// кроме вставок нескольких элементов (какое-то количество может вставиться)
 }
-
-// Подсчет слов в файле
-void show_map2(){
-
-}
-
 
 // ------------ set ------------ 
 void show_set(){

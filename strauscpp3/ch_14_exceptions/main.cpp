@@ -106,6 +106,61 @@ void show_simple_ex(){
 	delete pt1;
 }
 
+void complex_object_exception(){
+
+	// create a complex class with multiple inheritance
+	// and ineternal classes and throw an exception from destructor
+	class internal
+	{
+		int i;
+	public:
+		internal() : i(){ cout << "internal()\n"; }
+		~internal(){ cout << "~internal()\n"; }
+
+	};
+
+	class base
+	{
+	public:
+		base(){ cout << "base()\n"; }
+		virtual ~base(){ cout << "~base()\n"; }
+	};
+
+	class derived1 : public virtual base
+	{
+	public:
+		derived1(){ cout << "derived1()\n"; }
+		~derived1(){ cout << "~derived1()\n"; }
+	};
+
+	class derived2 : public virtual base
+	{
+	public:
+		derived2(){ cout << "derived2()\n"; }
+		~derived2(){ cout << "~derived2()\n"; }
+	};
+
+	class finalizer : public derived1, public derived2{
+	public:
+		internal _i;
+		finalizer(){
+			throw std::runtime_error("Exception from constructor");
+		}
+		~finalizer(){ cout << "~finalizer()\n"; }
+	};
+
+	try
+	{
+		finalizer f;
+	}
+	catch (const std::exception& e)
+	{
+		// finalizer has not been created
+		cout << e.what();
+	}
+}
+
+
 // Целочисленное деление на 0 
 void show_zero_div_exception(){
 	// Транслируем SE в C++ exception (должен быть скомпилирован с /EHa)
@@ -181,7 +236,8 @@ int main()
 	show_base_type();
 	show_simple_ex();
 	show_out_of_range();
-	
+	complex_object_exception();
+
 	// int and float zero div exception
 	show_zero_div_exception();
     show_fpe_zero_div();

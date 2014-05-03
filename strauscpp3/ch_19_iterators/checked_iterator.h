@@ -3,12 +3,20 @@
 #include <utility>
 #include <iterator>
 
+// Итератором называется объект, предназначенный для перебора элементов
+// Итераторы подчиняются принципу чистой абстракции (все, что ведет себя как итератор, есть итератор)
 
 // Класс итератора, бросающий исключения при выходе за границы контейнера
 // Что-то подобное применяется в отладочных версиях
 
 // Нигде не сказано, что новый итератор должен наследоват от итератора
 // Поэтому будем наследовать непосредственно от свойств
+
+// Итераторы ввода: только двигаться вперед (++, ==, !=) и читать (val = (*it))
+// Итераторы ввода: только двигаться вперед (++) и записывать (*it) = val
+// Прямые итераторы: ввод+вывод
+// Двунаправленные итераторы: ввод+вывод и --
+// Произвольного доступа: двунаправленные, +=, -=, +n и т.п.
 
 template <typename Container, typename Iter = typename Container::iterator>
 class Checked_iterator : public std::iterator_traits<Iter>{
@@ -186,3 +194,40 @@ public:
 	};
 
 };
+
+
+// Еще один пример пользовательского итератора
+// Итератор вставки в ассоциативный контейнер (set)
+// Т.к. используется только для записи, в качестве типов элементов и diff_t передается void
+template <typename CONT>
+class associative_insert_iterator : public std::iterator< std::output_iterator_tag, void, void, void, void >{
+public:
+	explicit associative_insert_iterator(CONT& c) :cont(c){}
+
+	// можем только присваивать при помощи этого итератора
+	associative_insert_iterator<CONT>& operator=(const typename CONT::value_type& val){
+		cont.insert(val);
+		return *this;
+	}
+
+	associative_insert_iterator<CONT>& operator*(){
+		return *this;
+	}
+
+	// операция инкремента эмулируется (для вставки в set не нужна)
+	associative_insert_iterator<CONT>& operator++(){
+		return *this;
+	}
+
+	associative_insert_iterator<CONT>& operator++(int){
+		return *this;
+	}
+
+protected:
+	CONT& cont;
+};
+
+template <typename CONT>
+inline associative_insert_iterator<CONT> associative_inserter(CONT& c){
+	return associative_insert_iterator<CONT>(c);
+}

@@ -14,13 +14,13 @@ void show_standard_streams_out(){
 	cin >> s1;
 
 	// Стандартный поток ввода (по умолчанию на экран)
-	cout << s1 << endl;
+	cout << "cout: " << s1 << endl;
 
 	// Стандартный поток ошибок, буферированный (по умолчанию на экран)
-	clog << s1 << endl;
+	clog << "clog: " << s1 << endl;
 
 	// Стандартный поток ошибок, не буферированный (по умолчанию на экран)
-	cerr << s1 << endl;
+	cerr << "cerr: " << s1 << endl;
 
 	// Вывод элементарых типов
 	int i = 5;
@@ -42,10 +42,10 @@ void show_standard_streams_out(){
 	cout << "hex uint: " << u << endl;
 
 	// дробные числа по умолчанию обрезаются до 6 знаков
-	cout << "double: " << d << endl;
-
-	// или в экспоненциальную форму
 	cout << "float: " << f << endl;
+	
+	// или в экспоненциальную форму
+	cout << "double: " << d << endl;
 
 	// символы выводятся как символы, а не числа
 	cout << "char: " << c << endl;
@@ -62,7 +62,8 @@ void show_standard_streams_out(){
 
 	// или метода write, хотя этот метод обычно используется для ввода в двоичные файлы
 	cout << " cout.wtite: ";
-	cout.write(&c, 1);	// не очень удобно
+	cout.write(&c, 1);	
+	// не очень удобно, к тому же не отслеживается \0
 
 	// endl кроме перевода строки очищает буфер
 	cout << endl;
@@ -81,6 +82,10 @@ void show_standard_streams_out(){
 	// так же можно вывести как строку символьного массива
 	// с помощью write
 	cout.write(str1, strlen(str1));
+
+	// Приоритет операций
+	// cout <<	d=f << '\n'; ->
+	// (cout <<	d)=(f << '\n');
 }
 
 void stream1(){
@@ -102,6 +107,7 @@ void stream1(){
 	
 	// ignore() выбрасывает оставшийся в буфере символ Enter
 	cin.ignore();
+	// для enum нужно писать собственный operator <<
 }
 
 void stream2(){
@@ -121,7 +127,7 @@ void stream2(){
 void stream3(){
 	// при вводе строк этот режим можно подавить матипулятором noskipws
 	char a,b,c;
-	// введи '1 2'
+	// введи '1 2 3'
 	cin >> noskipws >> a >> b >> c;
 	cout << "You've entered char " << a
 		<< " char " << b
@@ -148,12 +154,26 @@ void stream4(){
 }
 
 void input_strings1(){
-	// ввести строку можно тем же методом get 
+	// ввести строку с пробелами можно тем же методом get 
 	// с указанием количества символов
 	// это можно сделать только с массивом
-	char s[50];
+	char s[50] = {};
+
 	// на последнюю позицию на всякий случай будет записан '\0'
 	cin.get(s, 50);
+
+	cout << "You've entered:  " << s
+		<< endl;
+
+	cin.ignore();
+
+	char s1[50] = {};
+
+	// ввод до символа . (введи atatat.a)
+	cin.get(s1, 50, '.');
+
+	cout << "You've entered:  " << s1
+		<< endl;
 
 	// но символ '\n' все равно придется удалить
 	cin.ignore();
@@ -165,38 +185,68 @@ void input_strings2(){
 	// стандартный паттерн исползования - удалить все от enter до конца строки
 	char s[50];
 	cin.get(s, 50);
-	cin.ignore();
+	cin.ignore(numeric_limits<std::streamsize>::max(), '\n');
+
+	cout << "You've entered:  " << s
+		<< endl;
 }
 
+
 void input_strings3(){
+	// для ввода строк используйте функцию getline
+	// она автоматически выполняет ignore()
+	string s;
+
+	// '.' необязательный параметр, символ окончания ввода
+	std::getline(cin, s, '.');
+
+	// можно посчитать количество реально прочитанных символов
+	// функцией cin.gcount()
+	cout << "Entered  " << s << ", "<< cin.gcount() << " symbols" << endl;
+}
+
+void input_strings4(){
 	// для ввода string используйте функцию getline
+	// из хедера <string>
 	string s;
 	
 	// '.' необязательный параметр, символ окончания ввода
-	std::getline(cin, s, '.'); 
+	std::getline(cin, s); 
+
+	cout << "Entered:  " << s << endl;
 }
 
 void stream_state1(){
 	// Каждый поток может находится в 4 состояниях
 	// good - все ок
 	// fail - небольшая ошибка, например введен неожиданный символ. Можно очистить поток и попробовать вновь.
-	// bad - фатальная ошибка, работа с потоком невозможна
+	// bad - фатальная ошибка, работа с потоком невозможна (включает в себя состояние fail)
 	// eof - окончание ввода (для ввода это Ctrl-Z)
 
-	// флаги состояния можно устанавливать функцийе setstate() или clear()
+	// флаги состояния можно устанавливать функцией setstate() или clear()
 
 	// Смоделируем ситуацию fail
 	int aint[10] = {};
 	size_t i = 0;
-	// вводим 12345e
+	// вводим массив в цикле 1235e67
+	cin >> skipws;
+
 	while((cin >> aint[i++]) && (i < 10));
+
+	// после поломанного символа ничего не вводилось
+	for (int i = 0; i < 10; i++){
+		cout << aint[i] << '\n';
+	}
 	
-	// на символе e ввод слоамется
+	// ...на символе e ввод сломается
 	if(cin.fail()){
 		// этим же методом можно устанавливать флаги
 		cin.clear(/*ios_base::goodbit*/);
 		cout << "Fail" << endl;
 	}
+
+	// флаги состояния можно читать функцией rdstate()
+	ios::iostate state = cin.rdstate();
 
 	// можно сделать так, что по ситуации fail/bad/eof будет бросаться исключение
 	cin.exceptions(ios::badbit|ios::failbit);
@@ -218,20 +268,15 @@ void stream_state2(){
 
 }
 
-void file_stream1(){
-	// чтение строк из текстового файла
-	ifstream f("file1.txt");
-	while(!f.eof()){
-		string s;
-		getline(f, s);
-		cout << s << endl;
-	}
-}
-
-
 void show_standard_streams_input(){
-	//stream1();
-	//stream2();
-	//stream3();
-	//stream4();
+	stream1();
+	stream2();
+	stream3();
+	stream4();
+	input_strings1();
+	input_strings2();
+	input_strings3();
+	input_strings4();
+	stream_state1();
+	stream_state2();
 }

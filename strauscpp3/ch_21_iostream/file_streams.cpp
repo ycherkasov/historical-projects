@@ -1,3 +1,4 @@
+#include <string> // std::getline
 #include <iostream>
 #include <fstream>
 #include <ctime>
@@ -10,9 +11,24 @@ using namespace std;
 // Однако можно (и удобно) использовать потоки в рамках идиомы RAII
 
 // Потоки при работе с файлами буферизируются. 
-// Если программа завершилась аварийно, сдрос из буфера на диск не происходит
+// Если программа завершилась аварийно, сброс из буфера на диск не происходит
 
 // Текстовые файлы форматируются и разбиваются на строки. Бинарные - ни то, ни другое.
+
+void file_stream1(){
+	// время жизни файловых потоков никак не привязано ко времени открытия файла
+	// можно с помощью одного потока много кратно открывать-закрывать файл
+	// или разные файлы
+
+	// чтение строк из текстового файла
+	ifstream f("file1.txt");
+	while (!f.eof()){
+		string s;
+		getline(f, s);
+		cout << s << endl;
+	}
+}
+
 
 void show_fstream_write(){
 	srand(static_cast<unsigned>(time(0)));
@@ -22,11 +38,13 @@ void show_fstream_write(){
 	for(int i = 0; i < 10 ; i++){
 		f << rand()%10 << '\n';
 	}
+	// потоки буферизированы, так что если функция завершается аварийно
+	// последняя порция символов в файл не попадает
 }
 
 void show_fstream_read(){
 
-	// Чтение в массим из файла
+	// Чтение в массив из файла
 	ifstream f("random.txt");
 	while(!f.eof()){
 		char buf[20] = {};	// должно хватить для int
@@ -47,9 +65,11 @@ void show_ofstream_binary_write(){
 	srand(static_cast<unsigned>(time(0)));
 
 	// генерация 10 случайных числел
+	cout << "Generate random array\n";
 	int a[10] = {};
 	for(int i = 0; i < 10 ; i++){
 		a[i] = rand();
+		cout << a[i] << '\n';
 	}
 
 	// запись 10 случайных числел в бинарный файл
@@ -58,15 +78,21 @@ void show_ofstream_binary_write(){
 	
 
 	// весь массив сразу - более оптимально, чем посимвольно
-	f.write(reinterpret_cast<char*>(a), sizeof(a));
+	size_t sz = sizeof(a);
+	f.write(reinterpret_cast<char*>(a), sz);
 }
 
 void show_ofstream_binary_read(){
 	int a[10] = {};
 	
 	// читаем также весь массив сразу
+	cout << "Read random array\n";
 	ifstream f("random.bin", ios::binary);
-	f.read(reinterpret_cast<char*>(a), sizeof(a));
+	size_t sz = sizeof(a);
+	f.read(reinterpret_cast<char*>(a), sz);
+	for (int i = 0; i < 10; i++){
+		cout << a[i] << '\n';
+	}
 }
 
 
@@ -137,6 +163,8 @@ void show_serialize(){
 }
 
 void show_fstream(){
+	file_stream1();
+
 	show_fstream_write();
 	show_fstream_read();
 	string f1("random.txt");

@@ -1,3 +1,6 @@
+// этот хедер содержит forward declarations для всех шаблонов
+// его использование сокращает время компиляции
+#include <iosfwd>
 #include "streams.h"
 
 using namespace std;
@@ -5,7 +8,7 @@ using namespace std;
 void show_standard_streams(){
 
 	// Стандартные потоки
-	//show_standard_streams_out();
+	show_standard_streams_out();
 	show_standard_streams_input();
 
 }
@@ -14,12 +17,9 @@ void show_file_streams(){
 	show_fstream();
 }
 
-void show_formatted_streams(){
-	//stream_flags();
-	stream_methods();
-}
 
 int main(){
+	// uncomment by one
 	//show_standard_streams();
 	//show_file_streams();
 	show_formatted_streams();

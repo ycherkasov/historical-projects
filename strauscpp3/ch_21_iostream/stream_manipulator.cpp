@@ -77,8 +77,8 @@ void stream_flags(){
 	// вывод основание числа
 	{
 		cout.setf(ios::showbase);
-		cout << "showbase: " << 0xaa << endl;
-		cout.unsetf(ios::boolalpha);
+		cout << "showbase: " << 10 << endl;
+		cout.unsetf(ios::showbase);
 	}
 
 	// вывод незначащих нулей
@@ -133,7 +133,7 @@ void stream_methods(){
 
 // Манипуляторы
 void stream_manip(){
-	// Манитуляторы могут подменять собой флаги и методы, 
+	// Манипуляторы могут подменять собой флаги и методы, 
 	// и проще в использовании, т.к. могут быть вызваны прямо в потоке
 
 	// Манитуляторы - аналоги флагов
@@ -165,7 +165,7 @@ void stream_manip(){
 	cout << "showbase: " << std::showbase << 0xaa << endl;
 	// и его выключение
 	cout << "noshowbase: " << std::noshowbase << 0xaa << endl;
-
+	cout << std::dec;
 	// вывод незначащих нулей
 	cout << "showpoint: " << std::showpoint << 100 << endl;
 	// и его выключение
@@ -197,11 +197,70 @@ void stream_manip(){
 	// выставление основания числа
 	cout << "setbase 16: " << std::setbase(16) << 10 << endl;
 	cout << "setbase 8: " << std::setbase(8) << 10 << endl;
-	// и даже нестандартные(?)
-	cout << "setbase 12: " << std::setbase(12) << 10 << setbase(0) << endl; // setbase(0) == setbase(1s0)
+	// нестандартные == setbase(10)
+	cout << "setbase 12: " << std::setbase(12) << 10 << endl;
 }
 
 void formatted_input(){
+	// Манипуляторы используются также для ввода
+	// Например, приведенные выше skipws/noskipws
+
+	// На ввод также влияют basefield и boolalpha
+	cout << "Enter true or false: ";
+	bool b = true;
+	cin >> std::boolalpha >> b;
+	cin >> std::noboolalpha;
+	cout << "You entered: " << b << endl;
+
+	int i = 0;
+	cout << "Enter hexidecimal number: ";
+	cin >> std::setbase(16) >> i;
+	cin >> std::setbase(0);
+	cout << "You entered: " << i << endl;
+
+	// setw задает ограничение длины по вводу
+	// может применяться с массивами
+	char a[10] = {};
+	cin >> std::setw(sizeof(a)) >> a;
+	cout << "You entered: " << a << endl;
+}
+
+// Пользовательские манипуляторы
+// Без аргументов
+std::ostream& tab(std::ostream& os){
+	return (os << '\t');
+}
+
+// С аргументами - класс-эффектор
+template <typename T> class binary;
+template <typename T>
+ostream& operator<<(ostream&os, const binary<T>& t);
+
+template <typename T>
+class binary{
+public:
+	binary(T n) :_num(n){}
+	friend ostream& operator << <> (ostream&os, const binary<T>& t);
+private:
+	T _num;
+};
+
+template <typename T>
+inline ostream& operator << (ostream&os, const binary<T>& t){
+	T MAX = numeric_limits<T>::max();
+	T bit = ~(MAX >> 1);
+	while (bit) {
+		os << (t._num & bit ? '1' : '0');
+		bit >>= 1;
+	}
+	return os;
+}
+void show_user_manip(){
+	cout << "Tab user" << tab << " manip" << endl;
+
+	cout << "User manip with params: " << binary<unsigned short>(16) << endl;
+	// класс-эффектор может быть использован для сложной перегрузки вывода
+	// пользовательских типов (дат, валют и тп)
 }
 
 void show_formatted_streams(){
@@ -209,4 +268,5 @@ void show_formatted_streams(){
 	stream_methods();
 	stream_manip();
 	formatted_input();
+	show_user_manip();
 }

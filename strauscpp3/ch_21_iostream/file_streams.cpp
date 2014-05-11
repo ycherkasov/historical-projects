@@ -162,16 +162,76 @@ void show_serialize(){
 	}
 }
 
-void show_fstream(){
-	file_stream1();
+void show_rnd_access(){
+	// семейство функций tell/seek позволяют установить порзицию
+	// чтения-записи в строковом или файловом потоке
 
-	show_fstream_write();
-	show_fstream_read();
-	string f1("random.txt");
-	string f2("random2.txt");
-	copy_file(f1, f2);
+	// откроем на чтение
+	{
+		ifstream f("random.bin", ios::binary);
+
+		// текущая абсолютная позиция в файле (для чтения)
+		ios::pos_type read_pos = f.tellg();
+
+		// переход к абсолютной позиции чтения 
+		// (можно передавать pos_type или int)
+		f.seekg(0);
+
+		// читаем одно значение
+		int out = 0;
+		f.read(reinterpret_cast<char*>(&out), sizeof(int));
+
+		// переход к относительной позиции чтения
+		// относительная позиция может быть как от 
+		// пользовательского смещения, так и от стандартной позиции:
+		// beg, cur, end
+		// например, установить на конец файла
+		f.seekg(0, ios::end);
+		
+		// попытка выйти за пределы файла установит пото к в bad
+		// или бросит exception, есть выставлен такой флаг
+	}
+	
+	// откроем на (до)запись
+	{
+		ofstream f("random.bin", ios::binary|ios::trunc);
+
+		// текущая аюсолютная позиция в файле (для записи)
+		streampos write_pos = f.tellp();
+
+		// переход к абсолютной позиции записи
+		// (можно передавать streampos или int)
+		f.seekp(0, ios::beg);
+
+		// записываем
+		int in = 100;
+		f.write(reinterpret_cast<char*>(&in), sizeof(int));
+
+		// переход к относительной позиции записи
+		// установить в текущую позицию + 1
+		//f.seekp(1, ios::cur);
+
+		// записываем
+		//in = 200;
+		//f.write(reinterpret_cast<char*>(&in), sizeof(int));
+	}
+}
+
+void show_fstream(){
+	//file_stream1();
+
+	//show_fstream_write();
+	//show_fstream_read();
+	//string f1("random.txt");
+	//string f2("random2.txt");
+	//copy_file(f1, f2);
 
 	show_ofstream_binary_write();
 	show_ofstream_binary_read();
 	show_serialize();
+	
+	// TODO: sort oit with write to existing file!
+	//show_rnd_access();
+	// проверим еще раз записанные значения
+	show_ofstream_binary_read();
 }

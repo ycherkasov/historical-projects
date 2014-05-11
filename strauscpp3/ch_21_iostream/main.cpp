@@ -17,11 +17,12 @@ void show_file_streams(){
 	show_fstream();
 }
 
-
 int main(){
-	// uncomment by one
+	// uncomment one by one
 	//show_standard_streams();
 	//show_file_streams();
-	show_formatted_streams();
+	//show_formatted_streams();
+	//show_string_streams();
+	show_wide_char_locales();
 	return 0;
 }

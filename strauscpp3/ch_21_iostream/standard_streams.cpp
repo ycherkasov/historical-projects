@@ -127,7 +127,7 @@ void stream2(){
 void stream3(){
 	// при вводе строк этот режим можно подавить матипулятором noskipws
 	char a,b,c;
-	// введи '1 2 3'
+	// введи '1 2'
 	cin >> noskipws >> a >> b >> c;
 	cout << "You've entered char " << a
 		<< " char " << b
@@ -177,6 +177,11 @@ void input_strings1(){
 
 	// но символ '\n' все равно придется удалить
 	cin.ignore();
+
+	if (cin.fail()){
+		cin.clear(/*ios_base::goodbit*/);
+		cout << "Fail" << endl;
+	}
 }
 
 void input_strings2(){
@@ -189,6 +194,11 @@ void input_strings2(){
 
 	cout << "You've entered:  " << s
 		<< endl;
+
+	if (cin.fail()){
+		cin.clear(/*ios_base::goodbit*/);
+		cout << "Fail" << endl;
+	}
 }
 
 
@@ -197,12 +207,17 @@ void input_strings3(){
 	// она автоматически выполняет ignore()
 	string s;
 
-	// '.' необязательный параметр, символ окончания ввода
-	std::getline(cin, s, '.');
+	// есть также необязательный параметр, символ окончания ввода
+	std::getline(cin, s);
 
 	// можно посчитать количество реально прочитанных символов
 	// функцией cin.gcount()
 	cout << "Entered  " << s << ", "<< cin.gcount() << " symbols" << endl;
+
+	if (cin.fail()){
+		cin.clear(/*ios_base::goodbit*/);
+		cout << "Fail" << endl;
+	}
 }
 
 void input_strings4(){
@@ -211,9 +226,14 @@ void input_strings4(){
 	string s;
 	
 	// '.' необязательный параметр, символ окончания ввода
-	std::getline(cin, s); 
+	std::getline(cin, s, '.'); 
 
 	cout << "Entered:  " << s << endl;
+
+	if (cin.fail()){
+		cin.clear(/*ios_base::goodbit*/);
+		cout << "Fail" << endl;
+	}
 }
 
 void stream_state1(){
@@ -268,6 +288,35 @@ void stream_state2(){
 
 }
 
+void stream_buffers(){
+	// потоки по умолчанию буферизируют ввод-вывод
+	// с ними связаны объекты типа streambuf
+
+	// для любого буферизированного потока можно получить
+	// непосредственно буфер и работать с ним
+	// Это позволяет удобно выполнять многие операции
+	// Например:
+	// копирование одного потока в другой
+	// (вывод файла в stdout)
+	ifstream f("file1.txt");
+	cout << f.rdbuf() << endl;
+
+	// привязка одного буфера к нескольким потокам
+	ostream hexout(cout.rdbuf());
+	hexout.setf(ios::hex, ios::basefield);
+	hexout.setf(ios::showbase);
+	hexout << 10 << endl;
+
+	// перенаправление ввода в файл
+	ofstream out_file("out_file.txt");
+	// сохраним предыдущий буфер cout
+	streambuf* buf = cout.rdbuf();
+	cout.rdbuf(out_file.rdbuf());
+	cout << "Enter file contents" << endl;
+	// восстановим предыдущий буфер cout
+	cout.rdbuf(buf);
+}
+
 void show_standard_streams_input(){
 	stream1();
 	stream2();
@@ -279,4 +328,5 @@ void show_standard_streams_input(){
 	input_strings4();
 	stream_state1();
 	stream_state2();
+	stream_buffers();
 }

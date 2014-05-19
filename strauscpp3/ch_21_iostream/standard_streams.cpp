@@ -83,7 +83,7 @@ void show_standard_streams_out(){
 	// с помощью write
 	cout.write(str1, strlen(str1));
 
-	// Приоритет операций
+	// Приоритет операций >> << невысок
 	// cout <<	d=f << '\n'; ->
 	// (cout <<	d)=(f << '\n');
 }
@@ -175,17 +175,21 @@ void input_strings1(){
 	cout << "You've entered:  " << s1
 		<< endl;
 
-	// но символ '\n' все равно придется удалить
+	// remove not only /n, but delimiter character as well
+	// (2 last characters)
 	cin.ignore();
+	cin.ignore(1, '.');
 
 	if (cin.fail()){
 		cin.clear(/*ios_base::goodbit*/);
 		cout << "Fail" << endl;
 	}
+
 }
 
 void input_strings2(){
 
+	// TODO: попробовать отдельно
 	// при помощи ignore можно удалять любое количество символов
 	// стандартный паттерн исползования - удалить все от enter до конца строки
 	char s[50];
@@ -226,7 +230,11 @@ void input_strings4(){
 	string s;
 	
 	// '.' необязательный параметр, символ окончания ввода
-	std::getline(cin, s, '.'); 
+	std::getline(cin, s, '.');
+
+	// std::getline() perforas only ignore(),
+	// so you should manually remove delimiter
+	cin.ignore(1, '.');
 
 	cout << "Entered:  " << s << endl;
 
@@ -317,13 +325,20 @@ void stream_buffers(){
 	cout.rdbuf(buf);
 }
 
+void test_me(){
+
+}
+
 void show_standard_streams_input(){
 	stream1();
 	stream2();
 	stream3();
 	stream4();
 	input_strings1();
-	input_strings2();
+	
+	// TODO: failbit for some reasons
+	//input_strings2();
+
 	input_strings3();
 	input_strings4();
 	stream_state1();

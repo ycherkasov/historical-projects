@@ -1,5 +1,7 @@
 #pragma once
 
+void test_me();
+
 void show_standard_streams_out();
 void show_standard_streams_input();
 

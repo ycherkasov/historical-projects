@@ -40,17 +40,24 @@ void stream_flags(){
 	// знак вправо, число влево
 	{
 		// ios::adjustfield - для работы с группой флагов выравнивания
+		// should be applied just before input
+		cout << "internal: ";
+		cout.width(6);
 		cout.setf(ios::internal, ios::adjustfield);
-		cout << "internal: " << -20 << endl;
+		cout << -2 << endl;
 		cout.unsetf(ios::internal);
 	}
 
 	// hex + префикс
 	{
 		// ios::basefield - для работы с группой флагов системы счисления
-		cout.setf(ios::hex|ios::showbase, ios::basefield);
-		cout << "hex|showbase: " << 0xffff << endl;
-		cout.unsetf(ios::hex|ios::showbase);
+		cout << "hex|showbase: ";
+		cout.setf(ios::hex, ios::basefield);
+		cout.setf(ios::showbase);
+		
+		cout << 0xffff << endl;
+		cout.unsetf(ios::showbase);
+		cout.unsetf(ios::hex);
 	}
 
 	// вывод дробного с точкой
@@ -77,14 +84,14 @@ void stream_flags(){
 	// вывод основание числа
 	{
 		cout.setf(ios::showbase);
-		cout << "showbase: " << 10 << endl;
+		cout << "showbase: " << std::hex << 0xff << endl;
 		cout.unsetf(ios::showbase);
 	}
 
 	// вывод незначащих нулей
 	{
 		cout.setf(ios::showpoint);
-		cout << "showpoint: " << 100.00 << endl;
+		cout << "showpoint: " << std::dec << 100.00 << endl;
 		cout.unsetf(ios::showpoint);
 	}
 
@@ -117,7 +124,7 @@ void stream_methods(){
 	// Метод precision() позволяет задать количество чисел после точки
 	// устанавливается насовсем
 	cout.setf(ios::fixed);
-	cout.precision(10);
+	streamsize prev_pr = cout.precision(10);
 	cout << "precision(10): " << 0.000000001 << endl;
 	cout.unsetf(ios::fixed);
 
@@ -126,9 +133,13 @@ void stream_methods(){
 	// устанавливается на одну операцию вывода
 	// Метод fill() позволяет задать символ-заполнитель
 	// устанавливается насовсем
-	cout.fill('-');
-	cout.width(5);
-	cout << "fill('-'): " << 123 << endl; // ??? does not work
+	cout.width(10);
+	char prev = cout.fill('-');
+	cout << 123 << endl; // ??? does not work
+	cout.fill(prev);
+
+	// get back old precision
+	cout.precision(prev_pr);
 }
 
 // Манипуляторы
@@ -145,7 +156,9 @@ void stream_manip(){
 	cout << "right: " << std::right << 20 << endl;
 
 	// знак вправо, число влево
-	cout << "internal: " << std::internal << -20 << endl;
+	int n = -77;
+	cout << "internal: ";
+	std::cout.width(6); std::cout << std::internal << n << '\n';
 
 	// hex + префикс
 	cout << "hex: " << std::hex << 0xffff << endl;
@@ -167,9 +180,9 @@ void stream_manip(){
 	cout << "noshowbase: " << std::noshowbase << 0xaa << endl;
 	cout << std::dec;
 	// вывод незначащих нулей
-	cout << "showpoint: " << std::showpoint << 100 << endl;
+	cout << "showpoint: " << std::showpoint << 100.00 << endl;
 	// и его выключение
-	cout << "noshowpoint: " << std::noshowpoint << 100 << endl;
+	cout << "noshowpoint: " << std::noshowpoint << 100.00 << endl;
 
 	// всегда выводить знак числа
 	cout << "showpos: " << std::showpos << 100 << endl;
@@ -190,6 +203,8 @@ void stream_manip(){
 	
 	// setprecision
 	cout << "setprecision: " << std::setprecision(16) << 0.000000001 << endl;
+	// get back old precision
+	cout << std::setprecision(6);
 
 	// аналогично - setfill(), setflag()
 	// аналогично - setiosflag(), resetiosflag()
@@ -198,7 +213,10 @@ void stream_manip(){
 	cout << "setbase 16: " << std::setbase(16) << 10 << endl;
 	cout << "setbase 8: " << std::setbase(8) << 10 << endl;
 	// нестандартные == setbase(10)
-	cout << "setbase 12: " << std::setbase(12) << 10 << endl;
+	cout << "setbase 12: " << std::setbase(12) << 0.00001 << endl;
+
+	// принудительная очистка потока
+	cout << "Flush me" << flush << " yeah!" << endl;
 }
 
 void formatted_input(){

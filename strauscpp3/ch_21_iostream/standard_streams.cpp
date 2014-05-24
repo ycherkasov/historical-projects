@@ -22,6 +22,9 @@ void show_standard_streams_out(){
 	// Стандартный поток ошибок, не буферированный (по умолчанию на экран)
 	cerr << "cerr: " << s1 << endl;
 
+	// При создании потока вызывается обернутый класс-часовой (sentry), 
+	// выполняющий инициализацию
+
 	// Вывод элементарых типов
 	int i = 5;
 	long l = 50;
@@ -215,7 +218,7 @@ void input_strings3(){
 	std::getline(cin, s);
 
 	// можно посчитать количество реально прочитанных символов
-	// функцией cin.gcount()
+	// последней операцией функцией cin.gcount()
 	cout << "Entered  " << s << ", "<< cin.gcount() << " symbols" << endl;
 
 	if (cin.fail()){
@@ -244,7 +247,7 @@ void input_strings4(){
 	}
 }
 
-void stream_state1(){
+void stream_state(){
 	// Каждый поток может находится в 4 состояниях
 	// good - все ок
 	// fail - небольшая ошибка, например введен неожиданный символ. Можно очистить поток и попробовать вновь.
@@ -259,6 +262,8 @@ void stream_state1(){
 	// вводим массив в цикле 1235e67
 	cin >> skipws;
 
+	// !! Здесь мы неявно конвертируем поток при помощи operator void*()
+	// т.е. при возвращении nullptr сигнализируется об окончании ввода
 	while((cin >> aint[i++]) && (i < 10));
 
 	// после поломанного символа ничего не вводилось
@@ -283,17 +288,37 @@ void stream_state1(){
 	cin.exceptions(0);
 }
 
-void stream_state2(){
+void show_place_back(){
+	
+	// прочитанные символы можно вернуть в поток ввода
+	char s[50];
+	cin.get(s, 50); // enter atatat
 
-	// ввод до Ctrl-Z 
-	// (обязательно рассавить скобки для соблюдения приоритета операций)
-	char x;
-	while(!(cin >> x)){
-		if(cin.eof()){
-			cout << "EOF" << endl;
-		}
-	}
+	cout << "Entered: " << s << endl;
 
+	// положить в буффер последний считанный символ (t)
+	cin.unget();
+
+	cout << "Still entered: " << s << endl;
+	cout << s << endl;
+
+	char s1[50];
+	// проверить, есть ли в потоке символ t, не читая из него
+	if (cin.peek() == 't')
+		cin.get(s1, 50);
+
+	// символ t опять прочитан из потока
+	cout << s1 << endl;
+
+	cin.ignore();
+
+	// положить символ в поток и перечитать еще раз
+	cin.putback('c');
+	if (cin.peek() == 'c')
+		cin.get(s1, 50); // enter atatat
+	cout << "Entered and one symbol has been placed before: " << s1 << endl;
+
+	cin.ignore();
 }
 
 void stream_buffers(){
@@ -323,10 +348,32 @@ void stream_buffers(){
 	cout << "Enter file contents" << endl;
 	// восстановим предыдущий буфер cout
 	cout.rdbuf(buf);
+
+	// операция flush() принудительно записывает содержимое буффера
+	cout.flush();
+
+	// streambuf имеет protected интерфейс для наследования
+	// и реализации пользовательских буфферов
+}
+
+void tie_streams(){
+	
+	// перед использованием паттерна "пара cout-cin"
+	// необходимо связать их
+	cin.tie(&cout);
+
+	// это делается для того, чтобы строка гарантированное вывелась
+	// перед вводом (этого может не произойти, т.к. вывод буферизирован)
+	// tie() принудительно делает flush() перед операциями ввода
+	string s;
+	cout << "Please enter string: ";
+	cin >> s;
+	
+	
 }
 
 void test_me(){
-
+	show_place_back();
 }
 
 void show_standard_streams_input(){
@@ -334,14 +381,15 @@ void show_standard_streams_input(){
 	stream2();
 	stream3();
 	stream4();
-	input_strings1();
-	
-	// TODO: failbit for some reasons
-	//input_strings2();
 
+	input_strings1();
+	input_strings2();
 	input_strings3();
 	input_strings4();
-	stream_state1();
-	stream_state2();
+
+	stream_state();
+
 	stream_buffers();
+
+	tie_streams();
 }

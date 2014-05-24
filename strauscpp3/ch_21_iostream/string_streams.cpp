@@ -39,7 +39,7 @@ void bidirect_string_streams(){
 
 	ss >> name >> age;
 
-	cout << "Entered name and age: " << name << ' ' << age << endl;
+	cout << "Entered name: " << name << ", and age: "<< ' ' << age << endl;
 
 	string out(ss.str());
 	cout << out << endl;

@@ -17,6 +17,8 @@ void wide_symbols(){
 	
 	// метод widen()
 	wcout << wcout.widen('W') << endl;
+	// обратна€ операци€ narrow()
+	cout << cout.narrow(L'W') << endl;
 
 	// при чтении методом read, подсчет в символах, а не байтах
 	wchar_t wc1 = '\0';
@@ -35,12 +37,20 @@ void wide_locales(){
 	wcin.imbue(russian_loc);
 	wcout.imbue(russian_loc);
 
+	cout << "Locale name: " << russian_loc.name() << '\n';
+
 	wstring cyrrilic_str;
 	wcin >> cyrrilic_str;
 	wcout << L"¬ведена строка: " << cyrrilic_str << endl;
 
-	wcin.clear(/*ios_base::goodbit*/);
-	wcin.seekg(0);
+	//wcin.clear(/*ios_base::goodbit*/);
+	//wcin.seekg(0);
+	if (wcin.fail()){
+		wcin.clear(/*ios_base::goodbit*/);
+	}
+
+	// \n should be removed after wcin usage
+	wcin.ignore();
 
 	// все остальные методы так же работают с юникодом
 	wstring cyrrilic_str1;
@@ -63,7 +73,10 @@ void wide_strings(){
 	locale current_loc_cout = wcout.getloc();
 	locale russian_loc("rus_rus.866");
 
+	// should be set without first usage!
 	ss.imbue(russian_loc);
+	wcout.imbue(russian_loc);
+
 	wcout << L"¬ведите им€ на кириллице и возраст (через пробел): " << endl;
 
 	ss << L"ататат"
@@ -75,7 +88,6 @@ void wide_strings(){
 
 	ss >> cyrillic_name >> age;
 	
-	wcout.imbue(russian_loc);
 	wcout << L"¬ведены им€ и возраст: " << cyrillic_name << wcout.widen(' ') << age << endl;
 
 
@@ -89,7 +101,7 @@ void wide_strings(){
 
 
 void show_wide_char_locales(){
-	wide_symbols();
+	//wide_symbols();
 	wide_locales();
-	wide_strings();
+	//wide_strings();
 }

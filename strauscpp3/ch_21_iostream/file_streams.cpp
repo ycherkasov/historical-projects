@@ -194,13 +194,16 @@ void show_rnd_access(){
 	
 	// откроем на (до)запись
 	{
-		ofstream f("random.bin", ios::binary|ios::trunc);
+		// ios::in should be set
+		// without it file is truncated!
+		ofstream f("random.bin", ios::in | ios::binary/*|ios::trunc*/);
 
-		// текущая аюсолютная позиция в файле (для записи)
+		// текущая абсолютная позиция в файле (для записи)
 		streampos write_pos = f.tellp();
 
 		// переход к абсолютной позиции записи
 		// (можно передавать streampos или int)
+		
 		f.seekp(0, ios::beg);
 
 		// записываем
@@ -208,30 +211,29 @@ void show_rnd_access(){
 		f.write(reinterpret_cast<char*>(&in), sizeof(int));
 
 		// переход к относительной позиции записи
-		// установить в текущую позицию + 1
-		//f.seekp(1, ios::cur);
+		// установить в текущую позицию + 1 int (4 bytes)
+		f.seekp(4, ios::cur);
 
 		// записываем
-		//in = 200;
-		//f.write(reinterpret_cast<char*>(&in), sizeof(int));
+		in = 200;
+		f.write(reinterpret_cast<char*>(&in), sizeof(int));
 	}
 }
 
 void show_fstream(){
-	//file_stream1();
 
-	//show_fstream_write();
-	//show_fstream_read();
-	//string f1("random.txt");
-	//string f2("random2.txt");
-	//copy_file(f1, f2);
+	file_stream1();
+	show_fstream_write();
+	show_fstream_read();
+	string f1("random.txt");
+	string f2("random2.txt");
+	copy_file(f1, f2);
 
 	show_ofstream_binary_write();
 	show_ofstream_binary_read();
 	show_serialize();
+	show_rnd_access();
 	
-	// TODO: sort oit with write to existing file!
-	//show_rnd_access();
 	// проверим еще раз записанные значения
 	show_ofstream_binary_read();
 }

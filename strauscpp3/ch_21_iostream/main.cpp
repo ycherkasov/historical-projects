@@ -21,10 +21,12 @@ void show_file_streams(){
 
 
 int main(){
-	//test_me();
+	
+	// for testing pieces of code
+	test_me();
 
 	// uncomment one by one
-	show_standard_streams();
+	//show_standard_streams();
 	//show_file_streams();
 	//show_formatted_streams();
 	//show_string_streams();

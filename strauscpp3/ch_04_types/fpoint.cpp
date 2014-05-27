@@ -673,29 +673,128 @@ bool close_enough(double a, double b){
 а на 1e-20 алгоритм вообще перестает работать.
 */
 
+// We can take advantage of this
+// alignment shift to change the bit representation of a floating-point number
+// until it’s the same as an integer’s bit representation, 
+// and then we can just read it like a normal integer
+
+// This trick works for positive numbers, 
+// but if you try to convert a negative number it will fail
+
+// the normalization step screws it up because now that we’ve
+// borrowed from the implicit 1 bit, it’s no longer the most significant bit
+
+// We can get this 1 bit simply by multiplying our large number by 1.5. 1.5 in binary is
+// 1.1, and the first 1 becomes the implicit 1 bit, and the second becomes the
+// most significant bit of the mantissa
+
+// If you subtract the integer representation of our large, floating-point shift number
+// (in other words, treat its bits like an integer instead of a float) from the 
+// integer representation of the number we just converted, it will remove all the
+// high bits properly for both types of numbers, making the bits equal zero for
+// positive values and filling them in with ones for negative values
+
+// http://stereopsis.com/sree/fpu2006.html
+
 int fast_float2int(float x) {
-	const int magic = (150 << 23) | (1 << 22);
-	union Cast{
+
+	union castable{
 		float f;
 		int i;
 	};
-	volatile Cast c;
-	c.f = x;
-	
-	c.f += *(float*)&magic;
-	return c.i - magic;
+
+	castable magic;
+	magic.i = (150 << 23) | (1 << 22);
+
+	volatile castable c;
+	c.f = x + magic.f;
+	return c.i - magic.i;
 }
 
-// http://stereopsis.com/sree/fpu2006.html
 int fast_double2int(double d){
-	union Cast{
+
+	union castable{
 		double d;
-		long l;
+		long long l;
 	};
-	volatile Cast c;
-	c.d = d + 6755399441055744.0; // 1.5 * 2^52 (== 2^51+2^52)
-	return c.l;
+
+	castable magic;
+	magic.l = (1075LL << 52) | (1LL << 51);
+
+	volatile castable c;
+	c.d = d + magic.d;
+	return c.l - magic.l;
 }
+
+template <typename T>
+struct TPTraitsBase{};
+
+template <>
+struct TPTraitsBase<float>{
+	typedef int ret_type;
+	typedef float convert_type;
+	typedef int mask_type;
+	static const mask_type mask = (150 << 23) | (1 << 22);
+
+};
+
+template <>
+struct TPTraitsBase<double>{
+	typedef long ret_type;
+	typedef double convert_type;
+	typedef long long mask_type;
+	static const mask_type mask = (1075LL << 52) | (1LL << 51);
+};
+
+template <typename T>
+struct TPTraits : TPTraitsBase<T>{
+	union castable{
+		typename TPTraitsBase<T>::convert_type f;
+		typename TPTraitsBase<T>::mask_type i;
+	};
+};
+
+
+template <typename FP>
+long fast_fp2long(FP f)
+{
+	TPTraits<FP>::castable magic;
+	magic.i = TPTraits<FP>::mask;
+
+	volatile TPTraits<FP>::castable ret;
+	ret.f = f + magic.f;
+	return static_cast<long>(ret.i - magic.i);
+}
+
+
+void show_universal_fast_float2int(){
+	float f = 1.0;
+	int i = fast_fp2long(f);
+	cout << f << " -> " << i << endl;
+
+	f = 1.5;
+	i = fast_fp2long(f);
+	cout << f << " -> " << i << endl;
+
+	f = -1.5;
+	i = fast_fp2long(f);
+	cout << f << " -> " << i << endl;
+
+
+
+	double d = 1.0;
+	i = fast_fp2long(d);
+	cout << d << " -> " << i << endl;
+
+	d = 1.5;
+	i = fast_fp2long(d);
+	cout << d << " -> " << i << endl;
+
+	d = -1.5;
+	i = fast_fp2long(d);
+	cout << d << " -> " << i << endl;
+}
+
 
 int fast_float2int_debug(float x)
 {
@@ -766,21 +865,22 @@ int fast_float2int_debug(float x)
 	float res = *(reinterpret_cast<int*>(&x)) - magic;
 
 	return res;
+	/*
+	Сишное приведение вызовет функцию _ftol, которая помимо использования медленной инструкции для конверсии
+	(ФПУ обычно не оптимизированы для таких операций) еще будет сохранять текущий режим округления,
+	устанавливать режим округления соответсвующий стандарту С, конвертить, потом востанавливать старый.
+	Замерь сам сколько занимает каст и сколько конверсия волшебным числом.
+	И кроме того сишный каст и даже инлайн ассемблер(который по определению непереносим) не могут сконвертить к фиксд пойнту.
+
+	Это, конечно, не я сам придумал, а вычитал в умной статье умного дядько Криса Хекера,
+	найденой вот тут http ://www.d6.com/users/checker/pdfs/gdmfp.pdf
+	Но за то я теперь сам могу написать конверсию и не только в целые,
+	а в любой фиксд пойнт и никогда не забуду волшебных чисел.
+
+	*/
 }
 
-/*
-Сишное приведение вызовет функцию _ftol, которая помимо использования медленной инструкции для конверсии
-(ФПУ обычно не оптимизированы для таких операций) еще будет сохранять текущий режим округления, 
-устанавливать режим округления соответсвующий стандарту С, конвертить, потом востанавливать старый.
-Замерь сам сколько занимает каст и сколько конверсия волшебным числом.
-И кроме того сишный каст и даже инлайн ассемблер(который по определению непереносим) не могут сконвертить к фиксд пойнту.
 
-Это, конечно, не я сам придумал, а вычитал в умной статье умного дядько Криса Хекера,
-найденой вот тут http ://www.d6.com/users/checker/pdfs/gdmfp.pdf
-Но за то я теперь сам могу написать конверсию и не только в целые,
-а в любой фиксд пойнт и никогда не забуду волшебных чисел.
-
-*/
 
 // http://en.wikipedia.org/wiki/Fast_inverse_square_root
 // return 1/sqrt(number)

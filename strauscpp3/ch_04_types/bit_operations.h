@@ -14,3 +14,5 @@ int fast_float2int(float x);
 int fast_double2int(double x);
 int fast_float2int_debug(float x);
 bool close_enough(double a, double b);
+
+void show_universal_fast_float2int();

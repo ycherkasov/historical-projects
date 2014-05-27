@@ -366,6 +366,14 @@ void show_fast_sqrt(){
 	cout << "sqrt " << f << " = " << 1 / i << endl;
 }
 
+void show_shift(){
+	long long l = 0LL;
+	for (size_t i = 0; i < 64; ++i){
+		// маска обязательно должна соответствовать типу
+		l = 1075LL << i;
+		cout << " magic =  " << bitset<sizeof(l)* 8>(l) << endl;
+	}
+}
 
 int main(){
 
@@ -373,8 +381,12 @@ int main(){
 
 	show_bits();
 	show_integers();
+	show_shift();
 
 	show_floating_point();
+
+	show_universal_fast_float2int();
+
 	show_cmath_fpoint_operations();
 	show_fp_coltrol();
 
@@ -384,7 +396,6 @@ int main(){
 
 	// example from rsdn
 	show_array_pointers();
-
 	
 	show_enumerations();
 	show_name_convensions(5);

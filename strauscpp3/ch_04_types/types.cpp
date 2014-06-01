@@ -377,8 +377,6 @@ void show_shift(){
 
 int main(){
 
-	
-
 	show_bits();
 	show_integers();
 	show_shift();

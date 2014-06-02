@@ -25,8 +25,6 @@
 //FP_ILOGBNAN	
 //Special values the ilogb function may return.
 
-#include <cfenv>
-
 // for atan2
 #include <valarray>
 
@@ -543,69 +541,6 @@ void show_cmath_fpoint_operations(){
 
 }
 
-// Switch on access to floating-point environment
-//http://www.cplusplus.com/reference/cfenv/FENV_ACCESS/
-#pragma STDC FENV_ACCESS ON
-
-void show_fp_coltrol(){
-
-	/*
-	The floating-point environment maintains a series of status flags and specific control modes. 
-	Specific about the contents of the floating-point environment depend on the implementation, 
-	but the status flags generally include the floating-point exceptions and their associated information, 
-	and the control modes include at least the rounding direction.
-	*/
-
-	// FE_* macro - floating point exceptions and rounding rules
-
-	// 1. State (exception) flags
-	//FE_DIVBYZERO Pole error exception(macro)
-	//FE_INEXACT Inexact result exception(macro)
-	//FE_INVALID Invalid argument exception(macro)
-	//FE_OVERFLOW Overflow range error exception(macro)
-	//FE_UNDERFLOW Underflow range error exception(macro)
-	//FE_ALL_EXCEPT All exceptions(macro)
-
-	// 2. Rounding rules
-	//FE_DOWNWARD Downward rounding direction mode
-	//FE_TONEAREST To - nearest rounding direction mode(macro)
-	//FE_TOWARDZERO Toward - zero rounding direction mode(macro)
-	//FE_UPWARD Upward rounding direction mode(macro)
-
-	int ret = 0;
-
-	// http://www.intuit.ru/studies/courses/53/53/lecture/1585?page=9
-	// http://ru.wikipedia.org/wiki/Fenv.h
-	// http://www.cplusplus.com/reference/cfenv/
-	
-	// default FP environment (system-dependent!)
-	fenv_t fenv = *FE_DFL_ENV;
-
-	ret = fegetenv(&fenv);
-	cout << "fegetenv() returned " << ret << endl;
-
-	// pair function setting fenv_t
-	//fesetenv(&fenv)
-
-	// Attempts to clear the floating-point exceptions specified
-	feclearexcept(FE_ALL_EXCEPT);
-
-	// feholdexcept() saves exception flags clears 
-	double x = sin(0.0); // = 0
-	fenv_t fe;
-	feholdexcept(&fe);
-	x = log(x); // should raise exception, but fenv is clear
-
-	// ‘ункци€ feupdateenv() выполн€ет еще более сложные действи€. 
-	// ќна сохран€ет в своей локальной пам€ти информацию о текущей исключительной ситуации, 
-	// устанавливает новую среду по аргументу fenvp и затем пытаетс€ возбудить в ней сохраненное исключение.
-	// ѕодобные манипул€ции полезны, когда массовые вычислени€ производ€тс€ в безостановочном режиме, 
-	// а затем режим мен€етс€ и обрабатываетс€ все то нехорошее, что накопилось за это врем€.
-	feupdateenv(&fe);
-	cout << "log 0 = " << x << endl;
-	if (!fetestexcept(FE_ALL_EXCEPT))
-		cout << "no exceptions raised" << endl;
-}
 
 /*
 “ак. “ут началс€ беспредел с ужасами про сравнение плавающей точки на равенство.

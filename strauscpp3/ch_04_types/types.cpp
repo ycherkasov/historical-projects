@@ -377,6 +377,7 @@ void show_shift(){
 
 int main(){
 
+	show_fp_coltrol();
 	show_bits();
 	show_integers();
 	show_shift();
@@ -386,6 +387,9 @@ int main(){
 	show_universal_fast_float2int();
 
 	show_cmath_fpoint_operations();
+
+	// does not work as exspected
+	show_fp_coltrol_noexcept();
 	show_fp_coltrol();
 
 	show_close_enough();
@@ -400,6 +404,5 @@ int main(){
 	show_pointer();
 	show_references();
 	show_ifs(-1);
-
 	return 0;
 }

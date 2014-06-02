@@ -7,6 +7,7 @@ void show_float();
 void show_floating_point();
 void show_cmath_fpoint_operations();
 void show_fp_coltrol();
+void show_fp_coltrol_noexcept();
 
 // trick examples
 float quick_rsqrt(float number);

@@ -10,9 +10,8 @@ using std::endl;
 //http://www.cplusplus.com/reference/cfenv/FENV_ACCESS/
 #pragma STDC FENV_ACCESS ON
 
-
 void show_fp_coltrol_noexcept(){
-	
+
 	double d1 = 0., d2 = 0., d3 = 0., s = 0.;
 	int res = 0;
 
@@ -33,14 +32,9 @@ void show_fp_coltrol_noexcept(){
 
 	printf("Current rounding mode: %x\n", fegetround());
 
-	// пытаемся установить флаги исключений - почему-то не работает
+	// флаги исключений очищены
+	// далее они будут устанавливаться по мере накопления ошибок
 	feclearexcept(FE_ALL_EXCEPT);
-	fexcept_t flag;
-	fegetexceptflag(&flag, FE_ALL_EXCEPT);
-	fesetexceptflag(&flag, FE_ALL_EXCEPT);
-	printf("Current exceptions flags: %x\n", fetestexcept(FE_ALL_EXCEPT));
-
-	// Далее исключения не случаются
 
 	/* Вызовем ситуацию исчезновения порядка */
 	d1 = 1.0;

@@ -63,6 +63,9 @@ void show_name_convensions(int a){
 
 	// Не существует способа обратиться к 
 	// сокрытой локальной переменной!
+
+	// эта переменная сохранится напрямую в регистре!
+	register int b = 10;
 }
 
 void show_pointer(){
@@ -377,7 +380,6 @@ void show_shift(){
 
 int main(){
 
-	show_fp_coltrol();
 	show_bits();
 	show_integers();
 	show_shift();

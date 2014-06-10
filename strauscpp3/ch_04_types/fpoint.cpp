@@ -349,21 +349,29 @@ void print_fpclassify(double val){
 	cout << val << " is ";
 	switch (val_type)
 	{
-	case FP_INFINITE:  cout << "infinite" << endl;  break;
-	case FP_NAN:       cout << "NaN" << endl;       break;
-	case FP_ZERO:      cout << "zero" << endl;      break;
-	case FP_SUBNORMAL: cout << "subnormal" << endl; break;
-	case FP_NORMAL:    cout << "normal";
-
-	if (signbit(val))
-	{
-		cout << " negative" << endl;
-	}
-	else
-	{
-		cout << " positive or unsigned" << endl;
-	}
-	break;
+	case FP_INFINITE:  
+		cout << "infinite" << endl;  
+		break;
+	case FP_NAN:       
+		cout << "NaN" << endl;       
+		break;
+	case FP_ZERO:      
+		cout << "zero" << endl;      
+		break;
+	case FP_SUBNORMAL: 
+		cout << "subnormal" << endl; 
+		break;
+	case FP_NORMAL:    
+		cout << "normal";
+		if (signbit(val))
+		{
+			cout << " negative" << endl;
+		}
+		else
+		{
+			cout << " positive or unsigned" << endl;
+		}
+		break;
 	default:
 		cout << "Error! Should not be here!" << endl;
 	}
@@ -639,10 +647,16 @@ int fast_float2int(float x) {
 	};
 
 	castable magic;
+	// 1 << 22 = 2^23 (e.g. convert float to integer)
+	// 150 << 23 is 1.5 trick for negative conversion
+	// For double the same masks are (1LL << 51) and (1075LL << 52)
 	magic.i = (150 << 23) | (1 << 22);
 
 	volatile castable c;
 	c.f = x + magic.f;
+	// Not to create 'if' condition for the negatives we use subtraction trick
+	// it will remove all the high bits properly for both types of numbers(positive and negative), 
+	// making the bits equal zero for positive values and filling them in with ones for negative values.
 	return c.i - magic.i;
 }
 

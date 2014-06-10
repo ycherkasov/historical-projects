@@ -3,7 +3,10 @@
 #include <valarray>
 #include <complex>
 #include <vector>
+#include <algorithm>
+#include <functional>
 #include "slice_iter.h"
+#include "matrix.h"
 
 using std::numeric_limits;
 using std::valarray;
@@ -144,20 +147,20 @@ void show_slices(){
 void show_slices_iterator(){
 	// на основе срезов можно реализовать итерирование по матрице
 	// см. Страуструп 3, 738
-	
+
 	// вектор-матрица из предыдущего примера
 	valarray<int> foo(12);
 	for (int i = 0; i < 12; ++i)
 		foo[i] = i;
-	
-	// срез для итерации
+
+	// срез для итерации сначала по строкам, потом по столбцам
 	slice s = std::slice(0, 3, 4);
 
 	slice_iter<int> s_iter(foo, s);
-	
+
 	++s_iter;
 	double d = (*s_iter);
-	
+
 	++s_iter;
 	d = (*s_iter);
 
@@ -269,7 +272,7 @@ void show_complex(){
 
 	// сопряженное
 	complex<double> c5 = conj(c1);
-	cout << "c5 = " << c4 << endl;
+	cout << "c5 = " << c5 << endl;
 
 	// полярные координаты (rho, theta)
 	// real = rho * cos(theta);
@@ -311,6 +314,35 @@ void show_algorithms(){
 	std::partial_sum(v1.begin(), v1.end(), std::back_inserter(res2));
 }
 
+void show_matrix(){
+	matrix<double> m1(3, 3);
+	matrix<double> m2(m1);
+
+	m1(0, 0) = 1.0;
+	m1(1, 1) = 2.0;
+	m1(2, 2) = 3.0;
+
+	slice_iter<double> s_iter1 = m1.row(0);
+	cout << "First row: ";
+	double d1 = *s_iter1;
+	cout << d1;
+	d1 = *(++s_iter1);
+	cout << d1;
+	d1 = *(++s_iter1);
+	cout << d1;
+	cout << endl;
+
+	slice_iter<double> s_iter2 = m1.column(1);
+	cout << "Second column: ";
+	double d2 = *s_iter2;
+	cout << d2;
+	d2 = *(++s_iter2);
+	cout << d2;
+	d2 = *(++s_iter2);
+	cout << d2;
+	cout << endl;
+}
+
 int main(){
 	show_limits();
 	show_valarray();
@@ -321,5 +353,6 @@ int main(){
 	show_indirect_array();
 	show_complex();
 	show_algorithms();
+	show_matrix();
 	return 0;
 }

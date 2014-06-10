@@ -52,12 +52,13 @@ int show_iterators()
 	// вывели первую строчку
 	*out_iter = "Input file:";
 
-	// Прочитать имена файлов
+	// Прочитать имена файлов (test.txt)
 	// Инициализируем итератор потоком ввода
 	istream_iterator<string> iinput_iter(cin);
 	string from = *iinput_iter;
 
 	// вывели вторую строчку
+	// файл вывода, (test1.txt)
 	++out_iter;
 	*out_iter = "Output file:";
 

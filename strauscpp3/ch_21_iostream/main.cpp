@@ -2,6 +2,7 @@
 // его использование сокращает врем€ компил€ции
 #include <iosfwd>
 #include "streams.h"
+#include "formatted_user_input.h"
 
 using namespace std;
 
@@ -23,7 +24,7 @@ void show_file_streams(){
 int main(){
 	
 	// for testing pieces of code
-	test_me();
+	//test_me();
 
 	// uncomment one by one
 	//show_standard_streams();
@@ -31,5 +32,6 @@ int main(){
 	//show_formatted_streams();
 	//show_string_streams();
 	//show_wide_char_locales();
+	//show_formatted_overloads();
 	return 0;
 }

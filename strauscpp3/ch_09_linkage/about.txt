@@ -59,6 +59,10 @@ C++ implicitly treats any const namespace-scope variable as having internal link
 unless it is explicitly declared extern, unlike C.
 
 Совместимость C и C++
+
+у C и C++ есть общее подмножество, но C++ не поддерживает весь сишный синтаксис. 
+причем довольно важные его куски. сразу вспоминаются variable-sized arrays и designated initializers
+
 http://en.wikipedia.org/wiki/Compatibility_of_C_and_C%2B%2B
 * C allows a void* pointer to be assigned to any pointer type without a cast
 int *j = malloc(sizeof(int) * 5);

@@ -8,7 +8,6 @@ wchar_t (_t - наследие от ANSI C)
 
 Вопросы: 
 * http://stereopsis.com/sree/fpu2006.html
-* floating point exvironment/exception does not work as expected
 
 Советы:
 * Давайте переменным с большой областью видимости большие, понятные имена.

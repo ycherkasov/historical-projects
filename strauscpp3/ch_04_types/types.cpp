@@ -68,6 +68,27 @@ void show_name_convensions(int a){
 	register int b = 10;
 }
 
+// Сравнение указателей
+template<typename T> 
+bool less_ptr(const T* p1, const T* p2) {
+	return p1 < p2;
+}
+
+//Пункт стандарта не скажу по памяти, но акцентируется разница между сравнением на == или != и сравнением на < >.
+//Сравнение на == != разрешено в любом случае, а на больше / меньше только в одном массиве,
+//в противном случае — unspecified behavior(не undefined).
+
+// Так что, если хочется корректности, то нужно пользоваться теми средствами, для которых гарантии даны — т.е.писать
+template<class T> bool less_ptr(T* a, T* b) {
+	return std::less<T*>()(a, b); 
+}
+
+//А заодно —(вымышленный) пример реализации, которая может этим зазором воспользоваться на вред юзеру.
+//Сегментная модель памяти, указатель представляет пару(селектор, смещение).
+//Ну хотя бы large модель для 16 - битного режима x86.
+//Делается допущение, что каждый объект и каждый массив расположены в пределах одного сегмента,
+//поэтому для сравнения указателей(на неравенство) достаточно сравнить смещения.
+
 void show_pointer(){
 
 	// как работает typedef для массива
@@ -121,6 +142,11 @@ void show_pointer(){
 	
 	// ...a pointer to a nonarray object behaves the same as a pointer to the
 	// first element of an array of length one with the type of the object as its element type
+	int* p1 = new int;
+	int* p2 = new int;
+	bool p1_less_p2 = less_ptr(p1, p2);
+	delete p1;
+	delete p2;
 }
 
 
@@ -230,6 +256,10 @@ void show_references(){
 	const int& rc = ic;
 
 	// ссылки можно возвращать - тогда возвращающая функция будет lvalue
+	
+	//Когда встречается конструкция T& ref = fun()
+	//- ожидается, что fun() возвращает ссылку, живущую достаточно долго(например, some_container.front())
+	//- ad - hoc - полиморфизм(т.е.мы хотим создать автоматический объект, но не можем явно указать его тип)
 }
 
 // This is correct.  The else actually matches with the second if (C++ Standard 6.4.1/1).

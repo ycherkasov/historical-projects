@@ -1,3 +1,4 @@
+#include <cstdio>
 #include <vector>
 #include <string>
 #include <iostream>
@@ -167,11 +168,23 @@ void show_math() {
 int main(){}
 */
 
+//Если опустить return
+//Flowing off the end of a function is equivalent to a return with no value;
+//this results in undefined behavior in a value - returning function.
 
+//а вот кстати фрактал :
+void frac(int k)
+{
+	float i, j, r, x, y = -16; while (puts(""), y++ < 15)
+		for (x = 0; x++ < 84; putchar(" .:-;!/>)|&IH%*#"[k & 15]))
+			for (i = k = r = 0; j = r*r - i*i - 2 + x / 25, i = 2 * r*i + y / 10, j*j + i*i < 11 && k++ < 111; r = j);
+}
 
 
 int main()
 {
+	//frac(10);
+
 	// Операции в функции main 
 	// (особенно включающие алгоритмы и опрерации с контейнерами)
 	// всегда заключаются в try/catch

@@ -28,7 +28,7 @@ https://www.facebook.com/notes/facebook-engineering/scalable-memory-allocation-u
 Windows Low fragmentation heap
 http://msdn.microsoft.com/en-us/library/aa366750.aspx
 
-// A default constructor may have parameters that have default values.
+
 
 As for fragmentation: it still depends. Unfortunately I can't find the link now, 
 but I remember a blog post from somebody at Microsoft who had worked on a C++ server 
@@ -38,6 +38,12 @@ until it was full (requests would free memory as normal).
 When region A was full, all memory would be allocated from region B. 
 By the time region B was full, region A was completely empty again. 
 This solved their fragmentation problem.
+
+operator delete is unique in being a non-member or static member function that is dynamically dispatched
+A type with a virtual destructor performs the call to its own delete from the most derived destructor
+http://en.cppreference.com/w/cpp/memory/new/operator_new
+http://en.cppreference.com/w/cpp/language/delete
+http://en.cppreference.com/w/cpp/memory/new/operator_delete
 
 
 Советы
@@ -97,26 +103,19 @@ This solved their fragmentation problem.
 * всякий раз, когда это возможно, пользуйтесь forward declaration в хедере - это уменьшает время компиляции
 * downcasting безопаснее делать при помощи dynamic_cast
 * функция clone() является разновидностью виртуального конструктора
-
-
 * new/delete pointer should be compared to zero
+// A default constructor may have parameters that have default values.
 
- Проектируя класс, следует ответить на следующие вопросы
- Как следует создавать и удалять объекты?
- Отличается ли инициализация от присвоения?
- Что означает передача по значению?
- Допустимые значения?
- Допустимые преобразования?
- Место в иерархии
- Какие стандартные операторы?
- Кто должен иметь доступ? Друзья?
- Насколько новый тип общий?
-
-operator delete is unique in being a non-member or static member function that is dynamically dispatched
-A type with a virtual destructor performs the call to its own delete from the most derived destructor
-http://en.cppreference.com/w/cpp/memory/new/operator_new
-http://en.cppreference.com/w/cpp/language/delete
-http://en.cppreference.com/w/cpp/memory/new/operator_delete
+Проектируя класс, следует ответить на следующие вопросы
+Как следует создавать и удалять объекты?
+Отличается ли инициализация от присвоения?
+Что означает передача по значению?
+Допустимые значения?
+Допустимые преобразования?
+Место в иерархии
+Какие стандартные операторы?
+Кто должен иметь доступ? Друзья?
+Насколько новый тип общий?
 
 Я просто подчеркнул разницу между оператором new и выражением new. Их регулярно путают
 

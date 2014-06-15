@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cmath>
 #include <bitset>
+#include <ctime>
 #include "bit_operations.h"
 
 /*
@@ -332,6 +333,13 @@ void show_integers(){
 	i = divide_2(64);
 	i = multiply_2(10);
 	i = multiply_2(64);
+
+	unsigned int i1 = 1;
+	int j1 = -1;
+	// Секция Unreachable достигается ? Если нет, то почему ?
+	if (j1 < i1){
+		cout << "Unreachable" << endl;
+	}
 }
 
 void show_close_enough(){
@@ -408,6 +416,19 @@ void show_shift(){
 	}
 }
 
+//Почему rand() - очень медленная функция ?
+//Я имею в виду вызов Enter / LeavCriticalSection или что - то такого же,
+//что блокирует шину данных, когда зовём rand при линковке с многопоточной библиотекой.
+//Если перенести этот код на многопроцессорную машину, где лок шины данных будет настоящий,
+//а не "понарошку" - то я не знаю сколько будет.Вот код для тестирования :
+void show_rand(){
+	volatile int x;
+	int n = 10000000;
+	clock_t t = clock();
+	for (int i = 0; i < n; ++i) x = rand();
+	std::cout << int(double(n) * CLOCKS_PER_SEC / (clock() - t));
+}
+
 int main(){
 
 	show_bits();
@@ -436,5 +457,6 @@ int main(){
 	show_pointer();
 	show_references();
 	show_ifs(-1);
+	show_rand();
 	return 0;
 }

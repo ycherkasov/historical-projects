@@ -8,7 +8,6 @@
 Вопросы:
 
 Сделать:
-* operator << для дат или валюты с эффекторами
 
 Советы и резюме:
 * ostream could be considered as a convertation object->symbols. istream is vise versa

@@ -5,9 +5,13 @@
 wchar_t (_t - наследие от ANSI C)
 Перечисления. Указатели.
 Битовые операции.
+Алиасинг. Выравнивание.
+Почему rand() - очень медленная функция.
 
 Вопросы: 
-* посчитать для строки, а потом для произвольного типа сумму составляющих его битов
+
+Сделать:
+http://en.wikipedia.org/wiki/Hamming_weight
 
 Советы:
 * Давайте переменным с большой областью видимости большие, понятные имена.
@@ -41,132 +45,3 @@ int *intptr=&anint;
 struct S { char c; int i; };
 bool is_equal(S a, S b) { return 0 == memcmp(&a, &b, sizeof(S)); }
 
-Почему rand() - очень медленная функция?
-Я имею в виду вызов Enter/LeavCriticalSection или что-то такого же, 
-что блокирует шину данных, когда зовём rand при линковке с многопоточной библиотекой.
-Если перенести этот код на многопроцессорную машину, где лок шины данных будет настоящий, а не "понарошку" - то я не знаю сколько будет. Вот код для тестирования:
-#include <stdlib.h>
-#include <time.h>
-#include <iostream>
-int main()
-{
-    volatile int x;
-    int n = 10000000;
-    clock_t t = clock();
-    for (int i = 0; i < n; ++i) x = rand();
-    std::cout << int(double(n) * CLOCKS_PER_SEC / (clock() - t));
-}
-
-for (int i = 0; i <= vector.size()-1; ++i)
-i < -1 тут воспринимается как i < (unsigned)-1, то есть i < 0xFFFFFFFF
-
-Приоритет операций
-1	
-::			Область видимости	 Слева-направо
-
-2	
-++   --		Суффиксальный/постфиксный инкремент и декремент
-()			Вызов функции
-[]			Обращение к массиву по индексу
-.			Выбор элемента по ссылке
-−>			Выбор элемента по указателю
-
-3
-++   --		Префиксный инкремент и декремент	 Справа-налево
-+   −		Унарный плюс и минус
-!   ~		Логическое НЕ и побитовое НЕ
-(type)		Приведение к типу type
-*			Indirection (разыменование)
-&			Адрес
-sizeof		Размер
-new, new[]	Динамическое выделение памяти
-delete, delete []Динамическое освобождение памяти
-
-4
-.*   ->*	Указатель на член	 Слева-направо
-5	
-*   /   %	Умножение, деление и остаток
-
-6	
-+   −		Сложение и вычитание
-
-7	
-<<   >>		Побитовый сдвиг влево и сдвиг вправо
-
-8	
-<   <=		For relational operators < and ≤ respectively
->   >=		For relational operators > and ≥ respectively
-
-9
-==   !=		For relational = and ≠ respectively
-
-10
-&			Побитовое И
-
-11	
-^			Побитовый XOR (исключающее или)
-
-12	
-|			Побитовое ИЛИ (inclusive or)
-
-13	
-&&			Логическое И
-
-14	
-||			Логическое ИЛИ
-
-15	
-?:			Тернарное условие	 Справа-налево
-=			Прямое присваивание (предоставляемое по умолчанию для C++ классов)
-+=   −=		Присвоение с суммированием и разностью
-*=   /=   %=Присвоение с умножением, делением и остатком от деления
-<<=   >>=	Assignment by bitwise left shift and right shift
-&=   ^=   |= Assignment by bitwise AND, XOR, and OR
-
-16	
-throw		Throw оператор (выброс исключений)
-
-17	,		Запятая	
-
-
-
-	In order to control these types of conversions between classes, 
-	we have four specific casting operators: 
-	dynamic_cast, reinterpret_cast, static_cast and const_cast. 
-	Their format is to follow the new type enclosed between angle-brackets (<>) and immediately after, 
-	the expression to be converted between parentheses.
-
-	dynamic_cast <new_type> (expression)
-	reinterpret_cast <new_type> (expression)
-	static_cast <new_type> (expression)
-	const_cast <new_type> (expression)
-
-	The traditional type-casting equivalents to these expressions would be:
-
-	(new_type) expression
-	new_type (expression)
-
-	static_cast can perform conversions between pointers to related classes, 
-	not only upcasts (from pointer-to-derived to pointer-to-base), 
-	but also downcasts (from pointer-to-base to pointer-to-derived). 
-	No checks are performed during runtime to guarantee that the object being converted 
-	is in fact a full object of the destination type. 
-	Therefore, it is up to the programmer to ensure that the conversion is safe. 
-	On the other side, it does not incur the overhead of the type-safety checks of dynamic_cast.
-
-	dynamic_cast can only be used with pointers and references to classes (or with void*). 
-	Its purpose is to ensure that the result of the type conversion points to a valid 
-	complete object of the destination pointer type.
-	This naturally includes pointer upcast (converting from pointer-to-derived to pointer-to-base), 
-	in the same way as allowed as an implicit conversion.
-	But dynamic_cast can also downcast (convert from pointer-to-base to pointer-to-derived) 
-	polymorphic classes (those with virtual members) if -and only if- 
-	the pointed object is a valid complete object of the target type.
-
-
-	reinterpret_cast converts any pointer type to any other pointer type, even of unrelated classes. 
-	The operation result is a simple binary copy of the value from one pointer to the other. 
-	All pointer conversions are allowed: neither the content pointed nor the pointer type itself is checked.
-	Can't cast constantness!!!
-
-	This type of casting manipulates the constness of the object pointed by a pointer,

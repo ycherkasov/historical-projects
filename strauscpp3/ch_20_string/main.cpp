@@ -55,7 +55,7 @@ void show_string(){
 	std::transform(s3.begin(), s3.end(), s3.begin(), std::toupper);
 }
 
-void strrev(char *p) {
+void str_rev(char *p) {
 	char *q = p;
 	while (q && *q) ++q;
 	for (--q; p < q; ++p, --q){
@@ -67,7 +67,7 @@ void strrev(char *p) {
 
 #define SWP(x,y) (x^=y, y^=x, x^=y)
 
-void strrev_utf8(char *p){
+void str_rev_utf8(char *p){
 	char *q = p;
 	strrev(p); /* call base case */
 
@@ -92,12 +92,12 @@ void strrev_utf8(char *p){
 	}
 }
 
-int show_c_string_rev(){
+void show_c_string_rev(){
 
 	char str[] = "atatat";
 	printf("%s ", str);
-	strrev(str);
-	strrev_utf8(str);
+	str_rev(str);
+	str_rev_utf8(str);
 	printf("%s\n", str);
 
 	// C++ way

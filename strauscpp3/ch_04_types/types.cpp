@@ -112,6 +112,7 @@ void show_pointer(){
 	// дл€ формировани€ неконстантной строки используйте массив
 	char p_arr[] = "array";
 	p_arr[0] = 'A';
+	cout << sizeof(p_arr) << endl;
 
 
 	// јрифметика указателей:
@@ -198,7 +199,6 @@ void show_array_pointers(){
 	// 2.
 	// ћассив и указатель на массив - разные типы, их нельз€ даже сравнивать
 	// они молча привод€тс€ друг к другу, но сравнивать их нельз€
-
 	int array[42] = {};
 
 	int* ii3 = array;
@@ -234,7 +234,6 @@ void show_array_pointers(){
 
 	// компил€тор расставит приоритеты следующим образом:
 	// 1( [&array] ) - &( array[0] ) == ( 1 + &array ) - &(0 + array)
-
 	std::cout << std::hex << 1[&array] << '-' << &array[0] << '=' << std::dec << diff3 << '\n';
 
 	// 5.
@@ -289,6 +288,12 @@ int divide_2(int i){
 	return i >> 1;
 }
 
+bool raised_to2(int x){
+	if (!((x - 1) & x))
+		return true;
+	return false;
+}
+
 int multiply_2(int i){
 	return i << 1;
 }
@@ -333,6 +338,11 @@ void show_integers(){
 	i = divide_2(64);
 	i = multiply_2(10);
 	i = multiply_2(64);
+
+	bool r = raised_to2(2);
+	r = raised_to2(4);
+	r = raised_to2(8);
+	r = raised_to2(16);
 
 	unsigned int i1 = 1;
 	int j1 = -1;

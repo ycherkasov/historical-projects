@@ -1,5 +1,5 @@
 Тред про безопасность исключений
-http://rsdn.ru/forum/cpp/2704484.aspx	
+http://rsdn.ru/forum/cpp/2704484.aspx
 
 Пара вопросов про полиморфизм
 http://www.rsdn.ru/forum/cpp/2803940.flat.aspx	
@@ -10,13 +10,11 @@ http://www.rsdn.ru/forum/cpp/1671446.1.aspx
 Возвращение по ссылке, реаллокация в веторе (конец треда)
 http://www.rsdn.ru/forum/cpp/1550645.aspx
 
-http://rsdn.ru/forum/message/139904.aspx
+Задачи из горы Фудзи
 http://rsdn.ru/forum/message/1597816.aspx
 
-http://rsdn.ru/forum/message/3126672.1.aspx
+Intrusive ptr, friends+templates
 http://rsdn.ru/Forum/message/3068558.1.aspx
-http://rsdn.ru/forum/message/2993324.1.aspx
-http://rsdn.ru/forum/message/2916641.1.aspx
 
 Матрица компетентности программиста
 http://habrahabr.ru/post/37707/
@@ -47,8 +45,6 @@ http://www.techinterviews.com/amazon-interview-questions
 
 Google interview questions
 http://www.techinterviews.com/google-interview-questions
-
-http://www.osp.ru/os/2004/07/184985/
 
 Битовая арифметика (en)
 http://graphics.stanford.edu/~seander/bithacks.html#IntegerLogObvious

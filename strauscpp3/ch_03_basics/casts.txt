@@ -37,4 +37,5 @@ The operation result is a simple binary copy of the value from one pointer to th
 All pointer conversions are allowed: neither the content pointed nor the pointer type itself is checked.
 Can't cast constantness!!!
 
-This type of casting manipulates the constness of the object pointed by a pointer,
+const_cast
+This type of casting manipulates the constness of the object pointed by a pointer

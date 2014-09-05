@@ -16,7 +16,7 @@ std::size_t array_size(const T(&) [N]) {
 // Helper - print container
 template<typename T, template <typename ELEM, typename = std::allocator<ELEM> > class CONT >
 void print_container(const CONT<T>& c){
-    CONT<T>::const_iterator it = c.begin();
+    typename CONT<T>::const_iterator it = c.begin();
     while (it != c.end()){
         cout << (*it) << ' ';
         ++it;

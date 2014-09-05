@@ -11,6 +11,7 @@ struct BaseTypedef{
     typedef T instantiated_type;
 };
 
+
 template <>
 struct BaseTypedef<char>{
     static const long instantiated_type = 1;
@@ -21,7 +22,7 @@ struct UseTypedef : public BaseTypedef<A>{
     // without typename does not compiled because of specialization
     // BaseTypedef<char>, where 'instantiated_type' not a type, but static member
     // which is absolutely correct from syntax view
-    typename BaseTypedef::instantiated_type _instance;
+    typename BaseTypedef<A>::instantiated_type _instance;
 };
 
 

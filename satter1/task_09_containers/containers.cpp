@@ -66,7 +66,9 @@ void vector_bool(){
     v.assign(arr, arr + array_size(arr));
 
     // vector<bool> is proxy, it is less efficient on standard algorithms
-    for_each(v.begin(), v.end(), [](bool b) {cout << "Unpack from vector<bool>: " << b << endl;} );
+    for(vector<bool>::iterator it  = v.begin(); it != v.end(); ++it){
+        cout << "Unpack from vector<bool>: " << (*it) << endl;
+    }
 }
 
 

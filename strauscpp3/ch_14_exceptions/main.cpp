@@ -45,7 +45,8 @@ void show_base_type(){
 	}
 	// эта конструкция ловит вообще все исключения по указателю!
 	catch (const void* p){
-		delete p;
+        // what to do here except of analyzing stack is unclear
+        // could not delete p, type is unknown
 	}
 
 }

@@ -29,7 +29,7 @@ template<typename TKey, typename TVal>
 void print_map(const map<TKey, TVal>& m	) {
     typename map<TKey, TVal>::const_iterator it = m.begin();
 	while( it != m.end() ) {
-		cout << (*it).first << '=/t' << (*it).second;
+        cout << (*it).first << "=/t" << (*it).second;
 		++it;
 	}
 	cout << endl;

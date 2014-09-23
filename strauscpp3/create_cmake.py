@@ -6,7 +6,7 @@ path = '.'
 # project=0
 # target=1
 # std=2
-# pthread=3
+# -pthread=3
 # arch=4
 base_cmake_text = '''cmake_minimum_required(VERSION 2.8)
 project({0} CXX)
@@ -18,14 +18,14 @@ if( ("UNIX") AND ("${{CMAKE_CXX_COMPILER_ID}}" STREQUAL "Clang") )
     # using Clang
     message("UNIX congiguration, Clang")
     set(CMAKE_CXX_FLAGS "-m{4} -std={2}")
-    set(CMAKE_EXE_LINKER_FLAGS "-std={2} -{3} -Wl")
+    set(CMAKE_EXE_LINKER_FLAGS "-std={2} {3} -Wl")
 elseif( ("UNIX") AND ("${{CMAKE_CXX_COMPILER_ID}}" STREQUAL "GNU") )
 
     # using GCC
     message("UNIX congiguration, GCC")
     message("WARNING: gcc-multilib is required on x64 systems for the cross-compilation!")
-    set(CMAKE_CXX_FLAGS "-m{4} -std={2} -{3}")
-    set(CMAKE_EXE_LINKER_FLAGS "-std={2} -{3} -Wl,--no-as-needed")
+    set(CMAKE_CXX_FLAGS "-m{4} -std={2} {3}")
+    set(CMAKE_EXE_LINKER_FLAGS "-std={2} {3} -Wl,--no-as-needed")
 
 elseif("WIN32")
 
@@ -88,7 +88,8 @@ def create_base_cmake(root_path, solution_name, projects_list):
     :param projects_list: list of projects (subdirectory names)
     '''
     f = open(os.path.join(root_path, 'CMakeLists.txt'), 'w')
-    f.write(base_cmake_text.format(solution_name, solution_name, 'c++11', 'pthread', '32'))
+    # project, target, c++11, -pthread, 32/64
+    f.write(base_cmake_text.format(solution_name, solution_name, 'c++11', '', '32'))
     for project in projects_list:
         f.write('add_subdirectory({0})\n'.format(project))
     f.close()

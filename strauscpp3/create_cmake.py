@@ -88,7 +88,7 @@ def create_base_cmake(root_path, solution_name, projects_list):
     :param projects_list: list of projects (subdirectory names)
     '''
     f = open(os.path.join(root_path, 'CMakeLists.txt'), 'w')
-    f.write(base_cmake_text.format(solution_name, solution_name, 'C++11', 'pthread', '32'))
+    f.write(base_cmake_text.format(solution_name, solution_name, 'c++11', 'pthread', '32'))
     for project in projects_list:
         f.write('add_subdirectory({0})\n'.format(project))
     f.close()

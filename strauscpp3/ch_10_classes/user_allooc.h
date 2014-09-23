@@ -1,32 +1,36 @@
 #pragma once
 #include <new>
+#include <cstdio>
 
-// В этом хедере демонстрируется создание объекта 
-// при помощи пользовательского аллокатора
+using std::new_handler;
+using std::bad_alloc;
 
-// Мейерс 1 Правило 7
-// Можно замещать стандартный обработчик по нехватке памяти
-// Стандартно set_new_handler() вызывается, 
-// пока память не будет освобождена или программа не завершена
-// Пользовательский обработчик может:
-// * сделать доступным необходимое количество памяти
-// * установить другой обработчик new
-// * установить нулевой обработчик (т.е. исключение bad_alloc) или бросить bad_alloc вручную
-// * завершить программу по abort()/exit()
+// Р’ СЌС‚РѕРј С…РµРґРµСЂРµ РґРµРјРѕРЅСЃС‚СЂРёСЂСѓРµС‚СЃСЏ СЃРѕР·РґР°РЅРёРµ РѕР±СЉРµРєС‚Р°
+// РїСЂРё РїРѕРјРѕС‰Рё РїРѕР»СЊР·РѕРІР°С‚РµР»СЊСЃРєРѕРіРѕ Р°Р»Р»РѕРєР°С‚РѕСЂР°
 
-// Можно для каждого конкретного класса реализовать свой обработчик set_new_handler()
-// Можно создать класс-примесь (mixture) чтобы наследовать от него оператор и обработчик new
-// или параметризовать класс им
-// Используем шаблоны и CRTP, чтобы получить гарантию, что каждый базовый класс уникален
+// РњРµР№РµСЂСЃ 1 РџСЂР°РІРёР»Рѕ 7
+// РњРѕР¶РЅРѕ Р·Р°РјРµС‰Р°С‚СЊ СЃС‚Р°РЅРґР°СЂС‚РЅС‹Р№ РѕР±СЂР°Р±РѕС‚С‡РёРє РїРѕ РЅРµС…РІР°С‚РєРµ РїР°РјСЏС‚Рё
+// РЎС‚Р°РЅРґР°СЂС‚РЅРѕ set_new_handler() РІС‹Р·С‹РІР°РµС‚СЃСЏ,
+// РїРѕРєР° РїР°РјСЏС‚СЊ РЅРµ Р±СѓРґРµС‚ РѕСЃРІРѕР±РѕР¶РґРµРЅР° РёР»Рё РїСЂРѕРіСЂР°РјРјР° РЅРµ Р·Р°РІРµСЂС€РµРЅР°
+// РџРѕР»СЊР·РѕРІР°С‚РµР»СЊСЃРєРёР№ РѕР±СЂР°Р±РѕС‚С‡РёРє РјРѕР¶РµС‚:
+// * СЃРґРµР»Р°С‚СЊ РґРѕСЃС‚СѓРїРЅС‹Рј РЅРµРѕР±С…РѕРґРёРјРѕРµ РєРѕР»РёС‡РµСЃС‚РІРѕ РїР°РјСЏС‚Рё
+// * СѓСЃС‚Р°РЅРѕРІРёС‚СЊ РґСЂСѓРіРѕР№ РѕР±СЂР°Р±РѕС‚С‡РёРє new
+// * СѓСЃС‚Р°РЅРѕРІРёС‚СЊ РЅСѓР»РµРІРѕР№ РѕР±СЂР°Р±РѕС‚С‡РёРє (С‚.Рµ. РёСЃРєР»СЋС‡РµРЅРёРµ bad_alloc) РёР»Рё Р±СЂРѕСЃРёС‚СЊ bad_alloc РІСЂСѓС‡РЅСѓСЋ
+// * Р·Р°РІРµСЂС€РёС‚СЊ РїСЂРѕРіСЂР°РјРјСѓ РїРѕ abort()/exit()
+
+// РњРѕР¶РЅРѕ РґР»СЏ РєР°Р¶РґРѕРіРѕ РєРѕРЅРєСЂРµС‚РЅРѕРіРѕ РєР»Р°СЃСЃР° СЂРµР°Р»РёР·РѕРІР°С‚СЊ СЃРІРѕР№ РѕР±СЂР°Р±РѕС‚С‡РёРє set_new_handler()
+// РњРѕР¶РЅРѕ СЃРѕР·РґР°С‚СЊ РєР»Р°СЃСЃ-РїСЂРёРјРµСЃСЊ (mixture) С‡С‚РѕР±С‹ РЅР°СЃР»РµРґРѕРІР°С‚СЊ РѕС‚ РЅРµРіРѕ РѕРїРµСЂР°С‚РѕСЂ Рё РѕР±СЂР°Р±РѕС‚С‡РёРє new
+// РёР»Рё РїР°СЂР°РјРµС‚СЂРёР·РѕРІР°С‚СЊ РєР»Р°СЃСЃ РёРј
+// РСЃРїРѕР»СЊР·СѓРµРј С€Р°Р±Р»РѕРЅС‹ Рё CRTP, С‡С‚РѕР±С‹ РїРѕР»СѓС‡РёС‚СЊ РіР°СЂР°РЅС‚РёСЋ, С‡С‚Рѕ РєР°Р¶РґС‹Р№ Р±Р°Р·РѕРІС‹Р№ РєР»Р°СЃСЃ СѓРЅРёРєР°Р»РµРЅ
 template <typename T>
 class NewHandlerSupport{
 public:
-	static new_handler set_new_handler(new_handler p);
-	static void* operator new(size_t size);
-	static void operator delete(void* p);
-	static void no_more_memory();
+    static new_handler set_new_handler(new_handler p);
+    static void* operator new(size_t size);
+    static void operator delete(void* p);
+    static void no_more_memory();
 private:
-	static new_handler _current_handler;
+    static new_handler _current_handler;
 };
 
 // Mixtury class defenition that replaces standard
@@ -38,155 +42,155 @@ new_handler NewHandlerSupport<T>::_current_handler = &NewHandlerSupport<T>::no_m
 template <typename T>
 new_handler NewHandlerSupport<T>::set_new_handler(new_handler p)
 {
-	// ведет себя как стандартный set_new_handler
-	new_handler old_handler = _current_handler;
-	_current_handler = p;
-	return old_handler;
+    // РІРµРґРµС‚ СЃРµР±СЏ РєР°Рє СЃС‚Р°РЅРґР°СЂС‚РЅС‹Р№ set_new_handler
+    new_handler old_handler = _current_handler;
+    _current_handler = p;
+    return old_handler;
 }
 
 
 template <typename T>
 void NewHandlerSupport<T>::no_more_memory(){
-	// в нашем кастомном обработчике просто выведем сообщение
-	// а дальше поступим как стандартный new_handler
-	printf("No more memory!\n");
-	throw bad_alloc();
+    // РІ РЅР°С€РµРј РєР°СЃС‚РѕРјРЅРѕРј РѕР±СЂР°Р±РѕС‚С‡РёРєРµ РїСЂРѕСЃС‚Рѕ РІС‹РІРµРґРµРј СЃРѕРѕР±С‰РµРЅРёРµ
+    // Р° РґР°Р»СЊС€Рµ РїРѕСЃС‚СѓРїРёРј РєР°Рє СЃС‚Р°РЅРґР°СЂС‚РЅС‹Р№ new_handler
+    printf("No more memory!\n");
+    throw bad_alloc();
 }
 
-// Мейерс 2 Правило 8
-// Различайте оператор new - он выделяет память и вызывает конструктор. Его переопределять нельзя
-// и функцию operator new() - она изменяет способ выделения памяти, и переопределять ее можно
-// Аналогично с оператором delete и функцией operator delete()
+// РњРµР№РµСЂСЃ 2 РџСЂР°РІРёР»Рѕ 8
+// Р Р°Р·Р»РёС‡Р°Р№С‚Рµ РѕРїРµСЂР°С‚РѕСЂ new - РѕРЅ РІС‹РґРµР»СЏРµС‚ РїР°РјСЏС‚СЊ Рё РІС‹Р·С‹РІР°РµС‚ РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ. Р•РіРѕ РїРµСЂРµРѕРїСЂРµРґРµР»СЏС‚СЊ РЅРµР»СЊР·СЏ
+// Рё С„СѓРЅРєС†РёСЋ operator new() - РѕРЅР° РёР·РјРµРЅСЏРµС‚ СЃРїРѕСЃРѕР± РІС‹РґРµР»РµРЅРёСЏ РїР°РјСЏС‚Рё, Рё РїРµСЂРµРѕРїСЂРµРґРµР»СЏС‚СЊ РµРµ РјРѕР¶РЅРѕ
+// РђРЅР°Р»РѕРіРёС‡РЅРѕ СЃ РѕРїРµСЂР°С‚РѕСЂРѕРј delete Рё С„СѓРЅРєС†РёРµР№ operator delete()
 
 
 template <typename T>
 void* NewHandlerSupport<T>::operator new(size_t sz)
 {
-	// получить стандартный обработчик (0 если throw bad_alloc)
-	new_handler global_handler = std::set_new_handler(_current_handler);
-	void* mem = nullptr;
+    // РїРѕР»СѓС‡РёС‚СЊ СЃС‚Р°РЅРґР°СЂС‚РЅС‹Р№ РѕР±СЂР°Р±РѕС‚С‡РёРє (0 РµСЃР»Рё throw bad_alloc)
+    new_handler global_handler = std::set_new_handler(_current_handler);
+    void* mem = nullptr;
 
-	try{
-		// выделить память глобальным оператором
-		mem = ::operator new(sz);
-		// если выделить нельзя - вызовется _current_handler()
-		// если он = 0, бросится bad_alloc
-	}
-	catch (const std::bad_alloc&){
-		// вернем на место старый глобальный new_handler
-		std::set_new_handler(global_handler);
-		throw;
-	}
-	set_new_handler(global_handler);
-	return mem;
+    try{
+        // РІС‹РґРµР»РёС‚СЊ РїР°РјСЏС‚СЊ РіР»РѕР±Р°Р»СЊРЅС‹Рј РѕРїРµСЂР°С‚РѕСЂРѕРј
+        mem = ::operator new(sz);
+        // РµСЃР»Рё РІС‹РґРµР»РёС‚СЊ РЅРµР»СЊР·СЏ - РІС‹Р·РѕРІРµС‚СЃСЏ _current_handler()
+        // РµСЃР»Рё РѕРЅ = 0, Р±СЂРѕСЃРёС‚СЃСЏ bad_alloc
+    }
+    catch (const std::bad_alloc&){
+        // РІРµСЂРЅРµРј РЅР° РјРµСЃС‚Рѕ СЃС‚Р°СЂС‹Р№ РіР»РѕР±Р°Р»СЊРЅС‹Р№ new_handler
+        std::set_new_handler(global_handler);
+        throw;
+    }
+    set_new_handler(global_handler);
+    return mem;
 }
 
 
 template <typename T>
 void NewHandlerSupport<T>::operator delete(void* p){
-	::operator delete(p);
+    ::operator delete(p);
 }
 
 
-// Наследуем mixture-class
+// РќР°СЃР»РµРґСѓРµРј mixture-class
 class LargeObject : public NewHandlerSupport<LargeObject> {
 public:
-	LargeObject(){}
-	~LargeObject(){}
+    LargeObject(){}
+    ~LargeObject(){}
 private:
-	// very large array, will throw out of memory
-	char large_array[2147483646];
+    // very large array, will throw out of memory
+    char large_array[2147483646];
 };
 
-// Еще раз наследуем mixture-class
+// Р•С‰Рµ СЂР°Р· РЅР°СЃР»РµРґСѓРµРј mixture-class
 class SmallObject : public NewHandlerSupport<SmallObject> {
 public:
-	SmallObject(){}
-	~SmallObject(){}
+    SmallObject(){}
+    ~SmallObject(){}
 private:
-	// everything ok should be here
-	char large_array[42];
+    // everything ok should be here
+    char large_array[42];
 };
 
 
-// Мейерс 1 Правило 7
-// переопределения для класса operator new() гарантирует,
-// что для его экземпляров будет вызван именно он
-// Мейерс 1 Правило 8
-// operator new() наследуется производными классами
-// поэтому operator new() в базовом классе нужно проектировать для производных,
-// либо просто вызывать для них стандартный operator new()
-// Также реализуйте родственный operator new[]()
-// Мейерс 1 Правило 9
-// В оператор new может быть добавлено сколько угодно параметров
-// Если перегружена какая-либо другая форма new, кроме нормальной
-// (замещающая, с указателем на обработчик),
-// то нормальная обязательно должна быть перегружена
-// Иначе перегруженные операторы сокроют глобальную new()
-// Размещающий оператор operator new и размещающий 
-// оператор operator delete должны появляться только парами
-// для каждой размещающей функции распределения памяти под объект
+// РњРµР№РµСЂСЃ 1 РџСЂР°РІРёР»Рѕ 7
+// РїРµСЂРµРѕРїСЂРµРґРµР»РµРЅРёСЏ РґР»СЏ РєР»Р°СЃСЃР° operator new() РіР°СЂР°РЅС‚РёСЂСѓРµС‚,
+// С‡С‚Рѕ РґР»СЏ РµРіРѕ СЌРєР·РµРјРїР»СЏСЂРѕРІ Р±СѓРґРµС‚ РІС‹Р·РІР°РЅ РёРјРµРЅРЅРѕ РѕРЅ
+// РњРµР№РµСЂСЃ 1 РџСЂР°РІРёР»Рѕ 8
+// operator new() РЅР°СЃР»РµРґСѓРµС‚СЃСЏ РїСЂРѕРёР·РІРѕРґРЅС‹РјРё РєР»Р°СЃСЃР°РјРё
+// РїРѕСЌС‚РѕРјСѓ operator new() РІ Р±Р°Р·РѕРІРѕРј РєР»Р°СЃСЃРµ РЅСѓР¶РЅРѕ РїСЂРѕРµРєС‚РёСЂРѕРІР°С‚СЊ РґР»СЏ РїСЂРѕРёР·РІРѕРґРЅС‹С…,
+// Р»РёР±Рѕ РїСЂРѕСЃС‚Рѕ РІС‹Р·С‹РІР°С‚СЊ РґР»СЏ РЅРёС… СЃС‚Р°РЅРґР°СЂС‚РЅС‹Р№ operator new()
+// РўР°РєР¶Рµ СЂРµР°Р»РёР·СѓР№С‚Рµ СЂРѕРґСЃС‚РІРµРЅРЅС‹Р№ operator new[]()
+// РњРµР№РµСЂСЃ 1 РџСЂР°РІРёР»Рѕ 9
+// Р’ РѕРїРµСЂР°С‚РѕСЂ new РјРѕР¶РµС‚ Р±С‹С‚СЊ РґРѕР±Р°РІР»РµРЅРѕ СЃРєРѕР»СЊРєРѕ СѓРіРѕРґРЅРѕ РїР°СЂР°РјРµС‚СЂРѕРІ
+// Р•СЃР»Рё РїРµСЂРµРіСЂСѓР¶РµРЅР° РєР°РєР°СЏ-Р»РёР±Рѕ РґСЂСѓРіР°СЏ С„РѕСЂРјР° new, РєСЂРѕРјРµ РЅРѕСЂРјР°Р»СЊРЅРѕР№
+// (Р·Р°РјРµС‰Р°СЋС‰Р°СЏ, СЃ СѓРєР°Р·Р°С‚РµР»РµРј РЅР° РѕР±СЂР°Р±РѕС‚С‡РёРє),
+// С‚Рѕ РЅРѕСЂРјР°Р»СЊРЅР°СЏ РѕР±СЏР·Р°С‚РµР»СЊРЅРѕ РґРѕР»Р¶РЅР° Р±С‹С‚СЊ РїРµСЂРµРіСЂСѓР¶РµРЅР°
+// РРЅР°С‡Рµ РїРµСЂРµРіСЂСѓР¶РµРЅРЅС‹Рµ РѕРїРµСЂР°С‚РѕСЂС‹ СЃРѕРєСЂРѕСЋС‚ РіР»РѕР±Р°Р»СЊРЅСѓСЋ new()
+// Р Р°Р·РјРµС‰Р°СЋС‰РёР№ РѕРїРµСЂР°С‚РѕСЂ operator new Рё СЂР°Р·РјРµС‰Р°СЋС‰РёР№
+// РѕРїРµСЂР°С‚РѕСЂ operator delete РґРѕР»Р¶РЅС‹ РїРѕСЏРІР»СЏС‚СЊСЃСЏ С‚РѕР»СЊРєРѕ РїР°СЂР°РјРё
+// РґР»СЏ РєР°Р¶РґРѕР№ СЂР°Р·РјРµС‰Р°СЋС‰РµР№ С„СѓРЅРєС†РёРё СЂР°СЃРїСЂРµРґРµР»РµРЅРёСЏ РїР°РјСЏС‚Рё РїРѕРґ РѕР±СЉРµРєС‚
 // void operator new(size_t, P2, P3, ..., Pn);
-// должна существовать совпадающая функция освобождения памяти
+// РґРѕР»Р¶РЅР° СЃСѓС‰РµСЃС‚РІРѕРІР°С‚СЊ СЃРѕРІРїР°РґР°СЋС‰Р°СЏ С„СѓРЅРєС†РёСЏ РѕСЃРІРѕР±РѕР¶РґРµРЅРёСЏ РїР°РјСЏС‚Рё
 // void *operator delete(void *, P2, P3, ..., Pn);
-// При этом размещающий оператор delete вызывается только для 
-// удаления частично созданного объекта (throw из конструктора). 
-// Полностью сконструированный объект удаляется с помощью выражения delete — 
-// и эти выражения вызывают неразмещающий operator delete
+// РџСЂРё СЌС‚РѕРј СЂР°Р·РјРµС‰Р°СЋС‰РёР№ РѕРїРµСЂР°С‚РѕСЂ delete РІС‹Р·С‹РІР°РµС‚СЃСЏ С‚РѕР»СЊРєРѕ РґР»СЏ
+// СѓРґР°Р»РµРЅРёСЏ С‡Р°СЃС‚РёС‡РЅРѕ СЃРѕР·РґР°РЅРЅРѕРіРѕ РѕР±СЉРµРєС‚Р° (throw РёР· РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂР°).
+// РџРѕР»РЅРѕСЃС‚СЊСЋ СЃРєРѕРЅСЃС‚СЂСѓРёСЂРѕРІР°РЅРЅС‹Р№ РѕР±СЉРµРєС‚ СѓРґР°Р»СЏРµС‚СЃСЏ СЃ РїРѕРјРѕС‰СЊСЋ РІС‹СЂР°Р¶РµРЅРёСЏ delete вЂ”
+// Рё СЌС‚Рё РІС‹СЂР°Р¶РµРЅРёСЏ РІС‹Р·С‹РІР°СЋС‚ РЅРµСЂР°Р·РјРµС‰Р°СЋС‰РёР№ operator delete
 
 class user_alloc
 {
 public:
-	user_alloc();
+    user_alloc();
 
-	// Без виртуальных деструкторов функция operator delete() может работать ненадлежащим образом
-	virtual ~user_alloc();
-	
-	// 1. Simple new/delete overload
-	static void* operator new(size_t s);
-	static void operator delete(void* p);
+    // Р‘РµР· РІРёСЂС‚СѓР°Р»СЊРЅС‹С… РґРµСЃС‚СЂСѓРєС‚РѕСЂРѕРІ С„СѓРЅРєС†РёСЏ operator delete() РјРѕР¶РµС‚ СЂР°Р±РѕС‚Р°С‚СЊ РЅРµРЅР°РґР»РµР¶Р°С‰РёРј РѕР±СЂР°Р·РѕРј
+    virtual ~user_alloc();
 
-	// 2. Array new/delete overload
+    // 1. Simple new/delete overload
+    static void* operator new(size_t s);
+    static void operator delete(void* p);
 
-	static void* operator new[](size_t s);
-	static void operator delete[](void* p);
+    // 2. Array new/delete overload
+
+    static void* operator new[](size_t s);
+    static void operator delete[](void* p);
 
 
-	// 3. Placement new/delete overload
-	
-	static void* operator new(size_t s, void* place);
-	static void operator delete(void *p, void *place);
+    // 3. Placement new/delete overload
 
-	// operator delete is unique in being a non-member or static member function that is dynamically dispatched
-	// A type with a virtual destructor performs the call to its own delete from the most derived destructor
+    static void* operator new(size_t s, void* place);
+    static void operator delete(void *p, void *place);
 
-	// 4. New replacing new_handler
-	static void* operator new(size_t s, new_handler p);
-	static void operator delete(void *p, new_handler h);
+    // operator delete is unique in being a non-member or static member function that is dynamically dispatched
+    // A type with a virtual destructor performs the call to its own delete from the most derived destructor
 
-	void test();
+    // 4. New replacing new_handler
+    static void* operator new(size_t s, new_handler p);
+    static void operator delete(void *p, new_handler h);
+
+    void test();
 protected:
 
-	// здесь для простоты применена одна защищенная функция
-	// для new и new[]. Это действительно подходит, т.к. в перегруженном
-	// operator new (или new[]) мы просто выделяем память, и ничего не делаем 
-	// со сконструированными объектами.
-	// На практике могут быть различия, например, в new() мы может проверить
-	// s == sizeof(Type), в new[] - уже нет (размер массива неизвестен)
-	static void* universal_allocate(size_t s, new_handler handler = 0);
-	static void universal_free(void* p);
+    // Р·РґРµСЃСЊ РґР»СЏ РїСЂРѕСЃС‚РѕС‚С‹ РїСЂРёРјРµРЅРµРЅР° РѕРґРЅР° Р·Р°С‰РёС‰РµРЅРЅР°СЏ С„СѓРЅРєС†РёСЏ
+    // РґР»СЏ new Рё new[]. Р­С‚Рѕ РґРµР№СЃС‚РІРёС‚РµР»СЊРЅРѕ РїРѕРґС…РѕРґРёС‚, С‚.Рє. РІ РїРµСЂРµРіСЂСѓР¶РµРЅРЅРѕРј
+    // operator new (РёР»Рё new[]) РјС‹ РїСЂРѕСЃС‚Рѕ РІС‹РґРµР»СЏРµРј РїР°РјСЏС‚СЊ, Рё РЅРёС‡РµРіРѕ РЅРµ РґРµР»Р°РµРј
+    // СЃРѕ СЃРєРѕРЅСЃС‚СЂСѓРёСЂРѕРІР°РЅРЅС‹РјРё РѕР±СЉРµРєС‚Р°РјРё.
+    // РќР° РїСЂР°РєС‚РёРєРµ РјРѕРіСѓС‚ Р±С‹С‚СЊ СЂР°Р·Р»РёС‡РёСЏ, РЅР°РїСЂРёРјРµСЂ, РІ new() РјС‹ РјРѕР¶РµС‚ РїСЂРѕРІРµСЂРёС‚СЊ
+    // s == sizeof(Type), РІ new[] - СѓР¶Рµ РЅРµС‚ (СЂР°Р·РјРµСЂ РјР°СЃСЃРёРІР° РЅРµРёР·РІРµСЃС‚РµРЅ)
+    static void* universal_allocate(size_t s, new_handler handler = 0);
+    static void universal_free(void* p);
 private:
-	int _test;
+    int _test;
 };
 
-// Мейерс 1 Правило 8
-// Различайте функцию и оператор new
-// Функция просто выделяет память, оператор вызывает конструктор
-// Функция delete() и оператор delete() соотносятся примерно так же
+// РњРµР№РµСЂСЃ 1 РџСЂР°РІРёР»Рѕ 8
+// Р Р°Р·Р»РёС‡Р°Р№С‚Рµ С„СѓРЅРєС†РёСЋ Рё РѕРїРµСЂР°С‚РѕСЂ new
+// Р¤СѓРЅРєС†РёСЏ РїСЂРѕСЃС‚Рѕ РІС‹РґРµР»СЏРµС‚ РїР°РјСЏС‚СЊ, РѕРїРµСЂР°С‚РѕСЂ РІС‹Р·С‹РІР°РµС‚ РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ
+// Р¤СѓРЅРєС†РёСЏ delete() Рё РѕРїРµСЂР°С‚РѕСЂ delete() СЃРѕРѕС‚РЅРѕСЃСЏС‚СЃСЏ РїСЂРёРјРµСЂРЅРѕ С‚Р°Рє Р¶Рµ
 
-// Мейерс 1 Правило 10
-// operator new() и operator delete() перегружаются обычно для повышения эффективности
-// это особенно верно для приложений, размещающих много маленьких объектов
+// РњРµР№РµСЂСЃ 1 РџСЂР°РІРёР»Рѕ 10
+// operator new() Рё operator delete() РїРµСЂРµРіСЂСѓР¶Р°СЋС‚СЃСЏ РѕР±С‹С‡РЅРѕ РґР»СЏ РїРѕРІС‹С€РµРЅРёСЏ СЌС„С„РµРєС‚РёРІРЅРѕСЃС‚Рё
+// СЌС‚Рѕ РѕСЃРѕР±РµРЅРЅРѕ РІРµСЂРЅРѕ РґР»СЏ РїСЂРёР»РѕР¶РµРЅРёР№, СЂР°Р·РјРµС‰Р°СЋС‰РёС… РјРЅРѕРіРѕ РјР°Р»РµРЅСЊРєРёС… РѕР±СЉРµРєС‚РѕРІ
 
 
 

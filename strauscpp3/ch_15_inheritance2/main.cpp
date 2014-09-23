@@ -190,17 +190,17 @@ void show_adapter(){
 	int a = d.pop_back();
 
 	// Производный класс, связанный с базовым закрытым наследованием
-	stack_t s;
+    adapter_stack_t s;
 	s.push(1);
 	s.push(2);
 
 	a = s.pop();
 
-	write_only_stack_t ws;
+    write_only_adapter_stack_t ws;
 	ws.push(1);
 	ws.push(2);
 
-	another_stack_t as;
+    another_adapter_stack_t as;
 	// открыты только методы push_back() и pop_back()
 	as.push_back(a);
 	as.push_back(1);
@@ -231,6 +231,7 @@ struct A{
 	}
 	A& operator=(const A& b){
 		cout << "=A ";
+        return *this;
 	}
 	~A(){	// деструктор невиртуальный!
 		cout << "~A ";
@@ -247,6 +248,7 @@ struct B : public A{
 	}
 	B& operator=(const B& b){
 		cout << "=B ";
+        return *this;
 	}
 	~B(){
 		cout << "~B";

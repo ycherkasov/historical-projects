@@ -1,13 +1,13 @@
 #ifndef	DEFINE_STRUCTREDEXCEPTION_H
 #define	DEFINE_STRUCTREDEXCEPTION_H
-#include <windows.h>
-#include <eh.h>
 #include <exception>
 #include <stdexcept>
 
-// В этом хедере описан класс, "заворачивающий" SEH в исключения C++
+// Р’ СЌС‚РѕРј С…РµРґРµСЂРµ РѕРїРёСЃР°РЅ РєР»Р°СЃСЃ, "Р·Р°РІРѕСЂР°С‡РёРІР°СЋС‰РёР№" SEH РІ РёСЃРєР»СЋС‡РµРЅРёСЏ C++
 
 #define NOTHROW throw()
+
+struct EXCEPTION_POINTERS;
 
 // If you want your C++ exception code to catch SEH exceptions, 
 // you need to build the code with /EHa.

@@ -77,7 +77,7 @@ void show_c_print_formatting(){
     printf ("0x or 0X respectively for values different than zero: %#x, %#X \n", 10, 10);
     printf ("Used with a, A, e, E, f, F, g or G it forces the written output to contain\n");
     printf ("a decimal point even if no more digits follow: %#a, %#A, %#e, %#E, %#f, %#F, %#g or %#G\n", 
-        3,14, 3,14, 3,14, 3,14, 3,14, 3,14, 3,14, 3,14 );
+        3.14, 3.14, 3.14, 3.14, 3.14, 3.14, 3.14, 3.14 );
     
     printf ("(number) Minimum number of characters to be printed.\n");
     printf ("If the value to be printed is shorter than this number, the result is padded with blank spaces: %10d \n", 10);
@@ -121,14 +121,14 @@ void show_c_print_formatting(){
 
     // Size specifiers
     printf ("Size specifiers:\n");
-    printf ("Byte: %hhd \n", 10);
-    printf ("Short: %hd \n", 10);
-    printf ("Long: %ld \n", 10);
-    printf ("Long long: %lld \n", 10);
-    printf ("Int: %jd \n", 10);
+    printf ("Byte: %hhd \n", (char)10);
+    printf ("Short: %hd \n", (short)10);
+    printf ("Long: %ld \n", 10l);
+    printf ("Long long: %lld \n", 10ll);
+    printf ("Int: %jd \n", 10ll);
     printf ("size_t: %zd \n", 10);
     printf ("ptrdiff_t: %td \n", 10);
-    printf ("Long double: %Lf \n", 1000.5);
+    printf ("Long double: %Lf \n", 1000.5l);
 }
 
 void show_c_io(){

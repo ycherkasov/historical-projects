@@ -1,9 +1,13 @@
 #include "sehhandler.h"
-#include "windows.h"
 #include <iostream>
+
+#if defined(_WIN32) || defined(_WIN64)
+#include "windows.h"
 
 using std::cout;
 using std::endl;
+
+
 
 // Функция-фильтр или транслятор. Транслятор принимает SE, 
 // определяемое данным кодом исключения code, а также info.
@@ -61,3 +65,4 @@ void sehhandler::test_seh(){
 		cout << "In except" << endl;
 	}
 }
+#endif

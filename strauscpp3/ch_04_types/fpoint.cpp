@@ -4,6 +4,9 @@
 #include <bitset>
 #include <cmath>
 
+// OsX workaround
+#include <cfloat>
+
 //This header also defines the following macro constants :
 //MATH_ERRNO
 //MATH_ERREXCEPT
@@ -707,10 +710,10 @@ struct TPTraits : TPTraitsBase<T>{
 template <typename FP>
 long fast_fp2long(FP f)
 {
-    TPTraits<FP>::castable magic;
+    typename TPTraits<FP>::castable magic;
     magic.i = TPTraits<FP>::mask;
 
-    volatile TPTraits<FP>::castable ret;
+    volatile typename TPTraits<FP>::castable ret;
     ret.f = f + magic.f;
     return static_cast<long>(ret.i - magic.i);
 }

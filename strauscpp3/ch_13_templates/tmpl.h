@@ -1,9 +1,9 @@
-/** @brief 
-Глава 13 Страуструпа
-Простые шаблоны. Определение, инстанцирование, параметры, эквивалентность, проверка типов
-Шаблоны функций.
-Шаблоны по выбору алгоритма.
-Специализация. Наследование и шаблоны. Преобразования шаблонов.
+/** @brief
+Р“Р»Р°РІР° 13 РЎС‚СЂР°СѓСЃС‚СЂСѓРїР°
+РџСЂРѕСЃС‚С‹Рµ С€Р°Р±Р»РѕРЅС‹. РћРїСЂРµРґРµР»РµРЅРёРµ, РёРЅСЃС‚Р°РЅС†РёСЂРѕРІР°РЅРёРµ, РїР°СЂР°РјРµС‚СЂС‹, СЌРєРІРёРІР°Р»РµРЅС‚РЅРѕСЃС‚СЊ, РїСЂРѕРІРµСЂРєР° С‚РёРїРѕРІ
+РЁР°Р±Р»РѕРЅС‹ С„СѓРЅРєС†РёР№.
+РЁР°Р±Р»РѕРЅС‹ РїРѕ РІС‹Р±РѕСЂСѓ Р°Р»РіРѕСЂРёС‚РјР°.
+РЎРїРµС†РёР°Р»РёР·Р°С†РёСЏ. РќР°СЃР»РµРґРѕРІР°РЅРёРµ Рё С€Р°Р±Р»РѕРЅС‹. РџСЂРµРѕР±СЂР°Р·РѕРІР°РЅРёСЏ С€Р°Р±Р»РѕРЅРѕРІ.
 */
 
 #include <vector>
@@ -15,88 +15,90 @@ using namespace std;
 
 
 // ----------------------------------
-// Абстрактный класс шаблона - 
-// может использоваться как обычный класс 
-// для создания общего интерфейса
-// Шаблон может наследовать также от обычного класса.
+// РђР±СЃС‚СЂР°РєС‚РЅС‹Р№ РєР»Р°СЃСЃ С€Р°Р±Р»РѕРЅР° -
+// РјРѕР¶РµС‚ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊСЃСЏ РєР°Рє РѕР±С‹С‡РЅС‹Р№ РєР»Р°СЃСЃ
+// РґР»СЏ СЃРѕР·РґР°РЅРёСЏ РѕР±С‰РµРіРѕ РёРЅС‚РµСЂС„РµР№СЃР°
+// РЁР°Р±Р»РѕРЅ РјРѕР¶РµС‚ РЅР°СЃР»РµРґРѕРІР°С‚СЊ С‚Р°РєР¶Рµ РѕС‚ РѕР±С‹С‡РЅРѕРіРѕ РєР»Р°СЃСЃР°.
 template<typename Symbols>
 class compare_str{
 public:
-	virtual bool compare(const basic_string<Symbols>& str1, const basic_string<Symbols>& str2) = 0;
+    virtual bool compare(const basic_string<Symbols>& str1, const basic_string<Symbols>& str2) = 0;
 };
 
 // ----------------------------------
-// Производные шаблонные классы
-// с виртуальными методами
+// РџСЂРѕРёР·РІРѕРґРЅС‹Рµ С€Р°Р±Р»РѕРЅРЅС‹Рµ РєР»Р°СЃСЃС‹
+// СЃ РІРёСЂС‚СѓР°Р»СЊРЅС‹РјРё РјРµС‚РѕРґР°РјРё
 template<typename Symbols>
 class lexigraphical : public compare_str<Symbols>{
 public:
-	virtual bool compare(const basic_string<Symbols>& str1, const basic_string<Symbols>& str2);
+    virtual bool compare(const basic_string<Symbols>& str1, const basic_string<Symbols>& str2);
 };
 
 template<typename Symbols>
 class no_case : public compare_str<Symbols>{
 public:
-	virtual bool compare(const basic_string<Symbols>& str1, const basic_string<Symbols>& str2);
+    virtual bool compare(const basic_string<Symbols>& str1, const basic_string<Symbols>& str2);
 };
 
-// --------------- реализация методов --------------- 
+// --------------- СЂРµР°Р»РёР·Р°С†РёСЏ РјРµС‚РѕРґРѕРІ ---------------
 template<typename Symbols>
 bool lexigraphical<Symbols>::compare(const basic_string<Symbols>& str1, const basic_string<Symbols>& str2){
-	return str1 > str2;
+    return str1 > str2;
 }
 
 template< typename Symbols >
 bool no_case<Symbols>::compare(const basic_string<Symbols> &str1, const basic_string<Symbols>& str2){
-	std::string nocase1, nocase2;
-	std::transform(str1.begin(), str1.end(), std::back_inserter(nocase1), ::tolower);
-	std::transform(str2.begin(), str2.end(), std::back_inserter(nocase2), ::tolower);
-	return str1 > str2;
+    std::string nocase1, nocase2;
+    std::transform(str1.begin(), str1.end(), std::back_inserter(nocase1), ::tolower);
+    std::transform(str2.begin(), str2.end(), std::back_inserter(nocase2), ::tolower);
+    return str1 > str2;
 }
 // ----------------------------------
 
 
 // ----------------------------------
-// Шаблонный класс, в который передается 2 параметра
-// тип символов и тип сравнения
-// Последний имеет значение по умолчанию
-template<typename Symbols, typename Comparer = lexigraphical>
+// РЁР°Р±Р»РѕРЅРЅС‹Р№ РєР»Р°СЃСЃ, РІ РєРѕС‚РѕСЂС‹Р№ РїРµСЂРµРґР°РµС‚СЃСЏ 2 РїР°СЂР°РјРµС‚СЂР°
+// С‚РёРї СЃРёРјРІРѕР»РѕРІ Рё С‚РёРї СЃСЂР°РІРЅРµРЅРёСЏ
+// РџРѕСЃР»РµРґРЅРёР№ РёРјРµРµС‚ Р·РЅР°С‡РµРЅРёРµ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ
+template<typename Symbols, typename Comparer = lexigraphical<Symbols> >
 class container{
-	basic_string<Symbols> _str;
-	Comparer _c;
+    basic_string<Symbols> _str;
+    Comparer _c;
 public:
-	container(basic_string<Symbols>& str);
-	void compare(basic_string<Symbols>& str);
+    container(basic_string<Symbols>& str);
+    void compare(basic_string<Symbols>& str);
 };
 
 template<typename Symbols, typename Comparer>
 container<Symbols, Comparer>::container(basic_string<Symbols>& str) :
-	_str(str)
+    _str(str)
 {}
 
-// Используем переданный тип класса для сравнения строк
+// РСЃРїРѕР»СЊР·СѓРµРј РїРµСЂРµРґР°РЅРЅС‹Р№ С‚РёРї РєР»Р°СЃСЃР° РґР»СЏ СЃСЂР°РІРЅРµРЅРёСЏ СЃС‚СЂРѕРє
 template<typename Symbols, typename Comparer>
 void container<Symbols, Comparer>::compare(basic_string<Symbols>& str){
-	_c.compare(str, _str);
+    _c.compare(str, _str);
 }
 
-// Пример - частичной специализации - 
-// Вектор для хранения только указателей
-// наследует интерфейс от vector<void*>
-// Чтобы определить тип элементов как указатель
-// явно укажем параметр шаблона vector<T*>
-// Специализация - это "перегрузка" для классов
+// РџСЂРёРјРµСЂ - С‡Р°СЃС‚РёС‡РЅРѕР№ СЃРїРµС†РёР°Р»РёР·Р°С†РёРё -
+// Р’РµРєС‚РѕСЂ РґР»СЏ С…СЂР°РЅРµРЅРёСЏ С‚РѕР»СЊРєРѕ СѓРєР°Р·Р°С‚РµР»РµР№
+// РЅР°СЃР»РµРґСѓРµС‚ РёРЅС‚РµСЂС„РµР№СЃ РѕС‚ vector<void*>
+// Р§С‚РѕР±С‹ РѕРїСЂРµРґРµР»РёС‚СЊ С‚РёРї СЌР»РµРјРµРЅС‚РѕРІ РєР°Рє СѓРєР°Р·Р°С‚РµР»СЊ
+// СЏРІРЅРѕ СѓРєР°Р¶РµРј РїР°СЂР°РјРµС‚СЂ С€Р°Р±Р»РѕРЅР° vector<T*>
+// РЎРїРµС†РёР°Р»РёР·Р°С†РёСЏ - СЌС‚Рѕ "РїРµСЂРµРіСЂСѓР·РєР°" РґР»СЏ С€Р°Р±Р»РѕРЅРЅС‹С… РєР»Р°СЃСЃРѕРІ
 
-// Наследование частичной специализации от полной, чтобы сократить дублирование кода
-// - это паттерн шаблонного программирования
+// РќР°СЃР»РµРґРѕРІР°РЅРёРµ С‡Р°СЃС‚РёС‡РЅРѕР№ СЃРїРµС†РёР°Р»РёР·Р°С†РёРё РѕС‚ РїРѕР»РЅРѕР№, С‡С‚РѕР±С‹ СЃРѕРєСЂР°С‚РёС‚СЊ РґСѓР±Р»РёСЂРѕРІР°РЅРёРµ РєРѕРґР°
+// - СЌС‚Рѕ РїР°С‚С‚РµСЂРЅ С€Р°Р±Р»РѕРЅРЅРѕРіРѕ РїСЂРѕРіСЂР°РјРјРёСЂРѕРІР°РЅРёСЏ
+#if 0
 template< typename T >
-class vector< T* > : public vector< void* >{
+class std::vector< T*, allocator<T*> > : public std::vector< void*, allocator<void*> >{
 public:
-	typedef vector<void*>	base;
+    typedef vector<void*, allocator<void*>> base;
 
-	vector():base(){}
-	explicit vector(size_t i) : base(i){}
+    vector< T*, allocator<T*> >() : vector< void*, allocator<void*>>(){}
+    explicit vector<T, allocator<T*> >(size_t i) : base(i){}
 
-	T*& elem(size_t i){ return static_cast<T*&>(base::elem(i)); }
-	T& operator[](size_t i){ return static_cast<T*&>(base::operator [](i) ); }
+    T*& elem(size_t i){ return static_cast<T*&>(base::elem(i)); }
+    T& operator[](size_t i){ return static_cast<T*&>(base::operator [](i) ); }
 };
+#endif

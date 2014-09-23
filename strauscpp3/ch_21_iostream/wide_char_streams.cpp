@@ -7,7 +7,7 @@ using namespace std;
 
 void wide_symbols(){
 	
-	// символы, литералы и строки
+	// СЃРёРјРІРѕР»С‹, Р»РёС‚РµСЂР°Р»С‹ Рё СЃС‚СЂРѕРєРё
 	wchar_t wc = L'A';
 	wchar_t str[] = L"Wide char literal";
 	wstring wstr(L"Wide char string");
@@ -15,24 +15,26 @@ void wide_symbols(){
 	wcout << str << endl;
 	wcout << wstr << endl;
 	
-	// метод widen()
+    // widen() method
 	wcout << wcout.widen('W') << endl;
-	// обратная операция narrow()
-	cout << cout.narrow(L'W') << endl;
 
-	// при чтении методом read, подсчет в символах, а не байтах
+    // reverse operation narrow()
+    // second param is returned if unable to narrow
+    cout << cout.narrow(L'W', 'W') << endl;
+
+	// РїСЂРё С‡С‚РµРЅРёРё РјРµС‚РѕРґРѕРј read, РїРѕРґСЃС‡РµС‚ РІ СЃРёРјРІРѕР»Р°С…, Р° РЅРµ Р±Р°Р№С‚Р°С…
 	wchar_t wc1 = '\0';
 	wcin.read(&wc1, 1);
 	wcout << L"You entered: " << wc1 << endl;
 }
 
 void wide_locales(){
-	// Чтобы выводить юникодные символы, 
-	// нужно установить локаль для wcin и wcout
+	// Р§С‚РѕР±С‹ РІС‹РІРѕРґРёС‚СЊ СЋРЅРёРєРѕРґРЅС‹Рµ СЃРёРјРІРѕР»С‹, 
+	// РЅСѓР¶РЅРѕ СѓСЃС‚Р°РЅРѕРІРёС‚СЊ Р»РѕРєР°Р»СЊ РґР»СЏ wcin Рё wcout
 	locale current_loc_cin = wcin.getloc();
 	locale current_loc_cout = wcout.getloc();
 
-	// в консоли Windows codepage всегда 866
+	// РІ РєРѕРЅСЃРѕР»Рё Windows codepage РІСЃРµРіРґР° 866
 	locale russian_loc("rus_rus.866");
 	wcin.imbue(russian_loc);
 	wcout.imbue(russian_loc);
@@ -41,7 +43,7 @@ void wide_locales(){
 
 	wstring cyrrilic_str;
 	wcin >> cyrrilic_str;
-	wcout << L"Введена строка: " << cyrrilic_str << endl;
+	wcout << L"Р’РІРµРґРµРЅР° СЃС‚СЂРѕРєР°: " << cyrrilic_str << endl;
 
 	//wcin.clear(/*ios_base::goodbit*/);
 	//wcin.seekg(0);
@@ -52,19 +54,19 @@ void wide_locales(){
 	// \n should be removed after wcin usage
 	wcin.ignore();
 
-	// все остальные методы так же работают с юникодом
+	// РІСЃРµ РѕСЃС‚Р°Р»СЊРЅС‹Рµ РјРµС‚РѕРґС‹ С‚Р°Рє Р¶Рµ СЂР°Р±РѕС‚Р°СЋС‚ СЃ СЋРЅРёРєРѕРґРѕРј
 	wstring cyrrilic_str1;
 	getline(wcin, cyrrilic_str1);
-	wcout << L"Введена строка: " << cyrrilic_str1 << endl;
+	wcout << L"Р’РІРµРґРµРЅР° СЃС‚СЂРѕРєР°: " << cyrrilic_str1 << endl;
 
-	// вернем системные локали обратно
+	// РІРµСЂРЅРµРј СЃРёСЃС‚РµРјРЅС‹Рµ Р»РѕРєР°Р»Рё РѕР±СЂР°С‚РЅРѕ
 	wcin.imbue(current_loc_cin);
 	wcout.imbue(current_loc_cout);
 }
 
 void wide_strings(){
-	// по аналогии с string_streams.cpp
-	// пример с двунаправленным широким потоком
+	// РїРѕ Р°РЅР°Р»РѕРіРёРё СЃ string_streams.cpp
+	// РїСЂРёРјРµСЂ СЃ РґРІСѓРЅР°РїСЂР°РІР»РµРЅРЅС‹Рј С€РёСЂРѕРєРёРј РїРѕС‚РѕРєРѕРј
 	wstring cyrillic_name;
 	int age = 0;
 
@@ -77,18 +79,18 @@ void wide_strings(){
 	ss.imbue(russian_loc);
 	wcout.imbue(russian_loc);
 
-	wcout << L"Введите имя на кириллице и возраст (через пробел): " << endl;
+	wcout << L"Р’РІРµРґРёС‚Рµ РёРјСЏ РЅР° РєРёСЂРёР»Р»РёС†Рµ Рё РІРѕР·СЂР°СЃС‚ (С‡РµСЂРµР· РїСЂРѕР±РµР»): " << endl;
 
-	ss << L"ататат"
+	ss << L"Р°С‚Р°С‚Р°С‚"
 		<< L' '
 		<< 32;
 
-	// перед чтением надо установить укуазатель в начало потока
+	// РїРµСЂРµРґ С‡С‚РµРЅРёРµРј РЅР°РґРѕ СѓСЃС‚Р°РЅРѕРІРёС‚СЊ СѓРєСѓР°Р·Р°С‚РµР»СЊ РІ РЅР°С‡Р°Р»Рѕ РїРѕС‚РѕРєР°
 	ss.seekg(0);
 
 	ss >> cyrillic_name >> age;
 	
-	wcout << L"Введены имя и возраст: " << cyrillic_name << wcout.widen(' ') << age << endl;
+	wcout << L"Р’РІРµРґРµРЅС‹ РёРјСЏ Рё РІРѕР·СЂР°СЃС‚: " << cyrillic_name << wcout.widen(' ') << age << endl;
 
 
 	wstring out(ss.str());
@@ -96,7 +98,7 @@ void wide_strings(){
 
 	wcout.imbue(current_loc_cout);
 	
-	// аналогично для файловых потоков
+	// Р°РЅР°Р»РѕРіРёС‡РЅРѕ РґР»СЏ С„Р°Р№Р»РѕРІС‹С… РїРѕС‚РѕРєРѕРІ
 }
 
 

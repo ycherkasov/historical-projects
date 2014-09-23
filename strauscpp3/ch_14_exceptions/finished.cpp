@@ -4,61 +4,63 @@
 
 using std::cout;
 using std::endl;
+using std::set_unexpected;
+using std::set_terminate;
 
-// unexpected() ‚˚Á˚‚‡ÂÚÒˇ ÔË Ì‡Û¯ÂÌËË ÒÔÂˆËÙËÍ‡ˆËË ËÒÍÎ˛˜ÂÌËÈ
-// ¬ VC++ ÌÂ ‚˚Á˚‚‡ÂÚÒˇ (ÌÓ ÏÓÊÌÓ ‚˚Á‚‡Ú¸ ˇ‚ÌÓ catch(...) std::unexpected() )
-// —Ú‡Ì‰‡ÚÌÓ ‚˚ÔÓÎÌˇÂÚÒˇ unexpected() -> terminate()
-// ÃÓÊÌÓ ÔÓ‰ÏÂÌËÚ¸ unexpected() ˜ÂÂÁ set_unexpected()
-// œÓÎÌ˚Ï ‡Ì‡ÎÓ„ÓÏ unexpected() ˇ‚ÎˇÂÚÒˇ ÍÓÌÒÚÛÍˆËˇ catch(...) ‚ main()
+// unexpected() –≤—ã–∑—ã–≤–∞–µ—Ç—Å—è –ø—Ä–∏ –Ω–∞—Ä—É—à–µ–Ω–∏–∏ —Å–ø–µ—Ü–∏—Ñ–∏–∫–∞—Ü–∏–∏ –∏—Å–∫–ª—é—á–µ–Ω–∏–π
+// –í VC++ –Ω–µ –≤—ã–∑—ã–≤–∞–µ—Ç—Å—è (–Ω–æ –º–æ–∂–Ω–æ –≤—ã–∑–≤–∞—Ç—å —è–≤–Ω–æ catch(...) std::unexpected() )
+// –°—Ç–∞–Ω–¥–∞—Ä—Ç–Ω–æ –≤—ã–ø–æ–ª–Ω—è–µ—Ç—Å—è unexpected() -> terminate()
+// –ú–æ–∂–Ω–æ –ø–æ–¥–º–µ–Ω–∏—Ç—å unexpected() —á–µ—Ä–µ–∑ set_unexpected()
+// –ü–æ–ª–Ω—ã–º –∞–Ω–∞–ª–æ–≥–æ–º unexpected() —è–≤–ª—è–µ—Ç—Å—è –∫–æ–Ω—Å—Ç—Ä—É–∫—Ü–∏—è catch(...) –≤ main()
 void my_unexpected() {
-	cout << "New unexpected" << endl;
-	exit(1);
+    cout << "New unexpected" << endl;
+    exit(1);
 }
 
-// terminate() ‚˚Á˚‚‡ÂÚÒˇ ÔË ‚˚ÁÓ‚Â ÌÂÔÂÂı‚‡˜ÂÌÌÓ„Ó ËÒÍÎ˛˜ÂÌËˇ
-// —Ú‡Ì‰‡ÚÌÓ ‚˚Á˚‚‡ÂÚ abort()
-// ÃÓÊÌÓ ÔÓ‰ÏÂÌËÚ¸ ‚˚ÁÓ‚ ˜ÂÂÁ set_terminate(), 
-// ˜ÚÓ·˚, Ì‡ÔËÏÂ, ‚˚Á‚‡Ú¸ exit(0) - ÓÌ ıÓÚˇ ·˚ ‚˚ÁÓ‚ÂÚ ‰ÂÒÚÛÍÚÓ˚
+// terminate() –≤—ã–∑—ã–≤–∞–µ—Ç—Å—è –ø—Ä–∏ –≤—ã–∑–æ–≤–µ –Ω–µ–ø–µ—Ä–µ—Ö–≤–∞—á–µ–Ω–Ω–æ–≥–æ –∏—Å–∫–ª—é—á–µ–Ω–∏—è
+// –°—Ç–∞–Ω–¥–∞—Ä—Ç–Ω–æ –≤—ã–∑—ã–≤–∞–µ—Ç abort()
+// –ú–æ–∂–Ω–æ –ø–æ–¥–º–µ–Ω–∏—Ç—å –≤—ã–∑–æ–≤ —á–µ—Ä–µ–∑ set_terminate(),
+// —á—Ç–æ–±—ã, –Ω–∞–ø—Ä–∏–º–µ—Ä, –≤—ã–∑–≤–∞—Ç—å exit(0) - –æ–Ω —Ö–æ—Ç—è –±—ã –≤—ã–∑–æ–≤–µ—Ç –¥–µ—Å—Ç—Ä—É–∫—Ç–æ—Ä—ã
 void my_terminate() {
-	cout << "New terminate" << endl;
-	exit(1);
+    cout << "New terminate" << endl;
+    exit(1);
 }
 
 finished::finished(void){
 }
 
-// œË ‚˚ıÓ‰Â ‚ÂÌÂÏ ÒÚ‡˚Â Ó·‡·ÓÚ˜ËÍË - 
-// ˝ÚÓ ÔÓÁ‚ÓÎËÚ ÒÓÁ‰‡‚‡Ú¸ ·ÓÎÂÂ „Ë·ÍËÂ ÒËÒÚÂÏ˚ Ó·‡·ÓÚÍË ËÒÍÎ˛˜ÂÌËÈ
+// –ü—Ä–∏ –≤—ã—Ö–æ–¥–µ –≤–µ—Ä–Ω–µ–º —Å—Ç–∞—Ä—ã–µ –æ–±—Ä–∞–±–æ—Ç—á–∏–∫–∏ -
+// —ç—Ç–æ –ø–æ–∑–≤–æ–ª–∏—Ç —Å–æ–∑–¥–∞–≤–∞—Ç—å –±–æ–ª–µ–µ –≥–∏–±–∫–∏–µ —Å–∏—Å—Ç–µ–º—ã –æ–±—Ä–∞–±–æ—Ç–∫–∏ –∏—Å–∫–ª—é—á–µ–Ω–∏–π
 finished::~finished(void){
-	set_unexpected(_old_unexpected);
-	set_terminate(_old_terminate);
+    set_unexpected(_old_unexpected);
+    set_terminate(_old_terminate);
 }
 
 void finished::unexpected(){
-	_old_unexpected = set_unexpected(my_unexpected);
+    _old_unexpected = set_unexpected(my_unexpected);
 }
 
 void finished::terminate(){
-	_old_terminate = set_terminate(my_terminate);
+    _old_terminate = set_terminate(my_terminate);
 }
 
-// ‘ÛÌÍˆËˇ „ÂÌÂËÛÂÚ ËÒÍÎ˛˜ÂÌËÂ ‚ Ó·ıÓ‰ ÒÔÂˆËÙËÍ‡ˆËË
-// ƒÓÎÊÂÌ ‚˚Á‚‡Ú¸Òˇ std::unexpected() - ÍÓÏÂ VC++
+// –§—É–Ω–∫—Ü–∏—è –≥–µ–Ω–µ—Ä–∏—Ä—É–µ—Ç –∏—Å–∫–ª—é—á–µ–Ω–∏–µ –≤ –æ–±—Ö–æ–¥ —Å–ø–µ—Ü–∏—Ñ–∏–∫–∞—Ü–∏–∏
+// –î–æ–ª–∂–µ–Ω –≤—ã–∑–≤–∞—Ç—å—Å—è std::unexpected() - –∫—Ä–æ–º–µ VC++
 void finished::test_custom_unexpected() throw() {
-	// warning
-	throw double(1);	
+    // warning
+    throw double(1);
 }
 
-// ‘ÛÌÍˆËˇ „ÂÌÂËÛÂÚ ÌÂÔÂÂı‚‡˜ÂÌÌÓÂ ËÒÍÎ˛˜ÂÌËÂ - 
-// ‚˚ÁÓ‚ÂÚÒˇ terminate()
+// –§—É–Ω–∫—Ü–∏—è –≥–µ–Ω–µ—Ä–∏—Ä—É–µ—Ç –Ω–µ–ø–µ—Ä–µ—Ö–≤–∞—á–µ–Ω–Ω–æ–µ –∏—Å–∫–ª—é—á–µ–Ω–∏–µ -
+// –≤—ã–∑–æ–≤–µ—Ç—Å—è terminate()
 void finished::test_custom_terminate(){
-	
-	try {
-		// √ÂÌÂËÓ‚‡Ú¸ ÌÂÔÂÂı‚‡˜ÂÌÌÓÂ ËÒÍÎ˛˜ÂÌËÂ
-		throw 1;
-	}
-	catch (const double e) {
-		// ÀÓ‚ËÏ "ÌÂ ÚÂ" ËÒÍÎ˛˜ÂÌËˇ
-		cout << e << endl;
-	}
+
+    try {
+        // –ì–µ–Ω–µ—Ä–∏—Ä–æ–≤–∞—Ç—å –Ω–µ–ø–µ—Ä–µ—Ö–≤–∞—á–µ–Ω–Ω–æ–µ –∏—Å–∫–ª—é—á–µ–Ω–∏–µ
+        throw 1;
+    }
+    catch (const double e) {
+        // –õ–æ–≤–∏–º "–Ω–µ —Ç–µ" –∏—Å–∫–ª—é—á–µ–Ω–∏—è
+        cout << e << endl;
+    }
 }

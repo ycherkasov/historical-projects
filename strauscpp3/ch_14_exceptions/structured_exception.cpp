@@ -1,5 +1,10 @@
 #include "structured_exception.h"
 
+#if defined(_WIN32) || defined(_WIN64)
+
+#include <windows.h>
+
+
 void structured_exception::enableStructuredExceptions() NOTHROW {
     _set_se_translator(structured_exception::handlerStructuredException);
 }
@@ -41,3 +46,4 @@ structured_exception& structured_exception::operator = (const structured_excepti
     std::runtime_error::operator = (rhs);
     return *this;
 }
+#endif

@@ -15,12 +15,12 @@ typedef vector<int>::iterator v_iit;
 
 template<typename T, template <typename ELEM, typename = std::allocator<ELEM> > class CONT >
 void print_container(const CONT<T>& c){
-	CONT<T>::const_iterator it = c.begin();
-	while (it != c.end()){
-		cout << (*it) << ' ';
-		++it;
-	}
-	cout << endl;
+    typename CONT<T>::const_iterator it = c.begin();
+    while (it != c.end()){
+        cout << (*it) << ' ';
+        ++it;
+    }
+    cout << endl;
 }
 
 
@@ -44,388 +44,388 @@ template <typename Pair> struct select2nd {
     }
 } ;
 
-// --------------- Немодифицирующие алгоритмы --------------- 
-// for_each 
-// find 
+// --------------- РќРµРјРѕРґРёС„РёС†РёСЂСѓСЋС‰РёРµ Р°Р»РіРѕСЂРёС‚РјС‹ ---------------
+// for_each
+// find
 // count
-// равенство и несовпадение 
-// поиск 
+// СЂР°РІРµРЅСЃС‚РІРѕ Рё РЅРµСЃРѕРІРїР°РґРµРЅРёРµ
+// РїРѕРёСЃРє
 void show_non_modif() {
-	int arr[] =  { 0,4,1,9,3,7,3,7,3,8 };
-	int arr1[] = { 7,3,7,4,5,2,8,8,0,4 };
-	vector<int> vi( arr, arr + sizeof(arr)/sizeof(int) );
-	vector<int> vi1( arr1, arr1 + sizeof(arr1)/sizeof(int) );
+    int arr[] =  { 0,4,1,9,3,7,3,7,3,8 };
+    int arr1[] = { 7,3,7,4,5,2,8,8,0,4 };
+    vector<int> vi( arr, arr + sizeof(arr)/sizeof(int) );
+    vector<int> vi1( arr1, arr1 + sizeof(arr1)/sizeof(int) );
 
-	// --- find, find_if ---
-	v_iit it = find(vi.begin(), vi.end(), 7 );
-	
-	// Предикатом может быть все, к чему применяется операция ()
-	it = find_if(vi.begin(), vi.end(), my_less_predivate(7) );
+    // --- find, find_if ---
+    v_iit it = find(vi.begin(), vi.end(), 7 );
 
-	// Суффикс _if добавлен из-за сложности перегрузки шаблона алгоритма
-	// Например, если на вход поступает контейнер bool
+    // РџСЂРµРґРёРєР°С‚РѕРј РјРѕР¶РµС‚ Р±С‹С‚СЊ РІСЃРµ, Рє С‡РµРјСѓ РїСЂРёРјРµРЅСЏРµС‚СЃСЏ РѕРїРµСЂР°С†РёСЏ ()
+    it = find_if(vi.begin(), vi.end(), my_less_predivate(7) );
 
-	// --- for_each ---
-	// Использование for_each() в качесстве аккумулятора с соответствующим функтором
-	// for_each() - немодифицирующий алгоритм!
-	sum_accum<int> s;
-	s = for_each(vi.begin(), vi.end(), s );
-	int sum = s.res;
+    // РЎСѓС„С„РёРєСЃ _if РґРѕР±Р°РІР»РµРЅ РёР·-Р·Р° СЃР»РѕР¶РЅРѕСЃС‚Рё РїРµСЂРµРіСЂСѓР·РєРё С€Р°Р±Р»РѕРЅР° Р°Р»РіРѕСЂРёС‚РјР°
+    // РќР°РїСЂРёРјРµСЂ, РµСЃР»Рё РЅР° РІС…РѕРґ РїРѕСЃС‚СѓРїР°РµС‚ РєРѕРЅС‚РµР№РЅРµСЂ bool
 
-	// --- find_first_of ---
-	// Находит в последовательности первый элемент,
-	// который имеется во второй последовательности
-	it = find_first_of(vi.begin(), vi.end(), vi1.begin(), vi1.end() );
+    // --- for_each ---
+    // РСЃРїРѕР»СЊР·РѕРІР°РЅРёРµ for_each() РІ РєР°С‡РµСЃСЃС‚РІРµ Р°РєРєСѓРјСѓР»СЏС‚РѕСЂР° СЃ СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓСЋС‰РёРј С„СѓРЅРєС‚РѕСЂРѕРј
+    // for_each() - РЅРµРјРѕРґРёС„РёС†РёСЂСѓСЋС‰РёР№ Р°Р»РіРѕСЂРёС‚Рј!
+    sum_accum<int> s;
+    s = for_each(vi.begin(), vi.end(), s );
+    int sum = s.res;
 
-	// --- adjacent_find ---
-	// Ищет дубли и возвращает итератор на первый элемент
-	it = adjacent_find( vi1.begin(), vi1.end() /*, pred*/ );
+    // --- find_first_of ---
+    // РќР°С…РѕРґРёС‚ РІ РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚Рё РїРµСЂРІС‹Р№ СЌР»РµРјРµРЅС‚,
+    // РєРѕС‚РѕСЂС‹Р№ РёРјРµРµС‚СЃСЏ РІРѕ РІС‚РѕСЂРѕР№ РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚Рё
+    it = find_first_of(vi.begin(), vi.end(), vi1.begin(), vi1.end() );
 
-	// --- count, count_if ---
-	long long c = count(vi.begin(), vi.end(), 7 );
-	c = count_if(vi.begin(), vi.end(), my_less_predivate(7) );
+    // --- adjacent_find ---
+    // РС‰РµС‚ РґСѓР±Р»Рё Рё РІРѕР·РІСЂР°С‰Р°РµС‚ РёС‚РµСЂР°С‚РѕСЂ РЅР° РїРµСЂРІС‹Р№ СЌР»РµРјРµРЅС‚
+    it = adjacent_find( vi1.begin(), vi1.end() /*, pred*/ );
 
-	// --- mismatch ---
-	// Сравнивает 2 последовательности и находит первое несовпадение
-	// Конец второй последовательности не определен, считается, что она не меньше первой
-	pair<v_iit, v_iit> p1 = mismatch(vi.begin(), vi.end(), vi1.begin());
+    // --- count, count_if ---
+    long long c = count(vi.begin(), vi.end(), 7 );
+    c = count_if(vi.begin(), vi.end(), my_less_predivate(7) );
 
-	// --- equal ---
-	// просто сравнивает 2 последовательности, не указывая место несовпадения
-	bool b = equal( vi.begin(), vi.end(), vi1.begin() );
+    // --- mismatch ---
+    // РЎСЂР°РІРЅРёРІР°РµС‚ 2 РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚Рё Рё РЅР°С…РѕРґРёС‚ РїРµСЂРІРѕРµ РЅРµСЃРѕРІРїР°РґРµРЅРёРµ
+    // РљРѕРЅРµС† РІС‚РѕСЂРѕР№ РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚Рё РЅРµ РѕРїСЂРµРґРµР»РµРЅ, СЃС‡РёС‚Р°РµС‚СЃСЏ, С‡С‚Рѕ РѕРЅР° РЅРµ РјРµРЅСЊС€Рµ РїРµСЂРІРѕР№
+    pair<v_iit, v_iit> p1 = mismatch(vi.begin(), vi.end(), vi1.begin());
 
-	// --- search, find_end, search_n ---
-	int arr2[] = {9,3,7};
-	size_t arr2_sz = sizeof(arr2)/sizeof(int);
+    // --- equal ---
+    // РїСЂРѕСЃС‚Рѕ СЃСЂР°РІРЅРёРІР°РµС‚ 2 РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚Рё, РЅРµ СѓРєР°Р·С‹РІР°СЏ РјРµСЃС‚Рѕ РЅРµСЃРѕРІРїР°РґРµРЅРёСЏ
+    bool b = equal( vi.begin(), vi.end(), vi1.begin() );
 
-	// search - находит подпоследовательность в последовательности
-	// и возвращает итератор на ПЕРВЫЙ совпадающий элемент 
-	// Например: Находит в векторе vi массив arr2
-	v_iit it2 = search(vi.begin(), vi.end(), arr2, arr2 + arr2_sz);
-	
-	// find_end - находит подпоследовательность в последовательности
-	// и возвращает итератор на ПОСЛЕДНИЙ совпадающий элемент (???)
-	// Например: Находит в векторе vi массив arr2, но возвращает итератор на конец
-	it2 = find_end(vi.begin(), vi.end(), arr2, arr2 + arr2_sz);
+    // --- search, find_end, search_n ---
+    int arr2[] = {9,3,7};
+    size_t arr2_sz = sizeof(arr2)/sizeof(int);
 
-	// Находит в vi1 последовательность из 2 восьмерок
-	it2 = search_n(vi1.begin(), vi1.end(), 2, 8);
+    // search - РЅР°С…РѕРґРёС‚ РїРѕРґРїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚СЊ РІ РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚Рё
+    // Рё РІРѕР·РІСЂР°С‰Р°РµС‚ РёС‚РµСЂР°С‚РѕСЂ РЅР° РџР•Р Р’Р«Р™ СЃРѕРІРїР°РґР°СЋС‰РёР№ СЌР»РµРјРµРЅС‚
+    // РќР°РїСЂРёРјРµСЂ: РќР°С…РѕРґРёС‚ РІ РІРµРєС‚РѕСЂРµ vi РјР°СЃСЃРёРІ arr2
+    v_iit it2 = search(vi.begin(), vi.end(), arr2, arr2 + arr2_sz);
+
+    // find_end - РЅР°С…РѕРґРёС‚ РїРѕРґРїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚СЊ РІ РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚Рё
+    // Рё РІРѕР·РІСЂР°С‰Р°РµС‚ РёС‚РµСЂР°С‚РѕСЂ РЅР° РџРћРЎР›Р•Р”РќРР™ СЃРѕРІРїР°РґР°СЋС‰РёР№ СЌР»РµРјРµРЅС‚ (???)
+    // РќР°РїСЂРёРјРµСЂ: РќР°С…РѕРґРёС‚ РІ РІРµРєС‚РѕСЂРµ vi РјР°СЃСЃРёРІ arr2, РЅРѕ РІРѕР·РІСЂР°С‰Р°РµС‚ РёС‚РµСЂР°С‚РѕСЂ РЅР° РєРѕРЅРµС†
+    it2 = find_end(vi.begin(), vi.end(), arr2, arr2 + arr2_sz);
+
+    // РќР°С…РѕРґРёС‚ РІ vi1 РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚СЊ РёР· 2 РІРѕСЃСЊРјРµСЂРѕРє
+    it2 = search_n(vi1.begin(), vi1.end(), 2, 8);
 }
 
-// --------------- Модифицирующие алгоритмы --------------- 
-// copy, copy_if, copy_backward  
-// transform  
-// replace, replace_if, replace_copy, replace_copy_if  
-// remove,remove_copy,remove_copy_if  
-// fill,fill_n  
-// generate,generate_n  
-// unique,unique_copy  
-// reverse,reverse_copy  
-// rotate,rotate_copy  
-// random_shuffle  
-// swap,iter_swap,swap_ranges  
+// --------------- РњРѕРґРёС„РёС†РёСЂСѓСЋС‰РёРµ Р°Р»РіРѕСЂРёС‚РјС‹ ---------------
+// copy, copy_if, copy_backward
+// transform
+// replace, replace_if, replace_copy, replace_copy_if
+// remove,remove_copy,remove_copy_if
+// fill,fill_n
+// generate,generate_n
+// unique,unique_copy
+// reverse,reverse_copy
+// rotate,rotate_copy
+// random_shuffle
+// swap,iter_swap,swap_ranges
 void show_modif(){
 
-	int arr[] =  { 0,4,1,9,3,7,3,7,3,8 };
-	int arr1[] = { 7,3,7,4,5,2,8,8,0,4 };
-	vector<int> vi( arr, arr + sizeof(arr)/sizeof(int) );
-	vector<int> vi1( arr1, arr1 + sizeof(arr1)/sizeof(int) );
+    int arr[] =  { 0,4,1,9,3,7,3,7,3,8 };
+    int arr1[] = { 7,3,7,4,5,2,8,8,0,4 };
+    vector<int> vi( arr, arr + sizeof(arr)/sizeof(int) );
+    vector<int> vi1( arr1, arr1 + sizeof(arr1)/sizeof(int) );
 
-	// Модифицирующие алгоритмы необязательно пишут изменения 
-	// во входную последовательность
+    // РњРѕРґРёС„РёС†РёСЂСѓСЋС‰РёРµ Р°Р»РіРѕСЂРёС‚РјС‹ РЅРµРѕР±СЏР·Р°С‚РµР»СЊРЅРѕ РїРёС€СѓС‚ РёР·РјРµРЅРµРЅРёСЏ
+    // РІРѕ РІС…РѕРґРЅСѓСЋ РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚СЊ
 
-	// Вместо вставки и изменения, элементы переписываются в другое место контейнера,
-	// а потом удаляются/изменяются вручную
-	
-	// Сделано так потому, что алгоритм ничего не знает об изменяемом контейнере,
-	// и не сможет, например, изменить его параметр размера
+    // Р’РјРµСЃС‚Рѕ РІСЃС‚Р°РІРєРё Рё РёР·РјРµРЅРµРЅРёСЏ, СЌР»РµРјРµРЅС‚С‹ РїРµСЂРµРїРёСЃС‹РІР°СЋС‚СЃСЏ РІ РґСЂСѓРіРѕРµ РјРµСЃС‚Рѕ РєРѕРЅС‚РµР№РЅРµСЂР°,
+    // Р° РїРѕС‚РѕРј СѓРґР°Р»СЏСЋС‚СЃСЏ/РёР·РјРµРЅСЏСЋС‚СЃСЏ РІСЂСѓС‡РЅСѓСЋ
 
-	// --- copy, copy_backward --- 
-	// Копирует куда угодно, не обязательно в конейнер. Например, в поток.
-	copy(vi.begin(), vi.end(),ostream_iterator<int>(cout));
-	cout << endl;
+    // РЎРґРµР»Р°РЅРѕ С‚Р°Рє РїРѕС‚РѕРјСѓ, С‡С‚Рѕ Р°Р»РіРѕСЂРёС‚Рј РЅРёС‡РµРіРѕ РЅРµ Р·РЅР°РµС‚ РѕР± РёР·РјРµРЅСЏРµРјРѕРј РєРѕРЅС‚РµР№РЅРµСЂРµ,
+    // Рё РЅРµ СЃРјРѕР¶РµС‚, РЅР°РїСЂРёРјРµСЂ, РёР·РјРµРЅРёС‚СЊ РµРіРѕ РїР°СЂР°РјРµС‚СЂ СЂР°Р·РјРµСЂР°
 
-	// Использование вставок не позволяет выйти за пределы контейнера 
-	// и позволяет удобно записывать в конец
-	vector<int> v_copy;
-	copy(vi.begin(), vi.end(), back_inserter(v_copy));
+    // --- copy, copy_backward ---
+    // РљРѕРїРёСЂСѓРµС‚ РєСѓРґР° СѓРіРѕРґРЅРѕ, РЅРµ РѕР±СЏР·Р°С‚РµР»СЊРЅРѕ РІ РєРѕРЅРµР№РЅРµСЂ. РќР°РїСЂРёРјРµСЂ, РІ РїРѕС‚РѕРє.
+    copy(vi.begin(), vi.end(),ostream_iterator<int>(cout));
+    cout << endl;
 
-	// Входная и выходная последовательности могут перекрываться
-	// Если начало ВЫХОДНОЙ последовательности находится ВНУТРИ ВХОДНОЙ
-	// необходимо использовать copy_backward - копирование с конца
-	// Наприпер, скопировать все элементы в тот же контейнер со сдвигом на 2
-	// (???)
-	//copy_backward( v_copy.begin(), v_copy.end(), v_copy.begin() + 2 );
+    // РСЃРїРѕР»СЊР·РѕРІР°РЅРёРµ РІСЃС‚Р°РІРѕРє РЅРµ РїРѕР·РІРѕР»СЏРµС‚ РІС‹Р№С‚Рё Р·Р° РїСЂРµРґРµР»С‹ РєРѕРЅС‚РµР№РЅРµСЂР°
+    // Рё РїРѕР·РІРѕР»СЏРµС‚ СѓРґРѕР±РЅРѕ Р·Р°РїРёСЃС‹РІР°С‚СЊ РІ РєРѕРЅРµС†
+    vector<int> v_copy;
+    copy(vi.begin(), vi.end(), back_inserter(v_copy));
 
-	// copy_if в стандартной поставке STL отсутствует
-	//copy_if(vi.begin(), vi.end(),back_inserter(v_copy), less<int>(7) );
+    // Р’С…РѕРґРЅР°СЏ Рё РІС‹С…РѕРґРЅР°СЏ РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚Рё РјРѕРіСѓС‚ РїРµСЂРµРєСЂС‹РІР°С‚СЊСЃСЏ
+    // Р•СЃР»Рё РЅР°С‡Р°Р»Рѕ Р’Р«РҐРћР”РќРћР™ РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚Рё РЅР°С…РѕРґРёС‚СЃСЏ Р’РќРЈРўР Р Р’РҐРћР”РќРћР™
+    // РЅРµРѕР±С…РѕРґРёРјРѕ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ copy_backward - РєРѕРїРёСЂРѕРІР°РЅРёРµ СЃ РєРѕРЅС†Р°
+    // РќР°РїСЂРёРїРµСЂ, СЃРєРѕРїРёСЂРѕРІР°С‚СЊ РІСЃРµ СЌР»РµРјРµРЅС‚С‹ РІ С‚РѕС‚ Р¶Рµ РєРѕРЅС‚РµР№РЅРµСЂ СЃРѕ СЃРґРІРёРіРѕРј РЅР° 2
+    // (???)
+    //copy_backward( v_copy.begin(), v_copy.end(), v_copy.begin() + 2 );
 
-	// --- transform --- 
-	// Создает выходную последовательность, применяя операцию ко входной
-	// (или к 2-м входным)
+    // copy_if РІ СЃС‚Р°РЅРґР°СЂС‚РЅРѕР№ РїРѕСЃС‚Р°РІРєРµ STL РѕС‚СЃСѓС‚СЃС‚РІСѓРµС‚
+    //copy_if(vi.begin(), vi.end(),back_inserter(v_copy), less<int>(7) );
 
-	// С его помощью можно очистить полиморфный контейнер, изенить case_sens и пр.
+    // --- transform ---
+    // РЎРѕР·РґР°РµС‚ РІС‹С…РѕРґРЅСѓСЋ РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚СЊ, РїСЂРёРјРµРЅСЏСЏ РѕРїРµСЂР°С†РёСЋ РєРѕ РІС…РѕРґРЅРѕР№
+    // (РёР»Рё Рє 2-Рј РІС…РѕРґРЅС‹Рј)
 
-	vector<int> vcolors;
-	vector<circle> vshape1;
-	vshape1.push_back(circle(10));
-	vshape1.push_back(circle(20));
-	vshape1.push_back(circle(30));
+    // РЎ РµРіРѕ РїРѕРјРѕС‰СЊСЋ РјРѕР¶РЅРѕ РѕС‡РёСЃС‚РёС‚СЊ РїРѕР»РёРјРѕСЂС„РЅС‹Р№ РєРѕРЅС‚РµР№РЅРµСЂ, РёР·РµРЅРёС‚СЊ case_sens Рё РїСЂ.
 
-	// Сформируем контейнер цветов из контейнера фигур
-	transform( vshape1.begin(), vshape1.end(), back_inserter(vcolors), mem_fun_ref( &shape::color ) );
+    vector<int> vcolors;
+    vector<circle> vshape1;
+    vshape1.push_back(circle(10));
+    vshape1.push_back(circle(20));
+    vshape1.push_back(circle(30));
 
-	// Есть версия, прининающая 2 последоватльности
-	// Демонстрация умножения двух векторов и записи в третий
-	vector<int> res;
-	transform( vi.begin(), vi.end(), vi1.begin(), 
-		back_inserter(res), multiplies<int>() );
-	
-	// Более 2 последовательностей не принимает
+    // РЎС„РѕСЂРјРёСЂСѓРµРј РєРѕРЅС‚РµР№РЅРµСЂ С†РІРµС‚РѕРІ РёР· РєРѕРЅС‚РµР№РЅРµСЂР° С„РёРіСѓСЂ
+    transform( vshape1.begin(), vshape1.end(), back_inserter(vcolors), mem_fun_ref( &shape::color ) );
 
-	// --- unique,unique_copy --- 
-	// unique - переносит все уникальные элементы в конец (или начало???) последовательности,
-	// и возвращает итератор на конец последовательности дубликатов
-	vi.clear();
-	int arr2[] =  { 0,4,1,1,1,7,3,3,3,8,6,2,9,4,4,7 };
-	vector<int> vi2( arr2, arr2 + sizeof(arr2)/sizeof(int) );
-	sort(vi2.begin(), vi2.end());
-	v_iit vit1 = unique( vi2.begin(), vi2.end() );
+    // Р•СЃС‚СЊ РІРµСЂСЃРёСЏ, РїСЂРёРЅРёРЅР°СЋС‰Р°СЏ 2 РїРѕСЃР»РµРґРѕРІР°С‚Р»СЊРЅРѕСЃС‚Рё
+    // Р”РµРјРѕРЅСЃС‚СЂР°С†РёСЏ СѓРјРЅРѕР¶РµРЅРёСЏ РґРІСѓС… РІРµРєС‚РѕСЂРѕРІ Рё Р·Р°РїРёСЃРё РІ С‚СЂРµС‚РёР№
+    vector<int> res;
+    transform( vi.begin(), vi.end(), vi1.begin(),
+        back_inserter(res), multiplies<int>() );
 
-	// удалять их придется вручную
-	vi2.assign( arr2, arr2 + sizeof(arr2)/sizeof(int) );
-	sort(vi2.begin(), vi2.end());
+    // Р‘РѕР»РµРµ 2 РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚РµР№ РЅРµ РїСЂРёРЅРёРјР°РµС‚
 
-	// unique_copy - формирует новую последовательность (старую не трогает)
-	unique_copy( vi2.begin(), vi2.end(), back_inserter(vi) );
+    // --- unique,unique_copy ---
+    // unique - РїРµСЂРµРЅРѕСЃРёС‚ РІСЃРµ СѓРЅРёРєР°Р»СЊРЅС‹Рµ СЌР»РµРјРµРЅС‚С‹ РІ РєРѕРЅРµС† (РёР»Рё РЅР°С‡Р°Р»Рѕ???) РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚Рё,
+    // Рё РІРѕР·РІСЂР°С‰Р°РµС‚ РёС‚РµСЂР°С‚РѕСЂ РЅР° РєРѕРЅРµС† РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚Рё РґСѓР±Р»РёРєР°С‚РѕРІ
+    vi.clear();
+    int arr2[] =  { 0,4,1,1,1,7,3,3,3,8,6,2,9,4,4,7 };
+    vector<int> vi2( arr2, arr2 + sizeof(arr2)/sizeof(int) );
+    sort(vi2.begin(), vi2.end());
+    v_iit vit1 = unique( vi2.begin(), vi2.end() );
 
-	// --- replace, replace_if, replace_copy, replace_copy_if --- 
-	// Семейство этих алгоритмов заменяет в последовательности указанные значения
-	
-	// Заменить 7 на 8
-	replace( vi.begin(), vi.end(), 7, 8 );
+    // СѓРґР°Р»СЏС‚СЊ РёС… РїСЂРёРґРµС‚СЃСЏ РІСЂСѓС‡РЅСѓСЋ
+    vi2.assign( arr2, arr2 + sizeof(arr2)/sizeof(int) );
+    sort(vi2.begin(), vi2.end());
 
-	// Заменить в vi 4 на 6 и вставить в вектор vi2 (старую не трогает)
-	vi2.clear();
-	replace_copy( vi.begin(), vi.end(), back_inserter(vi2), 4, 6 );
+    // unique_copy - С„РѕСЂРјРёСЂСѓРµС‚ РЅРѕРІСѓСЋ РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚СЊ (СЃС‚Р°СЂСѓСЋ РЅРµ С‚СЂРѕРіР°РµС‚)
+    unique_copy( vi2.begin(), vi2.end(), back_inserter(vi) );
 
-	// Заменить все <= 2 на 3
-	replace_if( vi.begin(), vi.end(), bind2nd(less_equal<int>(), 2) , 3 );
+    // --- replace, replace_if, replace_copy, replace_copy_if ---
+    // РЎРµРјРµР№СЃС‚РІРѕ СЌС‚РёС… Р°Р»РіРѕСЂРёС‚РјРѕРІ Р·Р°РјРµРЅСЏРµС‚ РІ РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚Рё СѓРєР°Р·Р°РЅРЅС‹Рµ Р·РЅР°С‡РµРЅРёСЏ
 
-	// Заменить в vi1 все <= 2 на 3 и вставтить в вектор vi  (старую не трогает)
-	replace_copy_if( vi1.begin(), vi1.end()
-		, back_inserter(vi)
-		, bind2nd(less_equal<int>(), 2)
-		, 3 );
+    // Р—Р°РјРµРЅРёС‚СЊ 7 РЅР° 8
+    replace( vi.begin(), vi.end(), 7, 8 );
 
-	// --- remove,remove_copy,remove_copy_if --- 
-	// Семейство remove перемещает элементы (в последовательности или вне ее),
-	// основываясь на значении или предикате
-	// Простой remove просто записывает в начало (или конец???) последовательности (удалять вручную)
-	print_container(vi);
-	v_iit it = remove( vi.begin(), vi.end(), 5 );
-	print_container(vi);
-	// todo : print vector
+    // Р—Р°РјРµРЅРёС‚СЊ РІ vi 4 РЅР° 6 Рё РІСЃС‚Р°РІРёС‚СЊ РІ РІРµРєС‚РѕСЂ vi2 (СЃС‚Р°СЂСѓСЋ РЅРµ С‚СЂРѕРіР°РµС‚)
+    vi2.clear();
+    replace_copy( vi.begin(), vi.end(), back_inserter(vi2), 4, 6 );
 
-	// remove_if - по предикату
-	it = remove_if( vi.begin(), vi.end(), bind2nd( less<int>(), 4 ) );
-	print_container(vi);
-	// todo : print vector
+    // Р—Р°РјРµРЅРёС‚СЊ РІСЃРµ <= 2 РЅР° 3
+    replace_if( vi.begin(), vi.end(), bind2nd(less_equal<int>(), 2) , 3 );
 
-	// remove_copy_if - эдемент помещается на выход, 
-	// если он не удовлетворяет условию по предикату
-	vector<int> vi3;
-	remove_copy_if( vi1.begin(), vi1.end(), back_inserter(vi3), bind2nd( less<int>(), 2 ) );
-	print_container(vi3);
+    // Р—Р°РјРµРЅРёС‚СЊ РІ vi1 РІСЃРµ <= 2 РЅР° 3 Рё РІСЃС‚Р°РІС‚РёС‚СЊ РІ РІРµРєС‚РѕСЂ vi  (СЃС‚Р°СЂСѓСЋ РЅРµ С‚СЂРѕРіР°РµС‚)
+    replace_copy_if( vi1.begin(), vi1.end()
+        , back_inserter(vi)
+        , bind2nd(less_equal<int>(), 2)
+        , 3 );
 
-	// --- fill,fill_n ---
-	// Семейство функций заполняет значениями контейнер
+    // --- remove,remove_copy,remove_copy_if ---
+    // РЎРµРјРµР№СЃС‚РІРѕ remove РїРµСЂРµРјРµС‰Р°РµС‚ СЌР»РµРјРµРЅС‚С‹ (РІ РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚Рё РёР»Рё РІРЅРµ РµРµ),
+    // РѕСЃРЅРѕРІС‹РІР°СЏСЃСЊ РЅР° Р·РЅР°С‡РµРЅРёРё РёР»Рё РїСЂРµРґРёРєР°С‚Рµ
+    // РџСЂРѕСЃС‚РѕР№ remove РїСЂРѕСЃС‚Рѕ Р·Р°РїРёСЃС‹РІР°РµС‚ РІ РЅР°С‡Р°Р»Рѕ (РёР»Рё РєРѕРЅРµС†???) РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚Рё (СѓРґР°Р»СЏС‚СЊ РІСЂСѓС‡РЅСѓСЋ)
+    print_container(vi);
+    v_iit it = remove( vi.begin(), vi.end(), 5 );
+    print_container(vi);
+    // todo : print vector
 
-	// Первым 2 элементам присвоить 5
-	fill(vi3.begin(), vi3.begin() + 2, 5 );
+    // remove_if - РїРѕ РїСЂРµРґРёРєР°С‚Сѓ
+    it = remove_if( vi.begin(), vi.end(), bind2nd( less<int>(), 4 ) );
+    print_container(vi);
+    // todo : print vector
 
-	// То же самое с применением fill_n
-	fill_n(vi3.begin(), 2, 6 );
+    // remove_copy_if - СЌРґРµРјРµРЅС‚ РїРѕРјРµС‰Р°РµС‚СЃСЏ РЅР° РІС‹С…РѕРґ,
+    // РµСЃР»Рё РѕРЅ РЅРµ СѓРґРѕРІР»РµС‚РІРѕСЂСЏРµС‚ СѓСЃР»РѕРІРёСЋ РїРѕ РїСЂРµРґРёРєР°С‚Сѓ
+    vector<int> vi3;
+    remove_copy_if( vi1.begin(), vi1.end(), back_inserter(vi3), bind2nd( less<int>(), 2 ) );
+    print_container(vi3);
 
-	// --- generate,generate_n --- 
-	// Семейство функций, генерирующих значения контейнера из функции
-	// Генерация случайных чисел
-	generate(vi3.begin(), vi3.end(), rand );
+    // --- fill,fill_n ---
+    // РЎРµРјРµР№СЃС‚РІРѕ С„СѓРЅРєС†РёР№ Р·Р°РїРѕР»РЅСЏРµС‚ Р·РЅР°С‡РµРЅРёСЏРјРё РєРѕРЅС‚РµР№РЅРµСЂ
 
-	// Вывод 20 случайных чисел
-	generate_n( ostream_iterator<int>(cout), 20, rand );
+    // РџРµСЂРІС‹Рј 2 СЌР»РµРјРµРЅС‚Р°Рј РїСЂРёСЃРІРѕРёС‚СЊ 5
+    fill(vi3.begin(), vi3.begin() + 2, 5 );
 
-	// --- reverse,reverse_copy --- 
-	// reverse меняет порядок последовательности на обратный
-	reverse( vi.begin(), vi.end() );
+    // РўРѕ Р¶Рµ СЃР°РјРѕРµ СЃ РїСЂРёРјРµРЅРµРЅРёРµРј fill_n
+    fill_n(vi3.begin(), 2, 6 );
 
-	// reverse_copy производит новую последовательность в обратном порядке
-	vector<int> vi5;
-	reverse_copy( vi.begin(), vi.end(), back_inserter(vi5) );
-	
-	// --- rotate,rotate_copy --- 
-	// rotate циклически сдвигает элементы, пока второй аргумент функции
-	// не окажется первым аргументом последовательности
-	int arr3[] = {7,2,89,3,8,6,2,6};
-	size_t sz3 = sizeof(arr3)/sizeof(int);
-	
-	// Например циклический сдвиг массива на 3 влево
-	rotate(arr3, arr3 + 3, arr3 + sz3);
+    // --- generate,generate_n ---
+    // РЎРµРјРµР№СЃС‚РІРѕ С„СѓРЅРєС†РёР№, РіРµРЅРµСЂРёСЂСѓСЋС‰РёС… Р·РЅР°С‡РµРЅРёСЏ РєРѕРЅС‚РµР№РЅРµСЂР° РёР· С„СѓРЅРєС†РёРё
+    // Р“РµРЅРµСЂР°С†РёСЏ СЃР»СѓС‡Р°Р№РЅС‹С… С‡РёСЃРµР»
+    generate(vi3.begin(), vi3.end(), rand );
 
-	// rotate_copy
-	// Копирование сдвинутого на 5 массива в vi5
-	vi5.clear();
-	rotate_copy(arr3, arr3 + 5, arr3 + sz3,back_inserter(vi5));
-	
-	// --- random_shuffle --- 
-	// Перемешивание контейнера
-	random_shuffle(arr3, arr3 + sz3/* , rand_gen()*/ );
-	
-	// --- swap,iter_swap,swap_ranges --- 
-	// swap - переставляет 2 объекта местами
-	swap(vi, vi1);
+    // Р’С‹РІРѕРґ 20 СЃР»СѓС‡Р°Р№РЅС‹С… С‡РёСЃРµР»
+    generate_n( ostream_iterator<int>(cout), 20, rand );
 
-	// iter_swap 
-	// swap - переставляет 2 элемента местами (необязательно в одном контейнере) (??? в одном)
-	swap(vi.begin(), vi1.begin());
+    // --- reverse,reverse_copy ---
+    // reverse РјРµРЅСЏРµС‚ РїРѕСЂСЏРґРѕРє РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚Рё РЅР° РѕР±СЂР°С‚РЅС‹Р№
+    reverse( vi.begin(), vi.end() );
 
-	// swap_ranges 
-	// Меняет местами 2 диапазона равного размера, напрмер
-	// первые 2 элемента vi1 и vi2
-	swap_ranges(vi1.begin(), vi1.begin() + 2, vi2.begin());
+    // reverse_copy РїСЂРѕРёР·РІРѕРґРёС‚ РЅРѕРІСѓСЋ РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚СЊ РІ РѕР±СЂР°С‚РЅРѕРј РїРѕСЂСЏРґРєРµ
+    vector<int> vi5;
+    reverse_copy( vi.begin(), vi.end(), back_inserter(vi5) );
+
+    // --- rotate,rotate_copy ---
+    // rotate С†РёРєР»РёС‡РµСЃРєРё СЃРґРІРёРіР°РµС‚ СЌР»РµРјРµРЅС‚С‹, РїРѕРєР° РІС‚РѕСЂРѕР№ Р°СЂРіСѓРјРµРЅС‚ С„СѓРЅРєС†РёРё
+    // РЅРµ РѕРєР°Р¶РµС‚СЃСЏ РїРµСЂРІС‹Рј Р°СЂРіСѓРјРµРЅС‚РѕРј РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚Рё
+    int arr3[] = {7,2,89,3,8,6,2,6};
+    size_t sz3 = sizeof(arr3)/sizeof(int);
+
+    // РќР°РїСЂРёРјРµСЂ С†РёРєР»РёС‡РµСЃРєРёР№ СЃРґРІРёРі РјР°СЃСЃРёРІР° РЅР° 3 РІР»РµРІРѕ
+    rotate(arr3, arr3 + 3, arr3 + sz3);
+
+    // rotate_copy
+    // РљРѕРїРёСЂРѕРІР°РЅРёРµ СЃРґРІРёРЅСѓС‚РѕРіРѕ РЅР° 5 РјР°СЃСЃРёРІР° РІ vi5
+    vi5.clear();
+    rotate_copy(arr3, arr3 + 5, arr3 + sz3,back_inserter(vi5));
+
+    // --- random_shuffle ---
+    // РџРµСЂРµРјРµС€РёРІР°РЅРёРµ РєРѕРЅС‚РµР№РЅРµСЂР°
+    random_shuffle(arr3, arr3 + sz3/* , rand_gen()*/ );
+
+    // --- swap,iter_swap,swap_ranges ---
+    // swap - РїРµСЂРµСЃС‚Р°РІР»СЏРµС‚ 2 РѕР±СЉРµРєС‚Р° РјРµСЃС‚Р°РјРё
+    swap(vi, vi1);
+
+    // iter_swap
+    // swap - РїРµСЂРµСЃС‚Р°РІР»СЏРµС‚ 2 СЌР»РµРјРµРЅС‚Р° РјРµСЃС‚Р°РјРё (РЅРµРѕР±СЏР·Р°С‚РµР»СЊРЅРѕ РІ РѕРґРЅРѕРј РєРѕРЅС‚РµР№РЅРµСЂРµ) (??? РІ РѕРґРЅРѕРј)
+    swap(*vi.begin(), *vi1.begin());
+
+    // swap_ranges
+    // РњРµРЅСЏРµС‚ РјРµСЃС‚Р°РјРё 2 РґРёР°РїР°Р·РѕРЅР° СЂР°РІРЅРѕРіРѕ СЂР°Р·РјРµСЂР°, РЅР°РїСЂРјРµСЂ
+    // РїРµСЂРІС‹Рµ 2 СЌР»РµРјРµРЅС‚Р° vi1 Рё vi2
+    swap_ranges(vi1.begin(), vi1.begin() + 2, vi2.begin());
 }
 
-// --------------- Сортировка --------------- 
-//  sort,stable_sort  
-//  parital_sort,parital_stable_sort  
-//  nth_element, binary_search  
-//  merge,inplace_merge  
-//  lower_bound, upper_bound  
-//  partition,stable_partition  
+// --------------- РЎРѕСЂС‚РёСЂРѕРІРєР° ---------------
+//  sort,stable_sort
+//  parital_sort,parital_stable_sort
+//  nth_element, binary_search
+//  merge,inplace_merge
+//  lower_bound, upper_bound
+//  partition,stable_partition
 void show_sort(){
-	int arr[] =  { 0,4,1,9,3,7,3,7,3,8 };
-	int arr1[] = { 7,3,7,4,5,2,8,8,0,4 };
-	vector<int> vi( arr, arr + sizeof(arr)/sizeof(int) );
-	vector<int> vi1( arr1, arr1 + sizeof(arr1)/sizeof(int) );
+    int arr[] =  { 0,4,1,9,3,7,3,7,3,8 };
+    int arr1[] = { 7,3,7,4,5,2,8,8,0,4 };
+    vector<int> vi( arr, arr + sizeof(arr)/sizeof(int) );
+    vector<int> vi1( arr1, arr1 + sizeof(arr1)/sizeof(int) );
 
-	// --- sort,stable_sort --- 
-	// Требуют итераторов с произвольным доступом
-	sort(vi.begin(), vi.end());
+    // --- sort,stable_sort ---
+    // РўСЂРµР±СѓСЋС‚ РёС‚РµСЂР°С‚РѕСЂРѕРІ СЃ РїСЂРѕРёР·РІРѕР»СЊРЅС‹Рј РґРѕСЃС‚СѓРїРѕРј
+    sort(vi.begin(), vi.end());
 
-	// stable_sort сохраняет порядок одинаковых элементов
-	stable_sort(vi1.begin(), vi1.end());
+    // stable_sort СЃРѕС…СЂР°РЅСЏРµС‚ РїРѕСЂСЏРґРѕРє РѕРґРёРЅР°РєРѕРІС‹С… СЌР»РµРјРµРЅС‚РѕРІ
+    stable_sort(vi1.begin(), vi1.end());
 
-	vi.assign( arr, arr + sizeof(arr)/sizeof(int) );
-	vi1.assign( arr1, arr1 + sizeof(arr1)/sizeof(int) );
+    vi.assign( arr, arr + sizeof(arr)/sizeof(int) );
+    vi1.assign( arr1, arr1 + sizeof(arr1)/sizeof(int) );
 
-	// --- parital_sort,partial_sort_copy --- 
-	// Посдедовательность разбивается на 2 части, и сортировка продолжается 
-	// до тех пор, пока не будет отсортировани первая часть
-	partial_sort(vi.begin(), vi.begin() + 3, vi.end());
+    // --- parital_sort,partial_sort_copy ---
+    // РџРѕСЃРґРµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚СЊ СЂР°Р·Р±РёРІР°РµС‚СЃСЏ РЅР° 2 С‡Р°СЃС‚Рё, Рё СЃРѕСЂС‚РёСЂРѕРІРєР° РїСЂРѕРґРѕР»Р¶Р°РµС‚СЃСЏ
+    // РґРѕ С‚РµС… РїРѕСЂ, РїРѕРєР° РЅРµ Р±СѓРґРµС‚ РѕС‚СЃРѕСЂС‚РёСЂРѕРІР°РЅРё РїРµСЂРІР°СЏ С‡Р°СЃС‚СЊ
+    partial_sort(vi.begin(), vi.begin() + 3, vi.end());
 
-	// Посдедовательность разбивается на 2 части, копируется в выходную последовательность
-	// и сортировка продолжается до тех пор, пока не будет отсортировани первая часть
-	partial_sort_copy(vi.begin(), vi.end(),vi1.begin(), vi1.begin() + 3);
+    // РџРѕСЃРґРµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚СЊ СЂР°Р·Р±РёРІР°РµС‚СЃСЏ РЅР° 2 С‡Р°СЃС‚Рё, РєРѕРїРёСЂСѓРµС‚СЃСЏ РІ РІС‹С…РѕРґРЅСѓСЋ РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚СЊ
+    // Рё СЃРѕСЂС‚РёСЂРѕРІРєР° РїСЂРѕРґРѕР»Р¶Р°РµС‚СЃСЏ РґРѕ С‚РµС… РїРѕСЂ, РїРѕРєР° РЅРµ Р±СѓРґРµС‚ РѕС‚СЃРѕСЂС‚РёСЂРѕРІР°РЅРё РїРµСЂРІР°СЏ С‡Р°СЃС‚СЊ
+    partial_sort_copy(vi.begin(), vi.end(),vi1.begin(), vi1.begin() + 3);
 
-	vi.assign( arr, arr + sizeof(arr)/sizeof(int) );
-	vi1.assign( arr1, arr1 + sizeof(arr1)/sizeof(int) );
-	// --- nth_element --- 
-	// Сортировка до тех пор, пока n-ый элемент не займет свое место
-	// Полезно при вычислении медиан, процентилей и тп
-	// Например, третий элемент
-	nth_element(vi.begin(), vi.begin() + 3, vi.end());
+    vi.assign( arr, arr + sizeof(arr)/sizeof(int) );
+    vi1.assign( arr1, arr1 + sizeof(arr1)/sizeof(int) );
+    // --- nth_element ---
+    // РЎРѕСЂС‚РёСЂРѕРІРєР° РґРѕ С‚РµС… РїРѕСЂ, РїРѕРєР° n-С‹Р№ СЌР»РµРјРµРЅС‚ РЅРµ Р·Р°Р№РјРµС‚ СЃРІРѕРµ РјРµСЃС‚Рѕ
+    // РџРѕР»РµР·РЅРѕ РїСЂРё РІС‹С‡РёСЃР»РµРЅРёРё РјРµРґРёР°РЅ, РїСЂРѕС†РµРЅС‚РёР»РµР№ Рё С‚Рї
+    // РќР°РїСЂРёРјРµСЂ, С‚СЂРµС‚РёР№ СЌР»РµРјРµРЅС‚
+    nth_element(vi.begin(), vi.begin() + 3, vi.end());
 
-	// --- 	binary_search, lower_bound, upper_bound --- 
-	// binary_search - поиск в отсортированной последовательности
-	sort(vi.begin(), vi.end());
-	bool b = binary_search(vi.begin(), vi.end(),1);
+    // --- 	binary_search, lower_bound, upper_bound ---
+    // binary_search - РїРѕРёСЃРє РІ РѕС‚СЃРѕСЂС‚РёСЂРѕРІР°РЅРЅРѕР№ РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚Рё
+    sort(vi.begin(), vi.end());
+    bool b = binary_search(vi.begin(), vi.end(),1);
 
-	// lower_bound и upper_bound - возвращают
-	// верхнюю и нижнюю границу одинаковых элементов 
-	// отсортированной последовательности
-	v_iit it = lower_bound(vi.begin(), vi.end(),7);
-	it = upper_bound(vi.begin(), vi.end(),7);
+    // lower_bound Рё upper_bound - РІРѕР·РІСЂР°С‰Р°СЋС‚
+    // РІРµСЂС…РЅСЋСЋ Рё РЅРёР¶РЅСЋСЋ РіСЂР°РЅРёС†Сѓ РѕРґРёРЅР°РєРѕРІС‹С… СЌР»РµРјРµРЅС‚РѕРІ
+    // РѕС‚СЃРѕСЂС‚РёСЂРѕРІР°РЅРЅРѕР№ РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚Рё
+    v_iit it = lower_bound(vi.begin(), vi.end(),7);
+    it = upper_bound(vi.begin(), vi.end(),7);
 
-	// --- merge,inplace_merge --- 
-	// Семейство функций слияния отсортированных последовательностей
-	
-	// merge
-	// Слияние двух последовательностей
-	sort(vi1.begin(), vi1.end());
-	vector<int> res;
-	merge( vi.begin(), vi.end(),vi1.begin(), vi1.end(),back_inserter(res) );
+    // --- merge,inplace_merge ---
+    // РЎРµРјРµР№СЃС‚РІРѕ С„СѓРЅРєС†РёР№ СЃР»РёСЏРЅРёСЏ РѕС‚СЃРѕСЂС‚РёСЂРѕРІР°РЅРЅС‹С… РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚РµР№
 
-	// inplace_merge
-	// Слияние двух отсортированных частей одной последовательности
-	res.clear();
-	res.reserve(100);	// чтоб не перераспределять память
+    // merge
+    // РЎР»РёСЏРЅРёРµ РґРІСѓС… РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚РµР№
+    sort(vi1.begin(), vi1.end());
+    vector<int> res;
+    merge( vi.begin(), vi.end(),vi1.begin(), vi1.end(),back_inserter(res) );
 
-	copy(vi.begin(), vi.end(), back_inserter(res));
-	copy(vi1.begin(), vi1.end(), back_inserter(res));
-	inplace_merge(res.begin(), res.begin()+vi.size() , res.end());	//(??? wtf)
+    // inplace_merge
+    // РЎР»РёСЏРЅРёРµ РґРІСѓС… РѕС‚СЃРѕСЂС‚РёСЂРѕРІР°РЅРЅС‹С… С‡Р°СЃС‚РµР№ РѕРґРЅРѕР№ РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚Рё
+    res.clear();
+    res.reserve(100);	// С‡С‚РѕР± РЅРµ РїРµСЂРµСЂР°СЃРїСЂРµРґРµР»СЏС‚СЊ РїР°РјСЏС‚СЊ
 
-	// --- partition,stable_partition --- 
-	// Разделение контейнера - помещение всех элементов,
-	// удовлетворяющих предикату, перед теми, которые ему не удовлетворяют
+    copy(vi.begin(), vi.end(), back_inserter(res));
+    copy(vi1.begin(), vi1.end(), back_inserter(res));
+    inplace_merge(res.begin(), res.begin()+vi.size() , res.end());	//(??? wtf)
+
+    // --- partition,stable_partition ---
+    // Р Р°Р·РґРµР»РµРЅРёРµ РєРѕРЅС‚РµР№РЅРµСЂР° - РїРѕРјРµС‰РµРЅРёРµ РІСЃРµС… СЌР»РµРјРµРЅС‚РѕРІ,
+    // СѓРґРѕРІР»РµС‚РІРѕСЂСЏСЋС‰РёС… РїСЂРµРґРёРєР°С‚Сѓ, РїРµСЂРµРґ С‚РµРјРё, РєРѕС‚РѕСЂС‹Рµ РµРјСѓ РЅРµ СѓРґРѕРІР»РµС‚РІРѕСЂСЏСЋС‚
 
 }
 
 
-// --------------- Heap --------------- 
+// --------------- Heap ---------------
 // make_heap, sort_heap
 // push_heap, pop_heap
 void show_heap(){
-	
-	// на основе кучи строится priority_queue
 
-	vector<int> v({ 0, 2, 5, 1, 5, 3, 8, 3, 6, 5 });
-	print_container(v);
+    // РЅР° РѕСЃРЅРѕРІРµ РєСѓС‡Рё СЃС‚СЂРѕРёС‚СЃСЏ priority_queue
 
-	// сделать из вектора кучу
-	make_heap(v.begin(), v.end());
-	print_container(v);
+    vector<int> v({ 0, 2, 5, 1, 5, 3, 8, 3, 6, 5 });
+    print_container(v);
 
-	// внести элемент в кучу
-	// вносится всегда последний элемент
-	v.push_back(3);	
-	push_heap(v.begin(), v.end());
-	print_container(v);
+    // СЃРґРµР»Р°С‚СЊ РёР· РІРµРєС‚РѕСЂР° РєСѓС‡Сѓ
+    make_heap(v.begin(), v.end());
+    print_container(v);
 
-	// вынести элемент из кучи
-	// выносится тоже последний элемент
-	pop_heap(v.begin(), v.end());
-	v.pop_back();
-	print_container(v);
+    // РІРЅРµСЃС‚Рё СЌР»РµРјРµРЅС‚ РІ РєСѓС‡Сѓ
+    // РІРЅРѕСЃРёС‚СЃСЏ РІСЃРµРіРґР° РїРѕСЃР»РµРґРЅРёР№ СЌР»РµРјРµРЅС‚
+    v.push_back(3);
+    push_heap(v.begin(), v.end());
+    print_container(v);
 
-	// отсортировать кучу (после сортировки последовательногсть перестает быть кучей)
-	sort_heap(v.begin(), v.end());
-	print_container(v);
+    // РІС‹РЅРµСЃС‚Рё СЌР»РµРјРµРЅС‚ РёР· РєСѓС‡Рё
+    // РІС‹РЅРѕСЃРёС‚СЃСЏ С‚РѕР¶Рµ РїРѕСЃР»РµРґРЅРёР№ СЌР»РµРјРµРЅС‚
+    pop_heap(v.begin(), v.end());
+    v.pop_back();
+    print_container(v);
+
+    // РѕС‚СЃРѕСЂС‚РёСЂРѕРІР°С‚СЊ РєСѓС‡Сѓ (РїРѕСЃР»Рµ СЃРѕСЂС‚РёСЂРѕРІРєРё РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕРіСЃС‚СЊ РїРµСЂРµСЃС‚Р°РµС‚ Р±С‹С‚СЊ РєСѓС‡РµР№)
+    sort_heap(v.begin(), v.end());
+    print_container(v);
 }
 
 
-// --------------- Min|Max --------------- 
+// --------------- Min|Max ---------------
 // min, max, max_element, min_element
 // lexigraphical_compare
 bool no_case(char c1, char c2){
-	return std::tolower(c1) < std::tolower(c2);
+    return std::tolower(c1) < std::tolower(c2);
 }
 
 void show_min_max(){
-	// --- min, max, max_element, min_element ---
-	double m = max(1.2, 2.5);
-	const char* a = "aaa";
-	const char* b = "bbb";
-	string s( min(a, b) );
-	// max/min элементы из пары или из контейнера
-	// no comments
-	
-	const char* A = "AAA";
+    // --- min, max, max_element, min_element ---
+    double m = max(1.2, 2.5);
+    const char* a = "aaa";
+    const char* b = "bbb";
+    string s( min(a, b) );
+    // max/min СЌР»РµРјРµРЅС‚С‹ РёР· РїР°СЂС‹ РёР»Рё РёР· РєРѕРЅС‚РµР№РЅРµСЂР°
+    // no comments
 
-	// lexigraphical_compare - сравнение строк
-	// true if the first range compares lexicographically less than than the second.
-	// false otherwise(including when all the elements of both ranges are equivalent).
-	bool diff = lexicographical_compare(a , a + strlen(a), b , b + strlen(b) );
-	diff = lexicographical_compare(a, a + strlen(a), A, A + strlen(A), no_case);
+    const char* A = "AAA";
+
+    // lexigraphical_compare - СЃСЂР°РІРЅРµРЅРёРµ СЃС‚СЂРѕРє
+    // true if the first range compares lexicographically less than than the second.
+    // false otherwise(including when all the elements of both ranges are equivalent).
+    bool diff = lexicographical_compare(a , a + strlen(a), b , b + strlen(b) );
+    diff = lexicographical_compare(a, a + strlen(a), A, A + strlen(A), no_case);
 }
 
 // ------------------- Set -------------------
@@ -434,66 +434,66 @@ void show_min_max(){
 // --- set_union, set_intersection ---
 // --- set_difference, set_symmetric_difference ---
 void show_set(){
-	// Операции с множествами имеют смысл только для отсортированных последовательностей
-	// особенно эффективны с контейнерами set и multiset
-	int arr[] =  { 0,4,1,9,3,7,3,7,3,8 };
-	int arr1[] = { 7,3,7,4,5,2,8,8,0,4 };
+    // РћРїРµСЂР°С†РёРё СЃ РјРЅРѕР¶РµСЃС‚РІР°РјРё РёРјРµСЋС‚ СЃРјС‹СЃР» С‚РѕР»СЊРєРѕ РґР»СЏ РѕС‚СЃРѕСЂС‚РёСЂРѕРІР°РЅРЅС‹С… РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚РµР№
+    // РѕСЃРѕР±РµРЅРЅРѕ СЌС„С„РµРєС‚РёРІРЅС‹ СЃ РєРѕРЅС‚РµР№РЅРµСЂР°РјРё set Рё multiset
+    int arr[] =  { 0,4,1,9,3,7,3,7,3,8 };
+    int arr1[] = { 7,3,7,4,5,2,8,8,0,4 };
 
-	set<int> s( arr, arr + sizeof(arr)/sizeof(int) );
-	multiset<int> ms( arr1, arr1 + sizeof(arr1)/sizeof(int) );
-	set<int> s1(ms.begin(), ms.end());
+    set<int> s( arr, arr + sizeof(arr)/sizeof(int) );
+    multiset<int> ms( arr1, arr1 + sizeof(arr1)/sizeof(int) );
+    set<int> s1(ms.begin(), ms.end());
 
-	// --- includes ---
-	// Проверяет, являются ли все члены первой последовательности
-	// также членами второй
-	bool b = includes(s.begin(), s.end(),ms.begin(), ms.end());
+    // --- includes ---
+    // РџСЂРѕРІРµСЂСЏРµС‚, СЏРІР»СЏСЋС‚СЃСЏ Р»Рё РІСЃРµ С‡Р»РµРЅС‹ РїРµСЂРІРѕР№ РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚Рё
+    // С‚Р°РєР¶Рµ С‡Р»РµРЅР°РјРё РІС‚РѕСЂРѕР№
+    bool b = includes(s.begin(), s.end(),ms.begin(), ms.end());
 
-	// --- set_union, set_intersection ---
-	// Объединение и пересечение соответственно 
-	vector<int> union_out;
-	vector<int> intersection_out;
-	set_union(s.begin(), s.end(), s1.begin(), s1.end(), back_inserter(union_out)); //(??? wtf)
-	set_intersection(s.begin(), s.end(), ms.begin(), ms.end(), back_inserter(intersection_out));
+    // --- set_union, set_intersection ---
+    // РћР±СЉРµРґРёРЅРµРЅРёРµ Рё РїРµСЂРµСЃРµС‡РµРЅРёРµ СЃРѕРѕС‚РІРµС‚СЃС‚РІРµРЅРЅРѕ
+    vector<int> union_out;
+    vector<int> intersection_out;
+    set_union(s.begin(), s.end(), s1.begin(), s1.end(), back_inserter(union_out)); //(??? wtf)
+    set_intersection(s.begin(), s.end(), ms.begin(), ms.end(), back_inserter(intersection_out));
 
-	// --- set_difference, set_symmetric_difference ---
-	vector<int> diff_out;
-	vector<int> symm_out;
+    // --- set_difference, set_symmetric_difference ---
+    vector<int> diff_out;
+    vector<int> symm_out;
 
-	vector<int> v1(arr, arr + sizeof(arr) / sizeof(int));
-	vector<int> v2(arr1, arr + sizeof(arr1) / sizeof(int));
-	sort(v1.begin(), v1.end());
-	sort(v2.begin(), v2.end());
+    vector<int> v1(arr, arr + sizeof(arr) / sizeof(int));
+    vector<int> v2(arr1, arr + sizeof(arr1) / sizeof(int));
+    sort(v1.begin(), v1.end());
+    sort(v2.begin(), v2.end());
 
-	// set_difference - последовательность входящих в первую, но не входящих во вторую элементов
-	set_difference(v1.begin(), v1.end(), v2.begin(), v2.end(), back_inserter(diff_out));
+    // set_difference - РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚СЊ РІС…РѕРґСЏС‰РёС… РІ РїРµСЂРІСѓСЋ, РЅРѕ РЅРµ РІС…РѕРґСЏС‰РёС… РІРѕ РІС‚РѕСЂСѓСЋ СЌР»РµРјРµРЅС‚РѕРІ
+    set_difference(v1.begin(), v1.end(), v2.begin(), v2.end(), back_inserter(diff_out));
 
-	// set_symmetric_difference - последовательность входящих в только одну из последовательностей элементов
-	set_symmetric_difference(v1.begin(), v1.end(), v2.begin(), v2.end(), back_inserter(symm_out));
+    // set_symmetric_difference - РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚СЊ РІС…РѕРґСЏС‰РёС… РІ С‚РѕР»СЊРєРѕ РѕРґРЅСѓ РёР· РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚РµР№ СЌР»РµРјРµРЅС‚РѕРІ
+    set_symmetric_difference(v1.begin(), v1.end(), v2.begin(), v2.end(), back_inserter(symm_out));
 }
 
-// --------------- Permutations --------------- 
+// --------------- Permutations ---------------
 // next_permutation, prev_permutation
 void show_permutations(){
 
-	// все возможные перестановки последовательности
-	char v[] = "abcd";
-	cout << endl << "start permutations:" << endl << v << '\t';
-	while ( next_permutation(v, v + 4) ){
-		cout << v << '\t';
-	}
+    // РІСЃРµ РІРѕР·РјРѕР¶РЅС‹Рµ РїРµСЂРµСЃС‚Р°РЅРѕРІРєРё РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚Рё
+    char v[] = "abcd";
+    cout << endl << "start permutations:" << endl << v << '\t';
+    while ( next_permutation(v, v + 4) ){
+        cout << v << '\t';
+    }
 }
 
-// --------------- C algorithms --------------- 
+// --------------- C algorithms ---------------
 // qsort, bsearch
 int c_compare( const void* arg1, const void* arg2 ){
-	/* Compare by subtracting (ret>0, ret==0, ret<0)*/
-	return (*static_cast<const int*>(arg1)) - (*static_cast<const int*>(arg2));
+    /* Compare by subtracting (ret>0, ret==0, ret<0)*/
+    return (*static_cast<const int*>(arg1)) - (*static_cast<const int*>(arg2));
 }
 
 void c_algorithms(){
-	int arr[] =  { 0,4,1,9,3,7,3,7,3,8 };
-	size_t sz = sizeof(arr)/sizeof(int);
-	qsort( arr, sz, sizeof(int), c_compare );
-	int key = 1;
-	int* i = (int*)bsearch( (const void*)&key, (int*)arr, sz, sizeof(int), c_compare );
+    int arr[] =  { 0,4,1,9,3,7,3,7,3,8 };
+    size_t sz = sizeof(arr)/sizeof(int);
+    qsort( arr, sz, sizeof(int), c_compare );
+    int key = 1;
+    int* i = (int*)bsearch( (const void*)&key, (int*)arr, sz, sizeof(int), c_compare );
 }

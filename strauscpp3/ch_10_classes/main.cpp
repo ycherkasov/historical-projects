@@ -14,451 +14,459 @@ using namespace std;
 construct g_construct;
 
 
-// Разрешается определять структуру и не структуры одного имени 
-// (то же для class, enum, union)
+// Р Р°Р·СЂРµС€Р°РµС‚СЃСЏ РѕРїСЂРµРґРµР»СЏС‚СЊ СЃС‚СЂСѓРєС‚СѓСЂСѓ Рё РЅРµ СЃС‚СЂСѓРєС‚СѓСЂС‹ РѕРґРЅРѕРіРѕ РёРјРµРЅРё
+// (С‚Рѕ Р¶Рµ РґР»СЏ class, enum, union)
 void struct_one_name(){
-	struct A{
-		int a;
-	};
+    struct A{
+        int a;
+    };
 
-	A aa;
-	aa.a = 2;
-	int A = 1;
+    A aa;
+    aa.a = 2;
+    int A = 1;
 }
 
-// Функция демонстрирует инициализацию и работу 
-// с константными объектами и mutable-членами
+// Р¤СѓРЅРєС†РёСЏ РґРµРјРѕРЅСЃС‚СЂРёСЂСѓРµС‚ РёРЅРёС†РёР°Р»РёР·Р°С†РёСЋ Рё СЂР°Р±РѕС‚Сѓ
+// СЃ РєРѕРЅСЃС‚Р°РЅС‚РЅС‹РјРё РѕР±СЉРµРєС‚Р°РјРё Рё mutable-С‡Р»РµРЅР°РјРё
 void show_const(){
 
-	A a;
+    A a;
 
-	bool b = false;
-	size_t s = sizeof(b); // 1
+    bool b = false;
+    size_t s = sizeof(b); // 1
 
-	const A aa;
-	//aa.set_int1(5); - так нельзя, вызов неконстантного метода в константном классе
+    const A aa;
+    //aa.set_int1(5); - С‚Р°Рє РЅРµР»СЊР·СЏ, РІС‹Р·РѕРІ РЅРµРєРѕРЅСЃС‚Р°РЅС‚РЅРѕРіРѕ РјРµС‚РѕРґР° РІ РєРѕРЅСЃС‚Р°РЅС‚РЅРѕРј РєР»Р°СЃСЃРµ
 
-	// а так можно, член константного класса mutable может быть изменен
-	aa.set_a6_mutable(5);
+    // Р° С‚Р°Рє РјРѕР¶РЅРѕ, С‡Р»РµРЅ РєРѕРЅСЃС‚Р°РЅС‚РЅРѕРіРѕ РєР»Р°СЃСЃР° mutable РјРѕР¶РµС‚ Р±С‹С‚СЊ РёР·РјРµРЅРµРЅ
+    aa.set_a6_mutable(5);
 
 }
 
-// Функция демонстрирует инициализацию и работу 
-// с константными указателями и указателями на константу
+// Р¤СѓРЅРєС†РёСЏ РґРµРјРѕРЅСЃС‚СЂРёСЂСѓРµС‚ РёРЅРёС†РёР°Р»РёР·Р°С†РёСЋ Рё СЂР°Р±РѕС‚Сѓ
+// СЃ РєРѕРЅСЃС‚Р°РЅС‚РЅС‹РјРё СѓРєР°Р·Р°С‚РµР»СЏРјРё Рё СѓРєР°Р·Р°С‚РµР»СЏРјРё РЅР° РєРѕРЅСЃС‚Р°РЅС‚Сѓ
 void show_const_pointers(){
 
-	// Указатель на константу
-	const int* pp1 = new const int(3);
+    // РЈРєР°Р·Р°С‚РµР»СЊ РЅР° РєРѕРЅСЃС‚Р°РЅС‚Сѓ
+    const int* pp1 = new const int(3);
 
-	// Явная ошибка - константа не проинициализирована,
-	// но компилятор молчит
-	const int* pp2 = new const int;
+    // РЇРІРЅР°СЏ РѕС€РёР±РєР° - РєРѕРЅСЃС‚Р°РЅС‚Р° РЅРµ РїСЂРѕРёРЅРёС†РёР°Р»РёР·РёСЂРѕРІР°РЅР°,
+    // РЅРѕ РєРѕРјРїРёР»СЏС‚РѕСЂ РјРѕР»С‡РёС‚
+    // Clang detects it!
+#ifndef __clang__
+    const int* pp2 = new const int;
 
-	// Проинициализировать ее легальным способом теперь не удастся
-	// Не сработает даже const_cast
-	//const_cast<int>(*pp2) = 1;
+    // РџСЂРѕРёРЅРёС†РёР°Р»РёР·РёСЂРѕРІР°С‚СЊ РµРµ Р»РµРіР°Р»СЊРЅС‹Рј СЃРїРѕСЃРѕР±РѕРј С‚РµРїРµСЂСЊ РЅРµ СѓРґР°СЃС‚СЃСЏ
+    // РќРµ СЃСЂР°Р±РѕС‚Р°РµС‚ РґР°Р¶Рµ const_cast
+    //const_cast<int>(*pp2) = 1;
 
-	// Можно создать непроинициализированный константный динамический массив
-	// Он даже не будет обнулен, и больше с ним ничего сделать нельзя.
-	const int* pp3 = new const int[100];
+    // РњРѕР¶РЅРѕ СЃРѕР·РґР°С‚СЊ РЅРµРїСЂРѕРёРЅРёС†РёР°Р»РёР·РёСЂРѕРІР°РЅРЅС‹Р№ РєРѕРЅСЃС‚Р°РЅС‚РЅС‹Р№ РґРёРЅР°РјРёС‡РµСЃРєРёР№ РјР°СЃСЃРёРІ
+    // РћРЅ РґР°Р¶Рµ РЅРµ Р±СѓРґРµС‚ РѕР±РЅСѓР»РµРЅ, Рё Р±РѕР»СЊС€Рµ СЃ РЅРёРј РЅРёС‡РµРіРѕ СЃРґРµР»Р°С‚СЊ РЅРµР»СЊР·СЏ.
+    const int* pp3 = new const int[100];
+#endif
 
-	// Логичнее создавать динамический массив по константному указателю
-	int* const pp4 = new int[100];
+    // Р›РѕРіРёС‡РЅРµРµ СЃРѕР·РґР°РІР°С‚СЊ РґРёРЅР°РјРёС‡РµСЃРєРёР№ РјР°СЃСЃРёРІ РїРѕ РєРѕРЅСЃС‚Р°РЅС‚РЅРѕРјСѓ СѓРєР°Р·Р°С‚РµР»СЋ
+    int* const pp4 = new int[100];
 
-	// Внимание - Стандарт разрешает динамический массив нулевого размера!
-	int* pp5 = new int[0];
-	// а статический - не разрешает (хотя есть расширения gcc, где это можно)
-	//int p6[0];
+    // Р’РЅРёРјР°РЅРёРµ - РЎС‚Р°РЅРґР°СЂС‚ СЂР°Р·СЂРµС€Р°РµС‚ РґРёРЅР°РјРёС‡РµСЃРєРёР№ РјР°СЃСЃРёРІ РЅСѓР»РµРІРѕРіРѕ СЂР°Р·РјРµСЂР°!
+    int* pp5 = new int[0];
+    // Р° СЃС‚Р°С‚РёС‡РµСЃРєРёР№ - РЅРµ СЂР°Р·СЂРµС€Р°РµС‚ (С…РѕС‚СЏ РµСЃС‚СЊ СЂР°СЃС€РёСЂРµРЅРёСЏ gcc, РіРґРµ СЌС‚Рѕ РјРѕР¶РЅРѕ)
+    //int p6[0];
 
-	// Функция _msize позволяет узнать реальный размер выделенного массива.
-	size_t sz = _msize(pp4);
-	sz = _msize(pp5);
+    // Р¤СѓРЅРєС†РёСЏ _msize РїРѕР·РІРѕР»СЏРµС‚ СѓР·РЅР°С‚СЊ СЂРµР°Р»СЊРЅС‹Р№ СЂР°Р·РјРµСЂ РІС‹РґРµР»РµРЅРЅРѕРіРѕ РјР°СЃСЃРёРІР°
+    // (Windows-specific)
+#if defined(_WIN32) || defined(_WIN64)
+    size_t sz = _msize(pp4);
+    sz = _msize(pp5);
+#endif
 
-	delete pp1;
-	delete pp2;
-	delete[] pp3;
-	delete[] pp4;
-	delete[] pp5;
+    delete pp1;
+#ifndef __clang__
+    delete pp2;
+    delete[] pp3;
+#endif
+    delete[] pp4;
+    delete[] pp5;
 
-	// осторожно прменять typedef к массивам
-	typedef good_weekday_t week_array[7];
-	good_weekday_t* s = new week_array;
-	//delete s; - неправильно! нужен delete[], но мы об этом не знаем!
-	delete[] s;
+    // РѕСЃС‚РѕСЂРѕР¶РЅРѕ РїСЂРјРµРЅСЏС‚СЊ typedef Рє РјР°СЃСЃРёРІР°Рј
+    typedef good_weekday_t week_array[7];
+    good_weekday_t* s = new week_array;
+    //delete s; - РЅРµРїСЂР°РІРёР»СЊРЅРѕ! РЅСѓР¶РµРЅ delete[], РЅРѕ РјС‹ РѕР± СЌС‚РѕРј РЅРµ Р·РЅР°РµРј!
+    delete[] s;
 
-	//X* x = new Y[2];
-	// delete[] x; 
-	//It invokes undefined behavior.
-	//This is correct.  
-	//When deleting an array, the dynamic and the static type of the object must be the same, 
-	//or the behavior is undefined (C++ Standard 5.3.5/3).
+    //X* x = new Y[2];
+    // delete[] x;
+    //It invokes undefined behavior.
+    //This is correct.
+    //When deleting an array, the dynamic and the static type of the object must be the same,
+    //or the behavior is undefined (C++ Standard 5.3.5/3).
 }
 
-// Способы вызова конструктора объекта:
-// 1. Именованный автоматический объект(по умолчанию, копия).
-// 2. Объект в свободной памяти (new/delete).
-// 3. Нестатический объект-член класса.
-// 4. Объект - элемент массива.
-// 5. Локальный статический объект.
-// 6. Глобальный объект.
-// 7. Временный объект.
-// 8. Объект, сконструированный пользовательским аллокатором.
-// 9. Член объединения (union)
+// РЎРїРѕСЃРѕР±С‹ РІС‹Р·РѕРІР° РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂР° РѕР±СЉРµРєС‚Р°:
+// 1. РРјРµРЅРѕРІР°РЅРЅС‹Р№ Р°РІС‚РѕРјР°С‚РёС‡РµСЃРєРёР№ РѕР±СЉРµРєС‚(РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ, РєРѕРїРёСЏ).
+// 2. РћР±СЉРµРєС‚ РІ СЃРІРѕР±РѕРґРЅРѕР№ РїР°РјСЏС‚Рё (new/delete).
+// 3. РќРµСЃС‚Р°С‚РёС‡РµСЃРєРёР№ РѕР±СЉРµРєС‚-С‡Р»РµРЅ РєР»Р°СЃСЃР°.
+// 4. РћР±СЉРµРєС‚ - СЌР»РµРјРµРЅС‚ РјР°СЃСЃРёРІР°.
+// 5. Р›РѕРєР°Р»СЊРЅС‹Р№ СЃС‚Р°С‚РёС‡РµСЃРєРёР№ РѕР±СЉРµРєС‚.
+// 6. Р“Р»РѕР±Р°Р»СЊРЅС‹Р№ РѕР±СЉРµРєС‚.
+// 7. Р’СЂРµРјРµРЅРЅС‹Р№ РѕР±СЉРµРєС‚.
+// 8. РћР±СЉРµРєС‚, СЃРєРѕРЅСЃС‚СЂСѓРёСЂРѕРІР°РЅРЅС‹Р№ РїРѕР»СЊР·РѕРІР°С‚РµР»СЊСЃРєРёРј Р°Р»Р»РѕРєР°С‚РѕСЂРѕРј.
+// 9. Р§Р»РµРЅ РѕР±СЉРµРґРёРЅРµРЅРёСЏ (union)
 void show_construct_destruct(){
 
-	std::cout << std::endl <<  "Create automatic objects" << std::endl;
-	// 1. Именованный автоматический объект(по умолчанию, копия).
-	// Если в объекте есть константы или ссылки, он не может быть создан 
-	// конструктором по умолчанию
-	{
-		construct c;
-		construct d;
-		{
-			construct c1(c);
-		}
-		noncopyble nc;
-		// А скопировать этот объект нельзя!
-		// noncopyble nc1(nc);
-	}
-	// Создаются в порядке c-d-c1-nc, уничтожаются c1-nc-d-c
-	
+    std::cout << std::endl <<  "Create automatic objects" << std::endl;
+    // 1. РРјРµРЅРѕРІР°РЅРЅС‹Р№ Р°РІС‚РѕРјР°С‚РёС‡РµСЃРєРёР№ РѕР±СЉРµРєС‚(РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ, РєРѕРїРёСЏ).
+    // Р•СЃР»Рё РІ РѕР±СЉРµРєС‚Рµ РµСЃС‚СЊ РєРѕРЅСЃС‚Р°РЅС‚С‹ РёР»Рё СЃСЃС‹Р»РєРё, РѕРЅ РЅРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ СЃРѕР·РґР°РЅ
+    // РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂРѕРј РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ
+    {
+        construct c;
+        construct d;
+        {
+            construct c1(c);
+        }
+        noncopyble nc;
+        // Рђ СЃРєРѕРїРёСЂРѕРІР°С‚СЊ СЌС‚РѕС‚ РѕР±СЉРµРєС‚ РЅРµР»СЊР·СЏ!
+        // noncopyble nc1(nc);
+    }
+    // РЎРѕР·РґР°СЋС‚СЃСЏ РІ РїРѕСЂСЏРґРєРµ c-d-c1-nc, СѓРЅРёС‡С‚РѕР¶Р°СЋС‚СЃСЏ c1-nc-d-c
 
-	// 2. Объект в свободной памяти (new/delete).
-	std::cout << std::endl << "Create dynamic objects" << std::endl;
 
-	// Если в классе только автоматически сгенерированный конструктор,
-	// то эта форма вызова, с (), обнулит память...
-	construct* pc1 = new construct();
-	// ... а эта - нет
-	construct* pc2 = new construct;
+    // 2. РћР±СЉРµРєС‚ РІ СЃРІРѕР±РѕРґРЅРѕР№ РїР°РјСЏС‚Рё (new/delete).
+    std::cout << std::endl << "Create dynamic objects" << std::endl;
 
-	// Обнуляйте неиспользуемые указатели!
-	delete pc1; pc1 = 0;
-	delete pc2; pc2 = 0;
+    // Р•СЃР»Рё РІ РєР»Р°СЃСЃРµ С‚РѕР»СЊРєРѕ Р°РІС‚РѕРјР°С‚РёС‡РµСЃРєРё СЃРіРµРЅРµСЂРёСЂРѕРІР°РЅРЅС‹Р№ РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ,
+    // С‚Рѕ СЌС‚Р° С„РѕСЂРјР° РІС‹Р·РѕРІР°, СЃ (), РѕР±РЅСѓР»РёС‚ РїР°РјСЏС‚СЊ...
+    construct* pc1 = new construct();
+    // ... Р° СЌС‚Р° - РЅРµС‚
+    construct* pc2 = new construct;
 
-	// 3. Нестатический объект-член класса.
-	std::cout << std::endl << "Create non-static member" << std::endl;
-	// Вызовется конструктор по умолчанию intern()
-	{
-		construct c1;
-	}
-	
+    // РћР±РЅСѓР»СЏР№С‚Рµ РЅРµРёСЃРїРѕР»СЊР·СѓРµРјС‹Рµ СѓРєР°Р·Р°С‚РµР»Рё!
+    delete pc1; pc1 = 0;
+    delete pc2; pc2 = 0;
 
-	// 4. Объект - элемент массива.
-	std::cout << std::endl << "Create objects array " << std::endl;
-	// ! Элементы массива могут быть сконструированы по умолчанию
-	construct arr_c[5];
-	// Можно использовать список инициализации в виде конструкторов
-	construct arr_1[] = { construct(2), construct( g_construct ) };
-	// Можно использовать даже неявные преобразования при конструировании
-	construct arr_2[] = {1, 2};
-	// прим.-такие массивы лучше объявлять без указания количества элементов - []
+    // 3. РќРµСЃС‚Р°С‚РёС‡РµСЃРєРёР№ РѕР±СЉРµРєС‚-С‡Р»РµРЅ РєР»Р°СЃСЃР°.
+    std::cout << std::endl << "Create non-static member" << std::endl;
+    // Р’С‹Р·РѕРІРµС‚СЃСЏ РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ intern()
+    {
+        construct c1;
+    }
 
-	// 5. Локальный статический объект.
-	std::cout << std::endl << "Create local static objects " << std::endl;
-	create_static(0);
-	create_static(1);
-	create_static(2);
 
-	// В случае простых объектов можно пользоваться представлением в виде функций
-	int st = return_static();
+    // 4. РћР±СЉРµРєС‚ - СЌР»РµРјРµРЅС‚ РјР°СЃСЃРёРІР°.
+    std::cout << std::endl << "Create objects array " << std::endl;
+    // ! Р­Р»РµРјРµРЅС‚С‹ РјР°СЃСЃРёРІР° РјРѕРіСѓС‚ Р±С‹С‚СЊ СЃРєРѕРЅСЃС‚СЂСѓРёСЂРѕРІР°РЅС‹ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ
+    construct arr_c[5];
+    // РњРѕР¶РЅРѕ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ СЃРїРёСЃРѕРє РёРЅРёС†РёР°Р»РёР·Р°С†РёРё РІ РІРёРґРµ РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂРѕРІ
+    construct arr_1[] = { construct(2), construct( g_construct ) };
+    // РњРѕР¶РЅРѕ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ РґР°Р¶Рµ РЅРµСЏРІРЅС‹Рµ РїСЂРµРѕР±СЂР°Р·РѕРІР°РЅРёСЏ РїСЂРё РєРѕРЅСЃС‚СЂСѓРёСЂРѕРІР°РЅРёРё
+    construct arr_2[] = {1, 2};
+    // РїСЂРёРј.-С‚Р°РєРёРµ РјР°СЃСЃРёРІС‹ Р»СѓС‡С€Рµ РѕР±СЉСЏРІР»СЏС‚СЊ Р±РµР· СѓРєР°Р·Р°РЅРёСЏ РєРѕР»РёС‡РµСЃС‚РІР° СЌР»РµРјРµРЅС‚РѕРІ - []
 
-	// 6. Глобальный объект.
-	// Конструкторы глобальных объектов вызываются в одном модуле - в порядке определения
-	// в разных модулях - порядок не определен. То же для разрушения объектов (см. g_construct, g_intern)
-	// Полезно использовать синглтон, а также обертку-инициализатор (см. construct.h)
+    // 5. Р›РѕРєР°Р»СЊРЅС‹Р№ СЃС‚Р°С‚РёС‡РµСЃРєРёР№ РѕР±СЉРµРєС‚.
+    std::cout << std::endl << "Create local static objects " << std::endl;
+    create_static(0);
+    create_static(1);
+    create_static(2);
 
-	// 7. Временный объект.
-	// Убьется сразу
-	std::cout << std::endl << "Create temporary object " << std::endl;
-	construct(5);
-	// Также неявное копирование происходит при передаче и возвращении по значению 
-	// и бросании исключения
+    // Р’ СЃР»СѓС‡Р°Рµ РїСЂРѕСЃС‚С‹С… РѕР±СЉРµРєС‚РѕРІ РјРѕР¶РЅРѕ РїРѕР»СЊР·РѕРІР°С‚СЊСЃСЏ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёРµРј РІ РІРёРґРµ С„СѓРЅРєС†РёР№
+    int st = return_static();
 
-	// 8. Объект, сконструированный пользовательским аллокатором.
-	{
-		// см. show_user_alloc()
-	}
-	
+    // 6. Р“Р»РѕР±Р°Р»СЊРЅС‹Р№ РѕР±СЉРµРєС‚.
+    // РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂС‹ РіР»РѕР±Р°Р»СЊРЅС‹С… РѕР±СЉРµРєС‚РѕРІ РІС‹Р·С‹РІР°СЋС‚СЃСЏ РІ РѕРґРЅРѕРј РјРѕРґСѓР»Рµ - РІ РїРѕСЂСЏРґРєРµ РѕРїСЂРµРґРµР»РµРЅРёСЏ
+    // РІ СЂР°Р·РЅС‹С… РјРѕРґСѓР»СЏС… - РїРѕСЂСЏРґРѕРє РЅРµ РѕРїСЂРµРґРµР»РµРЅ. РўРѕ Р¶Рµ РґР»СЏ СЂР°Р·СЂСѓС€РµРЅРёСЏ РѕР±СЉРµРєС‚РѕРІ (СЃРј. g_construct, g_intern)
+    // РџРѕР»РµР·РЅРѕ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ СЃРёРЅРіР»С‚РѕРЅ, Р° С‚Р°РєР¶Рµ РѕР±РµСЂС‚РєСѓ-РёРЅРёС†РёР°Р»РёР·Р°С‚РѕСЂ (СЃРј. construct.h)
 
-	// 9. Член объединения (union)
-	// union не может иметь членов с конструкторами-деструкторами
-	// потому что непонятно какой из них вызывать
+    // 7. Р’СЂРµРјРµРЅРЅС‹Р№ РѕР±СЉРµРєС‚.
+    // РЈР±СЊРµС‚СЃСЏ СЃСЂР°Р·Сѓ
+    std::cout << std::endl << "Create temporary object " << std::endl;
+    construct(5);
+    // РўР°РєР¶Рµ РЅРµСЏРІРЅРѕРµ РєРѕРїРёСЂРѕРІР°РЅРёРµ РїСЂРѕРёСЃС…РѕРґРёС‚ РїСЂРё РїРµСЂРµРґР°С‡Рµ Рё РІРѕР·РІСЂР°С‰РµРЅРёРё РїРѕ Р·РЅР°С‡РµРЅРёСЋ
+    // Рё Р±СЂРѕСЃР°РЅРёРё РёСЃРєР»СЋС‡РµРЅРёСЏ
+
+    // 8. РћР±СЉРµРєС‚, СЃРєРѕРЅСЃС‚СЂСѓРёСЂРѕРІР°РЅРЅС‹Р№ РїРѕР»СЊР·РѕРІР°С‚РµР»СЊСЃРєРёРј Р°Р»Р»РѕРєР°С‚РѕСЂРѕРј.
+    {
+        // СЃРј. show_user_alloc()
+    }
+
+
+    // 9. Р§Р»РµРЅ РѕР±СЉРµРґРёРЅРµРЅРёСЏ (union)
+    // union РЅРµ РјРѕР¶РµС‚ РёРјРµС‚СЊ С‡Р»РµРЅРѕРІ СЃ РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂР°РјРё-РґРµСЃС‚СЂСѓРєС‚РѕСЂР°РјРё
+    // РїРѕС‚РѕРјСѓ С‡С‚Рѕ РЅРµРїРѕРЅСЏС‚РЅРѕ РєР°РєРѕР№ РёР· РЅРёС… РІС‹Р·С‹РІР°С‚СЊ
 }
 
 // Task from B.Batkin
 void show_word_counter(){
-	string s( "test.txt" );
-	word_counter::count_from_file( s );
+    string s( "test.txt" );
+    word_counter::count_from_file( s );
 }
 
 
 
 void show_placement_delete(){
-	
-	struct X {
-		X() {
-			throw std::runtime_error("X object never be created");
-		}
-		// custom placement new
-		static void* operator new(std::size_t sz, bool b){
-			std::cout << "custom placement new called, b = " << b << '\n';
-			return ::operator new(sz);
-		}
-		// custom placement delete
-		// could be called in functional form only
-		// however, pair delete could be found in case of exception
-		static void operator delete(void* ptr, bool b)
-		{
-			std::cout << "custom placement delete called, b = " << b << '\n';
-			::operator delete(ptr);
-		}
-	};
 
-	try {
-		X* p1 = new (true) X;
-	}
-	catch (const std::exception& e) {
-		cout << e.what();
-	}
+    struct X {
+        X() {
+            throw std::runtime_error("X object never be created");
+        }
+        // custom placement new
+        static void* operator new(std::size_t sz, bool b){
+            std::cout << "custom placement new called, b = " << b << '\n';
+            return ::operator new(sz);
+        }
+        // custom placement delete
+        // could be called in functional form only
+        // however, pair delete could be found in case of exception
+        static void operator delete(void* ptr, bool b)
+        {
+            std::cout << "custom placement delete called, b = " << b << '\n';
+            ::operator delete(ptr);
+        }
+    };
+
+    try {
+        X* p1 = new (true) X;
+    }
+    catch (const std::exception& e) {
+        cout << e.what();
+    }
 }
 
 void test_placement_new_handler(){
-	printf("No more memory!\n");
-	throw bad_alloc();
+    printf("No more memory!\n");
+    throw bad_alloc();
 
 }
 
 void show_user_alloc(){
 
-	// разные версии перегруженных new() и delete()
+    // СЂР°Р·РЅС‹Рµ РІРµСЂСЃРёРё РїРµСЂРµРіСЂСѓР¶РµРЅРЅС‹С… new() Рё delete()
 
-	// simple new overload
-	{
-		cout << "Test simple new overload" << endl;
-		user_alloc* x = new user_alloc();
-		x->test();
-		delete x;
-	}
+    // simple new overload
+    {
+        cout << "Test simple new overload" << endl;
+        user_alloc* x = new user_alloc();
+        x->test();
+        delete x;
+    }
 
-	// new for array overload
-	{
-		cout << "Test array new overload" << endl;
-		user_alloc* x = new user_alloc[10];
-		x[1].test();
-		delete[] x;
+    // new for array overload
+    {
+        cout << "Test array new overload" << endl;
+        user_alloc* x = new user_alloc[10];
+        x[1].test();
+        delete[] x;
 }
 
-	// placement new overload
-	{
-		cout << "Test placement new overload" << endl;
-		user_alloc* x = new user_alloc();
-		x->test();
-		x->~user_alloc();
+    // placement new overload
+    {
+        cout << "Test placement new overload" << endl;
+        user_alloc* x = new user_alloc();
+        x->test();
+        x->~user_alloc();
 
-		user_alloc* y = new(x)user_alloc();
-		// could be directly called in functional form only!
-		// will be implecetly called in case of exception
-		user_alloc::operator delete(y, x);
-		delete x;
-	}
+        user_alloc* y = new(x)user_alloc();
+        // could be directly called in functional form only!
+        // will be implecetly called in case of exception
+        user_alloc::operator delete(y, x);
+        delete x;
+    }
 
-	// new_handler replacement new overload
-	{
-		cout << "Test placement new overload" << endl;
-		user_alloc* x = new (test_placement_new_handler)user_alloc();
-		x->test();
-		delete x;
-	}
+    // new_handler replacement new overload
+    {
+        cout << "Test placement new overload" << endl;
+        user_alloc* x = new (test_placement_new_handler)user_alloc();
+        x->test();
+        delete x;
+    }
 }
 
 void show_new_handler(){
-	
-	// Продемонстируем, как пользоваться mixture-классом из Мейерс 1-7,
-	// замещающим глобальный new_handler своим
 
-	// попробуем с очень большим объектом
-	try{
-		LargeObject::set_new_handler(NewHandlerSupport<LargeObject>::no_more_memory);
-		LargeObject* x = new LargeObject();
-		delete x;
-	}
-	catch (const std::bad_alloc& e){
-		cerr << "Lack of memory: " << e.what() << '\n';
-	}
-	
-	// попробуем с обычным объектом
-	try{
-		SmallObject::set_new_handler(NewHandlerSupport<SmallObject>::no_more_memory);
-		SmallObject* x = new SmallObject();
-		delete x;
-	}
-	catch (const std::bad_alloc& e){
-		cerr << "Lack of memory: " << e.what() << '\n';
-	}
+    // РџСЂРѕРґРµРјРѕРЅСЃС‚РёСЂСѓРµРј, РєР°Рє РїРѕР»СЊР·РѕРІР°С‚СЊСЃСЏ mixture-РєР»Р°СЃСЃРѕРј РёР· РњРµР№РµСЂСЃ 1-7,
+    // Р·Р°РјРµС‰Р°СЋС‰РёРј РіР»РѕР±Р°Р»СЊРЅС‹Р№ new_handler СЃРІРѕРёРј
+
+    // РїРѕРїСЂРѕР±СѓРµРј СЃ РѕС‡РµРЅСЊ Р±РѕР»СЊС€РёРј РѕР±СЉРµРєС‚РѕРј
+    try{
+        LargeObject::set_new_handler(NewHandlerSupport<LargeObject>::no_more_memory);
+        LargeObject* x = new LargeObject();
+        delete x;
+    }
+    catch (const std::bad_alloc& e){
+        cerr << "Lack of memory: " << e.what() << '\n';
+    }
+
+    // РїРѕРїСЂРѕР±СѓРµРј СЃ РѕР±С‹С‡РЅС‹Рј РѕР±СЉРµРєС‚РѕРј
+    try{
+        SmallObject::set_new_handler(NewHandlerSupport<SmallObject>::no_more_memory);
+        SmallObject* x = new SmallObject();
+        delete x;
+    }
+    catch (const std::bad_alloc& e){
+        cerr << "Lack of memory: " << e.what() << '\n';
+    }
 
 }
 
 void show_memory_pool(){
 
-	// allocated from pool, addr = 0x003789d0
-	memory_pool_item* mpi1 = new memory_pool_item();
-	mpi1->test();
+    // allocated from pool, addr = 0x003789d0
+    memory_pool_item* mpi1 = new memory_pool_item();
+    mpi1->test();
 
-	// allocated from pool, addr = 0x003789d8 (prev + sizeof memory_pool_item)
-	memory_pool_item* mpi2 = new memory_pool_item();
-	mpi2->test();
+    // allocated from pool, addr = 0x003789d8 (prev + sizeof memory_pool_item)
+    memory_pool_item* mpi2 = new memory_pool_item();
+    mpi2->test();
 
-	// deallocated both from pool
-	delete mpi1;
-	delete mpi2;
+    // deallocated both from pool
+    delete mpi1;
+    delete mpi2;
 
-	// allocated from pool again, should again addr = 0x003789d0
-	// (block 0 free again)
-	memory_pool_item* mpi3 = new memory_pool_item();
-	mpi3->test();
-	delete mpi3;
+    // allocated from pool again, should again addr = 0x003789d0
+    // (block 0 free again)
+    memory_pool_item* mpi3 = new memory_pool_item();
+    mpi3->test();
+    delete mpi3;
 
 }
 
-//delete вместо delete[] привеодит к падению, если у типа есть нетривиальный деструктор(почему ? ).
+//delete РІРјРµСЃС‚Рѕ delete[] РїСЂРёРІРµРѕРґРёС‚ Рє РїР°РґРµРЅРёСЋ, РµСЃР»Рё Сѓ С‚РёРїР° РµСЃС‚СЊ РЅРµС‚СЂРёРІРёР°Р»СЊРЅС‹Р№ РґРµСЃС‚СЂСѓРєС‚РѕСЂ(РїРѕС‡РµРјСѓ ? ).
 class class_with_non_trivial_destructor
 {
 private:
-	size_t s;
-	int * data;
+    size_t s;
+    int * data;
 public:
-	class_with_non_trivial_destructor(size_t new_s = 10)
-		:
-		s(new_s)
-	{
-		printf("class_with_non_trivial_destructor\n");
-		data = new int[s];
-	}
+    class_with_non_trivial_destructor(size_t new_s = 10)
+        :
+        s(new_s)
+    {
+        printf("class_with_non_trivial_destructor\n");
+        data = new int[s];
+    }
 
-	~class_with_non_trivial_destructor()
-	{
-		printf("~class_with_non_trivial_destructor\n");
-		if (data) delete[] data;
-	}
+    ~class_with_non_trivial_destructor()
+    {
+        printf("~class_with_non_trivial_destructor\n");
+        if (data) delete[] data;
+    }
 private:
-	class_with_non_trivial_destructor(const class_with_non_trivial_destructor&);
-	class_with_non_trivial_destructor &
-		operator = (const class_with_non_trivial_destructor&);
+    class_with_non_trivial_destructor(const class_with_non_trivial_destructor&);
+    class_with_non_trivial_destructor &
+        operator = (const class_with_non_trivial_destructor&);
 };
 
 //=============================================================================
 void crash()
 {
-	class_with_non_trivial_destructor * bad_array =
-		new class_with_non_trivial_destructor[10];
+    class_with_non_trivial_destructor * bad_array =
+        new class_with_non_trivial_destructor[10];
 
-	// в дебаге срабатывает ассерт _ASSERTE(_BLOCK_TYPE_IS_VALID(pHead->nBlockUse));
-	// в релизе падает
-	delete bad_array;
+    // РІ РґРµР±Р°РіРµ СЃСЂР°Р±Р°С‚С‹РІР°РµС‚ Р°СЃСЃРµСЂС‚ _ASSERTE(_BLOCK_TYPE_IS_VALID(pHead->nBlockUse));
+    // РІ СЂРµР»РёР·Рµ РїР°РґР°РµС‚
+    delete bad_array;
 }
 //=============================================================================
-// По поводу new[] - в случае, если деструктор нетривиальный, то надо в delete[] знать, 
-// у скольких объектов позвать деструктор.Где же хранить эту информацию, 
-// если delete получает на вход просто указатель, по которому лежит хз сколько объектов ? 
-// Компиляторы обычно хранят эту информацию в 4 - х байтах перед массивом
+// РџРѕ РїРѕРІРѕРґСѓ new[] - РІ СЃР»СѓС‡Р°Рµ, РµСЃР»Рё РґРµСЃС‚СЂСѓРєС‚РѕСЂ РЅРµС‚СЂРёРІРёР°Р»СЊРЅС‹Р№, С‚Рѕ РЅР°РґРѕ РІ delete[] Р·РЅР°С‚СЊ,
+// Сѓ СЃРєРѕР»СЊРєРёС… РѕР±СЉРµРєС‚РѕРІ РїРѕР·РІР°С‚СЊ РґРµСЃС‚СЂСѓРєС‚РѕСЂ.Р“РґРµ Р¶Рµ С…СЂР°РЅРёС‚СЊ СЌС‚Сѓ РёРЅС„РѕСЂРјР°С†РёСЋ,
+// РµСЃР»Рё delete РїРѕР»СѓС‡Р°РµС‚ РЅР° РІС…РѕРґ РїСЂРѕСЃС‚Рѕ СѓРєР°Р·Р°С‚РµР»СЊ, РїРѕ РєРѕС‚РѕСЂРѕРјСѓ Р»РµР¶РёС‚ С…Р· СЃРєРѕР»СЊРєРѕ РѕР±СЉРµРєС‚РѕРІ ?
+// РљРѕРјРїРёР»СЏС‚РѕСЂС‹ РѕР±С‹С‡РЅРѕ С…СЂР°РЅСЏС‚ СЌС‚Сѓ РёРЅС„РѕСЂРјР°С†РёСЋ РІ 4 - С… Р±Р°Р№С‚Р°С… РїРµСЂРµРґ РјР°СЃСЃРёРІРѕРј
 void array_size_info()
 {
-	class_with_non_trivial_destructor *pa = new class_with_non_trivial_destructor[100];
-	int *pi = reinterpret_cast<int*>(pa);
-	std::cout << pi[-1];
-	delete[] pa;
+    class_with_non_trivial_destructor *pa = new class_with_non_trivial_destructor[100];
+    int *pi = reinterpret_cast<int*>(pa);
+    std::cout << pi[-1];
+    delete[] pa;
 }
-// delete, в отличие от delete[], не знает об этом 4-байтовом смещении, 
-// 
-// Да, и new / delete, и низкоуровневый менеджер памяти(по умолчанию - malloc / free) -
-// это два слоя, которые никак не зависят друго от друга.
-// + 4 байта добавляет компилятор, а не malloc / free, которые библиотека 
-// а не язык(компилятор)и в memory manager при освобождении засовывается не тот указатель, 
-// который он выдал, а смещённый на 4 - ре байта
+// delete, РІ РѕС‚Р»РёС‡РёРµ РѕС‚ delete[], РЅРµ Р·РЅР°РµС‚ РѕР± СЌС‚РѕРј 4-Р±Р°Р№С‚РѕРІРѕРј СЃРјРµС‰РµРЅРёРё,
+//
+// Р”Р°, Рё new / delete, Рё РЅРёР·РєРѕСѓСЂРѕРІРЅРµРІС‹Р№ РјРµРЅРµРґР¶РµСЂ РїР°РјСЏС‚Рё(РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ - malloc / free) -
+// СЌС‚Рѕ РґРІР° СЃР»РѕСЏ, РєРѕС‚РѕСЂС‹Рµ РЅРёРєР°Рє РЅРµ Р·Р°РІРёСЃСЏС‚ РґСЂСѓРіРѕ РѕС‚ РґСЂСѓРіР°.
+// + 4 Р±Р°Р№С‚Р° РґРѕР±Р°РІР»СЏРµС‚ РєРѕРјРїРёР»СЏС‚РѕСЂ, Р° РЅРµ malloc / free, РєРѕС‚РѕСЂС‹Рµ Р±РёР±Р»РёРѕС‚РµРєР°
+// Р° РЅРµ СЏР·С‹Рє(РєРѕРјРїРёР»СЏС‚РѕСЂ)Рё РІ memory manager РїСЂРё РѕСЃРІРѕР±РѕР¶РґРµРЅРёРё Р·Р°СЃРѕРІС‹РІР°РµС‚СЃСЏ РЅРµ С‚РѕС‚ СѓРєР°Р·Р°С‚РµР»СЊ,
+// РєРѕС‚РѕСЂС‹Р№ РѕРЅ РІС‹РґР°Р», Р° СЃРјРµС‰С‘РЅРЅС‹Р№ РЅР° 4 - СЂРµ Р±Р°Р№С‚Р°
 
-// Втроая задачка: когда и почему delete на объект приводит к падению из-за забытого виртуального деструктора?
+// Р’С‚СЂРѕР°СЏ Р·Р°РґР°С‡РєР°: РєРѕРіРґР° Рё РїРѕС‡РµРјСѓ delete РЅР° РѕР±СЉРµРєС‚ РїСЂРёРІРѕРґРёС‚ Рє РїР°РґРµРЅРёСЋ РёР·-Р·Р° Р·Р°Р±С‹С‚РѕРіРѕ РІРёСЂС‚СѓР°Р»СЊРЅРѕРіРѕ РґРµСЃС‚СЂСѓРєС‚РѕСЂР°?
 
 template <typename RCString>
 void show_ref_count(){
-	using namespace meyers_refcount;
-	RCString s1("Skotobaza");
-	RCString s2(s1);
-	const RCString s3 = s1;
-	s2 = s3;
+    using namespace meyers_refcount;
+    RCString s1("Skotobaza");
+    RCString s2(s1);
+    const RCString s3 = s1;
+    s2 = s3;
 
-	// in that point ref count == 3
-	const char c1 = s1[0];
-	// detached s1, s1.ref_count == 1
-	const char c2 = s3[0];
-	// previous operation is non-modifying
-	char c3 = s2[0];
-	// detached s2 as well
+    // in that point ref count == 3
+    const char c1 = s1[0];
+    // detached s1, s1.ref_count == 1
+    const char c2 = s3[0];
+    // previous operation is non-modifying
+    char c3 = s2[0];
+    // detached s2 as well
 
-	RCString ss1("Komatoza");
-	char* p = &ss1[0];
-	RCString ss2 = ss1;
-	// without 'shared' flag both version have changed
-	*p = 'C';
+    RCString ss1("Komatoza");
+    char* p = &ss1[0];
+    RCString ss2 = ss1;
+    // without 'shared' flag both version have changed
+    *p = 'C';
 }
 
 void show_proxy(){
-	using namespace meyers_proxy;
-	rc_string2 s1("Skotobaza");
-	rc_string2 s2(s1);
-	const rc_string2 s3 = s1;
-	s2 = s3;
+    using namespace meyers_proxy;
+    rc_string2 s1("Skotobaza");
+    rc_string2 s2(s1);
+    const rc_string2 s3 = s1;
+    s2 = s3;
 
-	// all these operations do not detach value now
-	const char c1 = s1[0];
-	const char c2 = s3[0];
-	char c3 = s2[0];
+    // all these operations do not detach value now
+    const char c1 = s1[0];
+    const char c2 = s3[0];
+    char c3 = s2[0];
 
-	// detach s2
-	s2[0] = 'C';
+    // detach s2
+    s2[0] = 'C';
 
-	// detach s1
-	s1[1] = s2[0];
+    // detach s1
+    s1[1] = s2[0];
 }
 
 int main(){
 
-	// delete/delete[] crash
-	//crash();
-	//return 0;
-	array_size_info();
+    // delete/delete[] crash
+    //crash();
+    //return 0;
+    array_size_info();
 
-	struct_one_name();
-	
-	// should be reproduced in release
-	//show_bad_alloc();
-	//return 0;
+    struct_one_name();
 
-	show_const_pointers();
+    // should be reproduced in release
+    //show_bad_alloc();
+    //return 0;
 
-	A a(1,1,1);
-	int aa = a.get_int6();
-	show_const();
-	show_construct_destruct();
+    show_const_pointers();
 
-	show_user_alloc();
-	show_new_handler();
-	show_placement_delete();
-	show_memory_pool();
-	
-	// Статический метод можно вызывать как для класса, так и для объекта
-	construct::out_static_array();
-	construct c;
-	c.out_static_array();
+    A a(1,1,1);
+    int aa = a.get_int6();
+    show_const();
+    show_construct_destruct();
 
-	// Демонстрация стандартных перегруженных операторов new
-	show_new1();
-	show_new2();
-	show_new_delete();
+    show_user_alloc();
+    show_new_handler();
+    show_placement_delete();
+    show_memory_pool();
 
-	show_ref_count<meyers_refcount::rc_string>();
-	show_ref_count<meyers_refcount::rc_string2>();
-	show_proxy();
+    // РЎС‚Р°С‚РёС‡РµСЃРєРёР№ РјРµС‚РѕРґ РјРѕР¶РЅРѕ РІС‹Р·С‹РІР°С‚СЊ РєР°Рє РґР»СЏ РєР»Р°СЃСЃР°, С‚Р°Рє Рё РґР»СЏ РѕР±СЉРµРєС‚Р°
+    construct::out_static_array();
+    construct c;
+    c.out_static_array();
 
-	return 0;
+    // Р”РµРјРѕРЅСЃС‚СЂР°С†РёСЏ СЃС‚Р°РЅРґР°СЂС‚РЅС‹С… РїРµСЂРµРіСЂСѓР¶РµРЅРЅС‹С… РѕРїРµСЂР°С‚РѕСЂРѕРІ new
+    show_new1();
+    show_new2();
+    show_new_delete();
+
+    show_ref_count<meyers_refcount::rc_string>();
+    show_ref_count<meyers_refcount::rc_string2>();
+    show_proxy();
+
+    return 0;
 }

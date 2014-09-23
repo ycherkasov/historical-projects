@@ -3,231 +3,231 @@
 #include <utility>
 #include <iterator>
 
-// Итератором называется объект, предназначенный для перебора элементов
-// Итераторы подчиняются принципу чистой абстракции (все, что ведет себя как итератор, есть итератор)
+// РС‚РµСЂР°С‚РѕСЂРѕРј РЅР°Р·С‹РІР°РµС‚СЃСЏ РѕР±СЉРµРєС‚, РїСЂРµРґРЅР°Р·РЅР°С‡РµРЅРЅС‹Р№ РґР»СЏ РїРµСЂРµР±РѕСЂР° СЌР»РµРјРµРЅС‚РѕРІ
+// РС‚РµСЂР°С‚РѕСЂС‹ РїРѕРґС‡РёРЅСЏСЋС‚СЃСЏ РїСЂРёРЅС†РёРїСѓ С‡РёСЃС‚РѕР№ Р°Р±СЃС‚СЂР°РєС†РёРё (РІСЃРµ, С‡С‚Рѕ РІРµРґРµС‚ СЃРµР±СЏ РєР°Рє РёС‚РµСЂР°С‚РѕСЂ, РµСЃС‚СЊ РёС‚РµСЂР°С‚РѕСЂ)
 
-// Класс итератора, бросающий исключения при выходе за границы контейнера
-// Что-то подобное применяется в отладочных версиях
+// РљР»Р°СЃСЃ РёС‚РµСЂР°С‚РѕСЂР°, Р±СЂРѕСЃР°СЋС‰РёР№ РёСЃРєР»СЋС‡РµРЅРёСЏ РїСЂРё РІС‹С…РѕРґРµ Р·Р° РіСЂР°РЅРёС†С‹ РєРѕРЅС‚РµР№РЅРµСЂР°
+// Р§С‚Рѕ-С‚Рѕ РїРѕРґРѕР±РЅРѕРµ РїСЂРёРјРµРЅСЏРµС‚СЃСЏ РІ РѕС‚Р»Р°РґРѕС‡РЅС‹С… РІРµСЂСЃРёСЏС…
 
-// Нигде не сказано, что новый итератор должен наследоват от итератора
-// Поэтому будем наследовать непосредственно от свойств
+// РќРёРіРґРµ РЅРµ СЃРєР°Р·Р°РЅРѕ, С‡С‚Рѕ РЅРѕРІС‹Р№ РёС‚РµСЂР°С‚РѕСЂ РґРѕР»Р¶РµРЅ РЅР°СЃР»РµРґРѕРІР°С‚ РѕС‚ РёС‚РµСЂР°С‚РѕСЂР°
+// РџРѕСЌС‚РѕРјСѓ Р±СѓРґРµРј РЅР°СЃР»РµРґРѕРІР°С‚СЊ РЅРµРїРѕСЃСЂРµРґСЃС‚РІРµРЅРЅРѕ РѕС‚ СЃРІРѕР№СЃС‚РІ
 
-// Итераторы ввода: только двигаться вперед (++, ==, !=) и читать (val = (*it))
-// Итераторы ввода: только двигаться вперед (++) и записывать (*it) = val
-// Прямые итераторы: ввод+вывод
-// Двунаправленные итераторы: ввод+вывод и --
-// Произвольного доступа: двунаправленные, +=, -=, +n и т.п.
+// РС‚РµСЂР°С‚РѕСЂС‹ РІРІРѕРґР°: С‚РѕР»СЊРєРѕ РґРІРёРіР°С‚СЊСЃСЏ РІРїРµСЂРµРґ (++, ==, !=) Рё С‡РёС‚Р°С‚СЊ (val = (*it))
+// РС‚РµСЂР°С‚РѕСЂС‹ РІРІРѕРґР°: С‚РѕР»СЊРєРѕ РґРІРёРіР°С‚СЊСЃСЏ РІРїРµСЂРµРґ (++) Рё Р·Р°РїРёСЃС‹РІР°С‚СЊ (*it) = val
+// РџСЂСЏРјС‹Рµ РёС‚РµСЂР°С‚РѕСЂС‹: РІРІРѕРґ+РІС‹РІРѕРґ
+// Р”РІСѓРЅР°РїСЂР°РІР»РµРЅРЅС‹Рµ РёС‚РµСЂР°С‚РѕСЂС‹: РІРІРѕРґ+РІС‹РІРѕРґ Рё --
+// РџСЂРѕРёР·РІРѕР»СЊРЅРѕРіРѕ РґРѕСЃС‚СѓРїР°: РґРІСѓРЅР°РїСЂР°РІР»РµРЅРЅС‹Рµ, +=, -=, +n Рё С‚.Рї.
 
 template <typename Container, typename Iter = typename Container::iterator>
 class Checked_iterator : public std::iterator_traits<Iter>{
 public:
 
-	// Валидация существующего итератора из коструктора
-	void valid(Iter p) const {
+    // Р’Р°Р»РёРґР°С†РёСЏ СЃСѓС‰РµСЃС‚РІСѓСЋС‰РµРіРѕ РёС‚РµСЂР°С‚РѕСЂР° РёР· РєРѕСЃС‚СЂСѓРєС‚РѕСЂР°
+    void valid(Iter p) const {
 
-		if (cont->end() == p){
-			return;
-		}
+        if (cont->end() == p){
+            return;
+        }
 
-		for(Iter pp = cont->begin() : pp != cont->end(); ++p){
-			if(pp == p)
-				return;
-		}
+        for(Iter pp = cont->begin() ; pp != cont->end(); ++p){
+            if(pp == p)
+                return;
+        }
 
-		throw_oor();
-	}
+        throw_oor();
+    }
 
-	// Коммутативная проверка на равенство
-	friend bool operator == (const Checked_iterator& a, const Checked_iterator& b){
-		return ( (a.cont == b.cont) && (a.iter == b.iter) );
-	}
+    // РљРѕРјРјСѓС‚Р°С‚РёРІРЅР°СЏ РїСЂРѕРІРµСЂРєР° РЅР° СЂР°РІРµРЅСЃС‚РІРѕ
+    friend bool operator == (const Checked_iterator& a, const Checked_iterator& b){
+        return ( (a.cont == b.cont) && (a.iter == b.iter) );
+    }
 
-	// Инициализация контейнером и итератором
-	Checked_iterator(Container& c, Iter p): cont(&c), iter(p){
-		valid(p);
-	}
+    // РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РєРѕРЅС‚РµР№РЅРµСЂРѕРј Рё РёС‚РµСЂР°С‚РѕСЂРѕРј
+    Checked_iterator(Container& c, Iter p): cont(&c), iter(p){
+        valid(p);
+    }
 
-	// Инициализация контейнером и указателем на его начало
-	Checked_iterator(Container& c): cont(&c), iter(c.begin()){}
+    // РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РєРѕРЅС‚РµР№РЅРµСЂРѕРј Рё СѓРєР°Р·Р°С‚РµР»РµРј РЅР° РµРіРѕ РЅР°С‡Р°Р»Рѕ
+    Checked_iterator(Container& c): cont(&c), iter(c.begin()){}
 
-	// Функции итератора - operator* 
-	reference operator*() const {
-		if(iter == c->end()){
-			throw std::out_of_range("OOR");
-		}
-		return iter;
-	}
+    // Р¤СѓРЅРєС†РёРё РёС‚РµСЂР°С‚РѕСЂР° - operator*
+    typename std::iterator_traits<Iter>::reference operator*() const {
+        if(iter == cont->end()){
+            throw std::out_of_range("OOR");
+        }
+        return iter;
+    }
 
-	// Функции итератора - operator->
-	reference operator->() const {
-		// проверяется оператором *
-		return &*iter;
-	}
+    // Р¤СѓРЅРєС†РёРё РёС‚РµСЂР°С‚РѕСЂР° - operator->
+    typename std::iterator_traits<Iter>::reference operator->() const {
+        // РїСЂРѕРІРµСЂСЏРµС‚СЃСЏ РѕРїРµСЂР°С‚РѕСЂРѕРј *
+        return &*iter;
+    }
 
-	// Функции итератора - operator+
-	Checked_iterator operator+( difference_type d ) const {
-		if(  
-			( ( c->end() - iter) < d  ) || // если при сложении уезжаем за конец
-			(d < -(iter  - c->begin()) ) ){ // или до начала
+    // Р¤СѓРЅРєС†РёРё РёС‚РµСЂР°С‚РѕСЂР° - operator+
+    Checked_iterator operator+( typename std::iterator_traits<Iter>::difference_type d ) const {
+        if(
+            ( ( cont->end() - iter) < d  ) || // РµСЃР»Рё РїСЂРё СЃР»РѕР¶РµРЅРёРё СѓРµР·Р¶Р°РµРј Р·Р° РєРѕРЅРµС†
+            (d < -(iter  - cont->begin()) ) ){ // РёР»Рё РґРѕ РЅР°С‡Р°Р»Р°
 
-				throw std::out_of_range("OOR");	// исключение
-		}
-		// Создать итератор
-		return Checked_iterator(cont, iter+d);
-	}
+                throw std::out_of_range("OOR");	// РёСЃРєР»СЋС‡РµРЅРёРµ
+        }
+        // РЎРѕР·РґР°С‚СЊ РёС‚РµСЂР°С‚РѕСЂ
+        return Checked_iterator(cont, iter+d);
+    }
 
-	// Функции итератора - operator[]
-	reference operator[]( difference_type d ) const {
-		// если при индексации уезжаем за конец или хотя бы достигаем его
-		if( ( ( cont->end() - iter) <= d  ) || 
-			// или до начала
-			(d < -(iter  - cont->begin()) ) ){ 
-				throw_oor();
-		}
-		// Создать итератор
-		return iter[d];
-	}
+    // Р¤СѓРЅРєС†РёРё РёС‚РµСЂР°С‚РѕСЂР° - operator[]
+    typename std::iterator_traits<Iter>::reference operator[]( typename std::iterator_traits<Iter>::difference_type d ) const {
+        // РµСЃР»Рё РїСЂРё РёРЅРґРµРєСЃР°С†РёРё СѓРµР·Р¶Р°РµРј Р·Р° РєРѕРЅРµС† РёР»Рё С…РѕС‚СЏ Р±С‹ РґРѕСЃС‚РёРіР°РµРј РµРіРѕ
+        if( ( ( cont->end() - iter) <= d  ) ||
+            // РёР»Рё РґРѕ РЅР°С‡Р°Р»Р°
+            (d < -(iter  - cont->begin()) ) ){
+                throw_oor();
+        }
+        // РЎРѕР·РґР°С‚СЊ РёС‚РµСЂР°С‚РѕСЂ
+        return iter[d];
+    }
 
-	// Функции итератора - operator++
-	Checked_iterator& operator++(  ) {
+    // Р¤СѓРЅРєС†РёРё РёС‚РµСЂР°С‚РѕСЂР° - operator++
+    Checked_iterator& operator++(  ) {
 
-		if(iter == cont->end()){
-			throw_oor();
-		}
-		++iter;
-		return *this;
-	}
+        if(iter == cont->end()){
+            throw_oor();
+        }
+        ++iter;
+        return *this;
+    }
 
-	// Функции итератора - operator++(int)
-	Checked_iterator operator++( int ) {
-		Checked_iterator temp = *this;
-		++(*this);
-		return temp;
-	}
+    // Р¤СѓРЅРєС†РёРё РёС‚РµСЂР°С‚РѕСЂР° - operator++(int)
+    Checked_iterator operator++( int ) {
+        Checked_iterator temp = *this;
+        ++(*this);
+        return temp;
+    }
 
-	// Функции итератора - operator--
-	Checked_iterator& operator--(  ) {
+    // Р¤СѓРЅРєС†РёРё РёС‚РµСЂР°С‚РѕСЂР° - operator--
+    Checked_iterator& operator--(  ) {
 
-		if(iter == cont->begin()){
-			throw_oor();
-		}
-		--iter;
-		return *this;
+        if(iter == cont->begin()){
+            throw_oor();
+        }
+        --iter;
+        return *this;
 
-	}
+    }
 
-	// Функции итератора - operator--(int)
-	Checked_iterator operator--( int ) {
-		Checked_iterator temp = *this;
-		--(*this);
-		return temp;
-	}
+    // Р¤СѓРЅРєС†РёРё РёС‚РµСЂР°С‚РѕСЂР° - operator--(int)
+    Checked_iterator operator--( int ) {
+        Checked_iterator temp = *this;
+        --(*this);
+        return temp;
+    }
 
 
-	// Обращенеи по индексу - для RA
-	difference_type index() const {
-		return iter - c.begin();
-	}
+    // РћР±СЂР°С‰РµРЅРµРё РїРѕ РёРЅРґРµРєСЃСѓ - РґР»СЏ RA
+    typename std::iterator_traits<Iter>::difference_type index() const {
+        return iter - cont->begin();
+    }
 
-	// Получение базового итератора
-	Iter unchecked() const {
-		return iter;
-	}
+    // РџРѕР»СѓС‡РµРЅРёРµ Р±Р°Р·РѕРІРѕРіРѕ РёС‚РµСЂР°С‚РѕСЂР°
+    Iter unchecked() const {
+        return iter;
+    }
 protected:
 
-	// Это исключение кидается при выходе за границы - 
-	// это и делает итератор "проверяемым"
-	void throw_oor() const {
-		throw std::out_of_range("OOR");
-	}
+    // Р­С‚Рѕ РёСЃРєР»СЋС‡РµРЅРёРµ РєРёРґР°РµС‚СЃСЏ РїСЂРё РІС‹С…РѕРґРµ Р·Р° РіСЂР°РЅРёС†С‹ -
+    // СЌС‚Рѕ Рё РґРµР»Р°РµС‚ РёС‚РµСЂР°С‚РѕСЂ "РїСЂРѕРІРµСЂСЏРµРјС‹Рј"
+    void throw_oor() const {
+        throw std::out_of_range("OOR");
+    }
 
 
 private:
-	// Базовый итератор без проверки
-	Iter iter;
+    // Р‘Р°Р·РѕРІС‹Р№ РёС‚РµСЂР°С‚РѕСЂ Р±РµР· РїСЂРѕРІРµСЂРєРё
+    Iter iter;
 
-	// Базовый контейнер
-	Container* cont;
+    // Р‘Р°Р·РѕРІС‹Р№ РєРѕРЅС‚РµР№РЅРµСЂ
+    Container* cont;
 };
 
-// Т.к. мы не можем внедрить наш итрератор с проверкой в сторонние контейнеры,
-// мы можем смоделировать конейнеры для них наследованием
+// Рў.Рє. РјС‹ РЅРµ РјРѕР¶РµРј РІРЅРµРґСЂРёС‚СЊ РЅР°С€ РёС‚СЂРµСЂР°С‚РѕСЂ СЃ РїСЂРѕРІРµСЂРєРѕР№ РІ СЃС‚РѕСЂРѕРЅРЅРёРµ РєРѕРЅС‚РµР№РЅРµСЂС‹,
+// РјС‹ РјРѕР¶РµРј СЃРјРѕРґРµР»РёСЂРѕРІР°С‚СЊ РєРѕРЅРµР№РЅРµСЂС‹ РґР»СЏ РЅРёС… РЅР°СЃР»РµРґРѕРІР°РЅРёРµРј
 
 template <typename C>
 class Checked_container : public C{
 public:
 
-	typedef Checked_iterator<C> iterator;
-	typedef Checked_iterator<C, typename C::const_iterator> const_iterator;
+    typedef Checked_iterator<C> iterator;
+    typedef Checked_iterator<C, typename C::const_iterator> const_iterator;
 
-	// контейнер по умолчанию
-	Checked_container():C(){}
+    // РєРѕРЅС‚РµР№РЅРµСЂ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ
+    Checked_container():C(){}
 
-	// контейнер с указанием размера
-	explicit Checked_container(size_t n):C(n){}
+    // РєРѕРЅС‚РµР№РЅРµСЂ СЃ СѓРєР°Р·Р°РЅРёРµРј СЂР°Р·РјРµСЂР°
+    explicit Checked_container(size_t n):C(n){}
 
-	// Функции доступа к началу и концу
-	iterator begin(){
-		return iterator(*this, C::begin());
-	}
+    // Р¤СѓРЅРєС†РёРё РґРѕСЃС‚СѓРїР° Рє РЅР°С‡Р°Р»Сѓ Рё РєРѕРЅС†Сѓ
+    iterator begin(){
+        return iterator(*this, C::begin());
+    }
 
-	const_iterator begin() const {
-		return const_iterator(*this, C::begin());
-	}
+    const_iterator begin() const {
+        return const_iterator(*this, C::begin());
+    }
 
-	iterator end(){
-		return iterator(*this, C::end());
-	}
+    iterator end(){
+        return iterator(*this, C::end());
+    }
 
-	const_iterator end() const {
-		return const_iterator(*this, C::begin());
-	}
+    const_iterator end() const {
+        return const_iterator(*this, C::begin());
+    }
 
-	//  []
-	typename C::reference operator[] (typename C::size_type n){
-		return Checked_iterator<C> (*this) [n];
-	}
+    //  []
+    typename C::reference operator[] (typename C::size_type n){
+        return Checked_iterator<C> (*this) [n];
+    }
 
-	//  получить базовый контейнер
-	C& base(){
-		return this;
-	};
+    //  РїРѕР»СѓС‡РёС‚СЊ Р±Р°Р·РѕРІС‹Р№ РєРѕРЅС‚РµР№РЅРµСЂ
+    C& base(){
+        return this;
+    };
 
 };
 
 
-// Еще один пример пользовательского итератора
-// Итератор вставки в ассоциативный контейнер (set)
-// Т.к. используется только для записи, в качестве типов элементов и diff_t передается void
+// Р•С‰Рµ РѕРґРёРЅ РїСЂРёРјРµСЂ РїРѕР»СЊР·РѕРІР°С‚РµР»СЊСЃРєРѕРіРѕ РёС‚РµСЂР°С‚РѕСЂР°
+// РС‚РµСЂР°С‚РѕСЂ РІСЃС‚Р°РІРєРё РІ Р°СЃСЃРѕС†РёР°С‚РёРІРЅС‹Р№ РєРѕРЅС‚РµР№РЅРµСЂ (set)
+// Рў.Рє. РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ С‚РѕР»СЊРєРѕ РґР»СЏ Р·Р°РїРёСЃРё, РІ РєР°С‡РµСЃС‚РІРµ С‚РёРїРѕРІ СЌР»РµРјРµРЅС‚РѕРІ Рё diff_t РїРµСЂРµРґР°РµС‚СЃСЏ void
 template <typename CONT>
 class associative_insert_iterator : public std::iterator< std::output_iterator_tag, void, void, void, void >{
 public:
-	explicit associative_insert_iterator(CONT& c) :cont(c){}
+    explicit associative_insert_iterator(CONT& c) :cont(c){}
 
-	// можем только присваивать при помощи этого итератора
-	associative_insert_iterator<CONT>& operator=(const typename CONT::value_type& val){
-		cont.insert(val);
-		return *this;
-	}
+    // РјРѕР¶РµРј С‚РѕР»СЊРєРѕ РїСЂРёСЃРІР°РёРІР°С‚СЊ РїСЂРё РїРѕРјРѕС‰Рё СЌС‚РѕРіРѕ РёС‚РµСЂР°С‚РѕСЂР°
+    associative_insert_iterator<CONT>& operator=(const typename CONT::value_type& val){
+        cont.insert(val);
+        return *this;
+    }
 
-	associative_insert_iterator<CONT>& operator*(){
-		return *this;
-	}
+    associative_insert_iterator<CONT>& operator*(){
+        return *this;
+    }
 
-	// операция инкремента эмулируется (для вставки в set не нужна)
-	associative_insert_iterator<CONT>& operator++(){
-		return *this;
-	}
+    // РѕРїРµСЂР°С†РёСЏ РёРЅРєСЂРµРјРµРЅС‚Р° СЌРјСѓР»РёСЂСѓРµС‚СЃСЏ (РґР»СЏ РІСЃС‚Р°РІРєРё РІ set РЅРµ РЅСѓР¶РЅР°)
+    associative_insert_iterator<CONT>& operator++(){
+        return *this;
+    }
 
-	associative_insert_iterator<CONT>& operator++(int){
-		return *this;
-	}
+    associative_insert_iterator<CONT>& operator++(int){
+        return *this;
+    }
 
 protected:
-	CONT& cont;
+    CONT& cont;
 };
 
 template <typename CONT>
 inline associative_insert_iterator<CONT> associative_inserter(CONT& c){
-	return associative_insert_iterator<CONT>(c);
+    return associative_insert_iterator<CONT>(c);
 }

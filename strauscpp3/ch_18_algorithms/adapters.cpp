@@ -8,141 +8,141 @@
 
 using namespace std;
 
-// --------------- Последовательности --------------- 
-// Для облегчения передачи последовательности в алгоритм 
-// можно определить тип последовательности
+// --------------- РџРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚Рё ---------------
+// Р”Р»СЏ РѕР±Р»РµРіС‡РµРЅРёСЏ РїРµСЂРµРґР°С‡Рё РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚Рё РІ Р°Р»РіРѕСЂРёС‚Рј
+// РјРѕР¶РЅРѕ РѕРїСЂРµРґРµР»РёС‚СЊ С‚РёРї РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚Рё
 
-// Последовательность (пара итераторов, определяющих контейнер)
+// РџРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚СЊ (РїР°СЂР° РёС‚РµСЂР°С‚РѕСЂРѕРІ, РѕРїСЂРµРґРµР»СЏСЋС‰РёС… РєРѕРЅС‚РµР№РЅРµСЂ)
 template <typename T> struct IterSeq : public pair<T, T>{
-	IterSeq(T in1, T in2) : pair<T,T>(in1, in2){}
+    IterSeq(T in1, T in2) : pair<T,T>(in1, in2){}
 };
 
-// Передача последовательности как пары итераторов
+// РџРµСЂРµРґР°С‡Р° РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚Рё РєР°Рє РїР°СЂС‹ РёС‚РµСЂР°С‚РѕСЂРѕРІ
 template <typename In, typename T>
 In find_in_seq(IterSeq<In> seq, const T& val){
-	return find( seq.first, seq.second, val );
+    return find( seq.first, seq.second, val );
 }
 
-// Функция-помощник для вывода аргументов
-template <typename T> 
+// Р¤СѓРЅРєС†РёСЏ-РїРѕРјРѕС‰РЅРёРє РґР»СЏ РІС‹РІРѕРґР° Р°СЂРіСѓРјРµРЅС‚РѕРІ
+template <typename T>
 IterSeq<typename T::iterator> iseq(T& t){
-	return IterSeq<T::iterator>( t.begin(), t.end() );
+    return IterSeq<typename T::iterator>( t.begin(), t.end() );
 }
 
 // -------------------  -------------------
-// Демонстрация представления пары итераторов как объекта последовательности
+// Р”РµРјРѕРЅСЃС‚СЂР°С†РёСЏ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёСЏ РїР°СЂС‹ РёС‚РµСЂР°С‚РѕСЂРѕРІ РєР°Рє РѕР±СЉРµРєС‚Р° РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚Рё
 void show_sequences(){
-	int arr[] = { 0,4,1,9,3,7,3,7,3,8 };
-	vector<int> vi( arr, arr + sizeof(arr)/sizeof(int) );
+    int arr[] = { 0,4,1,9,3,7,3,7,3,8 };
+    vector<int> vi( arr, arr + sizeof(arr)/sizeof(int) );
 
-	// Поиск в последовательности (требует наличия итератора)
-	vector<int>::iterator it3 = find_in_seq( iseq(vi), 7 );
+    // РџРѕРёСЃРє РІ РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚Рё (С‚СЂРµР±СѓРµС‚ РЅР°Р»РёС‡РёСЏ РёС‚РµСЂР°С‚РѕСЂР°)
+    vector<int>::iterator it3 = find_in_seq( iseq(vi), 7 );
 }
 
 
-// --------------- Функторы --------------- 
-// --- unary_function --- 
-// --- binary_function --- 
+// --------------- Р¤СѓРЅРєС‚РѕСЂС‹ ---------------
+// --- unary_function ---
+// --- binary_function ---
 void show_functors(){
-	
-	// Вызов полиморфной функции по указателю через mem_fun()
-	vector<shape*> vshape;
-	vshape.push_back( new rectangle(10) );
-	vshape.push_back( new rectangle(20) );
-	vshape.push_back( new circle(20) );
-	vector<shape*>::iterator shape_it = find_if( vshape.begin(), vshape.end(), shape_eq(20) );
-	for_each( vshape.begin(), vshape.end(), mem_fun( &shape::draw ) );
-	
 
-	// Вызов связывателя через адаптер на указатель на функцию 
-	// (поворот всех фигур на 7 градусов)
-	for_each( vshape.begin(), vshape.end(), bind2nd( mem_fun(&shape::rotate), 7 ) );
+    // Р’С‹Р·РѕРІ РїРѕР»РёРјРѕСЂС„РЅРѕР№ С„СѓРЅРєС†РёРё РїРѕ СѓРєР°Р·Р°С‚РµР»СЋ С‡РµСЂРµР· mem_fun()
+    vector<shape*> vshape;
+    vshape.push_back( new rectangle(10) );
+    vshape.push_back( new rectangle(20) );
+    vshape.push_back( new circle(20) );
+    vector<shape*>::iterator shape_it = find_if( vshape.begin(), vshape.end(), shape_eq(20) );
+    for_each( vshape.begin(), vshape.end(), mem_fun( &shape::draw ) );
 
-	// очистка
-	for_each( vshape.begin(), vshape.end(), mem_fun( &shape::clear ) );
 
-	// Вызов полиморфной функции напрямую через mem_fun_ref()
-	vector<circle> vshape1;
-	vshape1.push_back(circle(10));
-	vshape1.push_back(circle(20));
-	vshape1.push_back(circle(30));
-	for_each( vshape1.begin(), vshape1.end(), mem_fun_ref( &circle::draw ) );
+    // Р’С‹Р·РѕРІ СЃРІСЏР·С‹РІР°С‚РµР»СЏ С‡РµСЂРµР· Р°РґР°РїС‚РµСЂ РЅР° СѓРєР°Р·Р°С‚РµР»СЊ РЅР° С„СѓРЅРєС†РёСЋ
+    // (РїРѕРІРѕСЂРѕС‚ РІСЃРµС… С„РёРіСѓСЂ РЅР° 7 РіСЂР°РґСѓСЃРѕРІ)
+    for_each( vshape.begin(), vshape.end(), bind2nd( mem_fun(&shape::rotate), 7 ) );
+
+    // РѕС‡РёСЃС‚РєР°
+    for_each( vshape.begin(), vshape.end(), mem_fun( &shape::clear ) );
+
+    // Р’С‹Р·РѕРІ РїРѕР»РёРјРѕСЂС„РЅРѕР№ С„СѓРЅРєС†РёРё РЅР°РїСЂСЏРјСѓСЋ С‡РµСЂРµР· mem_fun_ref()
+    vector<circle> vshape1;
+    vshape1.push_back(circle(10));
+    vshape1.push_back(circle(20));
+    vshape1.push_back(circle(30));
+    for_each( vshape1.begin(), vshape1.end(), mem_fun_ref( &circle::draw ) );
 }
 
-// --------------- Предикаты --------------- 
-// Арифметические: plus, minus, multiplies, divide, modulus, negate
-// Логические: equial_to, greater, less, logical_and etc.
+// --------------- РџСЂРµРґРёРєР°С‚С‹ ---------------
+// РђСЂРёС„РјРµС‚РёС‡РµСЃРєРёРµ: plus, minus, multiplies, divide, modulus, negate
+// Р›РѕРіРёС‡РµСЃРєРёРµ: equial_to, greater, less, logical_and etc.
 void show_predicates(){
-	int arr1[] = { 0,4,1,9,3,7,3,7,3,8 };
-	int arr2[] = { 4,2,9,4,6,1,0,3,7,4 };
-	vector<int> vi1( arr1, arr1 + sizeof(arr1)/sizeof(int) );
-	vector<int> vi2( arr2, arr2 + sizeof(arr2)/sizeof(int) );
-	vector<int> res;
+    int arr1[] = { 0,4,1,9,3,7,3,7,3,8 };
+    int arr2[] = { 4,2,9,4,6,1,0,3,7,4 };
+    vector<int> vi1( arr1, arr1 + sizeof(arr1)/sizeof(int) );
+    vector<int> vi2( arr2, arr2 + sizeof(arr2)/sizeof(int) );
+    vector<int> res;
 
-	// Демонстрация умножение двух векторов и записи в третий
-	// Используется арифметический предикат multiplies
-	transform( vi1.begin(), vi1.end(), vi2.begin(), 
-		std::back_inserter(res), multiplies<int>() );
+    // Р”РµРјРѕРЅСЃС‚СЂР°С†РёСЏ СѓРјРЅРѕР¶РµРЅРёРµ РґРІСѓС… РІРµРєС‚РѕСЂРѕРІ Рё Р·Р°РїРёСЃРё РІ С‚СЂРµС‚РёР№
+    // РСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ Р°СЂРёС„РјРµС‚РёС‡РµСЃРєРёР№ РїСЂРµРґРёРєР°С‚ multiplies
+    transform( vi1.begin(), vi1.end(), vi2.begin(),
+        std::back_inserter(res), multiplies<int>() );
 
-	// Демонстрация применения унарного минуса к вектору и запись его в тот же вектор
-	transform( vi1.begin(), vi1.end(), vi1.begin(), negate<int>() );
+    // Р”РµРјРѕРЅСЃС‚СЂР°С†РёСЏ РїСЂРёРјРµРЅРµРЅРёСЏ СѓРЅР°СЂРЅРѕРіРѕ РјРёРЅСѓСЃР° Рє РІРµРєС‚РѕСЂСѓ Рё Р·Р°РїРёСЃСЊ РµРіРѕ РІ С‚РѕС‚ Р¶Рµ РІРµРєС‚РѕСЂ
+    transform( vi1.begin(), vi1.end(), vi1.begin(), negate<int>() );
 }
 
 
 // -------------------  -------------------
-// Функции для демонстрации адаптера ptr_fun
+// Р¤СѓРЅРєС†РёРё РґР»СЏ РґРµРјРѕРЅСЃС‚СЂР°С†РёРё Р°РґР°РїС‚РµСЂР° ptr_fun
 bool numeric_eq(int val, int comparer){
-	return val == comparer;
+    return val == comparer;
 }
 
 bool string_eq(int val, const char* comparer){
-	return val == atoi(comparer);
+    return val == atoi(comparer);
 }
 
 bool is_odd_func( int a ){
-	return !(a%2);
+    return !(a%2);
 }
 // -------------------  -------------------
 
 
-// --------------- Связыватели, адаптеры --------------- 
-// --- bind1st --- 
-// --- bind2nd --- 
-// --- mem_fun --- 
-// --- mem_fun_ref --- 
-// --- ptr_fun --- 
+// --------------- РЎРІСЏР·С‹РІР°С‚РµР»Рё, Р°РґР°РїС‚РµСЂС‹ ---------------
+// --- bind1st ---
+// --- bind2nd ---
+// --- mem_fun ---
+// --- mem_fun_ref ---
+// --- ptr_fun ---
 void show_binders_adapters(){
-	int arr1[] = { 0,4,1,9,3,7,3,7,3,8 };
-	int arr2[] = { 4,2,9,4,6,1,0,3,7,4 };
-	vector<int> vi1( arr1, arr1 + sizeof(arr1)/sizeof(int) );
-	vector<int> vi2( arr2, arr2 + sizeof(arr2)/sizeof(int) );
-	vector<int> res;
+    int arr1[] = { 0,4,1,9,3,7,3,7,3,8 };
+    int arr2[] = { 4,2,9,4,6,1,0,3,7,4 };
+    vector<int> vi1( arr1, arr1 + sizeof(arr1)/sizeof(int) );
+    vector<int> vi2( arr2, arr2 + sizeof(arr2)/sizeof(int) );
+    vector<int> res;
 
-	typedef vector<int>::iterator v_it;
+    typedef vector<int>::iterator v_it;
 
-	// bind1st + bind2nd
-	// Продемонстрируем связыватели с выводом левых и правых аргументов
-	cout << "bind1st" << endl;
-	transform( vi1.begin(), vi1.end(), vi1.begin(), bind1st( bind_output<int>(), 7 ) );
-	cout << "bind2nd" << endl;
-	transform( vi2.begin(), vi2.end(), vi2.begin(), bind2nd( bind_output<int>(), 7 ) );
+    // bind1st + bind2nd
+    // РџСЂРѕРґРµРјРѕРЅСЃС‚СЂРёСЂСѓРµРј СЃРІСЏР·С‹РІР°С‚РµР»Рё СЃ РІС‹РІРѕРґРѕРј Р»РµРІС‹С… Рё РїСЂР°РІС‹С… Р°СЂРіСѓРјРµРЅС‚РѕРІ
+    cout << "bind1st" << endl;
+    transform( vi1.begin(), vi1.end(), vi1.begin(), bind1st( bind_output<int>(), 7 ) );
+    cout << "bind2nd" << endl;
+    transform( vi2.begin(), vi2.end(), vi2.begin(), bind2nd( bind_output<int>(), 7 ) );
 
-	// --- mem_fun + mem_fun_ref --- 
-	// см. show_functors()
+    // --- mem_fun + mem_fun_ref ---
+    // СЃРј. show_functors()
 
-	// --- ptr_fun ---
-	// Передача указателя на функцию в адаптер
-	long long c = count_if(vi1.begin(), vi1.end(), bind2nd( ptr_fun(numeric_eq), 7 ) );
-	c = count_if(vi1.begin(), vi1.end(), bind2nd( ptr_fun(string_eq), "7" ) );
-	c = count_if(vi1.begin(), vi1.end(), ptr_fun(is_odd_func) );
+    // --- ptr_fun ---
+    // РџРµСЂРµРґР°С‡Р° СѓРєР°Р·Р°С‚РµР»СЏ РЅР° С„СѓРЅРєС†РёСЋ РІ Р°РґР°РїС‚РµСЂ
+    long long c = count_if(vi1.begin(), vi1.end(), bind2nd( ptr_fun(numeric_eq), 7 ) );
+    c = count_if(vi1.begin(), vi1.end(), bind2nd( ptr_fun(string_eq), "7" ) );
+    c = count_if(vi1.begin(), vi1.end(), ptr_fun(is_odd_func) );
 
-	// --- not1, not2 ---
-	// Отрицатели - возвращают обратный предикат
-	// Здесь алгоритм возвращает первую пару, для которой выполняется условие less<>()
-	// Приедикат not2 - т.к. параметра в предикате 2
-	pair<v_it, v_it> p1 = mismatch( vi1.begin(), vi1.end(), vi2.begin(), not2( less<int>() ) );
+    // --- not1, not2 ---
+    // РћС‚СЂРёС†Р°С‚РµР»Рё - РІРѕР·РІСЂР°С‰Р°СЋС‚ РѕР±СЂР°С‚РЅС‹Р№ РїСЂРµРґРёРєР°С‚
+    // Р—РґРµСЃСЊ Р°Р»РіРѕСЂРёС‚Рј РІРѕР·РІСЂР°С‰Р°РµС‚ РїРµСЂРІСѓСЋ РїР°СЂСѓ, РґР»СЏ РєРѕС‚РѕСЂРѕР№ РІС‹РїРѕР»РЅСЏРµС‚СЃСЏ СѓСЃР»РѕРІРёРµ less<>()
+    // РџСЂРёРµРґРёРєР°С‚ not2 - С‚.Рє. РїР°СЂР°РјРµС‚СЂР° РІ РїСЂРµРґРёРєР°С‚Рµ 2
+    pair<v_it, v_it> p1 = mismatch( vi1.begin(), vi1.end(), vi2.begin(), not2( less<int>() ) );
 
-	// Вариант обратный одному из преведенных
-	c = count_if(vi1.begin(), vi1.end(), not1( ptr_fun(is_odd_func) ) );
+    // Р’Р°СЂРёР°РЅС‚ РѕР±СЂР°С‚РЅС‹Р№ РѕРґРЅРѕРјСѓ РёР· РїСЂРµРІРµРґРµРЅРЅС‹С…
+    c = count_if(vi1.begin(), vi1.end(), not1( ptr_fun(is_odd_func) ) );
 }
 

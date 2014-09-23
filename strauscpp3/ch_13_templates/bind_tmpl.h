@@ -1,238 +1,238 @@
-// Реализация обобщенных алгоритмов методами шаблонов
+// Р РµР°Р»РёР·Р°С†РёСЏ РѕР±РѕР±С‰РµРЅРЅС‹С… Р°Р»РіРѕСЂРёС‚РјРѕРІ РјРµС‚РѕРґР°РјРё С€Р°Р±Р»РѕРЅРѕРІ
 
-// ------------------- Реализация через адаптеры и биндеры -------------------
+// ------------------- Р РµР°Р»РёР·Р°С†РёСЏ С‡РµСЂРµР· Р°РґР°РїС‚РµСЂС‹ Рё Р±РёРЅРґРµСЂС‹ -------------------
 namespace alg_adapter{
-	
-	// Биндеры - это шаблоны, куда передается бинарный предикат и один из параметров
-	// В общем случае предикат может принимать произвольное число элементов
-	// Но здесь для примера реализованы только двухэлементные
 
-	// Т.е. из алгоритма вызывается не предикат напрямую,
-	// а предикат косвенно через биндер, в котором он сохранен вместе с привязанным значением
+    // Р‘РёРЅРґРµСЂС‹ - СЌС‚Рѕ С€Р°Р±Р»РѕРЅС‹, РєСѓРґР° РїРµСЂРµРґР°РµС‚СЃСЏ Р±РёРЅР°СЂРЅС‹Р№ РїСЂРµРґРёРєР°С‚ Рё РѕРґРёРЅ РёР· РїР°СЂР°РјРµС‚СЂРѕРІ
+    // Р’ РѕР±С‰РµРј СЃР»СѓС‡Р°Рµ РїСЂРµРґРёРєР°С‚ РјРѕР¶РµС‚ РїСЂРёРЅРёРјР°С‚СЊ РїСЂРѕРёР·РІРѕР»СЊРЅРѕРµ С‡РёСЃР»Рѕ СЌР»РµРјРµРЅС‚РѕРІ
+    // РќРѕ Р·РґРµСЃСЊ РґР»СЏ РїСЂРёРјРµСЂР° СЂРµР°Р»РёР·РѕРІР°РЅС‹ С‚РѕР»СЊРєРѕ РґРІСѓС…СЌР»РµРјРµРЅС‚РЅС‹Рµ
 
-	// Реализуем 2 биндера:
+    // Рў.Рµ. РёР· Р°Р»РіРѕСЂРёС‚РјР° РІС‹Р·С‹РІР°РµС‚СЃСЏ РЅРµ РїСЂРµРґРёРєР°С‚ РЅР°РїСЂСЏРјСѓСЋ,
+    // Р° РїСЂРµРґРёРєР°С‚ РєРѕСЃРІРµРЅРЅРѕ С‡РµСЂРµР· Р±РёРЅРґРµСЂ, РІ РєРѕС‚РѕСЂРѕРј РѕРЅ СЃРѕС…СЂР°РЅРµРЅ РІРјРµСЃС‚Рµ СЃ РїСЂРёРІСЏР·Р°РЅРЅС‹Рј Р·РЅР°С‡РµРЅРёРµРј
 
-	// Для первого аргумента
-	template <typename Predicate, typename T>
-	class bind_first{
-	public:
-		bind_first(const Predicate& p, const T& t) : pred(p), val(t){}
-		bool operator()(const T& right) {
-			return pred(val, right);
-		}
-	private:
-		Predicate pred;
-		const T val;
-	};
+    // Р РµР°Р»РёР·СѓРµРј 2 Р±РёРЅРґРµСЂР°:
 
-	// Для второго аргумента
-	template <typename Predicate, typename T>
-	class bind_second{
-	public:
-		bind_second(const Predicate& p, const T& t) : pred(p), val(t){}
-		bool operator()(const T& left) /*const*/{	// раскомментить для ошибки - почему нельзя const?
-			return pred(left, val);
-		}
-	private:
-		Predicate pred;
-		const T val;
-	};
+    // Р”Р»СЏ РїРµСЂРІРѕРіРѕ Р°СЂРіСѓРјРµРЅС‚Р°
+    template <typename Predicate, typename T>
+    class bind_first{
+    public:
+        bind_first(const Predicate& p, const T& t) : pred(p), val(t){}
+        bool operator()(const T& right) {
+            return pred(val, right);
+        }
+    private:
+        Predicate pred;
+        const T val;
+    };
 
-	// Предикаты для тестирования
-	template<typename T>
-	struct less_f{
-		bool operator()(const T& a,const T& b){return a < b;}
-	};
+    // Р”Р»СЏ РІС‚РѕСЂРѕРіРѕ Р°СЂРіСѓРјРµРЅС‚Р°
+    template <typename Predicate, typename T>
+    class bind_second{
+    public:
+        bind_second(const Predicate& p, const T& t) : pred(p), val(t){}
+        bool operator()(const T& left) /*const*/{	// СЂР°СЃРєРѕРјРјРµРЅС‚РёС‚СЊ РґР»СЏ РѕС€РёР±РєРё - РїРѕС‡РµРјСѓ РЅРµР»СЊР·СЏ const?
+            return pred(left, val);
+        }
+    private:
+        Predicate pred;
+        const T val;
+    };
 
-	template<typename T>
-	struct greater_f{
-		bool operator()(const T& a,const T& b){return a > b;}
-	};
+    // РџСЂРµРґРёРєР°С‚С‹ РґР»СЏ С‚РµСЃС‚РёСЂРѕРІР°РЅРёСЏ
+    template<typename T>
+    struct less_f{
+        bool operator()(const T& a,const T& b){return a < b;}
+    };
 
-	// Реализуем функции-оболочки для биндеров, 
-	// чтобы не указывать при использовании параметры по многу раз
-	template<typename Predicate, typename T> 
-	bind_first<Predicate, T> bind_left(const Predicate& p, const T& left){
-		T value(left);
-		return bind_first<Predicate, T>(p, value);
-	}
+    template<typename T>
+    struct greater_f{
+        bool operator()(const T& a,const T& b){return a > b;}
+    };
 
-	template<typename Predicate, typename T> 
-	bind_second<Predicate, T> bind_right(const Predicate& p, const T& right){
-		T value(right);
-		return bind_second<Predicate, T>(p, value);
-	}
+    // Р РµР°Р»РёР·СѓРµРј С„СѓРЅРєС†РёРё-РѕР±РѕР»РѕС‡РєРё РґР»СЏ Р±РёРЅРґРµСЂРѕРІ,
+    // С‡С‚РѕР±С‹ РЅРµ СѓРєР°Р·С‹РІР°С‚СЊ РїСЂРё РёСЃРїРѕР»СЊР·РѕРІР°РЅРёРё РїР°СЂР°РјРµС‚СЂС‹ РїРѕ РјРЅРѕРіСѓ СЂР°Р·
+    template<typename Predicate, typename T>
+    bind_first<Predicate, T> bind_left(const Predicate& p, const T& left){
+        T value(left);
+        return bind_first<Predicate, T>(p, value);
+    }
+
+    template<typename Predicate, typename T>
+    bind_second<Predicate, T> bind_right(const Predicate& p, const T& right){
+        T value(right);
+        return bind_second<Predicate, T>(p, value);
+    }
 }
 
 
-// ------------------- Адаптер указателя на функцию и его использование в биндере 
+// ------------------- РђРґР°РїС‚РµСЂ СѓРєР°Р·Р°С‚РµР»СЏ РЅР° С„СѓРЅРєС†РёСЋ Рё РµРіРѕ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёРµ РІ Р±РёРЅРґРµСЂРµ
 namespace alg_adapter_func {
 
-	// Унарная функция
-	bool is_odd_func( int a ){
-		return  !(a%2);
-	}
+    // РЈРЅР°СЂРЅР°СЏ С„СѓРЅРєС†РёСЏ
+    bool is_odd_func( int a ){
+        return  !(a%2);
+    }
 
-	// Бинарная функция
-	bool greater_func( int a, int b ){
-		return  a > b;
-	}
+    // Р‘РёРЅР°СЂРЅР°СЏ С„СѓРЅРєС†РёСЏ
+    bool greater_func( int a, int b ){
+        return  a > b;
+    }
 
-	// Шаблон класса адаптера и функции-оболочки для указателей на функции:
-	
-	// Для унарной функции 
-	template <typename ResultT, typename T>
-	class unary_function_ptr {
-	public:
-		// Принимает указатель на функцию, инициализирует член класса
-		explicit unary_function_ptr( ResultT (*PF)(T) ) : pfun(PF){}
-		
-		// Выполняет функцию
-		ResultT operator()(T arg) const {
-			return pfun(arg);
-		}
-	private:
-		// Указатель, принимающий и возвращающий один параметр
-		ResultT (*pfun)(T);
-	};
+    // РЁР°Р±Р»РѕРЅ РєР»Р°СЃСЃР° Р°РґР°РїС‚РµСЂР° Рё С„СѓРЅРєС†РёРё-РѕР±РѕР»РѕС‡РєРё РґР»СЏ СѓРєР°Р·Р°С‚РµР»РµР№ РЅР° С„СѓРЅРєС†РёРё:
 
-	// Функция для сокращенной записи обертки унарного предиката
-	template <typename ResultT, typename T> inline
-		unary_function_ptr<ResultT, T> ptrfun( ResultT (*PF)(T) ) {
-			return unary_function_ptr<ResultT, T>(PF);
-	}
+    // Р”Р»СЏ СѓРЅР°СЂРЅРѕР№ С„СѓРЅРєС†РёРё
+    template <typename ResultT, typename T>
+    class unary_function_ptr {
+    public:
+        // РџСЂРёРЅРёРјР°РµС‚ СѓРєР°Р·Р°С‚РµР»СЊ РЅР° С„СѓРЅРєС†РёСЋ, РёРЅРёС†РёР°Р»РёР·РёСЂСѓРµС‚ С‡Р»РµРЅ РєР»Р°СЃСЃР°
+        explicit unary_function_ptr( ResultT (*PF)(T) ) : pfun(PF){}
 
-	// Для бинарной функции 
-	template <typename ResultT, typename T1, typename T2>
-	class binary_function_ptr{
-	public:
-		// Принимает указатель на функцию, инициализирует член класса
-		explicit binary_function_ptr( ResultT (*PF)(T1,T2) ) : pfun(PF){}
+        // Р’С‹РїРѕР»РЅСЏРµС‚ С„СѓРЅРєС†РёСЋ
+        ResultT operator()(T arg) const {
+            return pfun(arg);
+        }
+    private:
+        // РЈРєР°Р·Р°С‚РµР»СЊ, РїСЂРёРЅРёРјР°СЋС‰РёР№ Рё РІРѕР·РІСЂР°С‰Р°СЋС‰РёР№ РѕРґРёРЅ РїР°СЂР°РјРµС‚СЂ
+        ResultT (*pfun)(T);
+    };
 
-		// Выполняет функцию
-		ResultT operator()(T1 left, T2 right) const{
-			return pfun(left, right);
-		}
-	private:
-		// Указатель, принимающий два параметра и возвращающий один
-		ResultT (*pfun)(T1, T2);
-	};
+    // Р¤СѓРЅРєС†РёСЏ РґР»СЏ СЃРѕРєСЂР°С‰РµРЅРЅРѕР№ Р·Р°РїРёСЃРё РѕР±РµСЂС‚РєРё СѓРЅР°СЂРЅРѕРіРѕ РїСЂРµРґРёРєР°С‚Р°
+    template <typename ResultT, typename T> inline
+        unary_function_ptr<ResultT, T> ptrfun( ResultT (*PF)(T) ) {
+            return unary_function_ptr<ResultT, T>(PF);
+    }
 
-	// Функция для сокращенной записи  обертки бинарного предиката
-	template <typename ResultT, typename T1, typename T2> inline
-		binary_function_ptr<ResultT, T1, T2> ptrfun( ResultT (*PF)(T1, T2) ){
-			return binary_function_ptr<ResultT, T1, T2>(PF);
-	}
-	// В книге Джосаттиса (и в соответствующем тестовом проекте)
-	// приведена более общая реализация обертки функции
+    // Р”Р»СЏ Р±РёРЅР°СЂРЅРѕР№ С„СѓРЅРєС†РёРё
+    template <typename ResultT, typename T1, typename T2>
+    class binary_function_ptr{
+    public:
+        // РџСЂРёРЅРёРјР°РµС‚ СѓРєР°Р·Р°С‚РµР»СЊ РЅР° С„СѓРЅРєС†РёСЋ, РёРЅРёС†РёР°Р»РёР·РёСЂСѓРµС‚ С‡Р»РµРЅ РєР»Р°СЃСЃР°
+        explicit binary_function_ptr( ResultT (*PF)(T1,T2) ) : pfun(PF){}
+
+        // Р’С‹РїРѕР»РЅСЏРµС‚ С„СѓРЅРєС†РёСЋ
+        ResultT operator()(T1 left, T2 right) const{
+            return pfun(left, right);
+        }
+    private:
+        // РЈРєР°Р·Р°С‚РµР»СЊ, РїСЂРёРЅРёРјР°СЋС‰РёР№ РґРІР° РїР°СЂР°РјРµС‚СЂР° Рё РІРѕР·РІСЂР°С‰Р°СЋС‰РёР№ РѕРґРёРЅ
+        ResultT (*pfun)(T1, T2);
+    };
+
+    // Р¤СѓРЅРєС†РёСЏ РґР»СЏ СЃРѕРєСЂР°С‰РµРЅРЅРѕР№ Р·Р°РїРёСЃРё  РѕР±РµСЂС‚РєРё Р±РёРЅР°СЂРЅРѕРіРѕ РїСЂРµРґРёРєР°С‚Р°
+    template <typename ResultT, typename T1, typename T2> inline
+        binary_function_ptr<ResultT, T1, T2> ptrfun( ResultT (*PF)(T1, T2) ){
+            return binary_function_ptr<ResultT, T1, T2>(PF);
+    }
+    // Р’ РєРЅРёРіРµ Р”Р¶РѕСЃР°С‚С‚РёСЃР° (Рё РІ СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓСЋС‰РµРј С‚РµСЃС‚РѕРІРѕРј РїСЂРѕРµРєС‚Рµ)
+    // РїСЂРёРІРµРґРµРЅР° Р±РѕР»РµРµ РѕР±С‰Р°СЏ СЂРµР°Р»РёР·Р°С†РёСЏ РѕР±РµСЂС‚РєРё С„СѓРЅРєС†РёРё
 }
 
-// ------------------- Адаптер указателя на метод -------------------
+// ------------------- РђРґР°РїС‚РµСЂ СѓРєР°Р·Р°С‚РµР»СЏ РЅР° РјРµС‚РѕРґ -------------------
 namespace alg_adapter_method{
 
-	// Класс с методом, который будем передавать
-	class constant{
-	public:
-		constant() : _val(){}
-		constant(int v) : _val(v){}
-		bool greater(int t){
-			return _val > t;
-		}
-		bool is_odd(){
-			return !(_val%2);
-		};
+    // РљР»Р°СЃСЃ СЃ РјРµС‚РѕРґРѕРј, РєРѕС‚РѕСЂС‹Р№ Р±СѓРґРµРј РїРµСЂРµРґР°РІР°С‚СЊ
+    class constant{
+    public:
+        constant() : _val(){}
+        constant(int v) : _val(v){}
+        bool greater(int t){
+            return _val > t;
+        }
+        bool is_odd(){
+            return !(_val%2);
+        };
 
-	private:
-		int _val;
-	};
+    private:
+        int _val;
+    };
 
-	// От этого шаблона можно наследовать
-	template <typename Arg>
-	struct unary_predicate{
-		typedef Arg	argument_type;
-	};
+    // РћС‚ СЌС‚РѕРіРѕ С€Р°Р±Р»РѕРЅР° РјРѕР¶РЅРѕ РЅР°СЃР»РµРґРѕРІР°С‚СЊ
+    template <typename Arg>
+    struct unary_predicate{
+        typedef Arg	argument_type;
+    };
 
-	// ...от этого тоже
-	template <typename Arg1, typename Arg2>
-	struct binary_predicate{
-		typedef Arg1	first_argument_type;
-		typedef Arg2	secind_argument_type;
-	};
+    // ...РѕС‚ СЌС‚РѕРіРѕ С‚РѕР¶Рµ
+    template <typename Arg1, typename Arg2>
+    struct binary_predicate{
+        typedef Arg1	first_argument_type;
+        typedef Arg2	secind_argument_type;
+    };
 
-	// Наследуем класс-предикат
-	template <typename T>
-	struct greater : public binary_predicate<T,T>{
-		bool operator()(const T& left,const T& right){
-			return left > right;
-		}
-	};
+    // РќР°СЃР»РµРґСѓРµРј РєР»Р°СЃСЃ-РїСЂРµРґРёРєР°С‚
+    template <typename T>
+    struct greater : public binary_predicate<T,T>{
+        bool operator()(const T& left,const T& right){
+            return left > right;
+        }
+    };
 
-	// Наследуем класс-биндер
-	template<class Predicate>
-	class bind_second : public unary_predicate< typename Predicate::first_argument_type >{
-	public:
+    // РќР°СЃР»РµРґСѓРµРј РєР»Р°СЃСЃ-Р±РёРЅРґРµСЂ
+    template<class Predicate>
+    class bind_second : public unary_predicate< typename Predicate::first_argument_type >{
+    public:
 
-		// Полезно использовать typedef с шаблонами
-		typedef unary_predicate<typename Predicate::first_argument_type> base;
-		typedef typename base::argument_type argument_type;
+        // РџРѕР»РµР·РЅРѕ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ typedef СЃ С€Р°Р±Р»РѕРЅР°РјРё
+        typedef unary_predicate<typename Predicate::first_argument_type> base;
+        typedef typename base::argument_type argument_type;
 
-		// Инициализация адаптера
-		bind_second(const Predicate& p, const typename Predicate::second_argument_type& right) :
-			, predicate(p), value(right){}
+        // РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ Р°РґР°РїС‚РµСЂР°
+        bind_second(const Predicate& p, const typename Predicate::second_argument_type& right) :
+            predicate(p), value(right){}
 
-		// Выполнение предиката
-		void operator()(argument_type left){
-			return predicate(left, value);
-		}
+        // Р’С‹РїРѕР»РЅРµРЅРёРµ РїСЂРµРґРёРєР°С‚Р°
+        void operator()(argument_type left){
+            return predicate(left, value);
+        }
 
-	private:
-		Predicate predicate;
-		typename Predicate::second_argument_type value;
-	};
+    private:
+        Predicate predicate;
+        typename Predicate::second_argument_type value;
+    };
 
-	// Наследуем класс-адаптер для унарной функции
-	// (принимает тип объекта, содержащего метод и тип аргумента)
-	template <typename Obj>
-	class unary_method_ptr : public unary_predicate<Obj>{
-	public:
-		explicit unary_method_ptr( bool (Obj::*p)() ) : ptrmethod(p){}
+    // РќР°СЃР»РµРґСѓРµРј РєР»Р°СЃСЃ-Р°РґР°РїС‚РµСЂ РґР»СЏ СѓРЅР°СЂРЅРѕР№ С„СѓРЅРєС†РёРё
+    // (РїСЂРёРЅРёРјР°РµС‚ С‚РёРї РѕР±СЉРµРєС‚Р°, СЃРѕРґРµСЂР¶Р°С‰РµРіРѕ РјРµС‚РѕРґ Рё С‚РёРї Р°СЂРіСѓРјРµРЅС‚Р°)
+    template <typename Obj>
+    class unary_method_ptr : public unary_predicate<Obj>{
+    public:
+        explicit unary_method_ptr( bool (Obj::*p)() ) : ptrmethod(p){}
 
-		// Выполнение метода класса Obj
-		bool operator()(Obj obj){
-			return (obj.*ptrmethod)();
-		}
-	private:
-		// Указатель на метод класса Obj, принимающего T
-		bool (Obj::*ptrmethod)();
-	};
+        // Р’С‹РїРѕР»РЅРµРЅРёРµ РјРµС‚РѕРґР° РєР»Р°СЃСЃР° Obj
+        bool operator()(Obj obj){
+            return (obj.*ptrmethod)();
+        }
+    private:
+        // РЈРєР°Р·Р°С‚РµР»СЊ РЅР° РјРµС‚РѕРґ РєР»Р°СЃСЃР° Obj, РїСЂРёРЅРёРјР°СЋС‰РµРіРѕ T
+        bool (Obj::*ptrmethod)();
+    };
 
-	// Наследуем класс-адаптер для бинарной функции
-	// (принимает тип объекта, содержащего метод и тип аргумента)
-	template <typename Obj, typename T>
-	class binary_method_ptr : public binary_predicate<Obj,T>{
-	public:
-		explicit binary_method_ptr( bool (Obj::*p)(T val) ) : ptrmethod(p){}
-		
-		// Выполнение метода класса Obj
-		bool operator()(Obj obj, T val){
-			return (obj.*ptrmethod)(val);
-		}
-	private:
-		// Указатель на метод класса Obj, принимающего T
-		bool (Obj::*ptrmethod)(T val);
-	};
+    // РќР°СЃР»РµРґСѓРµРј РєР»Р°СЃСЃ-Р°РґР°РїС‚РµСЂ РґР»СЏ Р±РёРЅР°СЂРЅРѕР№ С„СѓРЅРєС†РёРё
+    // (РїСЂРёРЅРёРјР°РµС‚ С‚РёРї РѕР±СЉРµРєС‚Р°, СЃРѕРґРµСЂР¶Р°С‰РµРіРѕ РјРµС‚РѕРґ Рё С‚РёРї Р°СЂРіСѓРјРµРЅС‚Р°)
+    template <typename Obj, typename T>
+    class binary_method_ptr : public binary_predicate<Obj,T>{
+    public:
+        explicit binary_method_ptr( bool (Obj::*p)(T val) ) : ptrmethod(p){}
 
-	// Функция-обертка для адаптера, принимает указатель на унарный метод класса Obj
-	template <typename Obj> inline
-	unary_method_ptr<Obj> memfun( bool (Obj::*pm)() ){
-			return unary_method_ptr<Obj>(pm);
-	}
+        // Р’С‹РїРѕР»РЅРµРЅРёРµ РјРµС‚РѕРґР° РєР»Р°СЃСЃР° Obj
+        bool operator()(Obj obj, T val){
+            return (obj.*ptrmethod)(val);
+        }
+    private:
+        // РЈРєР°Р·Р°С‚РµР»СЊ РЅР° РјРµС‚РѕРґ РєР»Р°СЃСЃР° Obj, РїСЂРёРЅРёРјР°СЋС‰РµРіРѕ T
+        bool (Obj::*ptrmethod)(T val);
+    };
 
-	// Функция-обертка для адаптера, принимает указатель на бинарный метод класса Obj
-	template <typename Obj, typename T> inline
-	binary_method_ptr<Obj,T> memfun( bool (Obj::*pm)(T val) ){
-		return binary_method_ptr<Obj,T>(pm);
-	}
+    // Р¤СѓРЅРєС†РёСЏ-РѕР±РµСЂС‚РєР° РґР»СЏ Р°РґР°РїС‚РµСЂР°, РїСЂРёРЅРёРјР°РµС‚ СѓРєР°Р·Р°С‚РµР»СЊ РЅР° СѓРЅР°СЂРЅС‹Р№ РјРµС‚РѕРґ РєР»Р°СЃСЃР° Obj
+    template <typename Obj> inline
+    unary_method_ptr<Obj> memfun( bool (Obj::*pm)() ){
+            return unary_method_ptr<Obj>(pm);
+    }
+
+    // Р¤СѓРЅРєС†РёСЏ-РѕР±РµСЂС‚РєР° РґР»СЏ Р°РґР°РїС‚РµСЂР°, РїСЂРёРЅРёРјР°РµС‚ СѓРєР°Р·Р°С‚РµР»СЊ РЅР° Р±РёРЅР°СЂРЅС‹Р№ РјРµС‚РѕРґ РєР»Р°СЃСЃР° Obj
+    template <typename Obj, typename T> inline
+    binary_method_ptr<Obj,T> memfun( bool (Obj::*pm)(T val) ){
+        return binary_method_ptr<Obj,T>(pm);
+    }
 }
 
 

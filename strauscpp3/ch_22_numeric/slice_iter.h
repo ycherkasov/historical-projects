@@ -52,19 +52,16 @@ private:
 
 public:
 	// binary operators
-	template <typename T>
 	friend bool operator == (const slice_iter& v1, const slice_iter& v2){
 		return v1._curr == v2._curr
 			&& v1._slice.stride() == v2._slice.stride()
 			&& v1._slice.start() == v2._slice.start();
 	}
 
-	template <typename T>
 	friend bool operator != (const slice_iter& v1, const slice_iter& v2){
 		return !(v1 == v2);
 	}
 
-	template <typename T>
 	friend bool operator < (const slice_iter& v1, const slice_iter& v2){
 		return v1._curr < v2._curr
 			&& v1._slice.stride() == v2._slice.stride()

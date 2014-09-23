@@ -45,49 +45,49 @@ void deque_t::clear(){
 
 
 // ------------------------------ 
-stack_t::stack_t(){}
+adapter_stack_t::adapter_stack_t(){}
 
-stack_t::stack_t(const deque_t& d)
+adapter_stack_t::adapter_stack_t(const deque_t& d)
 	: deque_t(d){}
 
-stack_t::stack_t(const stack_t& s)
+adapter_stack_t::adapter_stack_t(const adapter_stack_t& s)
 	: deque_t(s){}
 
-stack_t::~stack_t(){}
+adapter_stack_t::~adapter_stack_t(){}
 
-stack_t& stack_t::operator=( const stack_t& c ){
+adapter_stack_t& adapter_stack_t::operator=( const adapter_stack_t& c ){
 	deque_t::operator =(c);
 	return *this;
 }
 
-stack_t& stack_t::operator=( const deque_t& c ){
+adapter_stack_t& adapter_stack_t::operator=( const deque_t& c ){
 	deque_t::operator =(c);
 	return *this;
 }
 
-void stack_t::push(int val){
+void adapter_stack_t::push(int val){
 	deque_t::push_back(val);
 }
 
-int stack_t::pop(){
+int adapter_stack_t::pop(){
 	return deque_t::pop_back();
 }
 
-bool stack_t::is_empty(){
+bool adapter_stack_t::is_empty(){
 	return deque_t::is_empty();
 }
 
-void stack_t::test_pr(){
-	cout << "test protected stack_t::test_pr()" << endl;
+void adapter_stack_t::test_pr(){
+    cout << "test protected adapter_stack_t::test_pr()" << endl;
 }
 
 // ---  ---
-void write_only_stack_t::push(int val){
-	// Достучаться до методов deque_t нельзя - наследование private
-	// все protected/public методы стали private
-	// Если его поменять на protected - будет можно
-	// (методы станут protected)
+void write_only_adapter_stack_t::push(int val){
+	// Р”РѕСЃС‚СѓС‡Р°С‚СЊСЃСЏ РґРѕ РјРµС‚РѕРґРѕРІ deque_t РЅРµР»СЊР·СЏ - РЅР°СЃР»РµРґРѕРІР°РЅРёРµ private
+	// РІСЃРµ protected/public РјРµС‚РѕРґС‹ СЃС‚Р°Р»Рё private
+	// Р•СЃР»Рё РµРіРѕ РїРѕРјРµРЅСЏС‚СЊ РЅР° protected - Р±СѓРґРµС‚ РјРѕР¶РЅРѕ
+	// (РјРµС‚РѕРґС‹ СЃС‚Р°РЅСѓС‚ protected)
 	//deque_t::push_back(val);
 
-	stack_t::push(val);
+    adapter_stack_t::push(val);
 }

@@ -1,9 +1,11 @@
-#include <cfloat>			// объявление функций  для данных с плавающей точкой
+#include <cfloat>			// РѕР±СЉСЏРІР»РµРЅРёРµ С„СѓРЅРєС†РёР№  РґР»СЏ РґР°РЅРЅС‹С… СЃ РїР»Р°РІР°СЋС‰РµР№ С‚РѕС‡РєРѕР№
 #include <cmath>
 #include "zero_divide.h"
 
 // suppress floating-point warnings
 #define _CRT_SECURE_NO_WARNINGS
+
+#if defined(_WIN32) || defined(_WIN64)
 
 void set_fpe_zero_div2(){
     //Set the x86 floating-point control word according to what
@@ -43,18 +45,20 @@ void set_fpe_zero_div2(){
 
 // warning C4996: '_controlfp': This function or variable may be unsafe
 void set_zero_div_exception(){
-    // очистка выполняется перед каждым изменением FP word
+    // РѕС‡РёСЃС‚РєР° РІС‹РїРѕР»РЅСЏРµС‚СЃСЏ РїРµСЂРµРґ РєР°Р¶РґС‹Рј РёР·РјРµРЅРµРЅРёРµРј FP word
     _clearfp();
 
-    // получаем текущее состояние
+    // РїРѕР»СѓС‡Р°РµРј С‚РµРєСѓС‰РµРµ СЃРѕСЃС‚РѕСЏРЅРёРµ
     unsigned int cw = _controlfp(0, 0); 
     
-    // будет генерироваться исключение при делении на 0, переполнении, неверной операции (0/0, inf/inf)
+    // Р±СѓРґРµС‚ РіРµРЅРµСЂРёСЂРѕРІР°С‚СЊСЃСЏ РёСЃРєР»СЋС‡РµРЅРёРµ РїСЂРё РґРµР»РµРЅРёРё РЅР° 0, РїРµСЂРµРїРѕР»РЅРµРЅРёРё, РЅРµРІРµСЂРЅРѕР№ РѕРїРµСЂР°С†РёРё (0/0, inf/inf)
     cw &=~(EM_OVERFLOW|EM_ZERODIVIDE|EM_DENORMAL|EM_INVALID);
 
-    // установить FP word
+    // СѓСЃС‚Р°РЅРѕРІРёС‚СЊ FP word
     unsigned int cwOriginal = _controlfp(cw, MCW_EM); //Set it.
 }
+
+#endif
 
 int zero_div(double s){
     double sn = sin(s);

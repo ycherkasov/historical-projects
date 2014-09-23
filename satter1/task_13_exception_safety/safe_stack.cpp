@@ -34,6 +34,8 @@ public:
     // copy constructor and assignment
 
     // service function where working with memory is encapsulated
+    // 1. in case of new() throws an exception memory is not allocated, exception is passed
+    // 2. In case of throwing exception on copy it is caught and memori is released
     T* new_copy(const T* src, size_t src_size, size_t dst_size){
         assert(dst_size > src_size);
         T* dest = new T[dst_size];
@@ -49,12 +51,14 @@ public:
     }
 
     // Copy constructor based on new_copy
+    // Just use new_copy(), it handles all exceptions
     safe_stack(const safe_stack& rhs)
         : _v(new_copy(rhs._v, rhs._vsize, rhs._vcapacity))
         , _vsize(rhs._vsize)
         , _vcapacity(rhs._vcapacity){}
 
     // Assignment operator based on new_copy
+    // Just use new_copy(), it handles all exceptions
     safe_stack& operator=(const safe_stack& rhs){
         if (this != &rhs){
             T* v_new = new_copy(rhs._v, rhs._vsize, rhs._vcapacity);

@@ -6,23 +6,23 @@
 
 //This header also defines the following macro constants :
 //MATH_ERRNO
-//MATH_ERREXCEPT	
+//MATH_ERREXCEPT
 //Bitmask value with the possible values math_errhandling can take.
 //
 //FP_FAST_FMA
 //FP_FAST_FMAF
-//FP_FAST_FMAL	
+//FP_FAST_FMAL
 //Each, if defined, identifies for which type fma is at least as efficient as x*y + z.
 //
 //FP_INFINITE
 //FP_NAN
 //FP_NORMAL
 //FP_SUBNORMAL
-//FP_ZERO	
+//FP_ZERO
 //The possible values returned by fpclassify.
 //
 //FP_ILOGB0
-//FP_ILOGBNAN	
+//FP_ILOGBNAN
 //Special values the ilogb function may return.
 
 // for atan2
@@ -37,211 +37,211 @@ using namespace std;
 /*
 http://en.wikipedia.org/wiki/Floating_point
 
-Число с плавающей запятой состоит из:
-Знака мантиссы(указывающего на отрицательность или положительность числа)
-Мантиссы(выражающей значение числа без учёта порядка) (Significand)
-Знака порядка
-Порядка(выражающего степень основания числа, на которое умножается мантисса) (Exponent)
+Р§РёСЃР»Рѕ СЃ РїР»Р°РІР°СЋС‰РµР№ Р·Р°РїСЏС‚РѕР№ СЃРѕСЃС‚РѕРёС‚ РёР·:
+Р—РЅР°РєР° РјР°РЅС‚РёСЃСЃС‹(СѓРєР°Р·С‹РІР°СЋС‰РµРіРѕ РЅР° РѕС‚СЂРёС†Р°С‚РµР»СЊРЅРѕСЃС‚СЊ РёР»Рё РїРѕР»РѕР¶РёС‚РµР»СЊРЅРѕСЃС‚СЊ С‡РёСЃР»Р°)
+РњР°РЅС‚РёСЃСЃС‹(РІС‹СЂР°Р¶Р°СЋС‰РµР№ Р·РЅР°С‡РµРЅРёРµ С‡РёСЃР»Р° Р±РµР· СѓС‡С‘С‚Р° РїРѕСЂСЏРґРєР°) (Significand)
+Р—РЅР°РєР° РїРѕСЂСЏРґРєР°
+РџРѕСЂСЏРґРєР°(РІС‹СЂР°Р¶Р°СЋС‰РµРіРѕ СЃС‚РµРїРµРЅСЊ РѕСЃРЅРѕРІР°РЅРёСЏ С‡РёСЃР»Р°, РЅР° РєРѕС‚РѕСЂРѕРµ СѓРјРЅРѕР¶Р°РµС‚СЃСЏ РјР°РЅС‚РёСЃСЃР°) (Exponent)
 
-Нормальной формой числа с плавающей запятой называется такая форма, в которой мантисса 
-(без учёта знака) в десятичной системе находится на полуинтервале [0; 1). 
-Такая форма записи имеет недостаток: некоторые числа записываются неоднозначно
+РќРѕСЂРјР°Р»СЊРЅРѕР№ С„РѕСЂРјРѕР№ С‡РёСЃР»Р° СЃ РїР»Р°РІР°СЋС‰РµР№ Р·Р°РїСЏС‚РѕР№ РЅР°Р·С‹РІР°РµС‚СЃСЏ С‚Р°РєР°СЏ С„РѕСЂРјР°, РІ РєРѕС‚РѕСЂРѕР№ РјР°РЅС‚РёСЃСЃР°
+(Р±РµР· СѓС‡С‘С‚Р° Р·РЅР°РєР°) РІ РґРµСЃСЏС‚РёС‡РЅРѕР№ СЃРёСЃС‚РµРјРµ РЅР°С…РѕРґРёС‚СЃСЏ РЅР° РїРѕР»СѓРёРЅС‚РµСЂРІР°Р»Рµ [0; 1).
+РўР°РєР°СЏ С„РѕСЂРјР° Р·Р°РїРёСЃРё РёРјРµРµС‚ РЅРµРґРѕСЃС‚Р°С‚РѕРє: РЅРµРєРѕС‚РѕСЂС‹Рµ С‡РёСЃР»Р° Р·Р°РїРёСЃС‹РІР°СЋС‚СЃСЏ РЅРµРѕРґРЅРѕР·РЅР°С‡РЅРѕ
 
-Числа одинарной точности (float)
-Порядок 8 бит (-127 .. 128)
-Мантисса 23 бит
+Р§РёСЃР»Р° РѕРґРёРЅР°СЂРЅРѕР№ С‚РѕС‡РЅРѕСЃС‚Рё (float)
+РџРѕСЂСЏРґРѕРє 8 Р±РёС‚ (-127 .. 128)
+РњР°РЅС‚РёСЃСЃР° 23 Р±РёС‚
 
-Числа двойной точности
-Порядок 11 бит (-1024 .. 1024)
-Мантисса 52 бит
+Р§РёСЃР»Р° РґРІРѕР№РЅРѕР№ С‚РѕС‡РЅРѕСЃС‚Рё
+РџРѕСЂСЏРґРѕРє 11 Р±РёС‚ (-1024 .. 1024)
+РњР°РЅС‚РёСЃСЃР° 52 Р±РёС‚
 
-На 64 битах, мантисса составляет 1 бит знак + 52 бита, показатель — 1 бит знак + 10 бит.
-Таким образом получаем диапазон точности примерно 
-от 4.94 * 10^-324 до 1.79 * 10^308 (от 2^-52 * 2^-1024 до 1*2^1024)
+РќР° 64 Р±РёС‚Р°С…, РјР°РЅС‚РёСЃСЃР° СЃРѕСЃС‚Р°РІР»СЏРµС‚ 1 Р±РёС‚ Р·РЅР°Рє + 52 Р±РёС‚Р°, РїРѕРєР°Р·Р°С‚РµР»СЊ вЂ” 1 Р±РёС‚ Р·РЅР°Рє + 10 Р±РёС‚.
+РўР°РєРёРј РѕР±СЂР°Р·РѕРј РїРѕР»СѓС‡Р°РµРј РґРёР°РїР°Р·РѕРЅ С‚РѕС‡РЅРѕСЃС‚Рё РїСЂРёРјРµСЂРЅРѕ
+РѕС‚ 4.94 * 10^-324 РґРѕ 1.79 * 10^308 (РѕС‚ 2^-52 * 2^-1024 РґРѕ 1*2^1024)
 
-В отличие от чисел с фиксированной запятой, сетка чисел, 
-которые способна отобразить арифметика с плавающей запятой, неравномерна: 
-она более густая для чисел с малыми порядками и более редкая — для чисел с большими порядками.
-Т.е. представимы только те сверхбольшие числа, в которых много нулей
+Р’ РѕС‚Р»РёС‡РёРµ РѕС‚ С‡РёСЃРµР» СЃ С„РёРєСЃРёСЂРѕРІР°РЅРЅРѕР№ Р·Р°РїСЏС‚РѕР№, СЃРµС‚РєР° С‡РёСЃРµР»,
+РєРѕС‚РѕСЂС‹Рµ СЃРїРѕСЃРѕР±РЅР° РѕС‚РѕР±СЂР°Р·РёС‚СЊ Р°СЂРёС„РјРµС‚РёРєР° СЃ РїР»Р°РІР°СЋС‰РµР№ Р·Р°РїСЏС‚РѕР№, РЅРµСЂР°РІРЅРѕРјРµСЂРЅР°:
+РѕРЅР° Р±РѕР»РµРµ РіСѓСЃС‚Р°СЏ РґР»СЏ С‡РёСЃРµР» СЃ РјР°Р»С‹РјРё РїРѕСЂСЏРґРєР°РјРё Рё Р±РѕР»РµРµ СЂРµРґРєР°СЏ вЂ” РґР»СЏ С‡РёСЃРµР» СЃ Р±РѕР»СЊС€РёРјРё РїРѕСЂСЏРґРєР°РјРё.
+Рў.Рµ. РїСЂРµРґСЃС‚Р°РІРёРјС‹ С‚РѕР»СЊРєРѕ С‚Рµ СЃРІРµСЂС…Р±РѕР»СЊС€РёРµ С‡РёСЃР»Р°, РІ РєРѕС‚РѕСЂС‹С… РјРЅРѕРіРѕ РЅСѓР»РµР№
 
-Машинной эпсилон называется наименьшее положительное число, что (1 +/- Epsilon) != 1
-DBL_EPSILON стандартной библиотеки примерно равен 10^-16
+РњР°С€РёРЅРЅРѕР№ СЌРїСЃРёР»РѕРЅ РЅР°Р·С‹РІР°РµС‚СЃСЏ РЅР°РёРјРµРЅСЊС€РµРµ РїРѕР»РѕР¶РёС‚РµР»СЊРЅРѕРµ С‡РёСЃР»Рѕ, С‡С‚Рѕ (1 +/- Epsilon) != 1
+DBL_EPSILON СЃС‚Р°РЅРґР°СЂС‚РЅРѕР№ Р±РёР±Р»РёРѕС‚РµРєРё РїСЂРёРјРµСЂРЅРѕ СЂР°РІРµРЅ 10^-16
 
-FP также имеют несколько специальных значений +/- INF и NaN (Not a number)
+FP С‚Р°РєР¶Рµ РёРјРµСЋС‚ РЅРµСЃРєРѕР»СЊРєРѕ СЃРїРµС†РёР°Р»СЊРЅС‹С… Р·РЅР°С‡РµРЅРёР№ +/- INF Рё NaN (Not a number)
 Two kinds of NaN: a quiet NaN (qNaN) and a signaling NaN (sNaN)
 
-Представление согласно стандарта:
-32 бит: 7 чисел	 e +/- 96
-64 бит: 16 чисел e +/- 384
+РџСЂРµРґСЃС‚Р°РІР»РµРЅРёРµ СЃРѕРіР»Р°СЃРЅРѕ СЃС‚Р°РЅРґР°СЂС‚Р°:
+32 Р±РёС‚: 7 С‡РёСЃРµР»	 e +/- 96
+64 Р±РёС‚: 16 С‡РёСЃРµР» e +/- 384
 
-Системы компьютерной алгебры, как Maxima или Mathematica, часто "знают" точное представление
-основных трансцендентных чисел (e, pi, sqrt(2), sqrt(3),...)
+РЎРёСЃС‚РµРјС‹ РєРѕРјРїСЊСЋС‚РµСЂРЅРѕР№ Р°Р»РіРµР±СЂС‹, РєР°Рє Maxima РёР»Рё Mathematica, С‡Р°СЃС‚Рѕ "Р·РЅР°СЋС‚" С‚РѕС‡РЅРѕРµ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёРµ
+РѕСЃРЅРѕРІРЅС‹С… С‚СЂР°РЅСЃС†РµРЅРґРµРЅС‚РЅС‹С… С‡РёСЃРµР» (e, pi, sqrt(2), sqrt(3),...)
 */
 
 /*
 http://habrahabr.ru/post/112953/
 s E        M
 1 11111111 11111111111111111111111
-(-1)^s * M * B^E, где s - знак, B - основание, E - порядок, M - мантисса
+(-1)^s * M * B^E, РіРґРµ s - Р·РЅР°Рє, B - РѕСЃРЅРѕРІР°РЅРёРµ, E - РїРѕСЂСЏРґРѕРє, M - РјР°РЅС‚РёСЃСЃР°
 B=2
-В новом стандарте IEE754-2008 кроме чисел с основанием 2 присутствуют числа с основанием 10, 
-так называемые десятичные (decimal) числа с плавающей запятой
+Р’ РЅРѕРІРѕРј СЃС‚Р°РЅРґР°СЂС‚Рµ IEE754-2008 РєСЂРѕРјРµ С‡РёСЃРµР» СЃ РѕСЃРЅРѕРІР°РЅРёРµРј 2 РїСЂРёСЃСѓС‚СЃС‚РІСѓСЋС‚ С‡РёСЃР»Р° СЃ РѕСЃРЅРѕРІР°РЅРёРµРј 10,
+С‚Р°Рє РЅР°Р·С‹РІР°РµРјС‹Рµ РґРµСЃСЏС‚РёС‡РЅС‹Рµ (decimal) С‡РёСЃР»Р° СЃ РїР»Р°РІР°СЋС‰РµР№ Р·Р°РїСЏС‚РѕР№
 
-Т.е. нормализованное число имеет следующий вид:
+Рў.Рµ. РЅРѕСЂРјР°Р»РёР·РѕРІР°РЅРЅРѕРµ С‡РёСЃР»Рѕ РёРјРµРµС‚ СЃР»РµРґСѓСЋС‰РёР№ РІРёРґ:
 (-1)^s * 1.M * 2^E
-Эффективный порядок определяется как E-127
+Р­С„С„РµРєС‚РёРІРЅС‹Р№ РїРѕСЂСЏРґРѕРє РѕРїСЂРµРґРµР»СЏРµС‚СЃСЏ РєР°Рє E-127
 */
 
 void print_double_binary(double d1){
-	
-	long long* double_hack = reinterpret_cast<long long*>(&d1);
-	static_assert(sizeof(d1) == sizeof(*double_hack), "Double and long long should have equal size");
 
-	cout << "Binary representation of " << d1 << " =\n\t " << *double_hack
-		<< " =\n\t " << bitset<sizeof(double)*8>(*double_hack) << '\n';
+    long long* double_hack = reinterpret_cast<long long*>(&d1);
+    static_assert(sizeof(d1) == sizeof(*double_hack), "Double and long long should have equal size");
+
+    cout << "Binary representation of " << d1 << " =\n\t " << *double_hack
+        << " =\n\t " << bitset<sizeof(double)*8>(*double_hack) << '\n';
 }
 
 void print_float_binary(float f1){
-	long* float_hack = reinterpret_cast<long*>(&f1);
-	static_assert(sizeof(f1) == sizeof(*float_hack), "Float and long should have equal size");
+    long* float_hack = reinterpret_cast<long*>(&f1);
+    static_assert(sizeof(f1) == sizeof(*float_hack), "Float and long should have equal size");
 
-	cout << "Binary representation of " << f1 << " =\n\t " << *float_hack
-		<< " =\n\t " << bitset<sizeof(float)* 8>(*float_hack) << '\n';
+    cout << "Binary representation of " << f1 << " =\n\t " << *float_hack
+        << " =\n\t " << bitset<sizeof(float)* 8>(*float_hack) << '\n';
 }
 
-// Порядок записан со сдвигом - 15. 
-// То есть чтобы получить актуально значение порядка нужно вычесть из него сдвиг.
-// Сдвиг можно получить по формуле 2^(b-1) - 1, 
-// где b - число бит, отведенное на хранение порядка 
-// (в случае числа одинарной точности b=8, двойной b=11).
+// РџРѕСЂСЏРґРѕРє Р·Р°РїРёСЃР°РЅ СЃРѕ СЃРґРІРёРіРѕРј - 15.
+// РўРѕ РµСЃС‚СЊ С‡С‚РѕР±С‹ РїРѕР»СѓС‡РёС‚СЊ Р°РєС‚СѓР°Р»СЊРЅРѕ Р·РЅР°С‡РµРЅРёРµ РїРѕСЂСЏРґРєР° РЅСѓР¶РЅРѕ РІС‹С‡РµСЃС‚СЊ РёР· РЅРµРіРѕ СЃРґРІРёРі.
+// РЎРґРІРёРі РјРѕР¶РЅРѕ РїРѕР»СѓС‡РёС‚СЊ РїРѕ С„РѕСЂРјСѓР»Рµ 2^(b-1) - 1,
+// РіРґРµ b - С‡РёСЃР»Рѕ Р±РёС‚, РѕС‚РІРµРґРµРЅРЅРѕРµ РЅР° С…СЂР°РЅРµРЅРёРµ РїРѕСЂСЏРґРєР°
+// (РІ СЃР»СѓС‡Р°Рµ С‡РёСЃР»Р° РѕРґРёРЅР°СЂРЅРѕР№ С‚РѕС‡РЅРѕСЃС‚Рё b=8, РґРІРѕР№РЅРѕР№ b=11).
 
-//Целые от нуля до 2048 передаются как есть.
-//Целые от 2049 до 4096 округляются к ближайшему чётному целому.
-//Целые от 4097 до 8192 округляются до ближайшего целого, делящегося нацело на 4.
-//Целые от 8193 до 16384 округляются до ближайшего целого, делящегося на 8.
-//Целые от 16385 до 32768 округляются до ближайшего целого, делящегося на 16.
-//Целые от 32769 до 65535 округляются до ближайшего целого, делящегося на 32.
+//Р¦РµР»С‹Рµ РѕС‚ РЅСѓР»СЏ РґРѕ 2048 РїРµСЂРµРґР°СЋС‚СЃСЏ РєР°Рє РµСЃС‚СЊ.
+//Р¦РµР»С‹Рµ РѕС‚ 2049 РґРѕ 4096 РѕРєСЂСѓРіР»СЏСЋС‚СЃСЏ Рє Р±Р»РёР¶Р°Р№С€РµРјСѓ С‡С‘С‚РЅРѕРјСѓ С†РµР»РѕРјСѓ.
+//Р¦РµР»С‹Рµ РѕС‚ 4097 РґРѕ 8192 РѕРєСЂСѓРіР»СЏСЋС‚СЃСЏ РґРѕ Р±Р»РёР¶Р°Р№С€РµРіРѕ С†РµР»РѕРіРѕ, РґРµР»СЏС‰РµРіРѕСЃСЏ РЅР°С†РµР»Рѕ РЅР° 4.
+//Р¦РµР»С‹Рµ РѕС‚ 8193 РґРѕ 16384 РѕРєСЂСѓРіР»СЏСЋС‚СЃСЏ РґРѕ Р±Р»РёР¶Р°Р№С€РµРіРѕ С†РµР»РѕРіРѕ, РґРµР»СЏС‰РµРіРѕСЃСЏ РЅР° 8.
+//Р¦РµР»С‹Рµ РѕС‚ 16385 РґРѕ 32768 РѕРєСЂСѓРіР»СЏСЋС‚СЃСЏ РґРѕ Р±Р»РёР¶Р°Р№С€РµРіРѕ С†РµР»РѕРіРѕ, РґРµР»СЏС‰РµРіРѕСЃСЏ РЅР° 16.
+//Р¦РµР»С‹Рµ РѕС‚ 32769 РґРѕ 65535 РѕРєСЂСѓРіР»СЏСЋС‚СЃСЏ РґРѕ Р±Р»РёР¶Р°Р№С€РµРіРѕ С†РµР»РѕРіРѕ, РґРµР»СЏС‰РµРіРѕСЃСЏ РЅР° 32.
 
 
 // Bit access to float
 // http://en.wikipedia.org/wiki/Single-precision_floating-point_format
 // (see russian version)
 
-// fraction same as mantissa 
+// fraction same as mantissa
 template <typename T>
 struct floating_point_traits{};
 
 template <>
 struct floating_point_traits<float>{
-	static const size_t mantissa = 23;
-	static const size_t exponent = 31;
+    static const size_t mantissa = 23;
+    static const size_t exponent = 31;
 };
 
 template <>
 struct floating_point_traits<double>{
-	static const size_t mantissa = 52;
-	static const size_t exponent = 63;
+    static const size_t mantissa = 52;
+    static const size_t exponent = 63;
 };
 
 // TODO: add masks for double
 template <typename T>
 void extract_fp_components(T val){
 
-	static const size_t exponent = floating_point_traits<T>::exponent;
-	static const size_t fraction = floating_point_traits<T>::mantissa;
+    static const size_t exponent = floating_point_traits<T>::exponent;
+    static const size_t fraction = floating_point_traits<T>::mantissa;
 
-	union
-	{
-		T fl;
-		long dw;
-	} f;
-	f.fl = val;
-	int s = (f.dw >> exponent) ? -1 : 1;
-	int e = (f.dw >> fraction) & 0xFF;
-	int m =
-		e ?
-		(f.dw & 0x7FFFFF) | 0x800000 :
-		(f.dw & 0x7FFFFF) << 1;
+    union
+    {
+        T fl;
+        long dw;
+    } f;
+    f.fl = val;
+    int s = (f.dw >> exponent) ? -1 : 1;
+    int e = (f.dw >> fraction) & 0xFF;
+    int m =
+        e ?
+        (f.dw & 0x7FFFFF) | 0x800000 :
+        (f.dw & 0x7FFFFF) << 1;
 
-	e -= 127;
-	cout << "sign = " << s
-		<< " mantissa = " << m
-		<< " exponent = " << e << endl;
+    e -= 127;
+    cout << "sign = " << s
+        << " mantissa = " << m
+        << " exponent = " << e << endl;
 }
 
-// объяснение формата мантиссы
+// РѕР±СЉСЏСЃРЅРµРЅРёРµ С„РѕСЂРјР°С‚Р° РјР°РЅС‚РёСЃСЃС‹
 // http://www.rsdn.ru/forum/cpp/5573790.1
 void extract_fp_components(float val){
 
-	static_assert(sizeof(long) == sizeof(float), "sizeof(long) should be equal sizeof(float)");
+    static_assert(sizeof(long) == sizeof(float), "sizeof(long) should be equal sizeof(float)");
 
-	union
-	{
-		float fl;
-		long dw;
-	}f;
+    union
+    {
+        float fl;
+        long dw;
+    }f;
 
-	f.fl = val;
+    f.fl = val;
 
-	// extract sign bit
-	int s = (f.dw >> 31) ? -1 : 1;
+    // extract sign bit
+    int s = (f.dw >> 31) ? -1 : 1;
 
-	// extract exponent
-	int e = (f.dw >> 23) & 0xFF;
+    // extract exponent
+    int e = (f.dw >> 23) & 0xFF;
 
-	// extract mantissa
-	int mantissa = f.dw & 0x7FFFFF;
+    // extract mantissa
+    int mantissa = f.dw & 0x7FFFFF;
 
-	cout << "Mantissa binary representation = "<< bitset<32>(mantissa) << endl;
+    cout << "Mantissa binary representation = "<< bitset<32>(mantissa) << endl;
 
-	int m =
-		e ?
-		mantissa | 0x800000 :
-		mantissa << 1;
+    int m =
+        e ?
+        mantissa | 0x800000 :
+        mantissa << 1;
 
-	double m1 = double(m) / pow(2., 23.);
+    double m1 = double(m) / pow(2., 23.);
 
-	// exponenta shift
-	e -= 127;
+    // exponenta shift
+    e -= 127;
 
-	cout << "s = " << s << "; e =  " << e << "; m(2) = " << m << "; m(10) = " << m1 << endl;
-	
+    cout << "s = " << s << "; e =  " << e << "; m(2) = " << m << "; m(10) = " << m1 << endl;
+
 }
 
 
 void show_float(){
 
-	// Перед мантиссой всегда 1.!
-	// Эффективный порядок определяется как E-127!
+    // РџРµСЂРµРґ РјР°РЅС‚РёСЃСЃРѕР№ РІСЃРµРіРґР° 1.!
+    // Р­С„С„РµРєС‚РёРІРЅС‹Р№ РїРѕСЂСЏРґРѕРє РѕРїСЂРµРґРµР»СЏРµС‚СЃСЏ РєР°Рє E-127!
 
-	// see float conversion formula at
-	// http://en.wikipedia.org/wiki/Single-precision_floating-point_format
+    // see float conversion formula at
+    // http://en.wikipedia.org/wiki/Single-precision_floating-point_format
 
-	//       s E        M
-	// 1.0 = 0 01111111 00000000000000000000000
-	// E = 01111111 = 127 - 127 = 0
-	// 1.0 = (-1)^s * 1.M * 2^E = (1-)^0 * 1.000 * 2^0 = 1.0
-	float d = 1.0;
-	print_float_binary(d);
-	extract_fp_components(d);
+    //       s E        M
+    // 1.0 = 0 01111111 00000000000000000000000
+    // E = 01111111 = 127 - 127 = 0
+    // 1.0 = (-1)^s * 1.M * 2^E = (1-)^0 * 1.000 * 2^0 = 1.0
+    float d = 1.0;
+    print_float_binary(d);
+    extract_fp_components(d);
 
 
-	//       s E        M
-	// 1.5 = 0 01111111 10000000000000000000000
-	// E = 01111111 = 127 - 127 = 0
-	// 1.1(2) = 2^0 + 2^(-1) = 1 + 1/2 = 1.5
-	// 1.5 = (-1)^s * 1.M * 2^E = (1-)^0 * 1.1(2) * 2^0 = 1.5
-	d = 1.5;
-	print_float_binary(d);
-	extract_fp_components(d);
+    //       s E        M
+    // 1.5 = 0 01111111 10000000000000000000000
+    // E = 01111111 = 127 - 127 = 0
+    // 1.1(2) = 2^0 + 2^(-1) = 1 + 1/2 = 1.5
+    // 1.5 = (-1)^s * 1.M * 2^E = (1-)^0 * 1.1(2) * 2^0 = 1.5
+    d = 1.5;
+    print_float_binary(d);
+    extract_fp_components(d);
 
-	// 0.15 = 0 01111100 00110011001100110011010
-	// E = 01111100 = 124-127 = -3
-	// 1.00110011001100110011010 = 2^(-3) + 0^(-4) + 0^(-5) + 2^(-5) + 2^(-6) + ...
-	// 0.15 = (-1)^s * 1.M * 2^E = (1-)^0 * 1.00110011001100110011010(2) * 2^(-3) = 1.5
-	d = 0.15;
-	print_float_binary(d);
-	extract_fp_components(d);
+    // 0.15 = 0 01111100 00110011001100110011010
+    // E = 01111100 = 124-127 = -3
+    // 1.00110011001100110011010 = 2^(-3) + 0^(-4) + 0^(-5) + 2^(-5) + 2^(-6) + ...
+    // 0.15 = (-1)^s * 1.M * 2^E = (1-)^0 * 1.00110011001100110011010(2) * 2^(-3) = 1.5
+    d = 0.15;
+    print_float_binary(d);
+    extract_fp_components(d);
 }
 
 
@@ -249,390 +249,390 @@ void show_float(){
 
 void show_double(){
 
-	// Double slower than float (single-precision)
-	//  On average, on a PC of year 2012 build, 
-	// on CPUs calculations with double precision are 1.1–1.6 times slower than with single precision
-	// on GPUs calculations with double precision are 3 to 8 times slower than float
+    // Double slower than float (single-precision)
+    //  On average, on a PC of year 2012 build,
+    // on CPUs calculations with double precision are 1.1вЂ“1.6 times slower than with single precision
+    // on GPUs calculations with double precision are 3 to 8 times slower than float
 
-	// 1.0 = 0 01111111111 0000000000000000000000000000000000000000000000000000
-	// s = 0 (+)
-	// E = 01111111111(2)-1023(10) = 1023-1023 = 0
-	// M = 0
-	// 1.0 = s * 1.M * 2^E = 1 * 1.0 * 2^0
-	print_double_binary(1.0);
-	
-	// changed sign bit
+    // 1.0 = 0 01111111111 0000000000000000000000000000000000000000000000000000
+    // s = 0 (+)
+    // E = 01111111111(2)-1023(10) = 1023-1023 = 0
+    // M = 0
+    // 1.0 = s * 1.M * 2^E = 1 * 1.0 * 2^0
+    print_double_binary(1.0);
 
-	//-1.0 = 1 01111111111 0000000000000000000000000000000000000000000000000000
-	// s = 1 (-)
-	// E = 01111111111(2)-1023(10) = 1023-1023 = 0
-	// M = 0
-	//-1.0 = s * 1.M * 2^E = -1 * 1.0 * 2^0
-	print_double_binary(-1.0);
+    // changed sign bit
 
-	// 1.5 = 0 01111111111 1000000000000000000000000000000000000000000000000000
-	// s = 0 (+)
-	// E = 01111111111(2)-1023(10) = 1023-1023 = 0
-	// M = 1(2) = 1 * 2^(-1) = 1/2 = 0.5
-	// 1.0 = s * 1.M * 2^E = 1 * 1.M * 2^0 = 1 * 1.5 * 2^0
-	print_double_binary(1.5);
+    //-1.0 = 1 01111111111 0000000000000000000000000000000000000000000000000000
+    // s = 1 (-)
+    // E = 01111111111(2)-1023(10) = 1023-1023 = 0
+    // M = 0
+    //-1.0 = s * 1.M * 2^E = -1 * 1.0 * 2^0
+    print_double_binary(-1.0);
 
-	// 2.0 = 0 10000000000 0000000000000000000000000000000000000000000000000000
-	// s = 0 (+)
-	// E = (2)-1023(10) = 1024-1023 = 1
-	// M = 0
-	// 2.0 = s * 1.M * 2^E = 1 * 1.M * 2^E = 1 * 1.0 * 2^1
-	print_double_binary(2.0);
+    // 1.5 = 0 01111111111 1000000000000000000000000000000000000000000000000000
+    // s = 0 (+)
+    // E = 01111111111(2)-1023(10) = 1023-1023 = 0
+    // M = 1(2) = 1 * 2^(-1) = 1/2 = 0.5
+    // 1.0 = s * 1.M * 2^E = 1 * 1.M * 2^0 = 1 * 1.5 * 2^0
+    print_double_binary(1.5);
+
+    // 2.0 = 0 10000000000 0000000000000000000000000000000000000000000000000000
+    // s = 0 (+)
+    // E = (2)-1023(10) = 1024-1023 = 1
+    // M = 0
+    // 2.0 = s * 1.M * 2^E = 1 * 1.M * 2^E = 1 * 1.0 * 2^1
+    print_double_binary(2.0);
 
 
-	// 1e9 = 0 10000011100 1101110011010110010100000000000000000000000000000000
-	// s = 0 (+)
-	// E = 10000011100(2)-1023(10) = 1052-1023 = 29
-	// M = 1101110011010110010100000000000000000000000000000000
-	// 1.1101110011010110010100000000000000000000000000000000 = 1*2^(-29) + 1*2^(-28) + 0*2^(-27) + ...
-	// 1e9 = s * 1.M * 2^E
-	print_double_binary(1000000000.0);
+    // 1e9 = 0 10000011100 1101110011010110010100000000000000000000000000000000
+    // s = 0 (+)
+    // E = 10000011100(2)-1023(10) = 1052-1023 = 29
+    // M = 1101110011010110010100000000000000000000000000000000
+    // 1.1101110011010110010100000000000000000000000000000000 = 1*2^(-29) + 1*2^(-28) + 0*2^(-27) + ...
+    // 1e9 = s * 1.M * 2^E
+    print_double_binary(1000000000.0);
 
-	// etc
+    // etc
 
-	//1.5e9= 0 10000011101 0110010110100000101111000000000000000000000000000000
-	print_double_binary(1500000000.0);
+    //1.5e9= 0 10000011101 0110010110100000101111000000000000000000000000000000
+    print_double_binary(1500000000.0);
 
-	// 2e9 = 0 10000011101 1101110011010110010100000000000000000000000000000000
-	print_double_binary(2000000000.0);
+    // 2e9 = 0 10000011101 1101110011010110010100000000000000000000000000000000
+    print_double_binary(2000000000.0);
 
-	//0x 0000 0000 0000 0000 = 0
-	//0x 8000 0000 0000 0000 = -0
-	//0x 7ff0 0000 0000 0000 = Infinity
-	//0x fff0 0000 0000 0000 = -Infinity
-	//0x 7fff ffff ffff ffff = NaN
+    //0x 0000 0000 0000 0000 = 0
+    //0x 8000 0000 0000 0000 = -0
+    //0x 7ff0 0000 0000 0000 = Infinity
+    //0x fff0 0000 0000 0000 = -Infinity
+    //0x 7fff ffff ffff ffff = NaN
 
 }
 
 
 void show_floating_point(){
-	show_float();
-	show_double();
+    show_float();
+    show_double();
 }
 
 void print_roundings_header(){
-	cout 
-		<< "val" << '\t'
-		<< "ceil" << '\t'
-		<< "floor" << '\t'
-		<< "trunc" << '\t'
-		<< "round" << '\t'
-		<< "lround" << '\t'
-		<< "rint" << '\t'
-		<< "lrint" << '\t'
-		<< "nearbyint" << '\n';
+    cout
+        << "val" << '\t'
+        << "ceil" << '\t'
+        << "floor" << '\t'
+        << "trunc" << '\t'
+        << "round" << '\t'
+        << "lround" << '\t'
+        << "rint" << '\t'
+        << "lrint" << '\t'
+        << "nearbyint" << '\n';
 }
 
 
 void print_roundings(double val){
-	cout << fixed;
-	cout << setprecision(4);
-	cout 
-		<< val << '\t'
-		<< ceil(val) << '\t'
-		<< floor(val) << '\t'
-		<< trunc(val) << '\t'
-		<< round(val) << '\t'
-		<< lround(val) << '\t'
-		<< rint(val) << '\t'
-		<< lrint(val) << '\t'
-		<< nearbyint(val) << '\n';
+    cout << fixed;
+    cout << setprecision(4);
+    cout
+        << val << '\t'
+        << ceil(val) << '\t'
+        << floor(val) << '\t'
+        << trunc(val) << '\t'
+        << round(val) << '\t'
+        << lround(val) << '\t'
+        << rint(val) << '\t'
+        << lrint(val) << '\t'
+        << nearbyint(val) << '\n';
 }
 
 void print_fpclassify(double val){
-	int val_type = fpclassify(val);
-	cout << val << " is ";
-	switch (val_type)
-	{
-	case FP_INFINITE:  
-		cout << "infinite" << endl;  
-		break;
-	case FP_NAN:       
-		cout << "NaN" << endl;       
-		break;
-	case FP_ZERO:      
-		cout << "zero" << endl;      
-		break;
-	case FP_SUBNORMAL: 
-		cout << "subnormal" << endl; 
-		break;
-	case FP_NORMAL:    
-		cout << "normal";
-		if (signbit(val))
-		{
-			cout << " negative" << endl;
-		}
-		else
-		{
-			cout << " positive or unsigned" << endl;
-		}
-		break;
-	default:
-		cout << "Error! Should not be here!" << endl;
-	}
+    int val_type = fpclassify(val);
+    cout << val << " is ";
+    switch (val_type)
+    {
+    case FP_INFINITE:
+        cout << "infinite" << endl;
+        break;
+    case FP_NAN:
+        cout << "NaN" << endl;
+        break;
+    case FP_ZERO:
+        cout << "zero" << endl;
+        break;
+    case FP_SUBNORMAL:
+        cout << "subnormal" << endl;
+        break;
+    case FP_NORMAL:
+        cout << "normal";
+        if (signbit(val))
+        {
+            cout << " negative" << endl;
+        }
+        else
+        {
+            cout << " positive or unsigned" << endl;
+        }
+        break;
+    default:
+        cout << "Error! Should not be here!" << endl;
+    }
 }
 
 void show_cmath_fpoint_operations(){
 
-	//
-	// Trigonometric
-	double pi = M_PI;
+    //
+    // Trigonometric
+    double pi = M_PI;
 
-	double c1 = cos(pi);
-	cout << "cos PI = " << c1 << '\n';
+    double c1 = cos(pi);
+    cout << "cos PI = " << c1 << '\n';
 
-	double s1 = sin(pi); // close to 0, but not a 0
-	cout << "sin PI = " << s1 << '\n';
+    double s1 = sin(pi); // close to 0, but not a 0
+    cout << "sin PI = " << s1 << '\n';
 
-	double t1 = tan(pi);
-	cout << "tan PI = " << t1 << '\n';
+    double t1 = tan(pi);
+    cout << "tan PI = " << t1 << '\n';
 
-	double ac1 = acos(c1);
-	cout << "acos c1 = " << ac1 << '\n';
+    double ac1 = acos(c1);
+    cout << "acos c1 = " << ac1 << '\n';
 
-	double as1 = asin(s1);
-	cout << "asin s1 = " << as1 << '\n';
+    double as1 = asin(s1);
+    cout << "asin s1 = " << as1 << '\n';
 
-	double at1 = atan(t1);
-	cout << "atan t1 = " << at1 << '\n';
+    double at1 = atan(t1);
+    cout << "atan t1 = " << at1 << '\n';
 
-	double at2 = atan2( 1.0, 2.0 );
-	cout << "atan2 1/2 = " << at2 << '\n';
+    double at2 = atan2( 1.0, 2.0 );
+    cout << "atan2 1/2 = " << at2 << '\n';
 
-	// Hyperbolic supported as well
+    // Hyperbolic supported as well
 
-	// Exponential
-	double param = 5.0;
+    // Exponential
+    double param = 5.0;
 
-	double result = exp(param);
-	cout << "exp (" << param << ") = " << result << "\n";
+    double result = exp(param);
+    cout << "exp (" << param << ") = " << result << "\n";
 
-	// Breaks the floating point number x into its binary significand
-	// (a floating point value between 0.5(included)and 1.0(excluded)) 
-	// and an integral exponent for 2, such that :
-	// x = significand * 2^exponent 
-	int n = 0;
-	param = 8.0;
-	result = frexp(param, &n);
-	cout << param << " = " << result << "*2^" << n << '\n';
+    // Breaks the floating point number x into its binary significand
+    // (a floating point value between 0.5(included)and 1.0(excluded))
+    // and an integral exponent for 2, such that :
+    // x = significand * 2^exponent
+    int n = 0;
+    param = 8.0;
+    result = frexp(param, &n);
+    cout << param << " = " << result << "*2^" << n << '\n';
 
-	// Compose value back
-	double back = ldexp(result, n);
-	cout << back << " = " << result << "*2^" << n << '\n';
+    // Compose value back
+    double back = ldexp(result, n);
+    cout << back << " = " << result << "*2^" << n << '\n';
 
-	// ln and lg are calculated as well
+    // ln and lg are calculated as well
 
-	// modf() splits value
-	double fractpart = 0.0;
-	double intpart = 0.0;
-	fractpart = modf(pi, &intpart);
-	cout << pi << " = " << intpart << " + " << fractpart << '\n';
+    // modf() splits value
+    double fractpart = 0.0;
+    double intpart = 0.0;
+    fractpart = modf(pi, &intpart);
+    cout << pi << " = " << intpart << " + " << fractpart << '\n';
 
-	// exp2() returns the base-2 exponential function of x
-	// which is 2 raised to the power x
-	param = 8.0;
-	double e2 = exp2(param);
-	cout << "2 ^ " << param << " = " << e2 << '\n';
+    // exp2() returns the base-2 exponential function of x
+    // which is 2 raised to the power x
+    param = 8.0;
+    double e2 = exp2(param);
+    cout << "2 ^ " << param << " = " << e2 << '\n';
 
-	// expm1() returns e raised to the power x minus one : e^x - 1
-	cout << "expm1(1.0) = e^x - 1 = " << expm1(1.0) << '\n';
+    // expm1() returns e raised to the power x minus one : e^x - 1
+    cout << "expm1(1.0) = e^x - 1 = " << expm1(1.0) << '\n';
 
-	// logb() returns the integral part of the logarithm of |x|, using FLT_RADIX as base
-	// log1p() returns the natural logarithm of one plus x (log(1+x))
-	// log2() returns the binary(base - 2) logarithm of x
-	cout << "log(10.0) = " << log(10.0) << '\n';
-	cout << "logb(10.0) = " << ilogb(10.0) << '\n';
-	cout << "log1p(10.0) = log(1+x) = " << log1p(10.0) << '\n';
-	cout << "log2(1024) = " << log2(1024) << '\n';
+    // logb() returns the integral part of the logarithm of |x|, using FLT_RADIX as base
+    // log1p() returns the natural logarithm of one plus x (log(1+x))
+    // log2() returns the binary(base - 2) logarithm of x
+    cout << "log(10.0) = " << log(10.0) << '\n';
+    cout << "logb(10.0) = " << ilogb(10.0) << '\n';
+    cout << "log1p(10.0) = log(1+x) = " << log1p(10.0) << '\n';
+    cout << "log2(1024) = " << log2(1024) << '\n';
 
-	// scalbn(x, n) = x * FLT_RADIX^n
-	// scalbln(x, n) = ?
-	double x = 2.0;
-	int n1 = 4;
-	cout << "FLT_RADIX = " << FLT_RADIX << '\n';
-	cout << "x = " << x << '\n';
-	cout << "n1 = " << n1 << '\n';
-	cout << "scalbn(x, n) = x * FLT_RADIX^n = " << scalbn(x, n1) << '\n';
-	cout << "scalbln(x, n) (?)= " << scalbln(x, n1) << '\n';
+    // scalbn(x, n) = x * FLT_RADIX^n
+    // scalbln(x, n) = ?
+    double x = 2.0;
+    int n1 = 4;
+    cout << "FLT_RADIX = " << FLT_RADIX << '\n';
+    cout << "x = " << x << '\n';
+    cout << "n1 = " << n1 << '\n';
+    cout << "scalbn(x, n) = x * FLT_RADIX^n = " << scalbn(x, n1) << '\n';
+    cout << "scalbln(x, n) (?)= " << scalbln(x, n1) << '\n';
 
-	// Roundings
-	print_roundings_header();
-	print_roundings(0.0);
-	print_roundings(0.3);
-	print_roundings(0.5);
-	print_roundings(0.8);
-	print_roundings(1.3);
-	print_roundings(2.3);
-	print_roundings(2.5);
-	print_roundings(2.8);
+    // Roundings
+    print_roundings_header();
+    print_roundings(0.0);
+    print_roundings(0.3);
+    print_roundings(0.5);
+    print_roundings(0.8);
+    print_roundings(1.3);
+    print_roundings(2.3);
+    print_roundings(2.5);
+    print_roundings(2.8);
 
-	// Power functions
-	cout << "sqrt(2.0) = " << sqrt(2.0) << '\n';
-	cout << "cbrt(2.0) = " << cbrt(2.0) << '\n';
+    // Power functions
+    cout << "sqrt(2.0) = " << sqrt(2.0) << '\n';
+    cout << "cbrt(2.0) = " << cbrt(2.0) << '\n';
 
-	// hypot() returns the hypotenuse of a right - angled triangle whose legs are x and y
-	cout << "Hypotenuse of (3, 4) =" << hypot(3, 4) << '\n';
+    // hypot() returns the hypotenuse of a right - angled triangle whose legs are x and y
+    cout << "Hypotenuse of (3, 4) =" << hypot(3, 4) << '\n';
 
-	// Error function/Gamma function (probability, statistics, PDE)
-	// http://en.wikipedia.org/wiki/Error_function
-	// http://en.wikipedia.org/wiki/Gamma_function
-	cout << "Error function of 1 =" << erf(1.0) << '\n';
-	cout << "Complimentary error function of 1 =" << erfc(1.0) << '\n';
-	cout << "Gamma function of 1 =" << tgamma(1.0) << '\n';
-	cout << "Log of Gamma function of 1 =" << tgammal(1.0) << '\n';
+    // Error function/Gamma function (probability, statistics, PDE)
+    // http://en.wikipedia.org/wiki/Error_function
+    // http://en.wikipedia.org/wiki/Gamma_function
+    cout << "Error function of 1 =" << erf(1.0) << '\n';
+    cout << "Complimentary error function of 1 =" << erfc(1.0) << '\n';
+    cout << "Gamma function of 1 =" << tgamma(1.0) << '\n';
+    cout << "Log of Gamma function of 1 =" << tgammal(1.0) << '\n';
 
-	// copysign copies sign of second value to the first
-	cout << "copysign(-10.0, 1.0)" << copysign(-10.0, 1.0) << '\n';
-	cout << "copysign(-10.0, -1.0)" << copysign(-10.0, -1.0) << '\n';
-	cout << "copysign(10.0, -1.0)" << copysign(10.0, -1.0) << '\n';
+    // copysign copies sign of second value to the first
+    cout << "copysign(-10.0, 1.0)" << copysign(-10.0, 1.0) << '\n';
+    cout << "copysign(-10.0, -1.0)" << copysign(-10.0, -1.0) << '\n';
+    cout << "copysign(10.0, -1.0)" << copysign(10.0, -1.0) << '\n';
 
-	// nextafter() returns the next representable value after x in the direction of y
-	cout << "Next representable value after 0 = " << nextafter(0.0, 1.0) << '\n';
-	cout << "Next representable value before 0 = " << nextafter(0.0, -1.0) << '\n';
-	// nexttoward() the same with long y
-	
-	// NAN (not a number)
-	// he NaN values are used to identify undefined or non-representable values 
-	// for floating-point elements, such as the square root of negative numbers or the result of 0/0
-	// Generate quiet NAN
-	double nn = nan("");
-	float nf = nanf("");
-	cout << "For " << nn << " isnan(nn) = " << isnan(nn) << '\n';
-	cout << "For " << nf << " isnan(nf) = " << isnan(nf) << '\n';
-	cout << "For " << "isnan sqrt(-1.0) = " << isnan(sqrt(-1.0)) << '\n';
-	// isnormal is opposite to isnan, but also checks for INF and 0
-	cout << "For " << "isnormal sqrt(-1.0) = " << isnormal(sqrt(-1.0)) << '\n';
+    // nextafter() returns the next representable value after x in the direction of y
+    cout << "Next representable value after 0 = " << nextafter(0.0, 1.0) << '\n';
+    cout << "Next representable value before 0 = " << nextafter(0.0, -1.0) << '\n';
+    // nexttoward() the same with long y
 
-	// isunordered() check at least one of values is NAN
-	if (isunordered(sqrt(-1.0), 0.0))
-		cout << "sqrt(-1.0) and 0.0 cannot be ordered\n";
+    // NAN (not a number)
+    // he NaN values are used to identify undefined or non-representable values
+    // for floating-point elements, such as the square root of negative numbers or the result of 0/0
+    // Generate quiet NAN
+    double nn = nan("");
+    float nf = nanf("");
+    cout << "For " << nn << " isnan(nn) = " << isnan(nn) << '\n';
+    cout << "For " << nf << " isnan(nf) = " << isnan(nf) << '\n';
+    cout << "For " << "isnan sqrt(-1.0) = " << isnan(sqrt(-1.0)) << '\n';
+    // isnormal is opposite to isnan, but also checks for INF and 0
+    cout << "For " << "isnormal sqrt(-1.0) = " << isnormal(sqrt(-1.0)) << '\n';
 
-	double myinf = INFINITY;
-	if ((1 / sin(0.0) == myinf) && (!isnormal(myinf)))
-	{
-		cout << "1/0 is " << myinf << '\n';
-	}
+    // isunordered() check at least one of values is NAN
+    if (isunordered(sqrt(-1.0), 0.0))
+        cout << "sqrt(-1.0) and 0.0 cannot be ordered\n";
 
-	// Value is too large
-	double huge = pow(10.0, 1000000000);
-	if (huge == HUGE_VAL)
-	{
-		cout << huge << " is HUGE_VAL\n";
-	}
+    double myinf = INFINITY;
+    if ((1 / sin(0.0) == myinf) && (!isnormal(myinf)))
+    {
+        cout << "1/0 is " << myinf << '\n';
+    }
 
-	// fpclassify() returns a value of type int that matches one of the classification macro constants
-	//FP_INFINITE	Positive or negative infinity(overflow)
-	//FP_NAN	Not - A - Number
-	//FP_ZERO	Value of zero
-	//FP_SUBNORMAL	Sub - normal value(underflow)
-	//FP_NORMAL	Normal value(none of the above)
-	print_fpclassify( 1/sin(0.0) );
-	print_fpclassify(sin(0.0) / sin(0.0));
-	print_fpclassify( 0.0 );
-	print_fpclassify(1.0);
-	print_fpclassify(-1.0);
+    // Value is too large
+    double huge = pow(10.0, 1000000000);
+    if (huge == HUGE_VAL)
+    {
+        cout << huge << " is HUGE_VAL\n";
+    }
 
-	// subnormal numbers could not be representet a normal double
-	// (less than minimal double)
-	// requires expanded representation, works slower (10-100 times)
-	double subnorm = 1.0;
-	while (fpclassify(subnorm) != FP_SUBNORMAL)
-	{
-		subnorm /= 2;
-	}
-	print_fpclassify(subnorm);
+    // fpclassify() returns a value of type int that matches one of the classification macro constants
+    //FP_INFINITE	Positive or negative infinity(overflow)
+    //FP_NAN	Not - A - Number
+    //FP_ZERO	Value of zero
+    //FP_SUBNORMAL	Sub - normal value(underflow)
+    //FP_NORMAL	Normal value(none of the above)
+    print_fpclassify( 1/sin(0.0) );
+    print_fpclassify(sin(0.0) / sin(0.0));
+    print_fpclassify( 0.0 );
+    print_fpclassify(1.0);
+    print_fpclassify(-1.0);
+
+    // subnormal numbers could not be representet a normal double
+    // (less than minimal double)
+    // requires expanded representation, works slower (10-100 times)
+    double subnorm = 1.0;
+    while (fpclassify(subnorm) != FP_SUBNORMAL)
+    {
+        subnorm /= 2;
+    }
+    print_fpclassify(subnorm);
 
 }
 
 
 /*
-Так. Тут начался беспредел с ужасами про сравнение плавающей точки на равенство.
-Требуется ликбез.Сравнивать плавающие числа(для педантов — значения переменных типа float или double) 
-вполне можно и даже нужно.
-Но надо понимать сущность этой плавающей точки.
-А сущность заключается в том, что числа с фиксированной точкой (целые — это частный случай 
-чисел с фиксированной точкой) имеют абсолютное значение погрешности, в отличие от чисел с плавающей точкой, 
-где значение погрешности находится в прямой пропорциональности от модуля числа.
+РўР°Рє. РўСѓС‚ РЅР°С‡Р°Р»СЃСЏ Р±РµСЃРїСЂРµРґРµР» СЃ СѓР¶Р°СЃР°РјРё РїСЂРѕ СЃСЂР°РІРЅРµРЅРёРµ РїР»Р°РІР°СЋС‰РµР№ С‚РѕС‡РєРё РЅР° СЂР°РІРµРЅСЃС‚РІРѕ.
+РўСЂРµР±СѓРµС‚СЃСЏ Р»РёРєР±РµР·.РЎСЂР°РІРЅРёРІР°С‚СЊ РїР»Р°РІР°СЋС‰РёРµ С‡РёСЃР»Р°(РґР»СЏ РїРµРґР°РЅС‚РѕРІ вЂ” Р·РЅР°С‡РµРЅРёСЏ РїРµСЂРµРјРµРЅРЅС‹С… С‚РёРїР° float РёР»Рё double)
+РІРїРѕР»РЅРµ РјРѕР¶РЅРѕ Рё РґР°Р¶Рµ РЅСѓР¶РЅРѕ.
+РќРѕ РЅР°РґРѕ РїРѕРЅРёРјР°С‚СЊ СЃСѓС‰РЅРѕСЃС‚СЊ СЌС‚РѕР№ РїР»Р°РІР°СЋС‰РµР№ С‚РѕС‡РєРё.
+Рђ СЃСѓС‰РЅРѕСЃС‚СЊ Р·Р°РєР»СЋС‡Р°РµС‚СЃСЏ РІ С‚РѕРј, С‡С‚Рѕ С‡РёСЃР»Р° СЃ С„РёРєСЃРёСЂРѕРІР°РЅРЅРѕР№ С‚РѕС‡РєРѕР№ (С†РµР»С‹Рµ вЂ” СЌС‚Рѕ С‡Р°СЃС‚РЅС‹Р№ СЃР»СѓС‡Р°Р№
+С‡РёСЃРµР» СЃ С„РёРєСЃРёСЂРѕРІР°РЅРЅРѕР№ С‚РѕС‡РєРѕР№) РёРјРµСЋС‚ Р°Р±СЃРѕР»СЋС‚РЅРѕРµ Р·РЅР°С‡РµРЅРёРµ РїРѕРіСЂРµС€РЅРѕСЃС‚Рё, РІ РѕС‚Р»РёС‡РёРµ РѕС‚ С‡РёСЃРµР» СЃ РїР»Р°РІР°СЋС‰РµР№ С‚РѕС‡РєРѕР№,
+РіРґРµ Р·РЅР°С‡РµРЅРёРµ РїРѕРіСЂРµС€РЅРѕСЃС‚Рё РЅР°С…РѕРґРёС‚СЃСЏ РІ РїСЂСЏРјРѕР№ РїСЂРѕРїРѕСЂС†РёРѕРЅР°Р»СЊРЅРѕСЃС‚Рё РѕС‚ РјРѕРґСѓР»СЏ С‡РёСЃР»Р°.
 
-Когда числа вычислены разными способами — одно через синус, а другое — через экспоненту, 
-проверка на равенство скорее всего не сработает.
-Так же, как и не сработает сравнение с константой.
-Но это же относится и к целым числам, если скажем, мы нормализуем значения от 0...1 к 0...1000000000.
-То есть, не имеет значения, плавающие это числа или целые.
-В определенных ситуациях сравнивать их на строгое равенство нельзя.
-В этих ситуациях надо использовать некую Epsilon.
-И вот здесь - то и вылезает наружу вся безграмотность. Что такое DBL_EPSILON ? 
-— а это вот что.Это минимальное значение, которое при прибавлении его к единице, 
-меняет значение этой единицы.Понимаете ? — к единице! Строгой единице, числу 1.0 
-и ни к какому другому.Поэтому сравнивать числа с плавающей точкой на + / -DBL_EPSILON 
-совершенно бессмысленно. Это сравнение выдает всю глубину невежества и неспособности думать мозгом.
-Факты таковы — плавающие числа больше 2.0 эту DBL_EPSILON просто не ощущают.
-Им что прибавляй ее, что что нет — ничего не меняет.
-Для этих чисел DBL_EPSILON является строгим нулем и просто не существует. В то же время, 
-DBL_EPSILON имеет значение порядка 1e-16.Что это значит ? А это значит, что числа в диапазоне 
-Планковских масштабов(типа 1e-34) с точки зрения этой DBL_EPSILON будут все равны. То есть, 
-эта 1e-16 становится слоном в посудной лавке. А ведь постоянная Планка ничуть не хуже скорости света 
-— для этого собственно и были придуманы числа с плавающей точкой, чтобы отображать большие диапазоны 
-значений с неким фиксированным количеством знаков.
+РљРѕРіРґР° С‡РёСЃР»Р° РІС‹С‡РёСЃР»РµРЅС‹ СЂР°Р·РЅС‹РјРё СЃРїРѕСЃРѕР±Р°РјРё вЂ” РѕРґРЅРѕ С‡РµСЂРµР· СЃРёРЅСѓСЃ, Р° РґСЂСѓРіРѕРµ вЂ” С‡РµСЂРµР· СЌРєСЃРїРѕРЅРµРЅС‚Сѓ,
+РїСЂРѕРІРµСЂРєР° РЅР° СЂР°РІРµРЅСЃС‚РІРѕ СЃРєРѕСЂРµРµ РІСЃРµРіРѕ РЅРµ СЃСЂР°Р±РѕС‚Р°РµС‚.
+РўР°Рє Р¶Рµ, РєР°Рє Рё РЅРµ СЃСЂР°Р±РѕС‚Р°РµС‚ СЃСЂР°РІРЅРµРЅРёРµ СЃ РєРѕРЅСЃС‚Р°РЅС‚РѕР№.
+РќРѕ СЌС‚Рѕ Р¶Рµ РѕС‚РЅРѕСЃРёС‚СЃСЏ Рё Рє С†РµР»С‹Рј С‡РёСЃР»Р°Рј, РµСЃР»Рё СЃРєР°Р¶РµРј, РјС‹ РЅРѕСЂРјР°Р»РёР·СѓРµРј Р·РЅР°С‡РµРЅРёСЏ РѕС‚ 0...1 Рє 0...1000000000.
+РўРѕ РµСЃС‚СЊ, РЅРµ РёРјРµРµС‚ Р·РЅР°С‡РµРЅРёСЏ, РїР»Р°РІР°СЋС‰РёРµ СЌС‚Рѕ С‡РёСЃР»Р° РёР»Рё С†РµР»С‹Рµ.
+Р’ РѕРїСЂРµРґРµР»РµРЅРЅС‹С… СЃРёС‚СѓР°С†РёСЏС… СЃСЂР°РІРЅРёРІР°С‚СЊ РёС… РЅР° СЃС‚СЂРѕРіРѕРµ СЂР°РІРµРЅСЃС‚РІРѕ РЅРµР»СЊР·СЏ.
+Р’ СЌС‚РёС… СЃРёС‚СѓР°С†РёСЏС… РЅР°РґРѕ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ РЅРµРєСѓСЋ Epsilon.
+Р РІРѕС‚ Р·РґРµСЃСЊ - С‚Рѕ Рё РІС‹Р»РµР·Р°РµС‚ РЅР°СЂСѓР¶Сѓ РІСЃСЏ Р±РµР·РіСЂР°РјРѕС‚РЅРѕСЃС‚СЊ. Р§С‚Рѕ С‚Р°РєРѕРµ DBL_EPSILON ?
+вЂ” Р° СЌС‚Рѕ РІРѕС‚ С‡С‚Рѕ.Р­С‚Рѕ РјРёРЅРёРјР°Р»СЊРЅРѕРµ Р·РЅР°С‡РµРЅРёРµ, РєРѕС‚РѕСЂРѕРµ РїСЂРё РїСЂРёР±Р°РІР»РµРЅРёРё РµРіРѕ Рє РµРґРёРЅРёС†Рµ,
+РјРµРЅСЏРµС‚ Р·РЅР°С‡РµРЅРёРµ СЌС‚РѕР№ РµРґРёРЅРёС†С‹.РџРѕРЅРёРјР°РµС‚Рµ ? вЂ” Рє РµРґРёРЅРёС†Рµ! РЎС‚СЂРѕРіРѕР№ РµРґРёРЅРёС†Рµ, С‡РёСЃР»Сѓ 1.0
+Рё РЅРё Рє РєР°РєРѕРјСѓ РґСЂСѓРіРѕРјСѓ.РџРѕСЌС‚РѕРјСѓ СЃСЂР°РІРЅРёРІР°С‚СЊ С‡РёСЃР»Р° СЃ РїР»Р°РІР°СЋС‰РµР№ С‚РѕС‡РєРѕР№ РЅР° + / -DBL_EPSILON
+СЃРѕРІРµСЂС€РµРЅРЅРѕ Р±РµСЃСЃРјС‹СЃР»РµРЅРЅРѕ. Р­С‚Рѕ СЃСЂР°РІРЅРµРЅРёРµ РІС‹РґР°РµС‚ РІСЃСЋ РіР»СѓР±РёРЅСѓ РЅРµРІРµР¶РµСЃС‚РІР° Рё РЅРµСЃРїРѕСЃРѕР±РЅРѕСЃС‚Рё РґСѓРјР°С‚СЊ РјРѕР·РіРѕРј.
+Р¤Р°РєС‚С‹ С‚Р°РєРѕРІС‹ вЂ” РїР»Р°РІР°СЋС‰РёРµ С‡РёСЃР»Р° Р±РѕР»СЊС€Рµ 2.0 СЌС‚Сѓ DBL_EPSILON РїСЂРѕСЃС‚Рѕ РЅРµ РѕС‰СѓС‰Р°СЋС‚.
+РРј С‡С‚Рѕ РїСЂРёР±Р°РІР»СЏР№ РµРµ, С‡С‚Рѕ С‡С‚Рѕ РЅРµС‚ вЂ” РЅРёС‡РµРіРѕ РЅРµ РјРµРЅСЏРµС‚.
+Р”Р»СЏ СЌС‚РёС… С‡РёСЃРµР» DBL_EPSILON СЏРІР»СЏРµС‚СЃСЏ СЃС‚СЂРѕРіРёРј РЅСѓР»РµРј Рё РїСЂРѕСЃС‚Рѕ РЅРµ СЃСѓС‰РµСЃС‚РІСѓРµС‚. Р’ С‚Рѕ Р¶Рµ РІСЂРµРјСЏ,
+DBL_EPSILON РёРјРµРµС‚ Р·РЅР°С‡РµРЅРёРµ РїРѕСЂСЏРґРєР° 1e-16.Р§С‚Рѕ СЌС‚Рѕ Р·РЅР°С‡РёС‚ ? Рђ СЌС‚Рѕ Р·РЅР°С‡РёС‚, С‡С‚Рѕ С‡РёСЃР»Р° РІ РґРёР°РїР°Р·РѕРЅРµ
+РџР»Р°РЅРєРѕРІСЃРєРёС… РјР°СЃС€С‚Р°Р±РѕРІ(С‚РёРїР° 1e-34) СЃ С‚РѕС‡РєРё Р·СЂРµРЅРёСЏ СЌС‚РѕР№ DBL_EPSILON Р±СѓРґСѓС‚ РІСЃРµ СЂР°РІРЅС‹. РўРѕ РµСЃС‚СЊ,
+СЌС‚Р° 1e-16 СЃС‚Р°РЅРѕРІРёС‚СЃСЏ СЃР»РѕРЅРѕРј РІ РїРѕСЃСѓРґРЅРѕР№ Р»Р°РІРєРµ. Рђ РІРµРґСЊ РїРѕСЃС‚РѕСЏРЅРЅР°СЏ РџР»Р°РЅРєР° РЅРёС‡СѓС‚СЊ РЅРµ С…СѓР¶Рµ СЃРєРѕСЂРѕСЃС‚Рё СЃРІРµС‚Р°
+вЂ” РґР»СЏ СЌС‚РѕРіРѕ СЃРѕР±СЃС‚РІРµРЅРЅРѕ Рё Р±С‹Р»Рё РїСЂРёРґСѓРјР°РЅС‹ С‡РёСЃР»Р° СЃ РїР»Р°РІР°СЋС‰РµР№ С‚РѕС‡РєРѕР№, С‡С‚РѕР±С‹ РѕС‚РѕР±СЂР°Р¶Р°С‚СЊ Р±РѕР»СЊС€РёРµ РґРёР°РїР°Р·РѕРЅС‹
+Р·РЅР°С‡РµРЅРёР№ СЃ РЅРµРєРёРј С„РёРєСЃРёСЂРѕРІР°РЅРЅС‹Рј РєРѕР»РёС‡РµСЃС‚РІРѕРј Р·РЅР°РєРѕРІ.
 */
 
-// Так для чего же все - таки нужна эта самая DBL_EPSILON(ну или FLT_EPSILON) ? 
-// Нужна - ли ? — нужна!Есть ситуации, когда действительно надо сравнивать числа 
-// в неком допустимом интервале. В каком ? — А вот это как раз и зависит от 
-// абсолютного значения чисел и сущности вычислений. 
-// Короче говоря, надо эту Epsilon умножить на значение числа.
-// А поскольку у нас два числа, то все усложняется — какое из них брать.
-// То есть, корректное сравнение выглядит так :
+// РўР°Рє РґР»СЏ С‡РµРіРѕ Р¶Рµ РІСЃРµ - С‚Р°РєРё РЅСѓР¶РЅР° СЌС‚Р° СЃР°РјР°СЏ DBL_EPSILON(РЅСѓ РёР»Рё FLT_EPSILON) ?
+// РќСѓР¶РЅР° - Р»Рё ? вЂ” РЅСѓР¶РЅР°!Р•СЃС‚СЊ СЃРёС‚СѓР°С†РёРё, РєРѕРіРґР° РґРµР№СЃС‚РІРёС‚РµР»СЊРЅРѕ РЅР°РґРѕ СЃСЂР°РІРЅРёРІР°С‚СЊ С‡РёСЃР»Р°
+// РІ РЅРµРєРѕРј РґРѕРїСѓСЃС‚РёРјРѕРј РёРЅС‚РµСЂРІР°Р»Рµ. Р’ РєР°РєРѕРј ? вЂ” Рђ РІРѕС‚ СЌС‚Рѕ РєР°Рє СЂР°Р· Рё Р·Р°РІРёСЃРёС‚ РѕС‚
+// Р°Р±СЃРѕР»СЋС‚РЅРѕРіРѕ Р·РЅР°С‡РµРЅРёСЏ С‡РёСЃРµР» Рё СЃСѓС‰РЅРѕСЃС‚Рё РІС‹С‡РёСЃР»РµРЅРёР№.
+// РљРѕСЂРѕС‡Рµ РіРѕРІРѕСЂСЏ, РЅР°РґРѕ СЌС‚Сѓ Epsilon СѓРјРЅРѕР¶РёС‚СЊ РЅР° Р·РЅР°С‡РµРЅРёРµ С‡РёСЃР»Р°.
+// Рђ РїРѕСЃРєРѕР»СЊРєСѓ Сѓ РЅР°СЃ РґРІР° С‡РёСЃР»Р°, С‚Рѕ РІСЃРµ СѓСЃР»РѕР¶РЅСЏРµС‚СЃСЏ вЂ” РєР°РєРѕРµ РёР· РЅРёС… Р±СЂР°С‚СЊ.
+// РўРѕ РµСЃС‚СЊ, РєРѕСЂСЂРµРєС‚РЅРѕРµ СЃСЂР°РІРЅРµРЅРёРµ РІС‹РіР»СЏРґРёС‚ С‚Р°Рє :
 bool close_enough(double a, double b){
-	if (fabs(a - b) <= DBL_EPSILON * fmax(fabs(a), fabs(b)))
-	{
-		return true;
-	}
-	return false;
+    if (fabs(a - b) <= DBL_EPSILON * fmax(fabs(a), fabs(b)))
+    {
+        return true;
+    }
+    return false;
 }
 
 /*
-Дорого ? Да, дорого, а все остальное неправильно, такие дела. Но и это тоже неправильно!
-Дело в том, что этот DBL_EPSILON определяет разницу в 1 (один!) значащий бит экспоненты 
-в приложении к числу 1.0.На практике такой разницы не встречается — числа либо строго равны, 
-либо могут различаться больше чем на один значащий бит. Поэтому надо брать что - то типа 
-16 * DBL_EPSILON, чтобы игнрорировать разницу в 4 младших бита 
-(или примерно полторы последние значащие десятичные цифры из примерно 16 имеющихся).
+Р”РѕСЂРѕРіРѕ ? Р”Р°, РґРѕСЂРѕРіРѕ, Р° РІСЃРµ РѕСЃС‚Р°Р»СЊРЅРѕРµ РЅРµРїСЂР°РІРёР»СЊРЅРѕ, С‚Р°РєРёРµ РґРµР»Р°. РќРѕ Рё СЌС‚Рѕ С‚РѕР¶Рµ РЅРµРїСЂР°РІРёР»СЊРЅРѕ!
+Р”РµР»Рѕ РІ С‚РѕРј, С‡С‚Рѕ СЌС‚РѕС‚ DBL_EPSILON РѕРїСЂРµРґРµР»СЏРµС‚ СЂР°Р·РЅРёС†Сѓ РІ 1 (РѕРґРёРЅ!) Р·РЅР°С‡Р°С‰РёР№ Р±РёС‚ СЌРєСЃРїРѕРЅРµРЅС‚С‹
+РІ РїСЂРёР»РѕР¶РµРЅРёРё Рє С‡РёСЃР»Сѓ 1.0.РќР° РїСЂР°РєС‚РёРєРµ С‚Р°РєРѕР№ СЂР°Р·РЅРёС†С‹ РЅРµ РІСЃС‚СЂРµС‡Р°РµС‚СЃСЏ вЂ” С‡РёСЃР»Р° Р»РёР±Рѕ СЃС‚СЂРѕРіРѕ СЂР°РІРЅС‹,
+Р»РёР±Рѕ РјРѕРіСѓС‚ СЂР°Р·Р»РёС‡Р°С‚СЊСЃСЏ Р±РѕР»СЊС€Рµ С‡РµРј РЅР° РѕРґРёРЅ Р·РЅР°С‡Р°С‰РёР№ Р±РёС‚. РџРѕСЌС‚РѕРјСѓ РЅР°РґРѕ Р±СЂР°С‚СЊ С‡С‚Рѕ - С‚Рѕ С‚РёРїР°
+16 * DBL_EPSILON, С‡С‚РѕР±С‹ РёРіРЅСЂРѕСЂРёСЂРѕРІР°С‚СЊ СЂР°Р·РЅРёС†Сѓ РІ 4 РјР»Р°РґС€РёС… Р±РёС‚Р°
+(РёР»Рё РїСЂРёРјРµСЂРЅРѕ РїРѕР»С‚РѕСЂС‹ РїРѕСЃР»РµРґРЅРёРµ Р·РЅР°С‡Р°С‰РёРµ РґРµСЃСЏС‚РёС‡РЅС‹Рµ С†РёС„СЂС‹ РёР· РїСЂРёРјРµСЂРЅРѕ 16 РёРјРµСЋС‰РёС…СЃСЏ).
 
-Конечно же, есть случаи, когда диапазон чисел более - менее известен и предсказуем.
-Скажем, 0...1000. В этом случае, для сравнения на приблизительное равенство можно взять константу, 
-типа 1000 * 16 * DBL_EPSILON. 
-Но надо иметь в виду, что такое сравнение фактически превращает всю идею плавающей точки 
-в фиксированную точку(догадайтесь, почему).
+РљРѕРЅРµС‡РЅРѕ Р¶Рµ, РµСЃС‚СЊ СЃР»СѓС‡Р°Рё, РєРѕРіРґР° РґРёР°РїР°Р·РѕРЅ С‡РёСЃРµР» Р±РѕР»РµРµ - РјРµРЅРµРµ РёР·РІРµСЃС‚РµРЅ Рё РїСЂРµРґСЃРєР°Р·СѓРµРј.
+РЎРєР°Р¶РµРј, 0...1000. Р’ СЌС‚РѕРј СЃР»СѓС‡Р°Рµ, РґР»СЏ СЃСЂР°РІРЅРµРЅРёСЏ РЅР° РїСЂРёР±Р»РёР·РёС‚РµР»СЊРЅРѕРµ СЂР°РІРµРЅСЃС‚РІРѕ РјРѕР¶РЅРѕ РІР·СЏС‚СЊ РєРѕРЅСЃС‚Р°РЅС‚Сѓ,
+С‚РёРїР° 1000 * 16 * DBL_EPSILON.
+РќРѕ РЅР°РґРѕ РёРјРµС‚СЊ РІ РІРёРґСѓ, С‡С‚Рѕ С‚Р°РєРѕРµ СЃСЂР°РІРЅРµРЅРёРµ С„Р°РєС‚РёС‡РµСЃРєРё РїСЂРµРІСЂР°С‰Р°РµС‚ РІСЃСЋ РёРґРµСЋ РїР»Р°РІР°СЋС‰РµР№ С‚РѕС‡РєРё
+РІ С„РёРєСЃРёСЂРѕРІР°РЅРЅСѓСЋ С‚РѕС‡РєСѓ(РґРѕРіР°РґР°Р№С‚РµСЃСЊ, РїРѕС‡РµРјСѓ).
 
-Я вообще поражен уровню невежества — даже в весьма грамотной библиотеке GPC by Alan Murta 
-используется тупое сравнение с константной Epsilon.
-На диапазонах экранных координат это все равно, что сравнение на строгое равенство, 
-а на 1e-20 алгоритм вообще перестает работать.
+РЇ РІРѕРѕР±С‰Рµ РїРѕСЂР°Р¶РµРЅ СѓСЂРѕРІРЅСЋ РЅРµРІРµР¶РµСЃС‚РІР° вЂ” РґР°Р¶Рµ РІ РІРµСЃСЊРјР° РіСЂР°РјРѕС‚РЅРѕР№ Р±РёР±Р»РёРѕС‚РµРєРµ GPC by Alan Murta
+РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ С‚СѓРїРѕРµ СЃСЂР°РІРЅРµРЅРёРµ СЃ РєРѕРЅСЃС‚Р°РЅС‚РЅРѕР№ Epsilon.
+РќР° РґРёР°РїР°Р·РѕРЅР°С… СЌРєСЂР°РЅРЅС‹С… РєРѕРѕСЂРґРёРЅР°С‚ СЌС‚Рѕ РІСЃРµ СЂР°РІРЅРѕ, С‡С‚Рѕ СЃСЂР°РІРЅРµРЅРёРµ РЅР° СЃС‚СЂРѕРіРѕРµ СЂР°РІРµРЅСЃС‚РІРѕ,
+Р° РЅР° 1e-20 Р°Р»РіРѕСЂРёС‚Рј РІРѕРѕР±С‰Рµ РїРµСЂРµСЃС‚Р°РµС‚ СЂР°Р±РѕС‚Р°С‚СЊ.
 */
 
 // We can take advantage of this
 // alignment shift to change the bit representation of a floating-point number
-// until it’s the same as an integer’s bit representation, 
+// until itвЂ™s the same as an integerвЂ™s bit representation,
 // and then we can just read it like a normal integer
 
-// This trick works for positive numbers, 
+// This trick works for positive numbers,
 // but if you try to convert a negative number it will fail
 
-// the normalization step screws it up because now that we’ve
-// borrowed from the implicit 1 bit, it’s no longer the most significant bit
+// the normalization step screws it up because now that weвЂ™ve
+// borrowed from the implicit 1 bit, itвЂ™s no longer the most significant bit
 
 // We can get this 1 bit simply by multiplying our large number by 1.5. 1.5 in binary is
 // 1.1, and the first 1 becomes the implicit 1 bit, and the second becomes the
 // most significant bit of the mantissa
 
 // If you subtract the integer representation of our large, floating-point shift number
-// (in other words, treat its bits like an integer instead of a float) from the 
+// (in other words, treat its bits like an integer instead of a float) from the
 // integer representation of the number we just converted, it will remove all the
 // high bits properly for both types of numbers, making the bits equal zero for
 // positive values and filling them in with ones for negative values
@@ -641,38 +641,38 @@ bool close_enough(double a, double b){
 
 int fast_float2int(float x) {
 
-	union castable{
-		float f;
-		int i;
-	};
+    union castable{
+        float f;
+        int i;
+    };
 
-	castable magic;
-	// 1 << 22 = 2^23 (e.g. convert float to integer)
-	// 150 << 23 is 1.5 trick for negative conversion
-	// For double the same masks are (1LL << 51) and (1075LL << 52)
-	magic.i = (150 << 23) | (1 << 22);
+    castable magic;
+    // 1 << 22 = 2^23 (e.g. convert float to integer)
+    // 150 << 23 is 1.5 trick for negative conversion
+    // For double the same masks are (1LL << 51) and (1075LL << 52)
+    magic.i = (150 << 23) | (1 << 22);
 
-	volatile castable c;
-	c.f = x + magic.f;
-	// Not to create 'if' condition for the negatives we use subtraction trick
-	// it will remove all the high bits properly for both types of numbers(positive and negative), 
-	// making the bits equal zero for positive values and filling them in with ones for negative values.
-	return c.i - magic.i;
+    volatile castable c;
+    c.f = x + magic.f;
+    // Not to create 'if' condition for the negatives we use subtraction trick
+    // it will remove all the high bits properly for both types of numbers(positive and negative),
+    // making the bits equal zero for positive values and filling them in with ones for negative values.
+    return c.i - magic.i;
 }
 
 int fast_double2int(double d){
 
-	union castable{
-		double d;
-		long long l;
-	};
+    union castable{
+        double d;
+        long long l;
+    };
 
-	castable magic;
-	magic.l = (1075LL << 52) | (1LL << 51);
+    castable magic;
+    magic.l = (1075LL << 52) | (1LL << 51);
 
-	volatile castable c;
-	c.d = d + magic.d;
-	return c.l - magic.l;
+    volatile castable c;
+    c.d = d + magic.d;
+    return c.l - magic.l;
 }
 
 template <typename T>
@@ -680,153 +680,153 @@ struct TPTraitsBase{};
 
 template <>
 struct TPTraitsBase<float>{
-	typedef int ret_type;
-	typedef float convert_type;
-	typedef int mask_type;
-	static const mask_type mask = (150 << 23) | (1 << 22);
+    typedef int ret_type;
+    typedef float convert_type;
+    typedef int mask_type;
+    static const mask_type mask = (150 << 23) | (1 << 22);
 
 };
 
 template <>
 struct TPTraitsBase<double>{
-	typedef long ret_type;
-	typedef double convert_type;
-	typedef long long mask_type;
-	static const mask_type mask = (1075LL << 52) | (1LL << 51);
+    typedef long ret_type;
+    typedef double convert_type;
+    typedef long long mask_type;
+    static const mask_type mask = (1075LL << 52) | (1LL << 51);
 };
 
 template <typename T>
 struct TPTraits : TPTraitsBase<T>{
-	union castable{
-		typename TPTraitsBase<T>::convert_type f;
-		typename TPTraitsBase<T>::mask_type i;
-	};
+    union castable{
+        typename TPTraitsBase<T>::convert_type f;
+        typename TPTraitsBase<T>::mask_type i;
+    };
 };
 
 
 template <typename FP>
 long fast_fp2long(FP f)
 {
-	TPTraits<FP>::castable magic;
-	magic.i = TPTraits<FP>::mask;
+    TPTraits<FP>::castable magic;
+    magic.i = TPTraits<FP>::mask;
 
-	volatile TPTraits<FP>::castable ret;
-	ret.f = f + magic.f;
-	return static_cast<long>(ret.i - magic.i);
+    volatile TPTraits<FP>::castable ret;
+    ret.f = f + magic.f;
+    return static_cast<long>(ret.i - magic.i);
 }
 
 
 void show_universal_fast_float2int(){
-	float f = 1.0;
-	int i = fast_fp2long(f);
-	cout << f << " -> " << i << endl;
+    float f = 1.0;
+    int i = fast_fp2long(f);
+    cout << f << " -> " << i << endl;
 
-	f = 1.5;
-	i = fast_fp2long(f);
-	cout << f << " -> " << i << endl;
+    f = 1.5;
+    i = fast_fp2long(f);
+    cout << f << " -> " << i << endl;
 
-	f = -1.5;
-	i = fast_fp2long(f);
-	cout << f << " -> " << i << endl;
+    f = -1.5;
+    i = fast_fp2long(f);
+    cout << f << " -> " << i << endl;
 
 
 
-	double d = 1.0;
-	i = fast_fp2long(d);
-	cout << d << " -> " << i << endl;
+    double d = 1.0;
+    i = fast_fp2long(d);
+    cout << d << " -> " << i << endl;
 
-	d = 1.5;
-	i = fast_fp2long(d);
-	cout << d << " -> " << i << endl;
+    d = 1.5;
+    i = fast_fp2long(d);
+    cout << d << " -> " << i << endl;
 
-	d = -1.5;
-	i = fast_fp2long(d);
-	cout << d << " -> " << i << endl;
+    d = -1.5;
+    i = fast_fp2long(d);
+    cout << d << " -> " << i << endl;
 }
 
 
 int fast_float2int_debug(float x)
 {
-	/*
-	Оказалось что очень просто работает. Флоаты в IEEE стандарте лежат так - в младших битах мантиса,
-	потом экспонента со смещением, и самый старший - знак. Вся соль фокуса в том, как лежит мантиса -
-	лежит она без целой части, которая все равно всегда единица. Зная это можно сконвертировать вообще
-	без плавающих операций - дописать единичку и сдвинуть мантису вправо на столько разрядов,
-	сколько всего в мантисе минус то, что в экспоненте и, в случае отрицательного числа,
-	отнять полученное от нуля. Эт конечно гимморой, но, к великому счастью, такие операции делает сам ФПУ.
+    /*
+    РћРєР°Р·Р°Р»РѕСЃСЊ С‡С‚Рѕ РѕС‡РµРЅСЊ РїСЂРѕСЃС‚Рѕ СЂР°Р±РѕС‚Р°РµС‚. Р¤Р»РѕР°С‚С‹ РІ IEEE СЃС‚Р°РЅРґР°СЂС‚Рµ Р»РµР¶Р°С‚ С‚Р°Рє - РІ РјР»Р°РґС€РёС… Р±РёС‚Р°С… РјР°РЅС‚РёСЃР°,
+    РїРѕС‚РѕРј СЌРєСЃРїРѕРЅРµРЅС‚Р° СЃРѕ СЃРјРµС‰РµРЅРёРµРј, Рё СЃР°РјС‹Р№ СЃС‚Р°СЂС€РёР№ - Р·РЅР°Рє. Р’СЃСЏ СЃРѕР»СЊ С„РѕРєСѓСЃР° РІ С‚РѕРј, РєР°Рє Р»РµР¶РёС‚ РјР°РЅС‚РёСЃР° -
+    Р»РµР¶РёС‚ РѕРЅР° Р±РµР· С†РµР»РѕР№ С‡Р°СЃС‚Рё, РєРѕС‚РѕСЂР°СЏ РІСЃРµ СЂР°РІРЅРѕ РІСЃРµРіРґР° РµРґРёРЅРёС†Р°. Р—РЅР°СЏ СЌС‚Рѕ РјРѕР¶РЅРѕ СЃРєРѕРЅРІРµСЂС‚РёСЂРѕРІР°С‚СЊ РІРѕРѕР±С‰Рµ
+    Р±РµР· РїР»Р°РІР°СЋС‰РёС… РѕРїРµСЂР°С†РёР№ - РґРѕРїРёСЃР°С‚СЊ РµРґРёРЅРёС‡РєСѓ Рё СЃРґРІРёРЅСѓС‚СЊ РјР°РЅС‚РёСЃСѓ РІРїСЂР°РІРѕ РЅР° СЃС‚РѕР»СЊРєРѕ СЂР°Р·СЂСЏРґРѕРІ,
+    СЃРєРѕР»СЊРєРѕ РІСЃРµРіРѕ РІ РјР°РЅС‚РёСЃРµ РјРёРЅСѓСЃ С‚Рѕ, С‡С‚Рѕ РІ СЌРєСЃРїРѕРЅРµРЅС‚Рµ Рё, РІ СЃР»СѓС‡Р°Рµ РѕС‚СЂРёС†Р°С‚РµР»СЊРЅРѕРіРѕ С‡РёСЃР»Р°,
+    РѕС‚РЅСЏС‚СЊ РїРѕР»СѓС‡РµРЅРЅРѕРµ РѕС‚ РЅСѓР»СЏ. Р­С‚ РєРѕРЅРµС‡РЅРѕ РіРёРјРјРѕСЂРѕР№, РЅРѕ, Рє РІРµР»РёРєРѕРјСѓ СЃС‡Р°СЃС‚СЊСЋ, С‚Р°РєРёРµ РѕРїРµСЂР°С†РёРё РґРµР»Р°РµС‚ СЃР°Рј Р¤РџРЈ.
 
-	Во-первых сдвиг ФПУ делает, когда хочит провести какую - нибудь операцию над двумя аргументами
-	с разными экспонентами и двигает мантису меньшего числа вправо пока экспонента у него не повысится
-	до экспоненты большего числа. То есть двигает вправо на разницу, если поставить экспоненту в большем
-	числе равной числу разрядов в мантисе то как раз будет сдвиг на столько разрядов, сколько надо!
-	Приведу пример в десятичной системе : допустим у нас есть 5 разрядов мантисы и есть число 36.72,
-	которое запишеться как 3.67200е1. Допустим мы хотим сложить его с 100000 или 1.00000е5.
-	ФПУ подгонит его под экспоненту 5 сдвигом вправо на 5 - 1 = 4 и получится 0.0003672е5.
-	Поскольку у нас всего 5 разрядов на все про все останется только 0.00036е5 или 0.00037е5
-	в зависимости от того, стоит ли округление отброшенных разрядов или нет.
-	В конце сложения получим 1.00036е5, число, в котором мантиса в младших разрядах
-	равна целой части нашего исходного аргумента.
+    Р’Рѕ-РїРµСЂРІС‹С… СЃРґРІРёРі Р¤РџРЈ РґРµР»Р°РµС‚, РєРѕРіРґР° С…РѕС‡РёС‚ РїСЂРѕРІРµСЃС‚Рё РєР°РєСѓСЋ - РЅРёР±СѓРґСЊ РѕРїРµСЂР°С†РёСЋ РЅР°Рґ РґРІСѓРјСЏ Р°СЂРіСѓРјРµРЅС‚Р°РјРё
+    СЃ СЂР°Р·РЅС‹РјРё СЌРєСЃРїРѕРЅРµРЅС‚Р°РјРё Рё РґРІРёРіР°РµС‚ РјР°РЅС‚РёСЃСѓ РјРµРЅСЊС€РµРіРѕ С‡РёСЃР»Р° РІРїСЂР°РІРѕ РїРѕРєР° СЌРєСЃРїРѕРЅРµРЅС‚Р° Сѓ РЅРµРіРѕ РЅРµ РїРѕРІС‹СЃРёС‚СЃСЏ
+    РґРѕ СЌРєСЃРїРѕРЅРµРЅС‚С‹ Р±РѕР»СЊС€РµРіРѕ С‡РёСЃР»Р°. РўРѕ РµСЃС‚СЊ РґРІРёРіР°РµС‚ РІРїСЂР°РІРѕ РЅР° СЂР°Р·РЅРёС†Сѓ, РµСЃР»Рё РїРѕСЃС‚Р°РІРёС‚СЊ СЌРєСЃРїРѕРЅРµРЅС‚Сѓ РІ Р±РѕР»СЊС€РµРј
+    С‡РёСЃР»Рµ СЂР°РІРЅРѕР№ С‡РёСЃР»Сѓ СЂР°Р·СЂСЏРґРѕРІ РІ РјР°РЅС‚РёСЃРµ С‚Рѕ РєР°Рє СЂР°Р· Р±СѓРґРµС‚ СЃРґРІРёРі РЅР° СЃС‚РѕР»СЊРєРѕ СЂР°Р·СЂСЏРґРѕРІ, СЃРєРѕР»СЊРєРѕ РЅР°РґРѕ!
+    РџСЂРёРІРµРґСѓ РїСЂРёРјРµСЂ РІ РґРµСЃСЏС‚РёС‡РЅРѕР№ СЃРёСЃС‚РµРјРµ : РґРѕРїСѓСЃС‚РёРј Сѓ РЅР°СЃ РµСЃС‚СЊ 5 СЂР°Р·СЂСЏРґРѕРІ РјР°РЅС‚РёСЃС‹ Рё РµСЃС‚СЊ С‡РёСЃР»Рѕ 36.72,
+    РєРѕС‚РѕСЂРѕРµ Р·Р°РїРёС€РµС‚СЊСЃСЏ РєР°Рє 3.67200Рµ1. Р”РѕРїСѓСЃС‚РёРј РјС‹ С…РѕС‚РёРј СЃР»РѕР¶РёС‚СЊ РµРіРѕ СЃ 100000 РёР»Рё 1.00000Рµ5.
+    Р¤РџРЈ РїРѕРґРіРѕРЅРёС‚ РµРіРѕ РїРѕРґ СЌРєСЃРїРѕРЅРµРЅС‚Сѓ 5 СЃРґРІРёРіРѕРј РІРїСЂР°РІРѕ РЅР° 5 - 1 = 4 Рё РїРѕР»СѓС‡РёС‚СЃСЏ 0.0003672Рµ5.
+    РџРѕСЃРєРѕР»СЊРєСѓ Сѓ РЅР°СЃ РІСЃРµРіРѕ 5 СЂР°Р·СЂСЏРґРѕРІ РЅР° РІСЃРµ РїСЂРѕ РІСЃРµ РѕСЃС‚Р°РЅРµС‚СЃСЏ С‚РѕР»СЊРєРѕ 0.00036Рµ5 РёР»Рё 0.00037Рµ5
+    РІ Р·Р°РІРёСЃРёРјРѕСЃС‚Рё РѕС‚ С‚РѕРіРѕ, СЃС‚РѕРёС‚ Р»Рё РѕРєСЂСѓРіР»РµРЅРёРµ РѕС‚Р±СЂРѕС€РµРЅРЅС‹С… СЂР°Р·СЂСЏРґРѕРІ РёР»Рё РЅРµС‚.
+    Р’ РєРѕРЅС†Рµ СЃР»РѕР¶РµРЅРёСЏ РїРѕР»СѓС‡РёРј 1.00036Рµ5, С‡РёСЃР»Рѕ, РІ РєРѕС‚РѕСЂРѕРј РјР°РЅС‚РёСЃР° РІ РјР»Р°РґС€РёС… СЂР°Р·СЂСЏРґР°С…
+    СЂР°РІРЅР° С†РµР»РѕР№ С‡Р°СЃС‚Рё РЅР°С€РµРіРѕ РёСЃС…РѕРґРЅРѕРіРѕ Р°СЂРіСѓРјРµРЅС‚Р°.
 
-	*/
-	const int magic1 = (150 << 23);
-	cout << "magic1 = " << bitset<32>(magic1) << endl;
+    */
+    const int magic1 = (150 << 23);
+    cout << "magic1 = " << bitset<32>(magic1) << endl;
 
-	const int magic2 = (1 << 22);
-	cout << "magic2 = " << bitset<32>(magic2) << endl;
+    const int magic2 = (1 << 22);
+    cout << "magic2 = " << bitset<32>(magic2) << endl;
 
-	int magic = magic1 | magic2;
-	cout << "magic =  " << bitset<32>(magic) << endl;
+    int magic = magic1 | magic2;
+    cout << "magic =  " << bitset<32>(magic) << endl;
 
-	/*
-	С отрицательным же числом этот номер не пройдет, потому что после сложений произойдет
-	перенос из старшего разряда и экспонента уменьшится и все сдвинется  влево! Как же быть ?
-	В десятичном случае - элементарно, нужно складывать не с 1е5, а 2е5 - тогда перенесется
-	из двойки, а в двоичном - чуть сложнее, поскольку двойки у нас нет нужно использовать 1.1еХ
-	и жертвовать одним разрядом точности.То есть результирующие волшебное число для float
-	с 23 битами мантисы это 1.1е1011 (в бинарной форме, в десятичной - 1.5 * 2 ^ 23),
-	поскольку мантиса сдвинута на 127 число это получается как(150 << 23) | (1 << 22).
-	*/
+    /*
+    РЎ РѕС‚СЂРёС†Р°С‚РµР»СЊРЅС‹Рј Р¶Рµ С‡РёСЃР»РѕРј СЌС‚РѕС‚ РЅРѕРјРµСЂ РЅРµ РїСЂРѕР№РґРµС‚, РїРѕС‚РѕРјСѓ С‡С‚Рѕ РїРѕСЃР»Рµ СЃР»РѕР¶РµРЅРёР№ РїСЂРѕРёР·РѕР№РґРµС‚
+    РїРµСЂРµРЅРѕСЃ РёР· СЃС‚Р°СЂС€РµРіРѕ СЂР°Р·СЂСЏРґР° Рё СЌРєСЃРїРѕРЅРµРЅС‚Р° СѓРјРµРЅСЊС€РёС‚СЃСЏ Рё РІСЃРµ СЃРґРІРёРЅРµС‚СЃСЏ  РІР»РµРІРѕ! РљР°Рє Р¶Рµ Р±С‹С‚СЊ ?
+    Р’ РґРµСЃСЏС‚РёС‡РЅРѕРј СЃР»СѓС‡Р°Рµ - СЌР»РµРјРµРЅС‚Р°СЂРЅРѕ, РЅСѓР¶РЅРѕ СЃРєР»Р°РґС‹РІР°С‚СЊ РЅРµ СЃ 1Рµ5, Р° 2Рµ5 - С‚РѕРіРґР° РїРµСЂРµРЅРµСЃРµС‚СЃСЏ
+    РёР· РґРІРѕР№РєРё, Р° РІ РґРІРѕРёС‡РЅРѕРј - С‡СѓС‚СЊ СЃР»РѕР¶РЅРµРµ, РїРѕСЃРєРѕР»СЊРєСѓ РґРІРѕР№РєРё Сѓ РЅР°СЃ РЅРµС‚ РЅСѓР¶РЅРѕ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ 1.1РµРҐ
+    Рё Р¶РµСЂС‚РІРѕРІР°С‚СЊ РѕРґРЅРёРј СЂР°Р·СЂСЏРґРѕРј С‚РѕС‡РЅРѕСЃС‚Рё.РўРѕ РµСЃС‚СЊ СЂРµР·СѓР»СЊС‚РёСЂСѓСЋС‰РёРµ РІРѕР»С€РµР±РЅРѕРµ С‡РёСЃР»Рѕ РґР»СЏ float
+    СЃ 23 Р±РёС‚Р°РјРё РјР°РЅС‚РёСЃС‹ СЌС‚Рѕ 1.1Рµ1011 (РІ Р±РёРЅР°СЂРЅРѕР№ С„РѕСЂРјРµ, РІ РґРµСЃСЏС‚РёС‡РЅРѕР№ - 1.5 * 2 ^ 23),
+    РїРѕСЃРєРѕР»СЊРєСѓ РјР°РЅС‚РёСЃР° СЃРґРІРёРЅСѓС‚Р° РЅР° 127 С‡РёСЃР»Рѕ СЌС‚Рѕ РїРѕР»СѓС‡Р°РµС‚СЃСЏ РєР°Рє(150 << 23) | (1 << 22).
+    */
 
-	// append to the converted number
-	// float representation of the magic intteger mask
-	x += *(reinterpret_cast<float*>(&magic));
+    // append to the converted number
+    // float representation of the magic intteger mask
+    x += *(reinterpret_cast<float*>(&magic));
 
-	/*
-	После сдвига хорошо бы почистить старшие разряды от экспоненты и знака.
-	В той конверсии, что я раньше видел, обходили этот шаг хитро - использовали double
-	вместо float и просто брали младшее двойное слово результата, в котором была одна мантиса.
-	Собственно из за этого я и стал рыть, ибо дабл использовать не хотелось.
-	Занулить старшие биты маской - не пройдет ибо будет работать только с положительными числами.
-	Писать условия или битовую логику тоже не хочется. К счастью есть простейший способ обработать
-	старшие биты одной операцией!
+    /*
+    РџРѕСЃР»Рµ СЃРґРІРёРіР° С…РѕСЂРѕС€Рѕ Р±С‹ РїРѕС‡РёСЃС‚РёС‚СЊ СЃС‚Р°СЂС€РёРµ СЂР°Р·СЂСЏРґС‹ РѕС‚ СЌРєСЃРїРѕРЅРµРЅС‚С‹ Рё Р·РЅР°РєР°.
+    Р’ С‚РѕР№ РєРѕРЅРІРµСЂСЃРёРё, С‡С‚Рѕ СЏ СЂР°РЅСЊС€Рµ РІРёРґРµР», РѕР±С…РѕРґРёР»Рё СЌС‚РѕС‚ С€Р°Рі С…РёС‚СЂРѕ - РёСЃРїРѕР»СЊР·РѕРІР°Р»Рё double
+    РІРјРµСЃС‚Рѕ float Рё РїСЂРѕСЃС‚Рѕ Р±СЂР°Р»Рё РјР»Р°РґС€РµРµ РґРІРѕР№РЅРѕРµ СЃР»РѕРІРѕ СЂРµР·СѓР»СЊС‚Р°С‚Р°, РІ РєРѕС‚РѕСЂРѕРј Р±С‹Р»Р° РѕРґРЅР° РјР°РЅС‚РёСЃР°.
+    РЎРѕР±СЃС‚РІРµРЅРЅРѕ РёР· Р·Р° СЌС‚РѕРіРѕ СЏ Рё СЃС‚Р°Р» СЂС‹С‚СЊ, РёР±Рѕ РґР°Р±Р» РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ РЅРµ С…РѕС‚РµР»РѕСЃСЊ.
+    Р—Р°РЅСѓР»РёС‚СЊ СЃС‚Р°СЂС€РёРµ Р±РёС‚С‹ РјР°СЃРєРѕР№ - РЅРµ РїСЂРѕР№РґРµС‚ РёР±Рѕ Р±СѓРґРµС‚ СЂР°Р±РѕС‚Р°С‚СЊ С‚РѕР»СЊРєРѕ СЃ РїРѕР»РѕР¶РёС‚РµР»СЊРЅС‹РјРё С‡РёСЃР»Р°РјРё.
+    РџРёСЃР°С‚СЊ СѓСЃР»РѕРІРёСЏ РёР»Рё Р±РёС‚РѕРІСѓСЋ Р»РѕРіРёРєСѓ С‚РѕР¶Рµ РЅРµ С…РѕС‡РµС‚СЃСЏ. Рљ СЃС‡Р°СЃС‚СЊСЋ РµСЃС‚СЊ РїСЂРѕСЃС‚РµР№С€РёР№ СЃРїРѕСЃРѕР± РѕР±СЂР°Р±РѕС‚Р°С‚СЊ
+    СЃС‚Р°СЂС€РёРµ Р±РёС‚С‹ РѕРґРЅРѕР№ РѕРїРµСЂР°С†РёРµР№!
 
-	В самом деле, если рассматривать float то у нас возможно только два варианта результата :
-	знак - всегда 0, экспонента - всегда 150, а вот самый старший бит мантисы меняется -
-	в случае положительного числа 1, в случае отрицательного 0. Если отбросить младшие 22 бита,
-	то можно заметить, что для положительных чисел результат равен ровно нашему волшебному числу,
-	а для отрицательных - меньше его ровно на 1! То есть если отнять от результата волшебное число как int
-	то младшие 22 бита не изменятся, в старших битах положительного числа будут одни нули,
-	а у отрицательного - одни единички, как раз то, что нам надо.
-	*/
+    Р’ СЃР°РјРѕРј РґРµР»Рµ, РµСЃР»Рё СЂР°СЃСЃРјР°С‚СЂРёРІР°С‚СЊ float С‚Рѕ Сѓ РЅР°СЃ РІРѕР·РјРѕР¶РЅРѕ С‚РѕР»СЊРєРѕ РґРІР° РІР°СЂРёР°РЅС‚Р° СЂРµР·СѓР»СЊС‚Р°С‚Р° :
+    Р·РЅР°Рє - РІСЃРµРіРґР° 0, СЌРєСЃРїРѕРЅРµРЅС‚Р° - РІСЃРµРіРґР° 150, Р° РІРѕС‚ СЃР°РјС‹Р№ СЃС‚Р°СЂС€РёР№ Р±РёС‚ РјР°РЅС‚РёСЃС‹ РјРµРЅСЏРµС‚СЃСЏ -
+    РІ СЃР»СѓС‡Р°Рµ РїРѕР»РѕР¶РёС‚РµР»СЊРЅРѕРіРѕ С‡РёСЃР»Р° 1, РІ СЃР»СѓС‡Р°Рµ РѕС‚СЂРёС†Р°С‚РµР»СЊРЅРѕРіРѕ 0. Р•СЃР»Рё РѕС‚Р±СЂРѕСЃРёС‚СЊ РјР»Р°РґС€РёРµ 22 Р±РёС‚Р°,
+    С‚Рѕ РјРѕР¶РЅРѕ Р·Р°РјРµС‚РёС‚СЊ, С‡С‚Рѕ РґР»СЏ РїРѕР»РѕР¶РёС‚РµР»СЊРЅС‹С… С‡РёСЃРµР» СЂРµР·СѓР»СЊС‚Р°С‚ СЂР°РІРµРЅ СЂРѕРІРЅРѕ РЅР°С€РµРјСѓ РІРѕР»С€РµР±РЅРѕРјСѓ С‡РёСЃР»Сѓ,
+    Р° РґР»СЏ РѕС‚СЂРёС†Р°С‚РµР»СЊРЅС‹С… - РјРµРЅСЊС€Рµ РµРіРѕ СЂРѕРІРЅРѕ РЅР° 1! РўРѕ РµСЃС‚СЊ РµСЃР»Рё РѕС‚РЅСЏС‚СЊ РѕС‚ СЂРµР·СѓР»СЊС‚Р°С‚Р° РІРѕР»С€РµР±РЅРѕРµ С‡РёСЃР»Рѕ РєР°Рє int
+    С‚Рѕ РјР»Р°РґС€РёРµ 22 Р±РёС‚Р° РЅРµ РёР·РјРµРЅСЏС‚СЃСЏ, РІ СЃС‚Р°СЂС€РёС… Р±РёС‚Р°С… РїРѕР»РѕР¶РёС‚РµР»СЊРЅРѕРіРѕ С‡РёСЃР»Р° Р±СѓРґСѓС‚ РѕРґРЅРё РЅСѓР»Рё,
+    Р° Сѓ РѕС‚СЂРёС†Р°С‚РµР»СЊРЅРѕРіРѕ - РѕРґРЅРё РµРґРёРЅРёС‡РєРё, РєР°Рє СЂР°Р· С‚Рѕ, С‡С‚Рѕ РЅР°Рј РЅР°РґРѕ.
+    */
 
-	// subtract from integer representation of the converted number
-	// magic int mask
-	float res = *(reinterpret_cast<int*>(&x)) - magic;
+    // subtract from integer representation of the converted number
+    // magic int mask
+    float res = *(reinterpret_cast<int*>(&x)) - magic;
 
-	return res;
-	/*
-	Сишное приведение вызовет функцию _ftol, которая помимо использования медленной инструкции для конверсии
-	(ФПУ обычно не оптимизированы для таких операций) еще будет сохранять текущий режим округления,
-	устанавливать режим округления соответсвующий стандарту С, конвертить, потом востанавливать старый.
-	Замерь сам сколько занимает каст и сколько конверсия волшебным числом.
-	И кроме того сишный каст и даже инлайн ассемблер(который по определению непереносим) не могут сконвертить к фиксд пойнту.
+    return res;
+    /*
+    РЎРёС€РЅРѕРµ РїСЂРёРІРµРґРµРЅРёРµ РІС‹Р·РѕРІРµС‚ С„СѓРЅРєС†РёСЋ _ftol, РєРѕС‚РѕСЂР°СЏ РїРѕРјРёРјРѕ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёСЏ РјРµРґР»РµРЅРЅРѕР№ РёРЅСЃС‚СЂСѓРєС†РёРё РґР»СЏ РєРѕРЅРІРµСЂСЃРёРё
+    (Р¤РџРЈ РѕР±С‹С‡РЅРѕ РЅРµ РѕРїС‚РёРјРёР·РёСЂРѕРІР°РЅС‹ РґР»СЏ С‚Р°РєРёС… РѕРїРµСЂР°С†РёР№) РµС‰Рµ Р±СѓРґРµС‚ СЃРѕС…СЂР°РЅСЏС‚СЊ С‚РµРєСѓС‰РёР№ СЂРµР¶РёРј РѕРєСЂСѓРіР»РµРЅРёСЏ,
+    СѓСЃС‚Р°РЅР°РІР»РёРІР°С‚СЊ СЂРµР¶РёРј РѕРєСЂСѓРіР»РµРЅРёСЏ СЃРѕРѕС‚РІРµС‚СЃРІСѓСЋС‰РёР№ СЃС‚Р°РЅРґР°СЂС‚Сѓ РЎ, РєРѕРЅРІРµСЂС‚РёС‚СЊ, РїРѕС‚РѕРј РІРѕСЃС‚Р°РЅР°РІР»РёРІР°С‚СЊ СЃС‚Р°СЂС‹Р№.
+    Р—Р°РјРµСЂСЊ СЃР°Рј СЃРєРѕР»СЊРєРѕ Р·Р°РЅРёРјР°РµС‚ РєР°СЃС‚ Рё СЃРєРѕР»СЊРєРѕ РєРѕРЅРІРµСЂСЃРёСЏ РІРѕР»С€РµР±РЅС‹Рј С‡РёСЃР»РѕРј.
+    Р РєСЂРѕРјРµ С‚РѕРіРѕ СЃРёС€РЅС‹Р№ РєР°СЃС‚ Рё РґР°Р¶Рµ РёРЅР»Р°Р№РЅ Р°СЃСЃРµРјР±Р»РµСЂ(РєРѕС‚РѕСЂС‹Р№ РїРѕ РѕРїСЂРµРґРµР»РµРЅРёСЋ РЅРµРїРµСЂРµРЅРѕСЃРёРј) РЅРµ РјРѕРіСѓС‚ СЃРєРѕРЅРІРµСЂС‚РёС‚СЊ Рє С„РёРєСЃРґ РїРѕР№РЅС‚Сѓ.
 
-	Это, конечно, не я сам придумал, а вычитал в умной статье умного дядько Криса Хекера,
-	найденой вот тут http ://www.d6.com/users/checker/pdfs/gdmfp.pdf
-	Но за то я теперь сам могу написать конверсию и не только в целые,
-	а в любой фиксд пойнт и никогда не забуду волшебных чисел.
+    Р­С‚Рѕ, РєРѕРЅРµС‡РЅРѕ, РЅРµ СЏ СЃР°Рј РїСЂРёРґСѓРјР°Р», Р° РІС‹С‡РёС‚Р°Р» РІ СѓРјРЅРѕР№ СЃС‚Р°С‚СЊРµ СѓРјРЅРѕРіРѕ РґСЏРґСЊРєРѕ РљСЂРёСЃР° РҐРµРєРµСЂР°,
+    РЅР°Р№РґРµРЅРѕР№ РІРѕС‚ С‚СѓС‚ http ://www.d6.com/users/checker/pdfs/gdmfp.pdf
+    РќРѕ Р·Р° С‚Рѕ СЏ С‚РµРїРµСЂСЊ СЃР°Рј РјРѕРіСѓ РЅР°РїРёСЃР°С‚СЊ РєРѕРЅРІРµСЂСЃРёСЋ Рё РЅРµ С‚РѕР»СЊРєРѕ РІ С†РµР»С‹Рµ,
+    Р° РІ Р»СЋР±РѕР№ С„РёРєСЃРґ РїРѕР№РЅС‚ Рё РЅРёРєРѕРіРґР° РЅРµ Р·Р°Р±СѓРґСѓ РІРѕР»С€РµР±РЅС‹С… С‡РёСЃРµР».
 
-	*/
+    */
 }
 
 
@@ -835,19 +835,19 @@ int fast_float2int_debug(float x)
 // return 1/sqrt(number)
 float quick_rsqrt(float number)
 {
-	long i;
-	float x2, y;
-	const float threehalfs = 1.5F;
+    long i;
+    float x2, y;
+    const float threehalfs = 1.5F;
 
-	x2 = number * 0.5F;
-	y = number;
-	i = *(long *)&y;                       // evil floating point bit level hacking
-	i = 0x5f3759df - (i >> 1);               // what the fuck?
-	y = *(float *)&i;
-	y = y * (threehalfs - (x2 * y * y));   // 1st iteration
-	//y  = y * ( threehalfs - ( x2 * y * y ) );   // 2nd iteration, this can be removed
+    x2 = number * 0.5F;
+    y = number;
+    i = *(long *)&y;                       // evil floating point bit level hacking
+    i = 0x5f3759df - (i >> 1);               // what the fuck?
+    y = *(float *)&i;
+    y = y * (threehalfs - (x2 * y * y));   // 1st iteration
+    //y  = y * ( threehalfs - ( x2 * y * y ) );   // 2nd iteration, this can be removed
 
-	return y;
+    return y;
 }
 
 

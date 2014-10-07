@@ -26,7 +26,7 @@ public:
     // иначе будет нарушено ODR
     // - Дружественные функции шаблона лучше определять в самом шаблоне
     // (это делается для удобства приведения типов)
-    std::ostream& operator<< (std::ostream& os, const fixed_array<T,MAX>& f){
+    friend std::ostream& operator<< (std::ostream& os, const fixed_array<T,MAX>& f){
         for(int i = 0 ; i < MAX; i++){
             os << f._arr[i];
         }

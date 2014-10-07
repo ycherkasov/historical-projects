@@ -1,6 +1,7 @@
 #include <bitset>
 #include <string>
 #include <iostream>
+#include <stdexcept>
 #include "containers2.h"
 using namespace std;
 

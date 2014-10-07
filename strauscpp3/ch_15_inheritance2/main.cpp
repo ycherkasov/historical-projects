@@ -4,6 +4,7 @@
 #include "adapter.h"
 #include "virtual.h"
 
+#include <memory>
 #include <vector>
 #include <algorithm>
 #include <functional>

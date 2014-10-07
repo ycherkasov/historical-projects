@@ -3,11 +3,22 @@
 #include <string>
 #include <iostream>
 
+#if defined(_WIN32) || defined(_WIN64) 
+#define cdecl __cdecl
+#define stdcall __stdcall
+#define fastcall __fastcall
+#else
+// TODO: manage under GCC
+#define cdecl
+#define stdcall
+#define fastcall
+#endif
+
 
 // стандартное соглашение по вызову __cdecl
 // Аргументы передаются через стек, справа налево. 
 // Очистку стека производит вызывающая программа.
-int __cdecl cdecl_func(int a, long b)
+int cdecl cdecl_func(int a, long b)
 {
 	// Помещение в стек значения регистра базы
 	//00411440  push        ebp  
@@ -54,7 +65,7 @@ int __cdecl cdecl_func(int a, long b)
 // соглашение принятое в WINAPI __stdcall
 // Аргументы передаются через стек, справа налево. 
 // Очистку стека производит вызываемая функция.
-int __stdcall stdcall_func(int a, long* b)
+int stdcall stdcall_func(int a, long* b)
 {
 	// Помещение в стек значения регистра базы
 	//  push        ebp  
@@ -106,7 +117,7 @@ int __stdcall stdcall_func(int a, long* b)
 // передача параметров через регистры вместо стека,
 // слева направо в eax, edx, ecx и, если параметров больше трёх, в стеке.
 // Указатель стека на исходное значение возвращает функция.
-int __fastcall fastcall_func(char a, short b)
+int fastcall fastcall_func(char a, short b)
 {
 	return a%b;
 }
@@ -117,7 +128,7 @@ int __fastcall fastcall_func(char a, short b)
 // 0 - ограничитель списка параметров
 // The Microsoft Visual Studio C/C++ compiler resolves this conflict 
 // by silently converting the calling convention to __cdecl
-int __cdecl var_param_func(int a, ...)
+int cdecl var_param_func(int a, ...)
 {
 	va_list argptr;
 	va_start(argptr, a);

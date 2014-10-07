@@ -1,4 +1,4 @@
-#include <exception>
+#include <stdexcept>
 #include "complex.h"
 
 complex_t::complex_t(double r/* = 0.*/, double i /*= 0.*/) : re(r), im(i){}

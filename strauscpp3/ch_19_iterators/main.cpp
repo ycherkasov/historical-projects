@@ -4,6 +4,7 @@
 #include <vector>
 #include <cstdlib>
 #include <iterator>
+#include <memory>
 #include "checked_iterator.h"
 #include "custom_allocator.h"
 

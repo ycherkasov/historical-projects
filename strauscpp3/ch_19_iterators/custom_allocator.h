@@ -1,5 +1,6 @@
 #pragma once
-
+#include <typeinfo>
+#include <limits>
 namespace std {
 
 // Подобно итератору, распределитель памяти - это чистая абстракция

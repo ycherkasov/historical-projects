@@ -505,9 +505,9 @@ void show_cmath_fpoint_operations(){
     // Generate quiet NAN
     double nn = nan("");
     float nf = nanf("");
-    cout << "For " << nn << " isnan(nn) = " << isnan(nn) << '\n';
-    cout << "For " << nf << " isnan(nf) = " << isnan(nf) << '\n';
-    cout << "For " << "isnan sqrt(-1.0) = " << isnan(sqrt(-1.0)) << '\n';
+    cout << "For " << nn << " isnan(nn) = " << std::isnan(nn) << '\n';
+    cout << "For " << nf << " isnan(nf) = " << std::isnan(nf) << '\n';
+    cout << "For " << "isnan sqrt(-1.0) = " << std::isnan(sqrt(-1.0)) << '\n';
     // isnormal is opposite to isnan, but also checks for INF and 0
     cout << "For " << "isnormal sqrt(-1.0) = " << isnormal(sqrt(-1.0)) << '\n';
 

@@ -52,8 +52,9 @@ void show_const_pointers(){
 
     // Явная ошибка - константа не проинициализирована,
     // но компилятор молчит
-    // Clang detects it!
-#ifndef __clang__
+    // Clang & GCC detect it!
+
+#if defined(_WIN32) || defined(_WIN64)
     const int* pp2 = new const int;
 
     // Проинициализировать ее легальным способом теперь не удастся
@@ -81,7 +82,7 @@ void show_const_pointers(){
 #endif
 
     delete pp1;
-#ifndef __clang__
+#if defined(_WIN32) || defined(_WIN64)
     delete pp2;
     delete[] pp3;
 #endif

@@ -4,7 +4,7 @@
 #include <cfloat>			// объявление функций  для данных с плавающей точкой
 #include <cfenv>
 #include <vector>
-
+#include <stdexcept>
 #include "ex.h"
 #include "controlled.h"
 #include "finished.h"

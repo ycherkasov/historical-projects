@@ -1,5 +1,5 @@
 #pragma once
-
+#include <cstring>
 // ------------------- Отличия от шаблона класса -------------------
 // - возможна перегрузка с обычными функциями
 // - возможен вывод аргументов
@@ -28,7 +28,7 @@ inline const T& max(const T& a, const T& b){
 // Специализация для строк (лексиграфический предикат)
 template <>
 inline const char* const& max(const char* const& a, const char* const& b ){
-	return ( std::strcmp(a, b) < 0 ) ? a : b;
+	return ( strcmp(a, b) < 0 ) ? a : b;
 }
 
 

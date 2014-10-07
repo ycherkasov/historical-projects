@@ -1,6 +1,6 @@
 #include "controlled.h"
 #include <iostream>
-#include <exception>
+#include <stdexcept>
 
 using std::cout;
 using std::endl;

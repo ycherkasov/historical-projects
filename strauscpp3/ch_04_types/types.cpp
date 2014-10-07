@@ -2,6 +2,7 @@
 #include <cmath>
 #include <bitset>
 #include <ctime>
+#include <cstddef>
 #include "bit_operations.h"
 
 /*

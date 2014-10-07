@@ -12,7 +12,7 @@ public:
 	typedef ptrdiff_t difference_type;
 	typedef T value_type;
 	typedef T* pointer;
-	typedef const T* const_pointer;
+    typedef const T* const_pointer;
 	typedef T& reference;
 	typedef const T& const_reference;
 
@@ -59,7 +59,7 @@ public:
 	// элементы здесь не конструируются!
 	// смысл второго элемента зависит от реализации
 	// может быть использован при перегрузке new, например, указатель на предыдущий блок памяти
-    pointer allocate(size_type num, custom_allocator<T>::const_pointer hint = nullptr){
+    pointer allocate(size_type num, typename custom_allocator<T>::const_pointer hint = nullptr){
 		return reinterpret_cast<pointer>( ::operator new(num * sizeof(T)) );
 	}
 

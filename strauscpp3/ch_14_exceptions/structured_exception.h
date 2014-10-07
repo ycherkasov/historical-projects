@@ -5,9 +5,9 @@
 
 // В этом хедере описан класс, "заворачивающий" SEH в исключения C++
 
-#define NOTHROW throw()
+#include <windows.h>
 
-struct EXCEPTION_POINTERS;
+#define NOTHROW throw()
 
 // If you want your C++ exception code to catch SEH exceptions, 
 // you need to build the code with /EHa.

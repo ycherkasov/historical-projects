@@ -12,12 +12,12 @@ class range_error_t{
 
 public:
     // Конструктор не бросает исключений
-    template range_error_t(T r) throw() {
+    range_error_t(T r) throw() {
         _range = r;
     }
 
     // Конструктор копирования вызывается только если ловить по значению
-    template range_error_t(const range_error_t& r)  throw()  { // не бросает исключений
+    range_error_t(const range_error_t& r)  throw()  { // не бросает исключений
         _range = r._range;
     }
 

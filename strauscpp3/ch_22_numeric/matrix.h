@@ -35,11 +35,11 @@ public:
 	}
 
 	const slice_iter<T> row(size_t i) const {
-		return slice_iter<T>(_val, slice(i, _d2, _d1));
+		return slice_iter<T>(_val, std::slice(i, _d2, _d1));
 	}
 
 	const slice_iter<T> column(size_t i) const {
-		return slice_iter<T>(_val, slice(i*_d2, _d2, 1));
+		return slice_iter<T>(_val, std::slice(i*_d2, _d2, 1));
 	}
 
 	// access elements

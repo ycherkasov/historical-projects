@@ -3,7 +3,6 @@
 #include <iosfwd>
 #include "streams.h"
 #include "formatted_user_input.h"
-
 using namespace std;
 
 void show_standard_streams(){

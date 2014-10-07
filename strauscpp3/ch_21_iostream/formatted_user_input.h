@@ -2,6 +2,7 @@
 #include <iostream>
 #include <sstream>
 #include <iomanip>
+#include <cstring>
 #include "streams.h"
 
 using namespace std;

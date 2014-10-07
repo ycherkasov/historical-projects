@@ -8,6 +8,7 @@
 #include <iterator>
 #include <cstdlib>
 #include <cctype>       // std::tolower
+#include <cstring>
 
 using namespace std;
 typedef vector<int> v_int;

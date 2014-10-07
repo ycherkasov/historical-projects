@@ -1,6 +1,8 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <cstring>
+#include <limits>
 #include "streams.h"
 
 using namespace std;
@@ -285,7 +287,12 @@ void stream_state(){
 	cin.exceptions(ios::badbit|ios::failbit);
 
 	// с параметром 0 исключения отменяются
+#ifdef __GNUC__
+	// because GCC has a typesafe hack to prevent assignment from integers
+	cin.exceptions(ios_base::iostate());
+#else	
 	cin.exceptions(0);
+#endif
 }
 
 void show_place_back(){

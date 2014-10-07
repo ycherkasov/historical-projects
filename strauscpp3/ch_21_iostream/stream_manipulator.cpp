@@ -1,5 +1,6 @@
 #include <iostream>
 #include <iomanip> // manipulators with args
+#include <limits>
 #include "streams.h"
 
 using namespace std;

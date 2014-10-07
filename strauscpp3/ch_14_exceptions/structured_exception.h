@@ -1,11 +1,15 @@
 #ifndef	DEFINE_STRUCTREDEXCEPTION_H
 #define	DEFINE_STRUCTREDEXCEPTION_H
+
+#if defined(_WIN32) || defined(_WIN64)
+
 #include <exception>
 #include <stdexcept>
 
-// В этом хедере описан класс, "заворачивающий" SEH в исключения C++
-
+// SEH declaration here
 #include <windows.h>
+
+// В этом хедере описан класс, "заворачивающий" SEH в исключения C++
 
 #define NOTHROW throw()
 
@@ -38,5 +42,7 @@ private:
 // class access_violation : public structured_exception
 // class divide_by_zero : public structured_exception
 // etc.
+
+#endif // defined(_WIN32) || defined(_WIN64)
 
 #endif	//	DEFINE_STRUCTREDEXCEPTION_H//

@@ -2,9 +2,6 @@
 
 #if defined(_WIN32) || defined(_WIN64)
 
-
-
-
 void structured_exception::enableStructuredExceptions() NOTHROW {
     _set_se_translator(structured_exception::handlerStructuredException);
 }

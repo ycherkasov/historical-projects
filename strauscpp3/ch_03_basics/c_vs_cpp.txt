@@ -1,7 +1,7 @@
-Совместимость C и C++
+РЎРѕРІРјРµСЃС‚РёРјРѕСЃС‚СЊ C Рё C++
 
-у C и C++ есть общее подмножество, но C++ не поддерживает весь сишный синтаксис. 
-причем довольно важные его куски. сразу вспоминаются variable-sized arrays и designated initializers
+Сѓ C Рё C++ РµСЃС‚СЊ РѕР±С‰РµРµ РїРѕРґРјРЅРѕР¶РµСЃС‚РІРѕ, РЅРѕ C++ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РІРµСЃСЊ СЃРёС€РЅС‹Р№ СЃРёРЅС‚Р°РєСЃРёСЃ. 
+РїСЂРёС‡РµРј РґРѕРІРѕР»СЊРЅРѕ РІР°Р¶РЅС‹Рµ РµРіРѕ РєСѓСЃРєРё. СЃСЂР°Р·Сѓ РІСЃРїРѕРјРёРЅР°СЋС‚СЃСЏ variable-sized arrays Рё designated initializers
 
 http://en.wikipedia.org/wiki/Compatibility_of_C_and_C%2B%2B
 * C allows a void* pointer to be assigned to any pointer type without a cast
@@ -16,7 +16,7 @@ flack:
   return;
 }
 
-С/C++ difference
+РЎ/C++ difference
 
 * C does not allow a given typedef to be duplicated in the same scope, whereas C++ allows repeated typedef
 * enum values are always of type int in C, whereas they are distinct types in C++ and may have a size different from that of int
@@ -48,12 +48,12 @@ int size(void)
 * C can recursively call main()
   C++ 5.2.2/9
   Recursive calls are permitted, except to the function named main (3.6.1).
-* Макросы с переменным числом аргументов (параметр __VA_ARGS__).
-* Можно использовать прагмы в макроподстановках (_Pragma)
-* Встроенные типы _Complex и _Imaginary
-* Квалификатор restrict.
-* Вызывать функцию, которая не была до этого декларирована
-* массивы переменного размера
+* РњР°РєСЂРѕСЃС‹ СЃ РїРµСЂРµРјРµРЅРЅС‹Рј С‡РёСЃР»РѕРј Р°СЂРіСѓРјРµРЅС‚РѕРІ (РїР°СЂР°РјРµС‚СЂ __VA_ARGS__).
+* РњРѕР¶РЅРѕ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ РїСЂР°РіРјС‹ РІ РјР°РєСЂРѕРїРѕРґСЃС‚Р°РЅРѕРІРєР°С… (_Pragma)
+* Р’СЃС‚СЂРѕРµРЅРЅС‹Рµ С‚РёРїС‹ _Complex Рё _Imaginary
+* РљРІР°Р»РёС„РёРєР°С‚РѕСЂ restrict.
+* Р’С‹Р·С‹РІР°С‚СЊ С„СѓРЅРєС†РёСЋ, РєРѕС‚РѕСЂР°СЏ РЅРµ Р±С‹Р»Р° РґРѕ СЌС‚РѕРіРѕ РґРµРєР»Р°СЂРёСЂРѕРІР°РЅР°
+* РјР°СЃСЃРёРІС‹ РїРµСЂРµРјРµРЅРЅРѕРіРѕ СЂР°Р·РјРµСЂР°
 void function(int size)
 {
    char a[size];

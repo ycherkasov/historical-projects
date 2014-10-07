@@ -3,22 +3,27 @@
 #include <string>
 #include <iostream>
 
-#if defined(_WIN32) || defined(_WIN64) 
-#define cdecl __cdecl
-#define stdcall __stdcall
-#define fastcall __fastcall
-#else
-// TODO: manage under GCC
+#if defined __GNUC__
 #define cdecl
 #define stdcall
 #define fastcall
+#define cdecl_gcc __attribute__((cdecl))
+#define stdcall_gcc __attribute__((stdcall))
+#define fastcall_gcc __attribute__((fastcall))
+#else
+#define cdecl __cdecl
+#define stdcall __stdcall
+#define fastcall __fastcall
+#define cdecl_gcc
+#define stdcall_gcc
+#define fastcall_gcc
 #endif
 
 
 // стандартное соглашение по вызову __cdecl
 // Аргументы передаются через стек, справа налево. 
 // Очистку стека производит вызывающая программа.
-int cdecl cdecl_func(int a, long b)
+int cdecl cdecl_func(int a, long b) cdecl_gcc
 {
 	// Помещение в стек значения регистра базы
 	//00411440  push        ebp  
@@ -65,7 +70,7 @@ int cdecl cdecl_func(int a, long b)
 // соглашение принятое в WINAPI __stdcall
 // Аргументы передаются через стек, справа налево. 
 // Очистку стека производит вызываемая функция.
-int stdcall stdcall_func(int a, long* b)
+int stdcall stdcall_func(int a, long* b) stdcall_gcc
 {
 	// Помещение в стек значения регистра базы
 	//  push        ebp  
@@ -117,7 +122,7 @@ int stdcall stdcall_func(int a, long* b)
 // передача параметров через регистры вместо стека,
 // слева направо в eax, edx, ecx и, если параметров больше трёх, в стеке.
 // Указатель стека на исходное значение возвращает функция.
-int fastcall fastcall_func(char a, short b)
+int fastcall fastcall_func(char a, short b) fastcall_gcc
 {
 	return a%b;
 }
@@ -128,7 +133,7 @@ int fastcall fastcall_func(char a, short b)
 // 0 - ограничитель списка параметров
 // The Microsoft Visual Studio C/C++ compiler resolves this conflict 
 // by silently converting the calling convention to __cdecl
-int cdecl var_param_func(int a, ...)
+int cdecl var_param_func(int a, ...) cdecl_gcc
 {
 	va_list argptr;
 	va_start(argptr, a);

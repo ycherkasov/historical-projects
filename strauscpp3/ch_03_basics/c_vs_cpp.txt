@@ -23,7 +23,7 @@ flack:
 * C++ also changes some C standard library functions to add additional functions with const qualifiers
 * in C++, a nested struct is defined only within the scope/namespace of the outer struct
 * Non-prototype ("K&R"-style) function declarations are not allowed in C++
-* In C, a function prototype without arguments, e.g. int foo();, implies that the parameters are unspecified
+* In C, a function prototype without arguments, e.g. int foo(), implies that the parameters are unspecified
 * C++ is more strict than C about pointer assignments that discard a const qualifier
 * C++ allows to use const variable in case: operator, C doesn't
 * character literals such as 'a' are of type int in C and of type char in C++
@@ -32,6 +32,7 @@ flack:
 * In C++, an object declaration is also a definition unless it contains an extern specifier and no initializer
 * Conversely, inline functions in C are of file scope whereas they have external linkage by default in C++
 * C requiring struct in front of structure tags (and so sizeof(T) refers to the variable), but C++ allowing it to be omitted
+
 extern int T;
 int size(void)
 {
@@ -51,7 +52,7 @@ int size(void)
 * Макросы с переменным числом аргументов (параметр __VA_ARGS__).
 * Можно использовать прагмы в макроподстановках (_Pragma)
 * Встроенные типы _Complex и _Imaginary
-* Квалификатор restrict.
+* Квалификатор restrict - дает знать компилятору, что указатель на этот блок памяти только один
 * Вызывать функцию, которая не была до этого декларирована
 * массивы переменного размера
 void function(int size)

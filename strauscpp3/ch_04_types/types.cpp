@@ -345,7 +345,7 @@ void show_integers(){
 
 	unsigned int i1 = 1;
 	int j1 = -1;
-	// Секция Unreachable достигается ? Если нет, то почему ?
+	// Секция Unreachable не достигается, т.к. uint -1 -> maxint 
 	if (j1 < i1){
 		cout << "Unreachable" << endl;
 	}

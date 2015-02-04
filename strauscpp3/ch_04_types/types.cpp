@@ -467,5 +467,6 @@ int main(){
 	show_references();
 	show_ifs(-1);
 	show_rand();
+    show_hamming_weight();
 	return 0;
 }

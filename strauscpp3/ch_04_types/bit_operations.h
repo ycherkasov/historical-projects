@@ -17,3 +17,4 @@ int fast_float2int_debug(float x);
 bool close_enough(double a, double b);
 
 void show_universal_fast_float2int();
+void show_hamming_weight();

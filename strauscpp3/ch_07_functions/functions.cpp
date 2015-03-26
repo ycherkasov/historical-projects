@@ -239,6 +239,7 @@ void show_macro()
 	CONCAT_FUNC_NAME(show, func_pointer);	// show_func_pointer()
 	//CONCAT_FUNC_NAME(show, macro); // - а это бесконечная рекурсия с переполнением стека
 }
+// TODO: mocro string literal #VAR
 
 // ----------------------------------
 int main()

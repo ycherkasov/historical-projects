@@ -198,6 +198,9 @@ void show_array_pointers(){
 	// Массив и указатель на массив - разные типы, их нельзя даже сравнивать
 	// они молча приводятся друг к другу, но сравнивать их нельзя
 	int array[42] = {};
+    for (size_t s = 0; s < 42; ++s){
+        array[s] = s;
+    }
 
 	int* ii3 = array;
 
@@ -288,6 +291,12 @@ int divide_2(int i){
 }
 
 bool raised_to2(int x){
+
+    const int intsize = sizeof(int)* 8;
+    cout << "(x - 1) = " << bitset<intsize>(x-1) << '\n';
+    cout << "x = " << bitset<intsize>(x) << '\n';
+    cout << "(x - 1) & x" << bitset<intsize>((x - 1) & x) << '\n';
+
 	if (!((x - 1) & x))
 		return true;
 	return false;
@@ -342,6 +351,7 @@ void show_integers(){
 	r = raised_to2(4);
 	r = raised_to2(8);
 	r = raised_to2(16);
+    r = raised_to2(24);
 
 	unsigned int i1 = 1;
 	int j1 = -1;
@@ -450,7 +460,7 @@ int main(){
 
 	show_cmath_fpoint_operations();
 
-	// does not work as exspected
+	// does not work as expected
 	show_fp_coltrol_noexcept();
 	show_fp_coltrol();
 

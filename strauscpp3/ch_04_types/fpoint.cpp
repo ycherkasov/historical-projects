@@ -309,7 +309,6 @@ void show_double(){
     //0x 7ff0 0000 0000 0000 = Infinity
     //0x fff0 0000 0000 0000 = -Infinity
     //0x 7fff ffff ffff ffff = NaN
-
 }
 
 

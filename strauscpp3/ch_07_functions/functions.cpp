@@ -238,8 +238,9 @@ void show_macro()
 	CONCAT_FUNC_NAME(show, unconst_ref);	// show_unconst_ref()
 	CONCAT_FUNC_NAME(show, func_pointer);	// show_func_pointer()
 	//CONCAT_FUNC_NAME(show, macro); // - а это бесконечная рекурсия с переполнением стека
+    // #define MAKE_NVP(name) L###name, name -> L"name", name
 }
-// TODO: mocro string literal #VAR
+
 
 // ----------------------------------
 int main()

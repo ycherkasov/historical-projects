@@ -60,7 +60,7 @@ C++ implicitly treats any const namespace-scope variable as having internal link
 unless it is explicitly declared extern, unlike C.
 
 Советы.
-1. Избегайте определний функций в хедерах.
+1. Избегайте определeний функций в хедерах.
 2. Используйте #include только в глобальной области видимости.
 3. Пользуйтесь стражами включения или #pragma once
    ODR - определения, встречающиеся в разных единицах трансляции

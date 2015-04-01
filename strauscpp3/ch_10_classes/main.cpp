@@ -41,6 +41,8 @@ void show_const(){
     // а так можно, член константного класса mutable может быть изменен
     aa.set_a6_mutable(5);
 
+    // static class member could be changed in const method
+    aa.set_static(6);
 }
 
 // Функция демонстрирует инициализацию и работу
@@ -267,7 +269,7 @@ void show_user_alloc(){
 
         user_alloc* y = new(x)user_alloc();
         // could be directly called in functional form only!
-        // will be implecetly called in case of exception
+        // will be implicitly called in case of exception
         user_alloc::operator delete(y, x);
         delete x;
     }
@@ -330,7 +332,7 @@ void show_memory_pool(){
 
 }
 
-//delete вместо delete[] привеодит к падению, если у типа есть нетривиальный деструктор(почему ? ).
+//delete вместо delete[] приводит к падению, если у типа есть нетривиальный деструктор(почему ? ).
 class class_with_non_trivial_destructor
 {
 private:

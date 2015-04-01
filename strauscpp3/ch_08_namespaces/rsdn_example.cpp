@@ -33,9 +33,9 @@ int test_ex() {
 	try {
 		throw E("exception");
     } 
-	//catch (E e) {
-	//	cout << e.what() << endl;
-	//} 
+    catch (E e) {
+        cout << e.what() << endl;
+    }
 	catch (exception const e) {
 		cout << e.what() << endl;
 	} 

@@ -10,7 +10,7 @@ namespace meyers_refcount {
 class rc_string {
 public:
 
-	// constructor from char, crates a new string
+	// constructor from char, creates a new string
 	explicit rc_string(const char* val) :_value(new string_value(val)){}
 
 	// copy constructor increments ref counter
@@ -110,7 +110,7 @@ public:
 		return *this; 
 	}
 
-	// could not create sepatately
+	// could not create separately
 	virtual  ~rc_object() = 0;
 
 	void add_ref(){
@@ -213,7 +213,7 @@ protected:
 		}
 
 		// new reference 
-		// (nevermind for the new or existing object)
+		// (never mind for the new or existing object)
 		_ptr->add_ref();
 	}
 private:
@@ -249,8 +249,8 @@ public:
 private:
 	// all refcount logics was moved to base class
 	// value class MUST provide copy constructor!
-	// Also that class is internal, so that noone 
-	// acciddentely created it on the stack
+	// Also that class is internal, so that no one 
+	// accidentally created it on the stack
 	// It uses 'delete this' and could be created
 	// in the heap only!
 	struct string_value : public rc_object{

@@ -28,6 +28,8 @@ public:
 
 	void set_a6_mutable(int) const;
 
+    void set_static(int) const;
+
 // Имеет смысл помещать приватные данные в конце, 
 // чтобы сделать акцент на открытых данных интерфейса
 // в этом случае инлайновые методы стоит размещать 
@@ -37,6 +39,7 @@ private:
 	static const int a2 = 10; // константное статическое поле м.б. иниц. в объявлении
 	static const int a3;       // д.б. иниц. в cpp
 	static const double a4;    // д.б. иниц. в cpp
+    static int a_stat;
 	
 
 	int a5;
@@ -76,23 +79,31 @@ private:
 
 // Константный метод - ничего не меняет в классе
 // Может быть вызван как для константного, так и для неконстантного экземпляра.
-inline int A::get_int1() const	
-{ return a1; }
+inline int A::get_int1() const	{
+    return a1; 
+}
 
-inline int A::get_int6() const	
-{ return a6; }
+inline int A::get_int6() const{
+    return a6; 
+}
 
 
 // Неконстантный метод - может быть вызван только
 // для неконстантного экземпляра класса
-inline void A::set_a5(int i)	
-{ a5 = i; }
+inline void A::set_a5(int i){ 
+    a5 = i; 
+}
 
 // Константный метод, изменяющий mutable-член
 // может быть вызван для константного экземпляра
-inline void A::set_a6_mutable(int i)const
-{ a8 = i; }
+inline void A::set_a6_mutable(int i)const {
+    a8 = i; 
+}
 
+inline void A::set_static(int i) const{
+    // Static members COULD be changed in const members
+    a_stat = i;
+}
 
 // Классы имеет смысл замещать структурами,
 // если они содержат немного данных, или просто композицию данных, 

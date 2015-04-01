@@ -18,5 +18,5 @@ namespace{
 
 void show_extern()
 {
-	std::cout << x;
+	std::cout << x << std::endl;
 }

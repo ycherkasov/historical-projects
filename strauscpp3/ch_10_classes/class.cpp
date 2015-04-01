@@ -2,6 +2,7 @@
 
 const int A::a3 = 10;
 const double A::a4 = 10.;
+int A::a_stat = 10;
 
 int A::a6 = 10;
 double A::a7 = 10.;

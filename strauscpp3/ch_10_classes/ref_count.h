@@ -7,6 +7,9 @@ namespace meyers_refcount {
 // See Meyers 2-29
 // Ref count string example
 
+//////////////////////////////////////////////////////////////////////////
+// First refcount version. Use internal counter
+
 class rc_string {
 public:
 
@@ -94,6 +97,9 @@ private:
 	string_value* _value;
 };
 
+//////////////////////////////////////////////////////////////////////////
+// Second refcount version. Use smart pointer and base class for refcount
+
 // Basic class for ref count *value* (!)
 class rc_object
 {
@@ -150,6 +156,7 @@ private:
 
 // pure virtual destructor should be defined
 rc_object::~rc_object(){}
+
 
 // smart pointer for saving ref count value
 // should be contained in wrapping object (not in value!)
@@ -226,12 +233,14 @@ private:
 };
 
 
-
 // Ref count usage
 class rc_string2
 {
 public:
 	rc_string2(const char* init_val) : _value(new string_value(init_val)){}
+
+	// We don't need copy constructor and operator=
+	// rc_ptr defaults will work fine
 
 	const char& operator[](size_t index) const {
 		return _value->_data[index];

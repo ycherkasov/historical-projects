@@ -177,12 +177,15 @@ class rc_string2
 			_holder(str),
 			_index(index){}
 
+		// In case of 'lvalue usage' we chack detach
+		// It means we are able to change the value
 		char_proxy& operator=(const char_proxy& rhs){
 			check_detach();
 			_holder._value->_data[_index] = rhs._holder._value->_data[rhs._index];
 			return *this;
 		}
 
+		// Same as previous operator
 		char_proxy& operator=(char rhs){
 			check_detach();
 			_holder._value->_data[_index] = rhs;
@@ -197,19 +200,21 @@ class rc_string2
 			}
 		}
 
-
+		// after dereference we can change the value outside
+		// Make unsgareable
 		char* operator&(){
 			check_detach();
 			_holder._value->mark_unshareable();
 			return &(_holder._value->_data[_index]);
 		}
 
-
+		// Const dereference version, unable to change outside
 		const char* operator&() const{
 			return &(_holder._value->_data[_index]);
 		}
 
-
+		// In case or 'rvalue usage' just cast to char
+		// It means that we are not going to change the value
 		operator char() const{
 			return _holder._value->_data[_index];
 		}

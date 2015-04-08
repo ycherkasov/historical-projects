@@ -100,7 +100,7 @@ void complex_matrix::clear(){
 		delete[] _matrix[i];
 	}
 	delete[] _matrix;
-	_matrix = 0; // не забываем обнулять!
+	_matrix = nullptr; // не забываем обнулять!
 }
 
 // по 2 версии операторов индексирования

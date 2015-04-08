@@ -7,14 +7,16 @@ class simple_ptr{
 public:
 
 	// конструктор, принимающий управление памятью
-	explicit simple_ptr(T* mem = nullptr) :_ptr(mem){}
+	explicit simple_ptr(T* mem = nullptr) : _ptr(mem){}
 
 	// оператор преобразования simple_ptr в
 	// simple_ptr любого типа! (конечно если указатель приводится к нему)
 	// Достаточно опасный подход, здесь приведен для примера
 	template <typename NewType>
 	operator simple_ptr<NewType>(){
-		return simple_ptr<NewType>(_ptr);
+		// return 'new' value because new pointer should own a new copy
+		// so that destroy it (otherwise it should be something like refcount)
+		return simple_ptr<NewType>(new T(*_ptr));
 	}
 
 	// освобождение памяти

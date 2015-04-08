@@ -113,7 +113,6 @@ void show_smart_ptr(){
 
 int main(){
 	show_smart_ptr();
-	return 0;
 	show_vector_by_val();
 	show_dynamic();
 	show_overloads();

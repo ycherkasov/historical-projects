@@ -106,6 +106,9 @@ http://en.cppreference.com/w/cpp/memory/new/operator_delete
 * new/delete pointer should be compared to zero
 // A default constructor may have parameters that have default values.
 * static members COULD be changed in const methods
+* use "lazy evaluation" of not all of result dataset could be used
+* use "pre-evaluation" is results could be used too often
+* use ref-count and copy-on-write on big datasets in concurrent environment
 
 Проектируя класс, следует ответить на следующие вопросы
 Как следует создавать и удалять объекты?

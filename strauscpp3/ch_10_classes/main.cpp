@@ -406,6 +406,10 @@ void show_ref_count(){
     char c3 = s2[0];
     // detached s2 as well
 
+	// We 'open' internal representation of the object
+	// so refcount usage could be unsafe
+	// restrict it setting shareable=false 
+	// (do not use refcount anymore)
     RCString ss1("Komatoza");
     char* p = &ss1[0];
     RCString ss2 = ss1;

@@ -31,14 +31,25 @@ private:
 };
 
 // В памяти объект включающий вируальный базовый класс представляется примерно так
-// cpp_code_generator
+
+// cpp_code_generator:
+// vptr
 // pointer to code_generator_base
-// java_code_generator
+
+// java_code_generator:
+// vptr
 // pointer to code_generator_base
-// php_code_generator
+
+// php_code_generator:
+// vptr
 // pointer to code_generator_base
-// code_formatter
-// code_generator_base
+
+// code_formatter:
+// vptr
+
+// code_generator_base:
+// vptr
+// int
 
 class cpp_code_generator : public virtual code_generator_base {
 public:
@@ -71,6 +82,7 @@ private:
 
 };
 
+// Крайний класс в иерархии наследует уже невиртуально!
 class code_formatter :		public cpp_code_generator
 						,	public java_code_generator
 						,	public php_code_generator {

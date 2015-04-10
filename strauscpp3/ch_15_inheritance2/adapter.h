@@ -57,7 +57,7 @@ private:
 };
 
 // Те даннные, что в deque_t были protected и public стали в write_only_adapter_stack_t protected.
-class write_only_adapter_stack_t : public adapter_stack_t{
+class write_only_adapter_stack_t : protected adapter_stack_t{
 public:
 	void push(int val);
 };

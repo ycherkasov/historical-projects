@@ -162,7 +162,6 @@ struct Base1
 		std::cout << "A_virt B::pf(int) " << i << std::endl;
 		return new A_virt();
 	}
-
 };
 
 struct Derived1 : Base1

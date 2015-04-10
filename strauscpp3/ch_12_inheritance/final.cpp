@@ -1,5 +1,5 @@
 #include "final.h"
 
 
-final::final(void){} 
-final::~final(void){}
+finalizer::finalizer(void){} 
+finalizer::~finalizer(void){}

@@ -52,7 +52,7 @@ void show_simple(){
         // вызывается свой метод
         slider.move(0);
 
-        // вызываются переопределенные методы
+        // вызываются методы базового класса
         slider.draw();
         slider.hide();
         slider.show();
@@ -91,11 +91,13 @@ void show_vitrual(){
     code_formatter formatter(1);
 
     formatter.generate(cpp_lang);
-    sz = sizeof(formatter);				// 36 ()
+    sz = sizeof(formatter);				
+	// 36 = ( base(int+vptr) = 8; generators(3 * (vfptr+vtbl)) = 24 ; last_class(vprt) = 4 )
+
     cout << "code_formatter size = " << sz << endl;
     sz = sizeof(code_generator_base);	// 8 (int + vtbl)
     cout << "code_generator_base size = " << sz << endl;
-    sz = sizeof(cpp_code_generator);	// 20 ()
+    sz = sizeof(cpp_code_generator);	// 20 (4 + 2*(vtbl+vfptr) ) ??
     cout << "cpp_code_generator size = " << sz << endl;
 
 
@@ -103,7 +105,7 @@ void show_vitrual(){
     Final f;
     sz = sizeof(Base);		// 4 (vtbl)
     sz = sizeof(Derived1);	// 4 (vtbl)
-    sz = sizeof(Derived2);	// 12 (vtbl + 2*vtbl)
+    sz = sizeof(Derived2);	// 12 (2*vtbl + vfptr)
     sz = sizeof(f);			// 16
 }
 
@@ -210,7 +212,7 @@ void show_sizes(){
 // Демонстрация запрещения наследования
 void show_final(){
 
-    class more : public final{
+    class more : public finalizer{
         int i;
     };
     // Следующие инструкции не компилируются:
@@ -251,13 +253,13 @@ void show_typeid_rtti(){
     void* cfvoid = dynamic_cast<void*>(cf);
 
     // Если преобразование запрещено, то возвращается 0-указатель
-    final* fin = dynamic_cast<final*>(cf);
+    finalizer* fin = dynamic_cast<finalizer*>(cf);
     if( fin == 0 )
         cout << "Wrong dynamic cast" << endl;
 
     // Если преобразуется в ссылку, то при неудаче бросается исключение bad_cast
     try	{
-        final& fin1 = dynamic_cast<final&>(formatter);
+        finalizer& fin1 = dynamic_cast<finalizer&>(formatter);
     }
     catch ( const std::bad_cast& e)	{
         cout << e.what() << endl;
@@ -266,7 +268,7 @@ void show_typeid_rtti(){
     // Информация о типе:
 
     // По имени типа
-    const type_info& ti1 = typeid(final);
+    const type_info& ti1 = typeid(finalizer);
     cout << ti1.name() << endl;
 
     // По имени объекта

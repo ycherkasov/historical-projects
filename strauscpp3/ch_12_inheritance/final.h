@@ -3,15 +3,15 @@
 // Финальный класс - это класс, от которого запрещено наследование
 // специальных средств для этого нет, но есть паттерн "запирающий класс"
 //template <typename T> // Почему не работает с шаблоном?
-class finalizer {
-	friend class final;
-	finalizer(){}
-	finalizer(const finalizer& f){}
+class inheritance_locker {
+	friend class finalizer;
+	inheritance_locker(){}
+	inheritance_locker(const inheritance_locker& f){}
 	
 };
 
-class final : public virtual finalizer/*<final>*/ {
+class finalizer : public virtual inheritance_locker/*<final>*/ {
 public:
-	final(void);
-	~final(void);
+	finalizer(void);
+	~finalizer(void);
 };

@@ -61,7 +61,7 @@ const currency_t operator/( const currency_t& a, const currency_t& b ){
 //  онструкторы не наследуютс€ - определ€ем €вно!
 roubles_t::roubles_t(double d) : currency_t(d){}
 
-// !Ќеобходимо об€зательно €вно определить конструктор понижающего преобразовани€!
+// !Ќеобходимо €вно определить конструктор понижающего преобразовани€!
 roubles_t::roubles_t( const currency_t& c ) : currency_t(c){}
 
 // переопределенный метод

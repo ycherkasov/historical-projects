@@ -167,6 +167,7 @@ void complex_object_exception(){
 
 // Целочисленное деление на 0 
 void show_zero_div_exception(){
+
 // TODO: make cross-platform!
 #if defined(_WIN32) || defined(_WIN64)
 	// Транслируем SE в C++ exception (должен быть скомпилирован с /EHa)
@@ -189,6 +190,7 @@ void show_zero_div_exception(){
 
 // Деление на 0 с плавающей точкой
 void show_fpe_zero_div(){
+
 // TODO: make cross-platform!
 #if defined(_WIN32) || defined(_WIN64)
     // Транслируем SE в C++ exception (должен быть скомпилирован с /EHa)

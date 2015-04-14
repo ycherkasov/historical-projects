@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
-project(part_03_types CXX)
-set(TARGET part_03_types)
+project(ch_19_types CXX)
+set(TARGET ch_19_types)
 
 ########################################################
 # source files

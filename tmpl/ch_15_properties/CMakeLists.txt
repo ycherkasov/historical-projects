@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
-project(part_03_properties CXX)
-set(TARGET part_03_properties)
+project(ch_15_properties CXX)
+set(TARGET ch_15_properties)
 
 ########################################################
 # source files

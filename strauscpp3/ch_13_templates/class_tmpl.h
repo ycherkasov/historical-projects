@@ -88,6 +88,7 @@ class no_templ{
 public:
     // поле в классе
     fixed_array<int, 100> _array;
+
     no_templ() : _intern(5){}
 
     // Шаблонный конструктор в классе

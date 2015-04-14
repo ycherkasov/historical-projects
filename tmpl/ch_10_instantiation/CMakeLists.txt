@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
-project(part_02_instantiation CXX)
-set(TARGET part_02_instantiation)
+project(ch_10_instantiation CXX)
+set(TARGET ch_10_instantiation)
 
 ########################################################
 # source files

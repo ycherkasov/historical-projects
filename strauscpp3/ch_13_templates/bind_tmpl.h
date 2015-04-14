@@ -30,7 +30,9 @@ namespace alg_adapter{
     class bind_second{
     public:
         bind_second(const Predicate& p, const T& t) : pred(p), val(t){}
-        bool operator()(const T& left) /*const*/{	// раскомментить для ошибки - почему нельзя const?
+        
+		// нельзя сделать метод const, т.к. неизвестно, константны ли все связанные инстанциации
+		bool operator()(const T& left) /*const*/ {	
             return pred(left, val);
         }
     private:
@@ -156,7 +158,7 @@ namespace alg_adapter_method{
     template <typename Arg1, typename Arg2>
     struct binary_predicate{
         typedef Arg1	first_argument_type;
-        typedef Arg2	secind_argument_type;
+        typedef Arg2	second_argument_type;
     };
 
     // Наследуем класс-предикат

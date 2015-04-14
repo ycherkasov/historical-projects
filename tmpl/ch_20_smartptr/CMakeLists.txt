@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
-project(part_04_smartptr CXX)
-set(TARGET part_04_smartptr)
+project(ch_20_smartptr CXX)
+set(TARGET ch_20_smartptr)
 
 ########################################################
 # source files

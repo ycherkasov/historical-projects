@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
-project(part_01_debugging CXX)
-set(TARGET part_01_debugging)
+project(ch_06_debugging CXX)
+set(TARGET ch_06_debugging)
 
 ########################################################
 # source files

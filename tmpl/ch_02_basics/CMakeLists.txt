@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
-project(part_01_basics CXX)
-set(TARGET part_01_basics)
+project(ch_02_basics CXX)
+set(TARGET ch_02_basics)
 
 ########################################################
 # source files

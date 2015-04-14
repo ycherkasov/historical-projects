@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
-project(part_03_expressions CXX)
-set(TARGET part_03_expressions)
+project(ch_18_exceptions CXX)
+set(TARGET ch_18_exceptions)
 
 ########################################################
 # source files

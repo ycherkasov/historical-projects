@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
-project(part_03_inherit CXX)
-set(TARGET part_03_inherit)
+project(ch_16_inherit CXX)
+set(TARGET ch_16_inherit)
 
 ########################################################
 # source files

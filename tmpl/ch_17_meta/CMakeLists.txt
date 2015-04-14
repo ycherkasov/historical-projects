@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
-project(part_03_meta CXX)
-set(TARGET part_03_meta)
+project(ch_17_meta CXX)
+set(TARGET ch_17_meta)
 
 ########################################################
 # source files

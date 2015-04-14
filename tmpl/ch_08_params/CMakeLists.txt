@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
-project(part_02_params CXX)
-set(TARGET part_02_params)
+project(ch_08_params CXX)
+set(TARGET ch_08_params)
 
 ########################################################
 # source files

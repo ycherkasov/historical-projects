@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
-project(part_04_tuples CXX)
-set(TARGET part_04_tuples)
+project(ch_21_tuples CXX)
+set(TARGET ch_21_tuples)
 
 ########################################################
 # source files

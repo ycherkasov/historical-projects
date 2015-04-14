@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
-project(part_01_models CXX)
-set(TARGET part_01_models)
+project(ch_07_models CXX)
+set(TARGET ch_07_models)
 
 ########################################################
 # source files

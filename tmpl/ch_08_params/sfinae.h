@@ -61,9 +61,8 @@ void test_sfinae() {
 	f<int>(10);  // Call #2. Without error (even though there is no int::foo) thanks to SFINAE.
 }
 
-int test_sfinae_int(){
+void test_sfinae_int(){
 	// Раскомментировать для ошибки
 	//return get_int<1>();
 	// Одна из приведенных функций дает ошибку до связывания с параметром шаблона
-	return 0;
 }

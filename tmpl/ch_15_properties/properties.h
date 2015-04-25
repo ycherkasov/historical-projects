@@ -219,8 +219,9 @@ template <typename T
 , typename AccTraits = value_accumulator_traits<T> >
 class strategy_tmpl_accumulator_traits{
 public:
-	static typename AccTraits::AccType accum(const T* begin, const T* end
-		,typename AccTraits::AccType total_1st = AccTraits::zero() ){
+	static typename AccTraits::AccType accum(const T* begin
+		, const T* end
+		, typename AccTraits::AccType total_1st = AccTraits::zero() ){
 		
 			// Накопитель с инициализацией
 			typedef AccTraits::AccType AT;

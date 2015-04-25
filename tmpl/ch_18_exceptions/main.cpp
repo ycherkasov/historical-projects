@@ -39,9 +39,7 @@ void show_efficient(){
 }
 
 int main(){
-
-
-	//show_unefficient();
+	show_unefficient();
 	show_efficient();
 
 	return 0;

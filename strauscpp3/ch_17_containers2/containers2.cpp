@@ -110,7 +110,7 @@ void show_list(){
 	list<int> l;
 	list<int> l1;
 	l.assign(arr, arr + sizeof(arr)/sizeof(int));
-	l1.assign(vi1.begin(), vi1.begin() + vi1.size());
+	l1.assign(vi1.begin(), vi1.end());
 	print_container(l);
 	print_container(l1);
 
@@ -185,6 +185,8 @@ void show_list(){
 	// удалить последовательные повторы,
 	// удовлетворяющие предикату
 	ls.unique( initial2('o') );
+
+	ls.unique(initial2('e'));
 
 	// удалить все последовательные повторы
 	l.unique();

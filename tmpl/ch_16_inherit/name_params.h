@@ -52,7 +52,7 @@ public:
 // Разместим типы по умолчанию в базовом классе
 
 // Класс discriminator нужен только для того, чтобы передавать несколько одинаковых
-// классов в качестве базовых
+// классов в качестве базовых (отличаются только номером)
 template <typename Base, int D>
 class discriminator : public Base{};
 
@@ -71,6 +71,9 @@ public:
 };
 
 class default_policy_args : virtual public default_policies{};
+
+// Используем тот факт, что typedef перекрывает параметр шаблона и наследуется
+// (см. ch_09)
 
 // Переопределяем тип P1 как Policy (параметр шаблона)
 template <typename Policy>

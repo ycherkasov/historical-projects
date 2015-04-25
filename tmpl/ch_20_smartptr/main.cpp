@@ -74,7 +74,7 @@ void show_refcounting_ptr(){
 
 int main(){
 
-	//show_simple_ptr();
+	show_simple_ptr();
 	show_refcounting_ptr();
 
 	return 0;

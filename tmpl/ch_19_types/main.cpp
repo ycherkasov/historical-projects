@@ -1,7 +1,7 @@
 #include <iostream>
 #include "basic_types.h"
 #include "compound_types.h"
-//#include "enum_types.h"
+#include "enum_types.h"
 #include "class_types.h"
 
 using std::cout;
@@ -56,8 +56,8 @@ void show_compound_types(){
 	cout << "int is_array = " << b << endl;
 
 	// для функций не работает(???)
-	//b = is_function_pointer<void_func_t>::result();
-	//cout << "void_func_t is_function_pointer = " << b << endl;
+	b = is_function_pointer<void_func_t>::result();
+	cout << "void_func_t is_function_pointer = " << b << endl;
 
 	b = is_function_pointer<int>::result();
 	cout << "int is_function_pointer = " << b << endl;
@@ -93,8 +93,8 @@ void show_class_types(){
 
 int main(){
 
-	//show_fundamental_types();
-	//show_compound_types();
+	show_fundamental_types();
+	show_compound_types();
 	//show_is_enum();
 	show_class_types();
 

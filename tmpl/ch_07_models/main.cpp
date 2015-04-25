@@ -20,6 +20,7 @@ void show_separation_model(){
 }
 
 int main(){
+	test_include_model();
 	show_separation_model();
 	show_direct_instance();
 

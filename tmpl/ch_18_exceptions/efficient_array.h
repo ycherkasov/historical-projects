@@ -51,8 +51,8 @@ public:
 	T& operator[](size_t i) {return expr_rep[i];}
 
 	Rep& rep() {return expr_rep;}
-	Rep const& rep() const {return expr_rep;}
 
+	Rep const& rep() const {return expr_rep;}
 };
 
 // Реализуем перегруженные функции векторной арифметики

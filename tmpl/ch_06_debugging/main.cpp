@@ -36,6 +36,7 @@ void show_trace(){
 }
 
 int main(){
+	test_shallow_check();
 	show_long_error();
 	show_trace();
 	return 0;

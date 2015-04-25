@@ -38,7 +38,9 @@ using namespace std;
 typedef unordered_map<string, string> stringmap;
 
 stringmap merge(stringmap a, stringmap b) {
-	stringmap temp(a); temp.insert(b.begin(), b.end()); return temp;
+	stringmap temp(a); 
+	temp.insert(b.begin(), b.end()); 
+	return temp;
 }
 
 void show_hash(){

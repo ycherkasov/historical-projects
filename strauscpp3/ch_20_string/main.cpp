@@ -21,7 +21,18 @@ void show_string(){
 	string s3("str");
 	// нельзя инициализировать символом
 	
-	// TODO: передача нулевого указателя вызывает exception (?)
+	// передача нулевого указателя вызывает exception
+    // В отладочной версии assert
+#if 0
+    try{
+        const char* c = nullptr;
+        std::string s(c);
+        size_t sz = s.size();
+    }
+    catch (const std::exception& e){
+        std::cout << e.what() << std::endl;
+    }
+#endif
 	
 	s1 = 'a';
 	// ..., а присвоить - можно

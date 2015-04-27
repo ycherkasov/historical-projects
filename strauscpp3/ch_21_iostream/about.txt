@@ -12,7 +12,7 @@
 ׁמגועû ט נוח‏לו:
 * ostream could be considered as a convertation object->symbols. istream is vise versa
 * streams use char_traits in internals
-* basic_ios controls formatting, laceles and buffer management
+* basic_ios controls formatting, locales and buffer management
 * istream-ostream could not be copied!
 * ostream could be "virtualized" passing to the operator << a reference to the base class
 * input stream could be converted to void* that is used for end-of-input sign: while(is >> buf)

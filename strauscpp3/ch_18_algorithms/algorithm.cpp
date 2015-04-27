@@ -233,7 +233,7 @@ void show_modif(){
     print_container(vi);
     // todo : print vector
 
-    // remove_copy_if - эдемент помещается на выход,
+    // remove_copy_if - элемент помещается на выход,
     // если он не удовлетворяет условию по предикату
     vector<int> vi3;
     remove_copy_if( vi1.begin(), vi1.end(), back_inserter(vi3), bind2nd( less<int>(), 2 ) );
@@ -363,12 +363,11 @@ void show_sort(){
 
     copy(vi.begin(), vi.end(), back_inserter(res));
     copy(vi1.begin(), vi1.end(), back_inserter(res));
-    inplace_merge(res.begin(), res.begin()+vi.size() , res.end());	//(??? wtf)
+    inplace_merge(res.begin(), res.begin()+vi.size() , res.end());
 
     // --- partition,stable_partition ---
     // Разделение контейнера - помещение всех элементов,
     // удовлетворяющих предикату, перед теми, которые ему не удовлетворяют
-
 }
 
 

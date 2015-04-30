@@ -194,10 +194,9 @@ void input_strings1(){
 
 void input_strings2(){
 
-	// TODO: попробовать отдельно
 	// при помощи ignore можно удалять любое количество символов
 	// стандартный паттерн исползования - удалить все от enter до конца строки
-	char s[50];
+    char s[50] = {};
 	cin.get(s, 50);
 	cin.ignore(numeric_limits<std::streamsize>::max(), '\n');
 

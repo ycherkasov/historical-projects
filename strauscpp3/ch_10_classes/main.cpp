@@ -390,6 +390,45 @@ void array_size_info()
 
 // Втроая задачка: когда и почему delete на объект приводит к падению из-за забытого виртуального деструктора?
 
+struct base{
+
+    int data;
+
+    base(){
+        cout << "ctor of base\n";
+    }
+    ~base(){
+        cout << "dtor of base\n";
+    }
+};
+
+struct derived : base{
+
+    derived(){
+        cout << "ctor of derived\n";
+    }
+    virtual ~derived(){
+        cout << "dtor of derived\n";
+    }
+};
+
+void crach_2(){
+
+    base *p = new derived;
+
+    std::cout << p << '\n';
+    base *b = p;
+    std::cout << b << '\n';
+
+    // trying to delete data, but in fact this is vtable pointer
+    delete p;
+
+    // When base is empty, the size of{ vtable, base, derived } and{ base } happen to be the same 
+    // because allocating an object of empty class occupies nonzero number of bytes, which happens to be equal in both cases.
+    // When derived has no virtual functions, vtable is not present,
+    // the addresses are again the same and delete succeeds.
+}
+
 template <typename RCString>
 void show_ref_count(){
     using namespace meyers_refcount;
@@ -440,7 +479,12 @@ int main(){
 
     // delete/delete[] crash
     //crash();
+
+    // non-virtual crash
+    //crach_2();
+    
     //return 0;
+
     array_size_info();
 
     struct_one_name();

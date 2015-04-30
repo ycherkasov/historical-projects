@@ -169,6 +169,7 @@ void stream_manip(){
 
 	// вывод дробного в экспоненциальном виде
 	cout << "scientific: " << std::scientific << 0.0000001 << endl;
+    cout << "fixed: " << std::fixed << 0.0000001 << endl;
 
 	// вывод bool словами
 	cout << "boolalpha: " << std::boolalpha << true << endl;
@@ -274,6 +275,7 @@ inline ostream& operator << (ostream&os, const binary<T>& t){
 	}
 	return os;
 }
+
 void show_user_manip(){
 	cout << "Tab user" << tab << " manip" << endl;
 

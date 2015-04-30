@@ -26,11 +26,11 @@ int main(){
 	//test_me();
 
 	// uncomment one by one
-	show_standard_streams();
+	//show_standard_streams();
 	//show_file_streams();
 	//show_formatted_streams();
 	//show_string_streams();
 	//show_wide_char_locales();
-	//show_formatted_overloads();
+	show_formatted_overloads();
 	return 0;
 }

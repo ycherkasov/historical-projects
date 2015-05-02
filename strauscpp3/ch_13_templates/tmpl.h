@@ -81,24 +81,44 @@ void container<Symbols, Comparer>::compare(basic_string<Symbols>& str){
 }
 
 // Пример - частичной специализации -
-// Вектор для хранения только указателей
-// наследует интерфейс от vector<void*>
+// Стек для хранения только указателей
+// наследует интерфейс от my_stack<void*>
 // Чтобы определить тип элементов как указатель
-// явно укажем параметр шаблона vector<T*>
+// явно укажем параметр шаблона my_stack<T*>
 // Специализация - это "перегрузка" для шаблонных классов
 
 // Наследование частичной специализации от полной, чтобы сократить дублирование кода
 // - это паттерн шаблонного программирования
-#if 0
-template< typename T >
-class std::vector< T*, allocator<T*> > : public std::vector< void*, allocator<void*> >{
+template <typename T>
+class my_stack{
 public:
-    typedef vector<void*, allocator<void*>> base;
-
-    vector< T*, allocator<T*> >() : vector< void*, allocator<void*>>(){}
-    explicit vector<T, allocator<T*> >(size_t i) : base(i){}
-
-    T*& elem(size_t i){ return static_cast<T*&>(base::elem(i)); }
-    T& operator[](size_t i){ return static_cast<T*&>(base::operator [](i) ); }
+    my_stack(){
+        cout << "general stack<T>" << endl;
+    }
+    // Здесь методы
+private:
+    std::vector<T> _stack1;
 };
-#endif
+
+
+template <>
+class my_stack<void*>{
+public:
+    my_stack(){
+        cout << "Full specialization <void*>" << endl;
+    }
+    // Здесь методы
+protected:
+    std::vector<void*> _stack1;
+};
+
+
+template <typename T>
+class my_stack<T*> : public my_stack<void*>{
+public:
+    typedef my_stack<void*> base;
+    my_stack() : base(){
+        cout << "Pointers stack<T*>" << endl;
+    }
+    // Здесь методы
+};

@@ -1,6 +1,7 @@
 #include <iostream>
 #include <numeric>
 #include <valarray>
+#include <cmath>
 #include <complex>
 #include <vector>
 #include <algorithm>
@@ -283,9 +284,9 @@ void show_complex(){
 	double theta_ = arg(c6);
 	double norm_ = norm(c6);
 	
-	// complex overload (does not work?)
-	//double sin_ = std::sin(c6);
-
+	// complex overload
+    complex<double> sin_cmplx = std::sin(c6);
+    cout << sin_cmplx << endl;
 }
 
 void show_algorithms(){

@@ -23,11 +23,9 @@ int show_special()
 	wc.compare(wch_str2);
 
 	// использование частичной специализации для указателей -
-	// стандартного вектора
-	int i = 0;
-	int* ip = &i;
-	vector<int*> iv(5);
-	iv.push_back(ip);
+	// стандартного контейнера
+    my_stack<int> mystack;
+    my_stack<int*> my_pointers_stack;
 
 	return 0;
 }

@@ -245,6 +245,31 @@ void show_seh(){
 #endif
 }
 
+// Функция демонтсрирует приватное наследование исключений
+class my_exception : std::exception{ // private inheritance
+public:
+    my_exception() : std::exception("my_exception"){}
+};
+
+void foo(){
+    throw my_exception();
+}
+
+void show_exception_private_inherit()
+{
+    // http://rsdn.ru/forum/message/3126672.1.aspx
+    try{
+        foo();
+    }
+    // не будет поймано здесь, несмотря на то, что базовое исключение
+    // наследование приватное
+    catch (const std::exception&){
+        std::cout << 1 << std::endl;
+    }
+    catch (const my_exception&){
+        std::cout << 2 << std::endl;
+    }
+}
 
 int main()
 {
@@ -262,6 +287,8 @@ int main()
 	
 	// does not work with VC++
 	//show_standard_handlers();
+
+    show_exception_private_inherit();
 
 	test_autoptr();
 

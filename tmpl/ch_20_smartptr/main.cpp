@@ -62,7 +62,7 @@ void show_refcounting_ptr(){
 	// передача по значению, counter = 2
 	counting_ptr<hold_me> new_ptr = show_pass_ptr_copy(ptr);
 
-	// после выхода из функции два объекта, у каждого counter = 2
+	// после выхода из функции два объекта, у одного counter=1, у другого 2
 	// (один отсоединен после вызова неконстантной операции)
 	new_ptr->f();
 

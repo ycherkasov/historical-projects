@@ -17,19 +17,22 @@ void show_size_empty(){
 	cout << "sizeof base_memeber_pair " << sizeof(bmp) << endl;
 }
 
+template<typename Worker>
+void polymorhic_work(const Worker& w)
+{
+    w.work();
+};
+
 void show_crtp(){
 	count1 b11, b12, b13;
 	count2 b21, b22;
 	cout << "live objects count1 " << count1::live() << endl;
 	cout << "live objects count2 " << count2::live() << endl;
 
-	SpecificPacket1 sp1;
-	SpecificPacket2 sp2;
-
-	int i = 1;
-	char c = 'a';
-	sp1.method(i);
-	sp2.method(c);
+	SpecificWorker1 sp1;
+    SpecificWorker2 sp2;
+    polymorhic_work(sp1);
+    polymorhic_work(sp2);
 }
 
 void show_tmpl_virtuality(){
@@ -43,7 +46,6 @@ void show_tmpl_virtuality(){
 
 int main(){
 	show_name_params();
-	show_size_empty();
 	show_crtp();
 	show_tmpl_virtuality();
 	return 0;

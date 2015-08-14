@@ -48,7 +48,7 @@ void show_strategies(){
 
 	// Как видно, аккумулирование умножением дает 0, т.к. аккумулирующий элемент инициализируется нулем
 	// Вероятно, необходим элемент = 1, а также нулевой элемент, являющийся частью стратегии
-	int imlpl = strategy_accumulator_traits<int, MultPolicy>::accum( iarr , iarr + sizeof(iarr)/sizeof(int) );
+    int imlpl = strategy_accumulator_traits<int, MultPolicy, value_multiply_traits<int>>::accum(iarr, iarr + sizeof(iarr) / sizeof(int));
 }
 
 // Демонстрация стратегий с шаблонными аргументами 

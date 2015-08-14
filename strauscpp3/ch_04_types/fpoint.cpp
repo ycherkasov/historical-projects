@@ -501,7 +501,7 @@ void show_cmath_fpoint_operations(){
     // NAN (not a number)
     // he NaN values are used to identify undefined or non-representable values
     // for floating-point elements, such as the square root of negative numbers or the result of 0/0
-    // Generate quiet NAN
+    // Generate quiet NAN (const char* param is implementation-specific)
     double nn = nan("");
     float nf = nanf("");
     cout << "For " << nn << " isnan(nn) = " << std::isnan(nn) << '\n';

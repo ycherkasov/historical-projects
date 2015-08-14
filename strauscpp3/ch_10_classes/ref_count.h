@@ -179,7 +179,7 @@ public:
 			return *this;
 		}
 
-		// 
+		// detach value
 		if (_ptr){
 			T* old_ptr = _ptr;
 			_ptr = rhs._ptr;

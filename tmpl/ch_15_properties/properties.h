@@ -119,6 +119,17 @@ public:
 	static AccType zero(){ return 0.; }
 };
 
+template <typename T>
+class value_multiply_traits;
+
+template <>
+class value_multiply_traits<int>{
+public:
+    typedef int AccType;
+    static AccType zero(){ return 1; }
+};
+
+
 // Тогда функция примет вид
 template <typename T> inline typename 
 value_accumulator_traits<T>::AccType traits_vals_accumulate(const T* begin, const T* end){

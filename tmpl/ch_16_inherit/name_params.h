@@ -70,10 +70,11 @@ public:
 	typedef DefaultPolicy4 P4;
 };
 
-class default_policy_args : virtual public default_policies{};
-
 // Используем тот факт, что typedef перекрывает параметр шаблона и наследуется
 // (см. ch_09)
+
+// Дефолтные стратегии
+class default_policy_args : virtual public default_policies{};
 
 // Переопределяем тип P1 как Policy (параметр шаблона)
 template <typename Policy>
@@ -110,8 +111,11 @@ template <	typename PolicySetter1 = default_policy_args,
 			typename PolicySetter4 = default_policy_args >
 class bread_slicer2{
 public:
+
 	typedef policy_selector<PolicySetter1,PolicySetter2,PolicySetter3,PolicySetter4> policies;
+
 	bread_slicer2(){}
+
 	void doprint(){
 		// Обращение к различным стратегиям
 		policies::P1::doprint();

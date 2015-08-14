@@ -177,7 +177,7 @@ class rc_string2
 			_holder(str),
 			_index(index){}
 
-		// In case of 'lvalue usage' we chack detach
+		// In case of 'lvalue usage' we check detach
 		// It means we are able to change the value
 		char_proxy& operator=(const char_proxy& rhs){
 			check_detach();
@@ -201,7 +201,7 @@ class rc_string2
 		}
 
 		// after dereference we can change the value outside
-		// Make unsgareable
+		// Make unsharable
 		char* operator&(){
 			check_detach();
 			_holder._value->mark_unshareable();

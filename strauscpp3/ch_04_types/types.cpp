@@ -122,7 +122,7 @@ void show_pointer(){
 	// Результатом sizeof является беззнаковый int = size_t (cstddef)
 	// Типом разности указателей - int = ptrdiff_t (cstddef)
 
-	// Interesting notation of string arrays
+	// Interesting notation of arrays
 	int x = 2;
 	cout << x["ABCDEF"] << endl;
 	cout << 2["ABCDEF"] << endl;
@@ -223,6 +223,7 @@ void show_array_pointers(){
 	int(*ii6)[42] = 1 + &array;
 
 	// diff2 равен 41. Т.е. (&array + 1) указывает на последний элемент + смещение 1
+    // То есть указатель на массив указывает на "весь" массив, и +1 перемещает указатель за его пределы
 	ptrdiff_t diff2 = reinterpret_cast<int*>(ii6) - ii5;
 
 	std::cout << std::hex << ii6 << '-' << ii5 << '=' << std::dec <<  diff2 << '\n';

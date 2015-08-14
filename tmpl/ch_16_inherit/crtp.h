@@ -24,12 +24,12 @@ class count2 : public object_counter< count2 >{};
 // С помощью CRTP можно реализовать статический полиморфизм
 
 template <typename Derived>
-class BasicPacket{
+class BasicWorker{
 public:
-	template<class T>
-	void method(T& t) {
+
+	void work() {
 		// здесь общий код для наследуемых классов
-		get_derived().method(t);
+		get_derived().work(t);
 	}
 
 	const Derived& get_derived() const {
@@ -43,21 +43,19 @@ public:
 	// еще методы
 };
 
-class SpecificPacket1 : public BasicPacket<SpecificPacket1> {
+class SpecificWorker1 : public BasicWorker<SpecificWorker1> {
 public:
 
-	template<class T>
-	int method(T& t) {
+    int work() const {
 		// имплементация
 		return 1;
 	}
 };
 
-class SpecificPacket2 : public BasicPacket<SpecificPacket2> {
+class SpecificWorker2 : public BasicWorker<SpecificWorker2> {
 public:
 
-	template<class T>
-	int method(T& t) {
+    int work() const {
 		// имплементация
 		return 2;
 	}

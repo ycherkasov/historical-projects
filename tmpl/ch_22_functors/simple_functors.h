@@ -94,6 +94,7 @@ template <typename RT, typename T1 = void, typename T2 = void, typename T3 = voi
 class function_ptr{
 	
 	typedef typename function_ptr_t<RT,T1,T2,T3>::FType func_ptr;
+
 	enum { num_params = function_ptr_t<RT,T1,T2,T3>::num_params };
 
 public:

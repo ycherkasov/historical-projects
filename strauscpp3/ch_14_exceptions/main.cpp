@@ -178,6 +178,9 @@ void show_zero_div_exception(){
 		double ret = zero_div(0.);
         cout << "Division by zero returned " << ret << endl;
 	}
+    catch (const structured_exception& e){
+        cout << e.what() << endl;
+    }
     catch (const std::exception& e) {
         cout << e.what() << endl;
     }
@@ -200,6 +203,9 @@ void show_fpe_zero_div(){
         cout << "FP division by zero" << endl;
         double ret = fpe_zero_div(0.);
         cout << "Division by zero returned " << ret << endl;
+    }
+    catch (const structured_exception& e){
+        cout << e.what() << endl;
     }
     catch (const std::exception& e) {
         cout << e.what() << endl;
@@ -262,7 +268,7 @@ void show_exception_private_inherit()
         foo();
     }
     // не будет поймано здесь, несмотря на то, что базовое исключение
-    // наследование приватное
+    // наследование приватное (what() закрыто!)
     catch (const std::exception&){
         std::cout << 1 << std::endl;
     }

@@ -97,7 +97,7 @@ void show_vitrual(){
     cout << "code_formatter size = " << sz << endl;
     sz = sizeof(code_generator_base);	// 8 (int + vtbl)
     cout << "code_generator_base size = " << sz << endl;
-    sz = sizeof(cpp_code_generator);	// 20 (4 + 2*(vtbl+vfptr) ) ??
+    sz = sizeof(cpp_code_generator);	// 20 (4 + 2*(vtbl+vfptr) )
     cout << "cpp_code_generator size = " << sz << endl;
 
 

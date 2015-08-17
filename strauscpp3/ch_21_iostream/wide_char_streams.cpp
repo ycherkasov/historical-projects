@@ -34,6 +34,10 @@ void wide_locales(){
 	locale current_loc_cin = wcin.getloc();
 	locale current_loc_cout = wcout.getloc();
 
+    locale current_loc;
+
+    cout << "Locale name: " << current_loc.name() << '\n';
+
 	// в консоли Windows codepage всегда 866
 	locale russian_loc("rus_rus.866");
 	wcin.imbue(russian_loc);
@@ -103,7 +107,8 @@ void wide_strings(){
 
 
 void show_wide_char_locales(){
-	//wide_symbols();
-	wide_locales();
-	//wide_strings();
+	// does not work =((
+    //wide_symbols();
+	//wide_locales();
+	wide_strings();
 }

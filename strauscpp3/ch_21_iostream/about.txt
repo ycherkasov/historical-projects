@@ -48,7 +48,7 @@
 -flags() = analog
 -setf() OR analog
 -unsetf() NOR analog
-* stream format coould be copied by copyfmt() method
+* stream format could be copied by copyfmt() method
 * precision() sets count of numbers ofter the point. Works constantly
 * fill() sets fill symbol. Works constantly
 * width() sets input fiels width. Works for the one input operation.

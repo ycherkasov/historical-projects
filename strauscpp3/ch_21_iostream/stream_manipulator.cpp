@@ -136,7 +136,7 @@ void stream_methods(){
 	// устанавливается насовсем
 	cout.width(10);
 	char prev = cout.fill('-');
-	cout << 123 << endl; // ??? does not work
+	cout << 123 << endl;
 	cout.fill(prev);
 
 	// get back old precision
@@ -192,9 +192,9 @@ void stream_manip(){
 	cout << "noshowpos: " << std::noshowpos << 100 << endl;
 
 	// вывод E вместо e
-	cout << "uppercase: " << std::uppercase << 0.000000001 << endl;
+    cout << "uppercase: " << std::scientific << std::uppercase << 0.000000001 << endl;
 	// и его выключение
-	cout << "nouppercase: " << std::nouppercase << 0.000000001 << endl;
+    cout << "nouppercase: " << std::scientific << std::nouppercase << 0.000000001 << endl;
 
 	// не меняет форматирование, но отключает буферизацию
 	cout << "unitbuf: " << std::unitbuf << 10000 << endl;

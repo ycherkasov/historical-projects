@@ -44,7 +44,7 @@ void show_limits(){
 	if (numeric_limits<long>::is_signed && numeric_limits<long>::is_integer){
 		cout << "long is integer and signed type\n";
 	}
-	// также содержит много описателей для double (nas_NaN, has_infinity, ...)
+	// также содержит много описателей для double (has_NaN, has_infinity, ...)
 }
 
 double my_square(double d){
@@ -327,20 +327,26 @@ void show_matrix(){
 	cout << "First row: ";
 	double d1 = *s_iter1;
 	cout << d1;
+
 	d1 = *(++s_iter1);
 	cout << d1;
+
 	d1 = *(++s_iter1);
 	cout << d1;
+
 	cout << endl;
 
 	slice_iter<double> s_iter2 = m1.column(1);
 	cout << "Second column: ";
 	double d2 = *s_iter2;
 	cout << d2;
+
 	d2 = *(++s_iter2);
 	cout << d2;
+
 	d2 = *(++s_iter2);
 	cout << d2;
+
 	cout << endl;
 }
 

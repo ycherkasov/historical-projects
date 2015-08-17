@@ -17,11 +17,11 @@ public:
 		_val = rhs._val;
 	}
 
-	// non-virtual destructor
+	// non-virtual destructor, not intended to be inherited
 	~matrix(){}
 
 	// accessors
-	size_t size() const { return _d1*_d2; }
+	size_t size() const { return _val; }
 	size_t dim1() const { return _d1; }
 	size_t dim2() const { return _d2; }
 

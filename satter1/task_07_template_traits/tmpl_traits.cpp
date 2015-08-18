@@ -25,13 +25,13 @@ public:
     // and do it in the function that be instatntitted in any case
     // and exists always, e.g. destructor.
     // That's better to wrap it with function
-    inline bool hasClobe(){
+    inline bool hasClone(){
         T* (T::*test_clone)() const = &T::Clone;
         return test_clone ? true : false;
     }
 
     ~RequiresClone(){
-        assert(hasClobe());
+        assert(hasClone());
     }
 };
 

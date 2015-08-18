@@ -6,7 +6,7 @@ using namespace std;
 // Task 1.4-1.5 From Satter 1
 // Template constructor
 
-// fixed vector with trmplate copy constructor
+// fixed vector with template copy constructor
 template <typename T, size_t size>
 class fixed_vector{
 public:
@@ -48,13 +48,13 @@ public:
     // Will never be called for the same type!
     template<typename OtherT, size_t otherSize>
     fixed_vector& operator=(const fixed_vector<OtherT, otherSize>& rhs){
-        // *this chack is not neccessary - different types!!!
+        // *this check is not necessary - different types!!!
         copy(rhs.begin(), rhs.begin() + min(size, otherSize), begin());
         return *this;
     }
 
     // copy-constructor and operator= for fixed_vector<T, size> generated automatically!
-    // template copy-constructor and assignmant operator will never replace them!
+    // template copy-constructor and assignment operator will never replace them!
 
 private:
     T _v[size];
@@ -69,13 +69,13 @@ int main(){
     // Default-generated copy constructor is called!
     fixed_vector<int, 20> intv2(intv1);
 
-    // Temaplte copy constructor is called!
+    // Template copy constructor is called!
     fixed_vector<int, 40> intv3(intv1);
 
-    // Temaplte copy constructor is called!
+    // Template copy constructor is called!
     fixed_vector<double, 40> dblv1(intv1);
 
-    // Temaplte assignment is called!
+    // Template assignment is called!
     intv3 = dblv1;
 
     return 0;

@@ -26,8 +26,33 @@ struct UseTypedef : public BaseTypedef<A>{
 };
 
 
+// Example with typedef from base class typename
+class Rose{};
+
+struct A{
+    typedef Rose rose;
+};
+
+template <typename T>
+struct B : public T {
+    typedef typename T::rose foo;
+};
+
+template <typename T>
+void smell(T){
+    std::cout << "Good!\n";
+}
+
+void smell(Rose){
+    std::cout << "Bad!\n";
+}
+
 int main(){
     UseTypedef<int> use;
+
+    // Passed type is Rose in both cases
+    smell(A::rose());
+    smell(B<A>::foo());
     return 0;
 }
 

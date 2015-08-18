@@ -65,10 +65,11 @@ void vector_bool(){
     vector<bool> v;
     v.assign(arr, arr + array_size(arr));
 
-    // vector<bool> is proxy, it is less efficient on standard algorithms
+    // vector<bool> is proxy, not a container it is less efficient on standard algorithms
     for(vector<bool>::iterator it  = v.begin(); it != v.end(); ++it){
         cout << "Unpack from vector<bool>: " << (*it) << endl;
     }
+    // &v[0] trick does not work for vector<bool>
 }
 
 

@@ -126,6 +126,7 @@ void show_predicates(){
         const size_t _n;
         size_t _current;
     };
+
     // ERROR: predicate could be copied inside the algorithm!
     remove_if(v.begin(), v.end(), flag_nth(3));
     // NOTE: for_each() able to return modified functor with state

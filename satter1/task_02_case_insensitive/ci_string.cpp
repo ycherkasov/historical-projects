@@ -7,7 +7,7 @@ using namespace std;
 // Task 1.2-1.3 From Satter 1
 // Case-insensitive string
 
-// Override existiong char traits (non-polymorph way!)
+// Override existing char traits (non-polymorph way!)
 // http://www.cplusplus.com/reference/string/char_traits/
 struct ci_char_traits : public char_traits<char>
 {

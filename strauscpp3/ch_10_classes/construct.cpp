@@ -1,4 +1,6 @@
 #include "construct.h"
+// ƒемонстраци€ примера из —аттера1 гл.4
+#include "class.h"
 
 #include <iostream>
 
@@ -52,6 +54,14 @@ void construct::out_static_array(){
 	// ≈го можно вызывать как дл€ экземпл€ра класса, так и независимо, дл€ пространства имен
 	// construct::out_static_array() и c.construct::out_static_array();
 	std::cout << ch_array << std::endl;
+}
+
+// все передаваемые по значению параметры объ€влены через
+// forward declaration
+A construct::get_a(A a){
+    A a1(a);
+    a1.set_a5(5);
+    return a1;
 }
 
 void create_static(int i)

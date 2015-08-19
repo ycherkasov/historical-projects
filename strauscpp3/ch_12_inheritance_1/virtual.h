@@ -124,6 +124,12 @@ struct v_base{
 	void pure();
 	// Это может понадобиться в целях форммирования общего наследуемого кода.
 	// Это называется "наследование реализации по умолчанию" (Мейерс)
+
+    // All cases of pure-virtual function implementation:
+    // 1. Pure virtual destructor
+    // 2. Implementation by default
+    // 3. Common partial implementation (protected)
+    // 4. Throw an exception if pure virtual call is possible
 };
 
 struct v_derived : public v_base {

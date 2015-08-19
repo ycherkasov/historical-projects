@@ -125,4 +125,11 @@ RTTI тоже содержится в vtbl
 21. Не делайте объекты виртуальными без надобности. 
 inline игнорируется для virtual, но это не ошибка
 
+All cases of pure-virtual function implementation:
+1. Pure virtual destructor
+2. Implementation by default
+3. Common partial implementation (protected)
+4. Throw an exception if pure virtual call is possible
+
+
 

@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
-project(task_15_virtual_functions CXX)
-set(TARGET task_15_virtual_functions)
+project(task_17_multiple_inheritance CXX)
+set(TARGET task_17_multiple_inheritance)
 
 ########################################################
 # source files

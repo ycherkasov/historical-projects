@@ -205,16 +205,18 @@ private:
     }
 };
 
-class Derived2 : public BaseA, public BaseB{
+class Derived2 : public BaseA2, public BaseB2{
 public:
     // Open implementations
-    virtual int ReadBufA(const char*){
+    virtual int ReadBufA(const char* p){
         cout << "Derived2::ReadBufA\n";
+        BaseA::ReadBuf(p);
         return 0;
     }
 
-    virtual int ReadBufB(const char*){
+    virtual int ReadBufB(const char* p){
         cout << "Derived2::ReadBufB\n";
+        BaseB::ReadBuf(p);
         return 0;
     }
 };
@@ -247,7 +249,7 @@ void show_siamtwin_decoupling(){
 
 int main(){
 
-    //use_multiple_inheritance();
+    use_multiple_inheritance();
 
     show_siamtwin_decoupling();
 

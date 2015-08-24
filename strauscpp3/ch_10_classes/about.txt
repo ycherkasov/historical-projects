@@ -2,7 +2,7 @@
 Главы 1,2,4,5 Лаптева
 Глава 2,4 Мейерса 1 (operator new/delete, проектирование)
 Глава 4, 5(29, 30), 6 Мейерса 2 (Эффективность, Приемы, Разное)
-Главы 3, 4 Саттера 1 (виртуальные функции, forward declaration параметров и возвращаемых значений)
+Главы 3, 4, 6 Саттера 1 (виртуальные функции, forward declaration параметров и возвращаемых значений, управдение памятью)
 В проекте рассматриваются классы, члены классов, 
 константные и статические члены классов,
 константные и статические классы,
@@ -167,3 +167,8 @@ http://en.cppreference.com/w/cpp/memory/new/operator_delete
 Forward declatations(Satter1 4.1-2):
 Forward declarations could be used also for function prototypes params (including by value)
 and returning values (including by value)
+
+operator new/delete implenetation notes (Satter1 6.2)
+Normally on the compiler-level every generated class has "heap flag"
+if it is == true, it means that objects is created on the heap, 
+and operator delete() would be called after desrtuctor 

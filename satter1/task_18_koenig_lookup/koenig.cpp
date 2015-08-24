@@ -30,7 +30,8 @@ namespace B{
 
     void h(A::Y y){
         std::cout << "B::g(A::Y y)\n";
-        //h(y);// - compilation error, Kenig lookup opens A namespace because of function argument
+        // warning C4717: 'B::h' : recursive on all control paths, function will cause runtime stack overflow
+        h(y);
     }
 }
 
@@ -65,9 +66,9 @@ void show_kenig_lookup(){
     A::Y y;
     //f(1); - recursive call B::f - we don't see namespace A
     //g(x); - does not compile, x opens A namespace
-    h(y); // - call without errors, A is open, but we don't have h(Y) function there
+    // h(y); - recursive call B::h
 
-    f(param); // example from Standard, NS namespace is opened in main() due to function param
+    f(param); // example from Standard, NS namespace is opened in show_kenig_lookup() due to function param
     // The same is how std::ostream works
 
     // one more example

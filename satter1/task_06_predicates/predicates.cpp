@@ -41,9 +41,15 @@ ForwardIterator my_remove(ForwardIterator first, ForwardIterator last, const T& 
     return result;
 }
 
+// want to remove 6
+// f
+// 5 5 6 6 7 7 8 8
+// r
+
+
 // so its usage
 void show_remove(){
-    int arr[] = {0,1,1,2,2,7,8,5,3};
+    int arr[] = {0,1,2,2,7,8,5,3};
     vector<int> v(arr, arr + array_size(arr));
     print_container(v);
     vector<int>::iterator it1 = my_remove(v.begin(), v.end(), 1);

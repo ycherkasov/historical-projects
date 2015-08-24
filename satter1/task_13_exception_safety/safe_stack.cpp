@@ -11,7 +11,7 @@ using namespace std;
 // It provides strong exception guarantee
 // so it stays unchanged is case of thrown an exception
 // Requirements to T: default constructor, copy constructor, exception-safe operator=
-// THese requirements could be reduced using the second version of stack
+// These requirements could be reduced using the second version of stack
 template <typename T>
 class safe_stack{
 public:
@@ -95,7 +95,7 @@ public:
         ++_vsize;
     }
     // Could not be made exception-safe
-    // In case of exception while returning by value (copy operatoin)
+    // In case of exception while returning by value (copy operation)
     // object would be destroyed and lost forever (both in stack and caller function)
     // So, does not exists exception-safe way to pop object atomically
     // Moreover, any mutator not to return object by value
@@ -187,7 +187,7 @@ protected:
         _vsize(),
         _vcapacity(initial_capacity){}
 
-    // destructor is notrow
+    // destructor is nothrow
     ~StackImpl(){
 
         // call destructor for every T
@@ -229,7 +229,7 @@ public:
 
     // We don't need destructor!
 
-    // In case of exception StackImpl correctly release all memry
+    // In case of exception StackImpl correctly release all memory
     Stack2(const Stack2& other) : StackImpl<T>(other._vsize){
         // We do not call StackImpl constructor here
         while (_vsize < other._vsize) {

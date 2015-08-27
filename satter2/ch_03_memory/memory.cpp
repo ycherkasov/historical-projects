@@ -81,9 +81,16 @@ void show_alignment(){
     std::cout << "sizeof(good) = " << sizeof(good) << std::endl;
 }
 
+// Ch 3 Task 22 When overload at least one new/delete operator,
+// overload all others that could be required new/new[], placement new/new[], related delete()
+// This is because of hiding names (see Overload and hidding names and name resolve rules)
+
+// Ch 3 Task 23 checking bad_cast make sense only in particular cases
+
 int main(){
 
-    //show_service_data();
+    show_service_data();
+
     show_alignment();
 
     return 0;

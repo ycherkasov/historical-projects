@@ -38,4 +38,4 @@ All pointer conversions are allowed: neither the content pointed nor the pointer
 Can't cast constantness!!!
 
 const_cast
-This type of casting manipulates the constness of the object pointed by a pointer
+This type of casting manipulates the constness of the object pointed by a pointer or reference

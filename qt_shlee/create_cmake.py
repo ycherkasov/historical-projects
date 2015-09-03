@@ -33,15 +33,15 @@ find_package(Qt5Widgets REQUIRED)
 
 file(GLOB project_SRCS *.cpp *.h *.qml)
 
-include_directories(${PROJECT_SOURCE_DIR})
+include_directories(${{PROJECT_SOURCE_DIR}})
 
-set(target_qml "${PROJECT_NAME}_qml")
+set(target_qml "${{PROJECT_NAME}}_qml")
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 
-add_executable(example ${project_SRCS})
+add_executable({1} ${{project_SRCS}})
 
 target_link_libraries(example Qt5::Core Qt5::Widgets)
 '''

@@ -1,6 +1,7 @@
 #include <QApplication>
 #include <QDebug>
 #include <QList>
+#include <QtCore>
 
 int main(int argc, char **argv)
 {
@@ -59,6 +60,15 @@ int main(int argc, char **argv)
     qDebug() << "4. Metaobject info (Qt reflection)";
     qDebug() << "Class name: " << parent_obj->metaObject()->className();
     qDebug() << "Method count: " << parent_obj->metaObject()->methodCount();
+
+    qDebug() << "5. Information about the whole library";
+    qDebug() << "Build date :" << QLibraryInfo::buildDate().toString("dd.MM.yyyy");
+    qDebug() << "Licensed products :" << QLibraryInfo::licensedProducts();
+    qDebug() << "Licensee :" << QLibraryInfo::licensee();
+
+    qDebug() << "Binaries :" << QLibraryInfo::location(QLibraryInfo::BinariesPath);
+    qDebug() << "Headers :" << QLibraryInfo::location(QLibraryInfo::HeadersPath);
+    qDebug() << "Doc :" << QLibraryInfo::location(QLibraryInfo::DocumentationPath);
 
     // processing loop here
     return app.exec();

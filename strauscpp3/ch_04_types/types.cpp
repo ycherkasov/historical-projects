@@ -96,8 +96,6 @@ void show_pointer(){
 
 	// Гарантируется, что нет объектов с нулевым адресом.
 
-	// замещение макроса NULL (нулевой указатель)
-	//const void* NULL = 0;
 	const int* m;
 	const int*& o = m;
 

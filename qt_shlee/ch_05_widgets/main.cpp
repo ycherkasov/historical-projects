@@ -1,3 +1,4 @@
+#include <ctime>
 #include <QApplication>
 #include <QtGui>
 #include <QWidget>

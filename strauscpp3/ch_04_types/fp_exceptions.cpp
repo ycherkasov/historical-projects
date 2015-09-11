@@ -38,20 +38,24 @@ void show_fp_coltrol_noexcept(){
 
 	/* Вызовем ситуацию исчезновения порядка */
 	d1 = 1.0;
+    size_t steps = 0;
 	do {
 		d1 /= 2.0;
+        ++steps;
 	} while ((res = fetestexcept(FE_ALL_EXCEPT)) == 0);
-	printf("Inexact/Underflow Exceptions: %x\n", res);
+    printf("Inexact/Underflow Exceptions in %d steps: %x\n", steps, res);
 	printf("2^-inf: %g\n", d1);
 
 	feclearexcept(res);
 
 	/* Вызовем ситуацию переполнения */
 	d2 = 1.0;
+    steps = 0;
 	do {
 		d2 *= 2.0;
+        ++steps;
 	} while ((res = fetestexcept(FE_ALL_EXCEPT)) == 0);
-	printf("Inexact/Overflow Exceptions: %x\n", res);
+    printf("Inexact/Overflow Exceptions in %d steps: %x\n", steps, res);
 	printf("2^+inf: %g\n", d2);
 
 	feclearexcept(res);
@@ -66,10 +70,12 @@ void show_fp_coltrol_noexcept(){
 
 	/* Пример того, как может возникать потеря точности */
 	s = 1;
+    steps = 0;
 	do {
 		s = (s + 2 / s) * 0.5;
+        ++steps;
 	} while ((s * s - 2) > 0);
-	printf("Inexact Exceptions: %x\n", fetestexcept(FE_ALL_EXCEPT));
+    printf("Inexact Exceptions in %d steps: %x\n", steps, fetestexcept(FE_ALL_EXCEPT));
 	printf("sqrt (2): %g\n", s);
 }
 

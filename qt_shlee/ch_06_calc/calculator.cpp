@@ -51,7 +51,25 @@ QPushButton*  Calculator::create_button(const QString& btn_name)
 
 void Calculator::calculate()
 {
+    double op1 = input_stack_.pop().toDouble();
+    QString op = input_stack_.pop();
+    double op2 = input_stack_.pop().toDouble();
+    double result = 0;
 
+    if (op == "+"){
+        result = op1 + op2;
+    }
+    if (op == "-"){
+        result = op1 - op2;
+    }
+    if (op == "/"){
+        result = op1 / op2;
+    }
+    if (op == "*"){
+        result = op1 * op2;
+    }
+
+    display_->display(result);
 }
 
 void Calculator::on_button_clicked()
@@ -66,7 +84,7 @@ void Calculator::on_button_clicked()
     QString cmd = pressed_btn->text();
 
     if (cmd == "CE"){
-        results_.clear();
+        input_stack_.clear();
         str_display_ = "";
         display_->display("0");
         return;
@@ -81,17 +99,17 @@ void Calculator::on_button_clicked()
         display_->display(str_display_);
     }
     else {
-        if (results_.count() >= 2){
-            results_.push(QString().setNum(display_->value()));
+        if (input_stack_.count() >= 2){
+            input_stack_.push(QString().setNum(display_->value()));
             calculate();
-            results_.clear();
-            results_.push(QString().setNum(display_->value()));
+            input_stack_.clear();
+            input_stack_.push(QString().setNum(display_->value()));
             if (cmd != "="){
-                results_.push(cmd);
+                input_stack_.push(cmd);
             }
         }
         else{
-            results_.push(QString().setNum(display_->value()));
+            input_stack_.push(QString().setNum(display_->value()));
             str_display_ = "";
             display_->display("0");
         }

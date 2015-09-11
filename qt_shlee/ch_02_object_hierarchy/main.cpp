@@ -3,6 +3,12 @@
 #include <QList>
 #include <QtCore>
 
+// * Console app uses QCoreApplication object
+// * all objects are arranged into hierarchies
+// * hierarchies could be iterable
+// * objects contain metainformation
+// * Library contains metainformation
+
 int main(int argc, char **argv)
 {
     // event loop for the console application

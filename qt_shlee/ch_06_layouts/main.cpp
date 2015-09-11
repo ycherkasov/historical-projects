@@ -3,10 +3,12 @@
 #include <QWidget>
 #include <QLayout>
 #include <QPushButton>
+#include <QSplitter>
+#include <QTextEdit>
 
 // TODO:
 // Difference TopToBottom/BottomToTop
-// Vertical scaling - how?
+// Form layout
 
 inline int show_box_layout(int argc, char **argv){
     QApplication app(argc, argv);
@@ -98,6 +100,11 @@ inline int show_embed_layout(int argc, char **argv){
     QHBoxLayout* hbox = new QHBoxLayout();
     QVBoxLayout* vbox = new QVBoxLayout();
 
+    // Setting Tab order
+    QWidget::setTabOrder(btn1, btn2);
+    QWidget::setTabOrder(btn2, btn3);
+    QWidget::setTabOrder(btn3, btn4);
+
     // 2 buttons in vertical
     vbox->addWidget(btn1, 1, Qt::AlignVCenter);
     vbox->addWidget(btn2, 2, Qt::AlignVCenter);
@@ -148,11 +155,30 @@ inline int show_grid_layout(int argc, char **argv){
     return app.exec();
 }
 
+int show_splitter(int argc, char **argv){
+    QApplication app(argc, argv);
+    QSplitter wgt(Qt::Vertical);
+    QTextEdit* txt1 = new QTextEdit;
+    QTextEdit* txt2 = new QTextEdit;
+    wgt.addWidget(txt1);
+    wgt.addWidget(txt2);
+
+    txt1->setPlainText("Line1\nLine2");
+    txt2->setPlainText("Line3\nLine4");
+
+    wgt.resize(300, 200);
+    wgt.show();
+
+    return app.exec();
+
+}
+
 int main(int argc, char **argv)
 {
     //return show_box_layout(argc, argv);
     //return show_stretch(argc, argv);
     //return show_hbox_layout(argc, argv);
     //return show_embed_layout(argc, argv);
-    return show_grid_layout(argc, argv);
+    //return show_grid_layout(argc, argv);
+    return show_splitter(argc, argv);
 }

@@ -292,9 +292,9 @@ int divide_2(int i){
 bool raised_to2(int x){
 
     const int intsize = sizeof(int)* 8;
-    cout << "(x - 1) = " << bitset<intsize>(x-1) << '\n';
-    cout << "x = " << bitset<intsize>(x) << '\n';
-    cout << "(x - 1) & x" << bitset<intsize>((x - 1) & x) << '\n';
+    cout << "(x - 1) = \t" << bitset<intsize>(x-1) << '\n';
+    cout << "x = \t\t" << bitset<intsize>(x) << '\n';
+    cout << "(x - 1) & x = \t" << bitset<intsize>((x - 1) & x) << '\n';
 
 	if (!((x - 1) & x))
 		return true;
@@ -426,8 +426,8 @@ void show_fast_sqrt(){
 }
 
 void show_shift(){
-	long long l = 0LL;
-	for (size_t i = 0; i < 64; ++i){
+	long long l = 0;
+	for (size_t i = 0; i < sizeof(long long)*8; ++i){
 		// маска обязательно должна соответствовать типу
 		l = 1075LL << i;
 		cout << " magic =  " << bitset<sizeof(l)* 8>(l) << endl;
@@ -438,7 +438,7 @@ void show_shift(){
 //Я имею в виду вызов Enter / LeavCriticalSection или что - то такого же,
 //что блокирует шину данных, когда зовём rand при линковке с многопоточной библиотекой.
 //Если перенести этот код на многопроцессорную машину, где лок шины данных будет настоящий,
-//а не "понарошку" - то я не знаю сколько будет.Вот код для тестирования :
+//а не "понарошку" - то я не знаю сколько будет.Вот код для тестирования:
 void show_rand(){
 	volatile int x;
 	int n = 10000000;

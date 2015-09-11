@@ -21,7 +21,7 @@ protected:
     void calculate();
 private:
     QLCDNumber* display_;
-    QStack<QString> results_;
+    QStack<QString> input_stack_;
     QString str_display_;
     static QChar buttons[4][4];
 };

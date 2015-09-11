@@ -7,6 +7,27 @@
 #include <QtAlgorithms>
 #include <QtCore>
 
+// *STL containers faster, Qt containers optimized by memory
+// *Qt containers have STL method analogs for STL interoperability
+// *QObject could not be stored in container, pointer to it only (copy-assignment is forbidden)
+// *Qt has Java-style and STL-style iterators
+// *Qt associative non-hash containers based on skip-list
+// *Qt foreach copies the whole container!
+// *Qt vector has insert to beginning methods, but it is inefficient
+// *ByteArray containers could be compressed
+// *Qt support one-direction and two-directions lists
+// *QLinkedList does not have operator << for debug, operator[] and at()
+// *QMap operator[] silently inserts like std::map. Just replace to value() for access
+// *QMap could be silently converted to multimap using insertMulti()
+// *QMultiMap is inherited from the QMap!
+// *associalive containers have more mothods than STL (keys(), values())
+// *QMap::unite() could also turn it to multimap
+// *all containers could be converted to STL
+// *Hash-table size could be pre-allocated. Ensures that the QHash's internal hash table 
+//  consists of at least size buckets.
+// *QHashMap::squeeze() shrinks to fit, but can do nothing
+// *Qt algorithms accept all container and overloaded
+// *QString supports regular expressions
 
 
 void show_common(){
@@ -151,6 +172,13 @@ void show_bytes(){
 
     QByteArray txt_decompressed = qUncompress(txt_compressed);
     qDebug() << txt_decompressed;
+
+    // 
+    QVector<int> v_txt;
+    v_txt << 1 << 2 << 3 << 4 << 5;
+    // QVector could not be compressed
+    //QByteArray vtxt_compressed = qCompress(,v_txt);
+
 
     // Could be converted to Base64 before
     QByteArray txt64 = txt.toBase64();

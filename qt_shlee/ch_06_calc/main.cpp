@@ -1,6 +1,7 @@
 #include <QApplication>
 #include "calculator.h"
 
+// TODO: finish calculator
 
 int main(int argc, char **argv)
 {

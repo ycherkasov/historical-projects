@@ -28,6 +28,7 @@
 // *QHashMap::squeeze() shrinks to fit, but can do nothing
 // *Qt algorithms accept all container and overloaded
 // *QString supports regular expressions
+// *QString supports COW semantic (maybe other containers?)
 
 
 void show_common(){

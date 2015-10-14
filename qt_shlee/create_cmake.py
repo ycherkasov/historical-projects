@@ -30,6 +30,8 @@ set(TARGET {1})
 find_package(Qt5Core REQUIRED)
 find_package(Qt5Gui REQUIRED)
 find_package(Qt5Widgets REQUIRED)
+find_package({2} REQUIRED)
+
 
 file(GLOB project_SRCS *.cpp *.h *.qml)
 
@@ -43,7 +45,7 @@ set(CMAKE_AUTOUIC ON)
 
 add_executable({1} ${{project_SRCS}})
 
-target_link_libraries({1} Qt5::Core Qt5::Widgets Qt5::PrintSupport)
+target_link_libraries({1} Qt5::Core Qt5::Widgets {3})
 '''
 
 def create_cmake(path, project):
@@ -53,7 +55,10 @@ def create_cmake(path, project):
     '''
     project_path = os.path.join(path, project)
     f = open(os.path.join(project_path, 'CMakeLists.txt'), 'w')
-    f.write(cmake_text.format(project, project))
+    if project == 'ch_10_text_edit':
+        f.write(cmake_text.format(project, project, "Qt5PrintSupport", "Qt5::PrintSupport"))
+    else:
+        f.write(cmake_text.format(project, project, "", ""))
     f.close()
 
 
@@ -86,7 +91,7 @@ def mass_create_cmake(root_path, solution_name):
 def main(argv):
     try:
         mass_create_cmake(path, solution_name)
-        return os.system('cmake .')
+        return os.system('cmake . -DCMAKE_PREFIX_PATH=C:/Qt/5.5/msvc2013')
     except IndexError:
         print("Usage: python create_cmake.py <solution_name> <solution_path>")
 #    except Exception as e:

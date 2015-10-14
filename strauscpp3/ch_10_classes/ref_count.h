@@ -105,7 +105,7 @@ class rc_object
 {
 public:
 	// owner should set correct ref_count!
-	rc_object():_ref_count(0),_shareable(true){}
+	rc_object() : _ref_count(0),_shareable(true){}
 
 	// owner should set correct ref_count!
 	rc_object(const rc_object&) :_ref_count(0), _shareable(true){}

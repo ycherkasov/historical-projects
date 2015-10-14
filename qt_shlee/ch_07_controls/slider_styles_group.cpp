@@ -1,5 +1,6 @@
 #include <QRadioButton>
 #include <QLayout>
+#include <QWidget>
 
 #include "slider_styles_group.h"
 

@@ -43,7 +43,7 @@ set(CMAKE_AUTOUIC ON)
 
 add_executable({1} ${{project_SRCS}})
 
-target_link_libraries({1} Qt5::Core Qt5::Widgets)
+target_link_libraries({1} Qt5::Core Qt5::Widgets Qt5::PrintSupport)
 '''
 
 def create_cmake(path, project):

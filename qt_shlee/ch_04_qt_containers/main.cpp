@@ -349,6 +349,7 @@ void show_string(){
     s1 = "one";
     s2 = "two";
 
+    // toUpper()/toLower() do not modify the string, just return
     qDebug() << s1.toUpper();
     qDebug() << s1;
     qDebug() << s1.toLower();

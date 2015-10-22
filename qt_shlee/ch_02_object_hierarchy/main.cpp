@@ -1,5 +1,6 @@
 #include <QApplication>
 #include <QDebug>
+#include <QWidget>
 #include <QList>
 #include <QtCore>
 
@@ -8,6 +9,7 @@
 // * hierarchies could be iterable
 // * objects contain metainformation
 // * Library contains metainformation
+// * qobject_cast<> could be used to cast QObject* derived classes (uses metainformation)
 
 int main(int argc, char **argv)
 {

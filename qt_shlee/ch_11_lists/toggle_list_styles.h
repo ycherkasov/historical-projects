@@ -22,6 +22,8 @@ private:
     QRadioButton* plain_list_;
     QRadioButton* editable_list_;
     QRadioButton* drag_enabled_list_;
+    QRadioButton* icons_list_;
+    QRadioButton* icons_text_list_;
     QListWidget* buddy_list_ = nullptr;
 
 };

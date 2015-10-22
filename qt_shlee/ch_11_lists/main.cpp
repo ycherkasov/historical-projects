@@ -31,6 +31,9 @@ QWidget* get_list_widget(QWidget* parent){
     QWidget* show_list_widget = new QWidget(parent);
     QHBoxLayout* list_layout = new QHBoxLayout;
     QListWidget* lst = new QListWidget;
+    
+    // TODO: manage Drag&Drop
+    //lst->setDragEnabled(true);
     ToggleListStyles* toggle_list = new ToggleListStyles("List styles", show_list_widget);
     toggle_list->set_buddy_list(lst);
     toggle_list->style_changed_slot();

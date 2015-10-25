@@ -12,6 +12,7 @@ SimpleDelegate::SimpleDelegate(QObject* parent)
 
 void SimpleDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
+    // we just redefine painting of the single element
     if (option.state & QStyle::State_MouseOver)
     {
         // drawing area

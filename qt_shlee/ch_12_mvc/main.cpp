@@ -17,12 +17,24 @@
 #include "int_list_model.h"
 #include "table_model.h"
 
+// TODO: nested tables - is it possible insert to every cell?
+// TODO: SQL Model
+// TODO: Understand what is roles
+// TODO: make sample explorer style similar to Windows explorer
+
 // * model is responsible for data storage, access and write
-// (QDirModel - filesystem, QStandardItemMode - simple in-memory, QProxyModex - sorting&filtering etc)
+// (QDirModel - file system, QStandardItemMode - simple in-memory, QProxyModex - sorting&filtering etc)
 // * view - base class for representation
+
+// * Selection model allows defining selection behavior in the View
+// * standard Selection model is QItemSelectionModel
+// * Delegate is responsible for the single View element draw and edit, 
+// also read from Model and write back to Model
 
 QWidget* get_selection_model_example(QWidget* parent){
 
+    // Selection model allows defining selection behavior in the View
+    // standard Selection model is QItemSelectionModel
     QWidget* selection_widget = new QWidget(parent);
 
     // Simple list-based model
@@ -30,7 +42,6 @@ QWidget* get_selection_model_example(QWidget* parent){
     QStringList l;
     l << "Item 1" << "Item 2" << "Item 3";
     model->setStringList(l);
-
 
     // Create three views
     QListView* list_view = new QListView;
@@ -43,6 +54,7 @@ QWidget* get_selection_model_example(QWidget* parent){
     // Special model for selection
     QItemSelectionModel* selection = new QItemSelectionModel(model);
 
+    // Set the same selection model - so selected element will be selected in every view
     list_view->setSelectionModel(selection);
     tree_view->setSelectionModel(selection);
     table_view->setSelectionModel(selection);
@@ -70,8 +82,10 @@ QWidget* get_simple_delegate_example(QWidget* parent){
 
     // Set our delegate
     SimpleDelegate* sd = new SimpleDelegate(lv);
-
     lv->setItemDelegate(sd);
+    
+    // Make the QListView react to mouse hover
+    // 
     lv->viewport()->setAttribute(Qt::WA_Hover);
     return lv;
 }
@@ -97,6 +111,7 @@ QWidget* get_index_example(QWidget* parent){
             // Create nested table
             int nested_rows_total = 4;
             int nested_columns_total = 3;
+
             // TODO: is it possible insert to every cell?
             model->insertRows(0, nested_rows_total, index);
             model->insertColumns(0, nested_columns_total, index);
@@ -117,6 +132,7 @@ QWidget* get_index_example(QWidget* parent){
 }
 
 QWidget* get_explorer_example(QWidget* parent){
+
     // TODO: make style similar to Windows explorer
     QSplitter* spl = new QSplitter(Qt::Horizontal, parent);
     QDirModel* model = new QDirModel(spl);
@@ -169,6 +185,8 @@ QWidget* get_roles_example(QWidget* parent){
 
 
 QWidget* get_user_model_example1(QWidget* parent){
+
+    // Try our own model based to integer list
     QSplitter* spl = new QSplitter(Qt::Horizontal, parent);
     IntListModel* model = new IntListModel(spl);
 
@@ -190,6 +208,7 @@ QWidget* get_user_model_example1(QWidget* parent){
 
 QWidget* get_user_model_example2(QWidget* parent)
 {
+    // Try our own model based on abstract table
     QTableView* table_view = new QTableView(parent);
     TableModel* model = new TableModel(200, 200, table_view);
     table_view->setModel(model);

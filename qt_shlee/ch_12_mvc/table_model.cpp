@@ -16,6 +16,7 @@ QVariant TableModel::data(const QModelIndex &index, int role /* = Qt::DisplayRol
         return QVariant();
     }
 
+    // always return that sample data
     QString ret = QString("%1.%2").arg(index.row()).arg(index.column());
 
     // only if we display or edit element
@@ -64,6 +65,7 @@ QVariant TableModel::headerData(int section, Qt::Orientation orientation, int ro
         return QVariant();
     }
 
+    // Just return sequence number
     return QString::number(section);
 }
 

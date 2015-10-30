@@ -3,8 +3,6 @@
 #include "simple_delegate.h"
 
 
-
-
 SimpleDelegate::SimpleDelegate(QObject* parent)
 : QItemDelegate(parent)
 {

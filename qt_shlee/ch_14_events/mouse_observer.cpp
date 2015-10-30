@@ -21,6 +21,7 @@ void MouseObserver::mouseReleaseEvent(QMouseEvent *ev)
 
 void MouseObserver::mouseMoveEvent(QMouseEvent *ev)
 {
+    // TODO: do not catch mouseMove, why?
     dumpEvent(ev, "Mouse moving");
 }
 

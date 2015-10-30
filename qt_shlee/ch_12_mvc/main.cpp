@@ -21,6 +21,7 @@
 // TODO: SQL Model
 // TODO: Understand what is roles
 // TODO: make sample explorer style similar to Windows explorer
+// TODO: what is viewport()?
 
 // * model is responsible for data storage, access and write
 // (QDirModel - file system, QStandardItemMode - simple in-memory, QProxyModex - sorting&filtering etc)
@@ -85,7 +86,7 @@ QWidget* get_simple_delegate_example(QWidget* parent){
     lv->setItemDelegate(sd);
     
     // Make the QListView react to mouse hover
-    // 
+    // TODO: what is viewport()?
     lv->viewport()->setAttribute(Qt::WA_Hover);
     return lv;
 }

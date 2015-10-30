@@ -1,6 +1,7 @@
 #pragma once
 #include <QLabel>
 
+// Output mouse information
 class MouseObserver : public QLabel
 {
 public:
@@ -11,8 +12,13 @@ protected:
     virtual void mouseMoveEvent(QMouseEvent *ev);
     virtual void mouseDoubleClickEvent(QMouseEvent * ev);
 
+    // set event text
     void dumpEvent(QMouseEvent* ev, const QString& message);
+
+    // whether Alt/Ctrl/Shift pressed
     QString modifiersInfo(QMouseEvent* ev);
+
+    // whether mouse buttons pressed
     QString buttonsInfo(QMouseEvent* ev);
 };
 

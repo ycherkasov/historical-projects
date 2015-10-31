@@ -11,10 +11,27 @@ class SettingsWindow : public QWidget
 {
     Q_OBJECT
 public:
+
+    struct GroupGuard{
+
+        GroupGuard(QSettings& settings, const QString& group_name) : 
+            settings_(settings)
+        {
+            settings_.beginGroup(group_name);
+        }
+        
+        ~GroupGuard(){
+            settings_.endGroup();
+        }
+
+    private:
+        QSettings& settings_;
+    };
+
     SettingsWindow(QWidget* parent = nullptr);
     virtual ~SettingsWindow();
 
-    void writeSettings() const;
+    void writeSettings();
     void readSettings();
 
     void checkBoxClicked();
@@ -31,6 +48,6 @@ private:
     QLabel* times_stared_ = nullptr;
     
     // load here how many times have we started
-    int startts_counter_ = 0;
+    int starts_counter_ = 0;
 };
 

@@ -20,10 +20,10 @@ QString KeyboardObserver::modifiersInfo(QKeyEvent* ev)
     QString moditiers_str;
 
     if (ev->modifiers() & Qt::ShiftModifier) {
-        moditiers_str += "Shift ";
+        moditiers_str += "Shift";
     }
     if (ev->modifiers() & Qt::ControlModifier) {
-        moditiers_str += "Control ";
+        moditiers_str += "Control";
     }
     if (ev->modifiers() & Qt::AltModifier) {
         moditiers_str += "Alt";

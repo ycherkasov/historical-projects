@@ -5,14 +5,16 @@
 #include <QPushButton>
 #include <QSplitter>
 #include <QTextEdit>
+#include <QTabWidget>
+
 
 // TODO:
 // Difference TopToBottom/BottomToTop
 // Form layout
 
-inline int show_box_layout(int argc, char **argv){
-    QApplication app(argc, argv);
-    QWidget wgt;
+QWidget* show_box_layout(QWidget* parent){
+    
+    QWidget* wgt = new QWidget(parent);
 
     QPushButton* btn1 = new QPushButton("A");
     QPushButton* btn2 = new QPushButton("B");
@@ -27,17 +29,13 @@ inline int show_box_layout(int argc, char **argv){
     box->addWidget(btn3, 3);
 
     // ...same with setLayout()
-    wgt.setLayout(box);
-
-    wgt.resize(450, 50);
-    wgt.show();
-
-    return app.exec();
+    wgt->setLayout(box);
+    return wgt;
 }
 
-inline int show_stretch(int argc, char **argv){
-    QApplication app(argc, argv);
-    QWidget wgt;
+QWidget* show_stretch(QWidget* parent){
+    
+    QWidget* wgt = new QWidget(parent);
 
     QPushButton* btn1 = new QPushButton("A");
     QPushButton* btn2 = new QPushButton("B");
@@ -54,17 +52,13 @@ inline int show_stretch(int argc, char **argv){
     box->addStretch(2);
     box->addWidget(btn2, 3);
 
-    wgt.setLayout(box);
-
-    wgt.resize(450, 50);
-    wgt.show();
-
-    return app.exec();
+    wgt->setLayout(box);
+    return wgt;
 }
 
-inline int show_hbox_layout(int argc, char **argv){
-    QApplication app(argc, argv);
-    QWidget wgt;
+QWidget* show_hbox_layout(QWidget* parent){
+    
+    QWidget* wgt = new QWidget(parent);
 
     QPushButton* btn1 = new QPushButton("A");
     QPushButton* btn2 = new QPushButton("B");
@@ -79,18 +73,13 @@ inline int show_hbox_layout(int argc, char **argv){
     box->addWidget(btn3);
 
     // ...same with setLayout()
-    wgt.setLayout(box);
-
-    wgt.resize(450, 50);
-    wgt.show();
-
-    return app.exec();
+    wgt->setLayout(box);
+    return wgt;
 }
 
-inline int show_embed_layout(int argc, char **argv){
+QWidget* show_embed_layout(QWidget* parent){
 
-    QApplication app(argc, argv);
-    QWidget wgt;
+    QWidget* wgt = new QWidget(parent);
 
     QPushButton* btn1 = new QPushButton("A");
     QPushButton* btn2 = new QPushButton("B");
@@ -120,17 +109,14 @@ inline int show_embed_layout(int argc, char **argv){
     hbox->setMargin(5);
     hbox->setSpacing(15);
 
-    wgt.setLayout(vbox);
+    wgt->setLayout(vbox);
 
-    wgt.show();
-
-    return app.exec();
+    return wgt;
 }
 
-inline int show_grid_layout(int argc, char **argv){
+QWidget* show_grid_layout(QWidget* parent){
 
-    QApplication app(argc, argv);
-    QWidget wgt;
+    QWidget* wgt = new QWidget(parent);
 
     QPushButton* btn1 = new QPushButton("A");
     QPushButton* btn2 = new QPushButton("B");
@@ -148,37 +134,40 @@ inline int show_grid_layout(int argc, char **argv){
     gbox->addWidget(btn3, 1, 0);
     gbox->addWidget(btn4, 1, 1);
 
-    wgt.setLayout(gbox);
-
-    wgt.show();
-
-    return app.exec();
+    wgt->setLayout(gbox);
+    return wgt;
 }
 
-int show_splitter(int argc, char **argv){
-    QApplication app(argc, argv);
-    QSplitter wgt(Qt::Vertical);
+QWidget* show_splitter(QWidget* parent){
+
+    QSplitter* wgt = new QSplitter(parent);
+
     QTextEdit* txt1 = new QTextEdit;
     QTextEdit* txt2 = new QTextEdit;
-    wgt.addWidget(txt1);
-    wgt.addWidget(txt2);
+    wgt->addWidget(txt1);
+    wgt->addWidget(txt2);
 
     txt1->setPlainText("Line1\nLine2");
     txt2->setPlainText("Line3\nLine4");
 
-    wgt.resize(300, 200);
-    wgt.show();
-
-    return app.exec();
-
+    return wgt;
 }
 
 int main(int argc, char **argv)
 {
-    //return show_box_layout(argc, argv);
-    //return show_stretch(argc, argv);
-    //return show_hbox_layout(argc, argv);
-    //return show_embed_layout(argc, argv);
-    //return show_grid_layout(argc, argv);
-    return show_splitter(argc, argv);
+    QApplication app(argc, argv);
+
+    QTabWidget wnd;
+    wnd.addTab(show_box_layout(&wnd), "Box layout");
+    wnd.addTab(show_stretch(&wnd), "Stretch");
+    wnd.addTab(show_hbox_layout(&wnd), "HBox layout");
+    wnd.addTab(show_embed_layout(&wnd), "Embed layouts");
+    wnd.addTab(show_grid_layout(&wnd), "Grid layout");
+    wnd.addTab(show_splitter(&wnd), "Splitter");
+
+    wnd.resize(400, 200);
+    wnd.show();
+
+    return app.exec();
+
 }

@@ -113,5 +113,6 @@ void SettingsWindow::comboBoxActivated(int index)
     p.setColor(QPalette::Active, QPalette::Base, base_color);
     p.setColor(QPalette::Active, QPalette::Text, text_color);
 
+    // change edit box style
     editor_->setPalette(p);
 }

@@ -12,6 +12,7 @@ class SettingsWindow : public QWidget
     Q_OBJECT
 public:
 
+    // RAII wrapper for settings groups
     struct GroupGuard{
 
         GroupGuard(QSettings& settings, const QString& group_name) : 
@@ -31,11 +32,16 @@ public:
     SettingsWindow(QWidget* parent = nullptr);
     virtual ~SettingsWindow();
 
+    // all methods changes QSetting, so they non-const
     void writeSettings();
     void readSettings();
 
+    // enable-disable edit box
     void checkBoxClicked();
+
+    // change edit style
     void comboBoxActivated(int);
+
 private:
 
     // Settings accept company name (for Windows registry) and application name

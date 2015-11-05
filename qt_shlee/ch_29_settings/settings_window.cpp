@@ -53,6 +53,8 @@ void SettingsWindow::writeSettings()
 {
     GroupGuard guard(settings_, "/Settings");
 
+    // Settings are saved in cross-platform way
+    // (Windows registry, txt file)
     settings_.setValue("/text", editor_->toPlainText());
     settings_.setValue("/style", styles_combo_->currentIndex());
     settings_.setValue("/disabled", disable_edit_flag_->isChecked());

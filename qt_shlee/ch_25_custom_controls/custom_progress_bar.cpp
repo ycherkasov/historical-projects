@@ -42,7 +42,11 @@ void CustomProgressBar::setProgress(int progress)
 void CustomProgressBar::paintEvent(QPaintEvent * ev)
 {
     // painting stuff
+
+    // The QPainter class performs low-level painting on widgets and other paint devices
+    // constructor accept paint device
     QPainter p(this);
+
     QLinearGradient grad(0, 0, width(), height());
     float current_pos = static_cast<float>(progress_) / static_cast<float>(max_ - min_);
 
@@ -57,6 +61,7 @@ void CustomProgressBar::paintEvent(QPaintEvent * ev)
     // area of progress
     p.drawRect(0, 0, static_cast<int>(width() * current_pos), height());
 
+    // draw text <n>%
     p.setPen(QPen(Qt::green));
     QString text = QString("%1 %").arg(QString::number(progress_));
     p.drawText(rect(), Qt::AlignCenter, text);

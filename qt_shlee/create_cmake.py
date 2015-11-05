@@ -33,7 +33,7 @@ find_package(Qt5Widgets REQUIRED)
 find_package(Qt5PrintSupport REQUIRED)
 
 
-file(GLOB project_SRCS *.cpp *.h *.qml)
+file(GLOB project_SRCS *.cpp *.h *.qml *.ts)
 
 include_directories(${{PROJECT_SOURCE_DIR}})
 

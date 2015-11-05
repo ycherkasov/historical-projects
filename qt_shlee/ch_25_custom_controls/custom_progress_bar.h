@@ -26,6 +26,7 @@ public:
         return max_;
     }
 
+    // Hint for the Layout control
     virtual QSize sizeHint() const;
 
 signals:

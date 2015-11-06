@@ -1,23 +1,24 @@
 #include <QtTest\QtTest>
-#include "test_example.h"
 
-// TODO: does not work...
+#include "example_class.h"
+#include "test_example_class.h"
 
-#if 0
-QTEST_MAIN(Test_ExampleClass)
-#else
-QT_BEGIN_NAMESPACE
-QTEST_ADD_GPU_BLACKLIST_SUPPORT_DEFS
-QT_END_NAMESPACE
 
-int main(int argc, char** argv)
+
+void Test_ExampleClass::testMin()
 {
-    QApplication app(argc, argv);
-    app.setAttribute(Qt::AA_Use96Dpi, true);
-    QTEST_DISABLE_KEYPAD_NAVIGATION
-    QTEST_ADD_GPU_BLACKLIST_SUPPORT
-    Test_ExampleClass tc;
-    QTEST_SET_MAIN_SOURCE_PATH
-    return QTest::qExec(&tc, argc, argv);
+    ExampleClass ex;
+    QCOMPARE(ex.min(25, 0), 0);
+    QCOMPARE(ex.min(-12, -5), -12);
+    QCOMPARE(ex.min(2007, 2007), 2007);
+    QCOMPARE(ex.min(-12, 5), -12);
 }
-#endif
+
+void Test_ExampleClass::testMax()
+{
+    ExampleClass ex;
+    QCOMPARE(ex.max(25, 0), 25);
+    QCOMPARE(ex.max(-12, -5), -5);
+    QCOMPARE(ex.max(2007, 2007), 2007);
+    QCOMPARE(ex.max(-12, 5), 5);
+}

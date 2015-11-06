@@ -34,6 +34,7 @@ find_package(Qt5PrintSupport REQUIRED)
 find_package(Qt5Test REQUIRED)
 find_package(Qt5WebKit REQUIRED)
 find_package(Qt5WebKitWidgets REQUIRED)
+find_package(Qt5Script REQUIRED)
 
 
 file(GLOB project_SRCS *.cpp *.h *.qml *.ts)
@@ -64,6 +65,8 @@ def create_cmake(path, project):
         f.write(cmake_text.format(project, project, "Qt5::Test"))
     elif project == 'ch_47_webkit':
         f.write(cmake_text.format(project, project, "Qt5::WebKitWidgets"))
+    elif project == 'ch_50_qtscript_basics':
+        f.write(cmake_text.format(project, project, "Qt5::Script"))
     else:
         f.write(cmake_text.format(project, project, ""))
     f.close()

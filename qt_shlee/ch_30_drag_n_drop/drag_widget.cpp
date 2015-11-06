@@ -56,7 +56,8 @@ void DragWidget::mouseMoveEvent(QMouseEvent *ev)
             startDrag();
         }
 
-        // process parent as usual
-        QLabel::mouseMoveEvent(ev);
     }
+    // process parent as usual
+    QLabel::mouseMoveEvent(ev);
+
 }

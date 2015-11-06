@@ -4,6 +4,7 @@
 class QSystemTrayIcon; 
 class QMenu;
 
+// Application Window that supports systray icon and menu
 class SystrayWindow : public QLabel
 {
     Q_OBJECT
@@ -16,6 +17,8 @@ public:
 
 protected:
 
+    // catch close event so that
+    // do not close app, just hide it on [x]
     virtual void closeEvent(QCloseEvent * ev);
 
 private:

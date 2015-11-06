@@ -7,7 +7,7 @@
         <location filename="main.cpp" line="17"/>
         <source>Language</source>
         <comment>Hint for translator</comment>
-        <translation>Hint for translator</translation>
+        <translation>Language</translation>
     </message>
     <message>
         <location filename="main.cpp" line="18"/>

@@ -14,7 +14,7 @@ public:
 
     // RAII wrapper for settings groups
     struct GroupGuard{
-
+        
         GroupGuard(QSettings& settings, const QString& group_name) : 
             settings_(settings)
         {
@@ -24,6 +24,9 @@ public:
         ~GroupGuard(){
             settings_.endGroup();
         }
+
+        GroupGuard(const GroupGuard&) = delete;
+        GroupGuard& operator=(const GroupGuard&) = delete;
 
     private:
         QSettings& settings_;

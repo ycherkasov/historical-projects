@@ -31,6 +31,7 @@ find_package(Qt5Core REQUIRED)
 find_package(Qt5Gui REQUIRED)
 find_package(Qt5Widgets REQUIRED)
 find_package(Qt5PrintSupport REQUIRED)
+find_package(Qt5Test REQUIRED)
 
 
 file(GLOB project_SRCS *.cpp *.h *.qml *.ts)
@@ -57,6 +58,8 @@ def create_cmake(path, project):
     f = open(os.path.join(project_path, 'CMakeLists.txt'), 'w')
     if project == 'ch_10_text_edit':
         f.write(cmake_text.format(project, project, "Qt5::PrintSupport"))
+    elif project == 'ch_46_qt_test':
+        f.write(cmake_text.format(project, project, "Qt5::Test"))
     else:
         f.write(cmake_text.format(project, project, ""))
     f.close()

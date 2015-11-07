@@ -35,9 +35,11 @@ find_package(Qt5Test REQUIRED)
 find_package(Qt5WebKit REQUIRED)
 find_package(Qt5WebKitWidgets REQUIRED)
 find_package(Qt5Script REQUIRED)
+find_package(Qt5Quick REQUIRED)
+find_package(Qt5Declarative REQUIRED)
 
 
-file(GLOB project_SRCS *.cpp *.h *.qml *.ts)
+file(GLOB project_SRCS *.cpp *.h *.qml *.qrc *.ts)
 
 include_directories(${{PROJECT_SOURCE_DIR}})
 
@@ -67,6 +69,8 @@ def create_cmake(path, project):
         f.write(cmake_text.format(project, project, "Qt5::WebKitWidgets"))
     elif project == 'ch_50_qtscript_basics':
         f.write(cmake_text.format(project, project, "Qt5::Script"))
+    elif project == 'ch_53_qml_basics':
+        f.write(cmake_text.format(project, project, "Qt5::Quick Qt5::Declarative"))
     else:
         f.write(cmake_text.format(project, project, ""))
     f.close()

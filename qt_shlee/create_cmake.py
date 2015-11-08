@@ -1,4 +1,4 @@
-import os, sys
+import os, sys, shutil
 
 solution_name = 'qt_shlee'
 path = '.'
@@ -118,9 +118,9 @@ def mass_create_cmake(root_path, solution_name):
 
 def main(argv):
     try:
-        mass_create_cmake(path, solution_name)
         if os.path.isdir('build-cmake'):
             shutil.rmtree('build-cmake', onerror=on_rm_error)
+        mass_create_cmake(path, solution_name)
         os.mkdir('build-cmake')
         os.chdir('build-cmake')
         return os.system('cmake .. -DCMAKE_PREFIX_PATH=C:/Qt/5.5/msvc2013')

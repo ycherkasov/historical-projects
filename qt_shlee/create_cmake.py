@@ -105,7 +105,11 @@ def mass_create_cmake(root_path, solution_name):
 def main(argv):
     try:
         mass_create_cmake(path, solution_name)
-        return os.system('cmake . -DCMAKE_PREFIX_PATH=C:/Qt/5.5/msvc2013')
+        if os.path.isdir('build-cmake'):
+                shutil.rmtree('build-cmake')
+        os.mkdir('build-cmake')
+        os.chdir('build-cmake')
+        return os.system('cmake .. -DCMAKE_PREFIX_PATH=C:/Qt/5.5/msvc2013')
     except IndexError:
         print("Usage: python create_cmake.py <solution_name> <solution_path>")
 #    except Exception as e:

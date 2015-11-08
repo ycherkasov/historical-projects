@@ -3,6 +3,20 @@ import os, sys
 solution_name = 'qt_shlee'
 path = '.'
 
+###########################################################################
+def on_rm_error(*args):
+    '''
+    In case the file or directory is read-only and we need to delete it
+    this function will help to remove 'read-only' attribute
+    :param args: (func, path, exc_info) yuple
+    '''
+    # path contains the path of the file that couldn't be removed
+    # let's just assume that it's read-only and unlink it.
+    _, path, _ = args
+    os.chmod(path, stat.S_IWRITE)
+    os.unlink(path)
+
+
 base_cmake_text = '''cmake_minimum_required(VERSION 3.0)
 project({0} CXX)
 set(TARGET {1})
@@ -106,7 +120,7 @@ def main(argv):
     try:
         mass_create_cmake(path, solution_name)
         if os.path.isdir('build-cmake'):
-                shutil.rmtree('build-cmake')
+            shutil.rmtree('build-cmake', onerror=on_rm_error)
         os.mkdir('build-cmake')
         os.chdir('build-cmake')
         return os.system('cmake .. -DCMAKE_PREFIX_PATH=C:/Qt/5.5/msvc2013')

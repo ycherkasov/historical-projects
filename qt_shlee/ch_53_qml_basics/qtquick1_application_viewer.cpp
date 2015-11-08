@@ -8,7 +8,7 @@
   may offer an updated version of it.
 */
 
-#include "qtquick1applicationviewer.h"
+#include "qtquick1_application_viewer.h"
 
 #include <QDeclarativeComponent>
 #include <QDeclarativeEngine>

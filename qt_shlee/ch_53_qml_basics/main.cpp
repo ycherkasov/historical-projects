@@ -1,4 +1,4 @@
-#include "qtquick1applicationviewer.h"
+#include "qtquick1_application_viewer.h"
 #include <QApplication>
 
 int main(int argc, char *argv[])

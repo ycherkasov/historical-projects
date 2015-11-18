@@ -23,7 +23,7 @@ template <typename T> RT1 test_sfinae_x(typename T::X const&){
 	return 0;
 }
 
-template <typename T> RT2 test_sfinae_x(...){ 
+template <typename T> RT2 test_sfinae_x(T){ 
 	RT2 rt = {};
 	rt.a[0] = 'a';
 	rt.a[1] = 0;

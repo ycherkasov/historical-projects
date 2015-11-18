@@ -292,8 +292,8 @@ int divide_2(int i){
 bool raised_to2(int x){
 
     const int intsize = sizeof(int)* 8;
-    cout << "(x - 1) = \t" << bitset<intsize>(x-1) << '\n';
     cout << "x = \t\t" << bitset<intsize>(x) << '\n';
+    cout << "(x - 1) = \t" << bitset<intsize>(x-1) << '\n';
     cout << "(x - 1) & x = \t" << bitset<intsize>((x - 1) & x) << '\n';
 
 	if (!((x - 1) & x))

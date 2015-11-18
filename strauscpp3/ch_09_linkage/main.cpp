@@ -34,7 +34,7 @@ static int si = 0; // explicitly static (intern)
 
 // the same goes for functions (but there are no const functions)
 int foo(); // extern by default
-static int bar(); // explicitly static 
+static int bar(); // explicitly static (intern)
 
 // Note that instead of using static for internal linkage 
 // it is better to use anonymous namespaces into which you can also put classes.

@@ -707,14 +707,14 @@ struct TPTraits : TPTraitsBase<T>{
 
 
 template <typename FP>
-long fast_fp2long(FP f)
+typename TPTraits<FP>::ret_type fast_fp2long(FP f)
 {
     typename TPTraits<FP>::castable magic;
     magic.i = TPTraits<FP>::mask;
 
     volatile typename TPTraits<FP>::castable ret;
     ret.f = f + magic.f;
-    return static_cast<long>(ret.i - magic.i);
+    return ret.i - magic.i;
 }
 
 
@@ -770,6 +770,7 @@ int fast_float2int_debug(float x)
     равна целой части нашего исходного аргумента.
 
     */
+    cout << "\nConverting to int x = " << x << endl;
     const int magic1 = (150 << 23);
     cout << "magic1 = " << bitset<32>(magic1) << endl;
 
@@ -790,8 +791,12 @@ int fast_float2int_debug(float x)
     */
 
     // append to the converted number
-    // float representation of the magic intteger mask
+    // float representation of the magic integer mask
+    cout << "x =  " << x << ", x2 = " << bitset<32>(x) << endl;
+    cout << "magic =  " << *(reinterpret_cast<float*>(&magic)) << ", magic2 = " << bitset<32>(magic) << endl;
+    cout << "x += magic" << endl;
     x += *(reinterpret_cast<float*>(&magic));
+    cout << "x  = " << x << " x2 = " << bitset<32>(x) << endl;
 
     /*
     После сдвига хорошо бы почистить старшие разряды от экспоненты и знака.
@@ -813,8 +818,11 @@ int fast_float2int_debug(float x)
 
     // subtract from integer representation of the converted number
     // magic int mask
-    float res = *(reinterpret_cast<int*>(&x)) - magic;
+    cout << "x = " << bitset<32>(*(reinterpret_cast<int*>(&x))) << endl;
+    cout << "magic = " << bitset<32>(magic) << endl;
+    int res = *(reinterpret_cast<int*>(&x)) - magic;
 
+    cout << "x - magic = " << res << " res2 = " << bitset<32>(res) << endl;
     return res;
     /*
     Сишное приведение вызовет функцию _ftol, которая помимо использования медленной инструкции для конверсии

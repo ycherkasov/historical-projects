@@ -3,7 +3,7 @@
 
 // Исходный шаблон для взятия корня
 // Корень целого числа ищется двоичным поиском и прямым сравнением
-// Числа, не имеющие целого корня, округляются до корня меньшего числа
+// Числа, не имеющие целого корня, возвращают -1
 // Для примера N=16 порядок вычислений следующий
 // Sqrt<16, 1, 16>
 // Sqrt<16, 1, 8>
@@ -17,7 +17,7 @@ struct Sqrt{
 
 	typedef typename 
 		IfThenElse< 
-			N<(mid*mid), 
+			(N < (mid*mid)), 
 			Sqrt<N, L0, mid-1>, 
 			Sqrt<N, mid, HI> 
 		>::Result CalculatedT;
@@ -25,9 +25,25 @@ struct Sqrt{
 	enum { result = CalculatedT::result };
 };
 
+template <int I>
+struct TypeWrapper
+{
+    enum { result = I };
+};
+
+
 // Частичная специализация для завершения рекурсии
 // Верхний и нижний интервалы совпадают - получен результат
 template <int N, int M>
 struct Sqrt<N, M, M>{
-	enum {result = M };
+
+    typedef typename
+    IfThenElse <
+    (N == (M*M)),
+    typename TypeWrapper<M>,
+    typename TypeWrapper<-1>
+    >::Result CalculatedT;
+
+
+	enum {result = CalculatedT::result };
 };

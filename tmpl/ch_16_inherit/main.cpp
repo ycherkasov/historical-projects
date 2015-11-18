@@ -1,21 +1,8 @@
 #include <memory>
 #include "name_params.h"
-#include "empty_base.h"
 #include "crtp.h"
 #include "virtual.h"
 using std::auto_ptr;
-
-void show_size_empty(){
-	simple_size();
-
-	my_derived<base1,base2> md;
-	cout << "sizeof my_derived " << sizeof(md) << endl;
-	
-	base1 b1;
-	base2 b2;
-	base_memeber_pair<base1,base2> bmp(b1, b2);
-	cout << "sizeof base_memeber_pair " << sizeof(bmp) << endl;
-}
 
 template<typename Worker>
 void polymorhic_work(const Worker& w)

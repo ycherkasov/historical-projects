@@ -82,6 +82,10 @@ public:
 };
 
 void test_tmpl_inherit2(){
-	derived3<void> dd;
-	dd.func();
+	derived3<void> dd1;
+	dd1.func();
+
+    derived3<double> dd2;
+    dd2.func();
+
 }

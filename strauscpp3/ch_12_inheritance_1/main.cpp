@@ -80,9 +80,6 @@ void show_operators(){
 	const currency_t cr3 = r1 + r2; // т.е. вызов конструктора cr3( r1 + r2 );
 	roubles_t r4 = cr3;		// r3( cr3 )
 
-	// Вообще, приведенный случай зависит также от реализации компилятора
-	// Т.е. благодаря оптимизации cr3 = r1 + r2 отработал как cr3( r1 + r2 )
-
 	// downcasting безопаснее делать при помощи dynamic_cast
 	if (roubles_t* r = dynamic_cast<roubles_t*>(&c3)){
 		r->print();
@@ -276,8 +273,6 @@ void ff2(){
 
 
 int main(){
-
-	
 
 	show_simple_inheritance();
 	show_abstract();

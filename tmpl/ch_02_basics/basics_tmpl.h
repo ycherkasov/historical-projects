@@ -2,6 +2,7 @@
 #include <bitset>
 using std::cout;
 using std::endl;
+
 // Глава 5 Джосаттиса
 // Ключевое слово typename. Конструкция X.template.
 // Использование this-> 

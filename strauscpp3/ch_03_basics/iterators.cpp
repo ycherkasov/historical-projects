@@ -47,6 +47,9 @@ void show_istr_iter()
 // Демонстрирует оба вида итераторов (ввода и вывода) и основные алгоритмы
 int show_iterators()
 {
+    // TODO: write test file first
+    // does not work because of OOS cmake build
+
     // Итератор для вывода приглашений
     ostream_iterator<string> out_iter(cout);
 

@@ -1,15 +1,3 @@
-Тред про безопасность исключений
-http://rsdn.ru/forum/cpp/2704484.aspx
-
-Пара вопросов про полиморфизм
-http://www.rsdn.ru/forum/cpp/2803940.flat.aspx	
-
-Что можно сделать в C, что нельзя в C++
-http://www.rsdn.ru/forum/cpp/1671446.1.aspx
-
-Возвращение по ссылке, реаллокация в веторе (конец треда)
-http://www.rsdn.ru/forum/cpp/1550645.aspx
-
 Задачи из горы Фудзи
 http://rsdn.ru/forum/message/1597816.aspx
 

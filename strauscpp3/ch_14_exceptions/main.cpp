@@ -1,7 +1,8 @@
 #include <cmath>
 #include <string>
 #include <iostream>
-#include <cfloat>			// объявление функций  для данных с плавающей точкой
+// объявление функций  для данных с плавающей точкой
+#include <cfloat>
 #include <cfenv>
 #include <vector>
 #include <stdexcept>
@@ -111,7 +112,7 @@ void show_simple_ex(){
 void complex_object_exception(){
 
 	// create a complex class with multiple inheritance
-	// and ineternal classes and throw an exception from destructor
+	// and ineternal classes and throw an exception from constructor
 	class internal
 	{
 		int i;
@@ -237,10 +238,14 @@ void show_standard_handlers(){
 	finished f;
 
 	f.unexpected();
-	f.test_custom_unexpected();
 
-	//f.terminate();
-	//f.test_custom_terminate();
+    try{
+        f.test_custom_unexpected();
+    }
+    catch (double){
+        // VC++ my_unexpected does not called
+        cout << "double caught" << endl;
+    }
 }
 
 // Функция демонстрирует механизм SEH
@@ -285,14 +290,14 @@ int main()
 	complex_object_exception();
 
 	// int and float zero div exception
+    // test with /EHa
 	show_zero_div_exception();
     show_fpe_zero_div();
 	
 	show_seh();
 	show_controlled();
 	
-	// does not work with VC++
-	//show_standard_handlers();
+	show_standard_handlers();
 
     show_exception_private_inherit();
 

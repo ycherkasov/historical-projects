@@ -48,7 +48,7 @@ bool lexigraphical<Symbols>::compare(const basic_string<Symbols>& str1, const ba
 
 template< typename Symbols >
 bool no_case<Symbols>::compare(const basic_string<Symbols> &str1, const basic_string<Symbols>& str2){
-    std::string nocase1, nocase2;
+    std::basic_string<Symbols> nocase1, nocase2;
     std::transform(str1.begin(), str1.end(), std::back_inserter(nocase1), ::tolower);
     std::transform(str2.begin(), str2.end(), std::back_inserter(nocase2), ::tolower);
 	return nocase1 > nocase2;

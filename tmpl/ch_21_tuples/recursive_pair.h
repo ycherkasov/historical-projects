@@ -59,13 +59,13 @@ struct recursive_tuple<1, Pair<A, Pair<B, C> > >{
 
 // Специализация для 2-го типа обычной пары (последние 2 типа в кортеже)
 template <typename A, typename B>
-struct recursive_tuple<2, Pair<A, B > >{
+struct recursive_tuple<2, Pair<A, B> >{
 	typedef B Result;
 };
 
 // Специализация для 1-го типа обычной пары (последние 2 типа в кортеже)
 template <typename A, typename B>
-struct recursive_tuple<1, Pair<A, B > >{
+struct recursive_tuple<1, Pair<A, B> >{
 	typedef A Result;
 };
 

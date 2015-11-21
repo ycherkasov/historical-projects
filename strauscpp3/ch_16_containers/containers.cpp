@@ -53,13 +53,13 @@ void test_std_vector()
 	// --- Удалим все значения 6 из vi2 ---
 	sort(vi2.begin(),vi2.end());
 	// найдем первую 6 с начала
-	vector<int>::iterator i1 = find_if( vi2.begin(), vi2.end(), is6 );
+	vector<int>::iterator it1 = find_if( vi2.begin(), vi2.end(), is6 );
 	// и с конца
 	vector<int>::reverse_iterator ri2 = find_if( vi2.rbegin(), vi2.rend(), is6 );
 	// извлечем правильно iterator из reverse_iterator 
-	vector<int>::iterator i2 = ri2.base();
+	vector<int>::iterator it2 = ri2.base();
 	// удалим элементы
-	vi2.erase(i1, i2);
+	vi2.erase(it1, it2);
 	// то же самое можно сделать с помощью lower_bound, upper_bound, equal_range
 
 	// обменять 2 вектора

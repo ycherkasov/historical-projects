@@ -15,6 +15,7 @@ void show_unefficient(){
 	print_debug("start expression");
 	x = 1.2*x + x*y;
 	print_debug("end expression");
+
 	// 3 временных объекта и 4 операции копирования
 	// на векторах размерности 1000 это будет накладно!
 
@@ -34,8 +35,11 @@ void show_efficient(){
 	print_debug("start expression");
 	x = 1.2*x + x*y;
 	print_debug("end expression");
+
 	// Все операции свернуты в единственный оператор присваивания
 	// Остальное выполняется "на месте" благодаря глубокому инстанцированию
+    std::cout << x[0] << std::endl;
+    std::cout << x[3] << std::endl;
 }
 
 int main(){

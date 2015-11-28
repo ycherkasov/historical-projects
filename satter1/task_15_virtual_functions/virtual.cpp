@@ -161,7 +161,7 @@ void show_switching_polymorph(){
 
 int main(){
 
-    //show_virtual();
+    show_virtual();
     show_switching_polymorph();
     return 0;
 }

@@ -83,9 +83,13 @@ void show_alignment(){
 
 // Ch 3 Task 22 When overload at least one new/delete operator,
 // overload all others that could be required new/new[], placement new/new[], related delete()
-// This is because of hiding names (see Overload and hidding names and name resolve rules)
+// This is because of hiding names (see Overload and hiding names and name resolve rules)
 
 // Ch 3 Task 23 checking bad_cast make sense only in particular cases
+// In some OSes memory is allocated according to "lazy evaluation" algo
+// operator new() is always success, but the application may fail
+// Solution: overload new(), fill memory with 0000
+// (catch should-be platform-specific)
 
 int main(){
 

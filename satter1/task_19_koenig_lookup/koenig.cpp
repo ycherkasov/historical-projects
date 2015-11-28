@@ -81,7 +81,8 @@ namespace N{
 void show_compliceted(){
     N::C a[10] = {};
 
-    // start looking for operator+ in std namespace, and find it in <numeric> header!
+    // std::accumulate includes all std operator+ in lookup!
+    // start looking for operator+ in std namespace, and find it in <numeric> header
     // It is template, and does not work! :(
     std::accumulate(a, a + 10, 0);
 

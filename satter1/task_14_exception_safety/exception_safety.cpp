@@ -101,7 +101,7 @@ void usage_raw_pointers(){
     f1<A,B>(new A, new B);
 
     // the same problem. Memory leak could happen before calling shared_ptr constructor
-    // (really? check actual Standard)
+    // use make_shared() not to ignore such problem
     f2<A,B>( shared_ptr<A>(new A), shared_ptr<B>(new B));
 
     // The most correct usage

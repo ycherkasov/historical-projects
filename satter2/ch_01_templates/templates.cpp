@@ -14,11 +14,11 @@
 // Dangerous version without buffer size change
 void old_sprintf(int i, char* buf){
 
-    // It contains following weaks:
+    // It contains following weaknesses:
     // 1. Buffer size is unchecked
     // 2. Dangerous formatting using flags
     // if we mistype and printed %4ld, we use long int, which size could differ then int
-    // 3. It does not support type safety and could not be used with templated
+    // 3. It does not support type safety and could not be used with templates
     sprintf(buf, "%4d", i);
 }
 
@@ -51,7 +51,8 @@ void show_string_formatting(){
 
 // Satter 2 1.4 mem-fun and standard library functions
 void show_mem_fun(){
-    // using pointers to functions of STD is dangeous because the signature may be changed
+    // * using pointers to functions of STD is dangerous because the signature may be changed
+    // * unable to create a portable pointer-to-member of STL (because of possible different implementations)
     auto pointer_to_clear = std::mem_fun( &std::vector<int>::clear );
 }
 
@@ -124,11 +125,13 @@ void my_destroy(FwdIter first, FwdIter last){
 // In outer - for any iterator. It could be not only pointer, but object
 // See example with std::list below
 
+// * Pointer is always iterator. Iterator not always a pointer
+
 // Solution:
 template <typename FwdIter>
 void my_destroy2(FwdIter first, FwdIter last){
     while (first != last){
-        // Trick - use operator* to bet object from iterator
+        // Trick - use operator* to get object from iterator
         // use operator& to get its real address
         my_destroy(&*first);
         ++first;
@@ -173,7 +176,7 @@ void my_swap(T& a, T& b){
 // a) fully specialized (not partially!)
 // b) overloaded with the function
 
-// Q: which of the fuctions willbe called
+// Q: which of the functions would be called
 template <typename T>
 void f1(T){
     std::cout << "void f1(T)\n";

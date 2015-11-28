@@ -110,9 +110,9 @@ void f1(A& x) { cout << "f1: " << x.Name() << endl; }
 void f2(B1& x){ cout << "f2: " << x.Name() << endl; }
 void f3(B2& x){ cout << "f3: " << x.Name() << endl; }
 
-void g1(A& x) { cout << "g1: " << x.Name() << endl; }
-void g2(B1& x){ cout << "g2: " << x.Name() << endl; }
-void g3(B2& x){ cout << "g3: " << x.Name() << endl; }
+void g1(A x) { cout << "g1: " << x.Name() << endl; }
+void g2(B1 x){ cout << "g2: " << x.Name() << endl; }
+void g3(B2 x){ cout << "g3: " << x.Name() << endl; }
 
 void use_multiple_inheritance(){
 
@@ -131,18 +131,20 @@ void use_multiple_inheritance(){
     B1& rb1 = d;
     B2& rb2 = d;
 
+    // Polymorphisms
     f1(d);
     f2(d);
     f3(d);
 
+    // Slicing
     g1(d);
     g2(d);
     g3(d);
 
     // check dynamic_cast/RTTI
+    // (in case of emulation does not work)
     cout << ((nullptr != dynamic_cast<D*>(pb1)) ? "ok\n" : "bad\n");
     cout << ((nullptr != dynamic_cast<D*>(pb2)) ? "ok\n" : "bad\n");
-
 
     try{
         D& d1 = dynamic_cast<D&>(rb1);
@@ -188,6 +190,7 @@ public:
 class BaseA2 : public BaseA
 {
 public:
+    // to keep it virtual is Derived
     virtual int ReadBufA(const char*) = 0;
 private:
     int ReadBuf(const char* p){
@@ -198,6 +201,7 @@ private:
 class BaseB2 : public BaseB
 {
 public:
+    // to keep it virtual is Derived
     virtual int ReadBufB(const char*) = 0;
 private:
     int ReadBuf(const char* p){

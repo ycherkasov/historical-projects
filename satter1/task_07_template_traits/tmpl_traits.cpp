@@ -51,7 +51,7 @@ void check_has_method1(){
 
     DontHasClone d;
     d;
-    // Could not instatntiate class!
+    // Could not instantiate class!
     //RequiresClone<DontHasClone> r2;
 }
 
@@ -144,6 +144,7 @@ void check_is_derived1(){
     bool b = CheckDerived::IsDerived;
     cout << "B derived from A = " << b << endl;
 
+    // RUNTIME CHECK! Returns 0 if not derived!
     typedef IsDerivedFrom<A, B> CheckDerived2;
     bool b2 = CheckDerived2::IsDerived;
     cout << "A derived from B = " << b2 << endl;
@@ -175,7 +176,7 @@ void check_is_derived2(){
 };
 
 //////////////////////////////////////////////////////////////////////////
-// 3. Require for inheritance, combine SFINAE and pointes casts
+// 3. Require for inheritance, combine SFINAE and pointers cast
 template <typename Child, typename Parent>
 class IsDerivedFrom3 {
 private:

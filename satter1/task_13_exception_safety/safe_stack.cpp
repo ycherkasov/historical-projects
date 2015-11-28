@@ -81,7 +81,7 @@ public:
     }
 
     // new_copy() may thown the exception, it will leave object in the old state
-    // _v[_vsize] = t may thrown the exception, it will leave object in consistent state
+    // _v[_vsize] = t may thrown the exception, it will leave object in old state
     // (new object won't be pushed)
     void push(const T& t){
         if (_vsize == _vcapacity) {

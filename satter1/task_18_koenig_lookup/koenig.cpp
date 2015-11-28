@@ -19,6 +19,7 @@ namespace B{
 
     void f(int i){
         // warning C4717 : 'B::f' : recursive on all control paths, function will cause runtime stack overflow
+        // We probably wanted to call A::f, but we didn't opened A namespace elsewhere 
         std::cout << "B::f(int)\n";
         f(i);
     }
@@ -31,6 +32,7 @@ namespace B{
     void h(A::Y y){
         std::cout << "B::g(A::Y y)\n";
         // warning C4717: 'B::h' : recursive on all control paths, function will cause runtime stack overflow
+        // endless recurion as expected
         h(y);
     }
 }
@@ -68,14 +70,15 @@ void show_kenig_lookup(){
     //g(x); - does not compile, x opens A namespace
     // h(y); - recursive call B::h
 
-    f(param); // example from Standard, NS namespace is opened in show_kenig_lookup() due to function param
-    // The same is how std::ostream works
+    f(param); // example from Standard, NS namespace is opened in show_kenig_lookup() due to function param NS::T
 
+    // The same is how std::ostream works
     // one more example
     std::string s = "Kenig loookup";
     std::cout << s << std::endl; // operator << is found using Kenig lookup, we don't use using namespace std elsewhere
 }
 // So namespaces not so independent
+// This is because functions that operate with the class ptr/ref are also part of its interface
 
 // Meyers example - works fine, until we add f() to MayersA namespace
 
@@ -84,6 +87,9 @@ namespace MeyersA{
 
     // Could not compile: ambiguous call to overloaded function
     // void f(X x){}
+
+    // This is correct, as f() is a part of MeyersA::X interface,
+    // even it is defined in MeyersB
 }
 
 namespace MeyersB{

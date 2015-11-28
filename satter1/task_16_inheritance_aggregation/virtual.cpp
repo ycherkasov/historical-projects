@@ -34,7 +34,7 @@ private:
 
 // 1. Private inheritance
 template <typename T>
-class MySetIncl : private MyList<T>{
+class MySetInherit : private MyList<T>{
 public:
 
     // Reuse base class method
@@ -55,7 +55,7 @@ private:
 
 // 2. Aggregation
 template <typename T>
-class MySetInherit {
+class MySetIncl {
 public:
     // Reuse base class method
     void Add(const T& t){

@@ -15,10 +15,10 @@ def on_rm_error(*args):
     os.unlink(path)
 
 
-solution_name = 'satter1'
+solution_name = 'cpp_design'
 path = '.'
 
-base_cmake_text = '''cmake_minimum_required(VERSION 2.8)
+base_cmake_text = '''cmake_minimum_required(VERSION 3.2)
 project({0} CXX)
 set(TARGET {1})
 
@@ -98,7 +98,7 @@ def mass_create_cmake(root_path, solution_name):
     '''
     projects_list = []
     for project in os.listdir(root_path):
-        if os.path.isdir(project) atd project.startswith('ch_'):
+        if os.path.isdir(project) and project.startswith('ch_'):
                 create_cmake(root_path, project)
                 projects_list.append(project)
 

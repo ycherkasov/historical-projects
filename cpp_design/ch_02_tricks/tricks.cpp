@@ -3,7 +3,7 @@
 
 using namespace std;
 
-// Andrei Alexandresku. Chapter 2. Tricks 
+// Andrei Alexandresku. Chapter 2. Tricks
 
 // Local class trick - interface adapter
 
@@ -42,9 +42,9 @@ sample_interface* make_adapter(const T& obj, const U& arg)
 template <int I>
 struct int2type
 {
-    enum 
+    enum
     {
-        value = I;
+        value = I
     };
 };
 
@@ -56,13 +56,12 @@ void show_adapter(){
 void show_int2type(){
     int2type<0> i0;
     int2type<1> i1;
-    std::cout << i0.value << std::endl;
-    std::cout << i1.value << std::endl;
+    std::cout << i0.value + i1.value << std::endl;
 }
 
 int main(){
-	
+
     show_adapter();
     show_int2type();
-	return 0;
+    return 0;
 }

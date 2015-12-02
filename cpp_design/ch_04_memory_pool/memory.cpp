@@ -1,7 +1,9 @@
-#include <iostream>
-#include <memory>
 #include <cstddef>
 #include <cassert>
+#include <memory>
+#include <iostream>
+#include <algorithm>
+#include <vector>
 
 // Andrei Alexandresku. Chapter 4. Memory pool 
 
@@ -68,7 +70,7 @@ void chunk::deallocate(void* p, size_t block_size){
     assert(p >= data_);
     uint8_t* release_me = static_cast<uint8_t*>(p);
 
-    // alognment check
+    // alignment check
     assert( (release_me - data_) % block_size == 0 );
 
     first_available_ = static_cast<uint8_t>((release_me - data_) / block_size);
@@ -77,6 +79,58 @@ void chunk::deallocate(void* p, size_t block_size){
     assert((release_me - data_) / block_size);
 
     ++blocks_available_;
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+class fixed_allocator{
+public:
+
+    fixed_allocator();
+
+    void* allocate();
+
+private:
+    // pass these params to chunk
+    size_t block_size_;
+    uint8_t num_blocks_;
+    
+    // set of memory pools
+    std::vector<chunk> chunks_;
+
+    // current chunk we work with (for faster search of free block)
+    chunk* alloc_chunk_;
+
+    chunk* dealloc_chunk_;
+};
+
+
+void* fixed_allocator::allocate(){
+
+    // current block is ok, use it
+    if (alloc_chunk_ && alloc_chunk_->blocks_available_){
+        return alloc_chunk_->allocate(block_size_);
+    }
+
+    // current chunk is completely used, find appropriate
+    auto available_chunk = std::find_if(chunks_.begin(), chunks_.end(), [](chunk& ch){
+        ch.blocks_available_ > 0
+    });
+
+    // available chunk found
+    if (available_chunk != chunks_.end()){
+        alloc_chunk_ = &*available_chunk;
+    }
+    // available chunk not found add a new one
+    else{
+        chunks_.reserve(chunks_.size() + 1);
+        chunks_.emplace_back(chunk());
+        chunks_.back().init(block_size_, num_blocks_);
+        alloc_chunk_ = &chunks_.back();
+        dealloc_chunk_ = &chunks_.back();
+    }
+
+    return alloc_chunk_->allocate(block_size_);
 }
 
 int main(){

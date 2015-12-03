@@ -9,7 +9,7 @@ public:
     static void operator delete(void* p, size_t size);
 
     // TODO: switch virtually
-    ~small_object();
+    virtual ~small_object();
 
 private:
     static small_object_allocator alloc_;

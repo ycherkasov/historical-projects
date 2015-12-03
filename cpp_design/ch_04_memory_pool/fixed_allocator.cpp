@@ -27,7 +27,9 @@ void* fixed_allocator::chunk::allocate(size_t block_size){
         return nullptr;
     }
 
-    uint8_t* result = data_ + (first_available_ + block_size);
+    assert((first_available_ * block_size) / block_size == first_available_);
+
+    uint8_t* result = data_ + (first_available_ * block_size);
 
     // assign index of the first available block
     first_available_ = *result;
@@ -45,10 +47,12 @@ void fixed_allocator::chunk::deallocate(void* p, size_t block_size){
     // alignment check
     assert((release_me - data_) % block_size == 0);
 
+    *release_me = first_available_;
+
     first_available_ = static_cast<uint8_t>((release_me - data_) / block_size);
 
     // check for slicing
-    assert((release_me - data_) / block_size);
+    assert(first_available_ == (release_me - data_) / block_size);
 
     ++blocks_available_;
 }
@@ -141,14 +145,15 @@ void* fixed_allocator::allocate(){
         // available chunk not found add a new one, mass adding new memory to the pool
         else{
             size_t s = chunks_.size() / 2;
-            size_t add_to_pool = s ? s : 1;
+            //size_t add_to_pool = s ? s : 1;
+            size_t add_to_pool = 1;
             chunks_.reserve(chunks_.size() + add_to_pool);
             chunks_.emplace_back(chunk());
             chunks_.back().init(block_size_, num_blocks_);
 
             // make first added chunk active
             alloc_chunk_ = &chunks_.back();
-            dealloc_chunk_ = &chunks_.back();
+            dealloc_chunk_ = &chunks_.front();
 
             // just add other chunks (they are POD)
             for (size_t i = 0; i < add_to_pool - 1; ++i){

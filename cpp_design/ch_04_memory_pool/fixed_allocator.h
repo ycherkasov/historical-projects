@@ -56,11 +56,11 @@ private:
         /// Every block consists on 4 smaller blocks
         uint8_t* data_;
 
-        /// available for allocation (max sizeof(uint8_t))
-        uint8_t blocks_available_;
-
         /// integer index of the first available block
         uint8_t first_available_;
+
+        /// available for allocation (max sizeof(uint8_t))
+        uint8_t blocks_available_;
     };
 
     // Finds the chunk corresponding to a pointer, using an efficient search

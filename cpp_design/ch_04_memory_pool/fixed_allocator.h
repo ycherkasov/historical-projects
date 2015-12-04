@@ -10,6 +10,8 @@
 #define MAX_SMALL_OBJECT_SIZE 64
 #endif
 
+/// Class containing a vector of memory pools (chunks)
+/// It supports very fast allocation (O(1)) and fast enough deallocation (O(ln(N)))
 class fixed_allocator{
 public:
 
@@ -43,27 +45,30 @@ private:
 
         /// Actual size so that allocate more than one memory chunk
         /// No search have O = const
+        /// Adjust indexes of avaiable blocks
         void* allocate(size_t block_size);
 
         /// Set block from pool as free
+        /// Adjust indexes of avaiable blocks
         void deallocate(void* p, size_t block_size);
 
-        /// Release all the pool
+        /// Just release all the pool
         void release();
 
         /// actual pool
         /// First byte of every FREE block saves index of the NEXT FREE block
-        /// Every block consists on 4 smaller blocks
+        /// Every block consists of smaller blocks
         uint8_t* data_;
 
         /// integer index of the first available block
         uint8_t first_available_;
 
-        /// available for allocation (max sizeof(uint8_t))
+        /// available for allocation (max sizeof(uint8_t) == 255)
         uint8_t blocks_available_;
     };
 
-    // Finds the chunk corresponding to a pointer, using an efficient search
+    /// Finds the chunk corresponding to a pointer, using an efficient search
+    /// I.e. we find a range (chunk) where p is allocated and set as current 'dealloc_chunk_'
     chunk* find_deallocated(void* p);
 
     // ...we already know the chunk, deallocate p from it

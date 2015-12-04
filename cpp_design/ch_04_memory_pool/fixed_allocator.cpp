@@ -27,11 +27,13 @@ void* fixed_allocator::chunk::allocate(size_t block_size){
         return nullptr;
     }
 
+    // alignment check
     assert((first_available_ * block_size) / block_size == first_available_);
 
+    // find a free block as a simple offset
     uint8_t* result = data_ + (first_available_ * block_size);
 
-    // assign index of the first available block
+    // assign available index of the next available block
     first_available_ = *result;
 
     --blocks_available_;
@@ -47,8 +49,12 @@ void fixed_allocator::chunk::deallocate(void* p, size_t block_size){
     // alignment check
     assert((release_me - data_) % block_size == 0);
 
+    // released block now have a link to the next available block
     *release_me = first_available_;
 
+    // (release_me - data_) is a distance from pool beginning to the next block
+    // divide to block size so that get an index
+    // So released block becomes available as well
     first_available_ = static_cast<uint8_t>((release_me - data_) / block_size);
 
     // check for slicing
@@ -185,6 +191,7 @@ fixed_allocator::chunk* fixed_allocator::find_deallocated(void* p)
         higher_start_search = 0;
     }
 
+    // Find a range (chunk)
     for (;;)
     {
         if (lower_start_search) {
@@ -242,6 +249,7 @@ void fixed_allocator::do_deallocate(void* p){
             return;
         }
 
+        // last chunk is completely available
         if (last_chunk.blocks_available_ == num_blocks_) {
 
             // Two free blocks, discard one
@@ -250,7 +258,8 @@ void fixed_allocator::do_deallocate(void* p){
             alloc_chunk_ = dealloc_chunk_;
         }
         else {
-            // move the empty chunk to the end
+            // move the empty chunk to the end so that optimize vector::erase 
+            // (not to erase in the middle)
             std::swap(*dealloc_chunk_, last_chunk);
             alloc_chunk_ = &chunks_.back();
         }

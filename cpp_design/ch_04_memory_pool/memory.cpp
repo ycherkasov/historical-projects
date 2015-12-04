@@ -22,13 +22,14 @@ struct small_class3 : public small_class2
 void test_allocation(){
 
     std::vector<small_class1*> small_classes1;
-    std::vector<small_class2*> small_classes2;
 
+    // vector of one type
     for (size_t i = 0; i < 1024; ++i){
         std::cout << "Created size: " << sizeof(small_class1) << std::endl;
         small_class1* s1 = new small_class1;
         small_classes1.push_back(s1);
     }
+
 
     for (size_t i = 0; i < 1024; ++i){
         small_class1* s1 = small_classes1[i];

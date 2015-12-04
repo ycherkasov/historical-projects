@@ -148,7 +148,8 @@ public:
         impl_ = std::move(other.impl_);
     }
 
-    // From other functor type (used functor_handle implementation for type casting)
+    // From other functor type of function pointer
+    // (used functor_handle implementation for type casting)
     template <typename Function>
     functor(const Function& f) : impl_(new functor_handle<functor, Function>(f)){}
 
@@ -171,25 +172,25 @@ private:
 
 
 template <typename RetT, typename P1 /*= null_type*/, typename P2 /*= null_type*/, typename P3 /*= null_type*/>
-RetT functor<RetT, P1, P2, P3>::operator()(P1 p1, P2 p2, P3 p3)
-{
+RetT functor<RetT, P1, P2, P3>::operator()(P1 p1, P2 p2, P3 p3){
+
     return (*impl_)(p1, p2, p3);
 }
 
 template <typename RetT, typename P1 /*= null_type*/, typename P2 /*= null_type*/, typename P3 /*= null_type*/>
-RetT functor<RetT, P1, P2, P3>::operator()(P1 p1, P2 p2)
-{
+RetT functor<RetT, P1, P2, P3>::operator()(P1 p1, P2 p2){
+
     return (*impl_)(p1, p2);
 }
 
 template <typename RetT, typename P1 /*= null_type*/, typename P2 /*= null_type*/, typename P3 /*= null_type*/>
-RetT functor<RetT, P1, P2, P3>::operator()(P1 p1)
-{
+RetT functor<RetT, P1, P2, P3>::operator()(P1 p1){
+
     return (*impl_)(p1);
 }
 
 template <typename RetT, typename P1 /*= null_type*/, typename P2 /*= null_type*/, typename P3 /*= null_type*/>
-RetT functor<RetT, P1, P2, P3>::operator()()
-{
+RetT functor<RetT, P1, P2, P3>::operator()(){
+
     return (*impl_)();
 }

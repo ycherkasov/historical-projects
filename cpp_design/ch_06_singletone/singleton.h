@@ -3,18 +3,8 @@
 #include <cassert>
 #include <cstdlib>
 #include <new>
-#include <queue>
-#include <memory>
-
-
-// atexit pointer type
-#ifdef _MSC_VER
-#define C_CALLING_CONVENTION_QUALIFIER __cdecl
-#else
-#define C_CALLING_CONVENTION_QUALIFIER
-#endif
-
-typedef void (C_CALLING_CONVENTION_QUALIFIER *atexit_pfn_t)();
+#include "at_exit.h"
+#include "lifetime_manager.h"
 
 //////////////////////////////////////////////////////////////////////////
 // Creation policies:
@@ -39,10 +29,12 @@ struct new_creation_policy{
 // * phoenix - could be re-created one time after destruction
 // * longevity - support several singletons destruction order
 // * no_destroy - lives forever, destroyed at process exit
+
+// Default
 template <typename T>
 struct default_lifetime{
-    static void shedule_destruction(T*, atexit_pfn_t exit_func){
-        std::atexit(exit_func);
+    static void shedule_destruction(T*, atexit_pfn_t destroy_func){
+        std::atexit(destroy_func);
     }
 
     static void on_dead_reference(){
@@ -50,13 +42,15 @@ struct default_lifetime{
     }
 };
 
+
+// Phoenix - could be re-created one time after destruction
 template <typename T>
 struct phoenix_lifetime{
-    static void shedule_destruction(T*, atexit_pfn_t exit_func){
+    static void shedule_destruction(T*, atexit_pfn_t destroy_func){
 
         // re-create only once
         if (destroyed_once_){
-            std::atexit(exit_func);
+            std::atexit(destroy_func);
         }
     }
 
@@ -70,99 +64,13 @@ private:
 template <typename T>
 bool phoenix_lifetime<T>::destroyed_once_ = false;
 
-//
-template <class T>
-struct adapter
-{
-    void operator()(T*) { return pFun_(); }
-    atexit_pfn_t pFun_;
-};
-//////////////////////////////////////////////////////////////////////////
 
-/// Base class
-struct lifetime_tracker{
-    lifetime_tracker(size_t x) : longevity_(x){}
-    virtual ~lifetime_tracker(){} // TODO: pure virtual
-    size_t longevity_;
-};
+// See Lifetime Manager in a separate header
 
-/// Helper delete class
-template <typename T>
-struct deleter {
-    static void delete(T* pObj){
-        delete pObj;
-    }
-};
-
-
-/// Concrete lifetime control class
-template <typename T, typename Destroyer>
-class lifetime_tracker_impl : public lifetime_tracker
-{
-public:
-    lifetime_tracker_impl(T* obj, size_t longevity, Destroyer d)
-        : lifetime_tracker(longevity),
-        tracked_object_(obj),
-        destroyer_(d)
-    {}
-
-    ~lifetime_tracker_impl(){
-        destroyer_(tracked_object_);
-    }
-
-private:
-    T* tracked_object_;
-    Destroyer destroyer_;
-};
-
-struct lifetime_wrapper{
-
-    lifetime_wrapper(lifetime_tracker* tracker_impl) : tracker(tracker_impl){}
-
-    bool operator<(const lifetime_wrapper& rhs){
-        return tracker->longevity_ < rhs.tracker->longevity_;
-    }
-
-    bool operator>(const lifetime_wrapper& rhs){
-        return tracker->longevity_ > rhs.tracker->longevity_;
-    }
-private:
-    std::unique_ptr<lifetime_tracker> tracker;
-};
-
-// destroy in predefined order
-void C_CALLING_CONVENTION_QUALIFIER at_exit_fn(); // declaration needed below
-
-class lifetime_tracker_manager{
-public:
-    template <typename T, typename Destr>
-    void push_to_destroy(size_t longevity, T* obj, Destr d){
-        destroy_queue_.emplace(lifetime_wrapper(new lifetime_tracker_impl<T, Destr>(obj, longevity, d)));
-        std::atexit(at_exit_fn);
-    }
-private:
-
-    std::priority_queue <lifetime_tracker> destroy_queue_;
-};
-
-template <typename T>
-struct longevity_control{
-    static void shedule_destruction(T* obj, atexit_pfn_t exit_func){
-
-        // TODO: std::function
-        adapter<T> a = { exit_func };
-        set_longevity(obj, get_longevity(obj), a);
-    }
-
-    static void on_dead_reference(){
-        throw std::runtime_error("Dead reference detected");
-    }
-};
-//////////////////////////////////////////////////////////////////////////
 // No destroy at all (rely on OS)
 template <typename T>
 struct no_destroy{
-    static void shedule_destruction(T*, atexit_pfn_t exit_func){}
+    static void shedule_destruction(T*, atexit_pfn_t destroy_func){}
     static void on_dead_reference(){}
 };
 
@@ -190,6 +98,8 @@ public:
         if (nullptr == instance_){
 
             typename ThreadingPolicy<T>::lock l;
+            (l); // make compiler happy
+
             if (nullptr == instance_){
                 if (destroyed_){
                     LifetimePolicy<T>::on_dead_reference();
@@ -197,6 +107,8 @@ public:
                 }
 
                 instance_ = CreationPolicy<T>::create();
+
+                // destruction is delayed
                 LifetimePolicy<T>::shedule_destruction(instance_, &destroy);
             }
         }
@@ -206,6 +118,9 @@ public:
 
 private:
 
+    // Could not be destroysed directly
+    // Destruction relies on LifetimePolicy strategy
+    // that schedules it according to its internal policies
     static void destroy(){
         assert(!destroyed_);
         CreationPolicy<T>::destroy(instance_);

@@ -14,6 +14,8 @@ struct null_type{};
 // Interface support up to 3 params
 // For every number of params created its own specialization
 // TODO: implement with variadics!?
+
+// 3 params
 template <typename RetT, typename P1, typename P2, typename P3>
 struct functor_impl{
     virtual RetT operator()(P1, P2, P3) = 0;
@@ -21,6 +23,7 @@ struct functor_impl{
     virtual ~functor_impl(){}
 };
 
+// 2 params specialization
 template <typename RetT, typename P1, typename P2>
 struct functor_impl<RetT, P1, P2, null_type>{
     virtual RetT operator()(P1, P2) = 0;
@@ -28,6 +31,7 @@ struct functor_impl<RetT, P1, P2, null_type>{
     virtual ~functor_impl(){}
 };
 
+// 1 param specialization
 template <typename RetT, typename P1>
 struct functor_impl<RetT, P1, null_type, null_type>{
     virtual RetT operator()(P1) = 0;
@@ -35,6 +39,7 @@ struct functor_impl<RetT, P1, null_type, null_type>{
     virtual ~functor_impl(){}
 };
 
+// No params specialization
 template <typename RetT>
 struct functor_impl<RetT, null_type, null_type, null_type>{
     virtual RetT operator()() = 0;
@@ -128,7 +133,9 @@ private:
 
 //////////////////////////////////////////////////////////////////////////
 // Generic Command functor with 0-3 params
-// Body for wrapped implementation
+// Body for wrapped implementation.
+// It could support saving state so that create a real queue of delayed calls with saved params,
+// completely separated from the interface
 template <typename RetT, typename P1 = null_type, typename P2 = null_type, typename P3 = null_type>
 class functor{
 public:

@@ -51,7 +51,7 @@ bool no_case<Symbols>::compare(const basic_string<Symbols> &str1, const basic_st
     std::basic_string<Symbols> nocase1, nocase2;
     std::transform(str1.begin(), str1.end(), std::back_inserter(nocase1), ::tolower);
     std::transform(str2.begin(), str2.end(), std::back_inserter(nocase2), ::tolower);
-	return nocase1 > nocase2;
+    return nocase1 > nocase2;
 }
 // ----------------------------------
 
@@ -71,7 +71,7 @@ public:
 
 template<typename Symbols, typename Comparer>
 container<Symbols, Comparer>::container(basic_string<Symbols>& str) :
-    _str(str)
+_str(str)
 {}
 
 // Используем переданный тип класса для сравнения строк
@@ -89,6 +89,7 @@ void container<Symbols, Comparer>::compare(basic_string<Symbols>& str){
 
 // Наследование частичной специализации от полной, чтобы сократить дублирование кода
 // - это паттерн шаблонного программирования
+// Без него специализированные классы не связаны никакими отношениями, тем более наследованием
 template <typename T>
 class my_stack{
 public:

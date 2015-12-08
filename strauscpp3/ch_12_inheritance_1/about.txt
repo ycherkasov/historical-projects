@@ -68,6 +68,7 @@
 25.Возвращаемое значение виртуальной функции в разных классах может отличаться, если это:
   - указатель или ссылка
   - они приводятся друг к другу
+  (so-called co-variant type)
 26. Операторы могут быть виртуальными.
 27. Формат VTBL определяется ABI.
 28. В конструкторе или деструкторе вызываются только свои виртуальные методы.
@@ -75,6 +76,9 @@
 30.Для реализации адаптера предпочитайте композицию. Используйте наследование, только когда обязаны так сделать.
    (доступ к защищенным членам, виртуальность)
 * Дружественные функции не наследуются
+* Better to place constructor-destructor to protected section in abstract classes. 
+  That makes classes abstract even WITHOUT pure virtual functions!
+
 
 In VC++, the vtable pointer stored at the beginning of the object allocation, 
 before any member data. (Provided your class has at least one virtual member function.)

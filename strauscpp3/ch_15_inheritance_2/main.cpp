@@ -91,8 +91,8 @@ void show_vitrual(){
     code_formatter formatter(1);
 
     formatter.generate(cpp_lang);
-    sz = sizeof(formatter);				
-	// 36 = ( base(int+vptr) = 8; generators(3 * (vfptr+vtbl)) = 24 ; last_class(vprt) = 4 )
+    sz = sizeof(formatter);
+    // 36 = ( base(int+vptr) = 8; generators(3 * (vfptr+vtbl)) = 24 ; last_class(vprt) = 4 )
 
     cout << "code_formatter size = " << sz << endl;
     sz = sizeof(code_generator_base);	// 8 (int + vtbl)
@@ -130,7 +130,7 @@ void show_sizes(){
 
     {
         // добавим поле 2 байта в базовый класс
-        class A{ short a;};
+        class A{ short a; };
         class B1 : public A{};
         class B2 : public A{};
         class C : public B1, public B2{};
@@ -144,7 +144,7 @@ void show_sizes(){
 
     {
         // сделаем одну из веток наследования виртуальной
-        class A{ short a;};
+        class A{ short a; };
         class B1 : virtual public A{};
         class B2 : public A{};
         class C : public B1, public B2{};
@@ -160,7 +160,7 @@ void show_sizes(){
 
     {
         // сделаем обе ветки наследования виртуальными
-        class A{ short a;};
+        class A{ short a; };
         class B1 : virtual public A{};
         class B2 : virtual public A{};
         class C : public B1, public B2{};
@@ -174,7 +174,7 @@ void show_sizes(){
 
     {
         // добавим еще одну ветку виртуального наследования
-        class A{ short a;};
+        class A{ short a; };
         class B1 : virtual public A{};
         class B2 : virtual public A{};
         class B3 : virtual public A{};
@@ -254,14 +254,14 @@ void show_typeid_rtti(){
 
     // Если преобразование запрещено, то возвращается 0-указатель
     finalizer* fin = dynamic_cast<finalizer*>(cf);
-    if( fin == 0 )
+    if (fin == 0)
         cout << "Wrong dynamic cast" << endl;
 
     // Если преобразуется в ссылку, то при неудаче бросается исключение bad_cast
     try	{
         finalizer& fin1 = dynamic_cast<finalizer&>(formatter);
     }
-    catch ( const std::bad_cast& e)	{
+    catch (const std::bad_cast& e)	{
         cout << e.what() << endl;
     }
 
@@ -287,7 +287,7 @@ void show_typeid_rtti(){
         const type_info& ti = typeid(bs);
         cout << ti.name() << endl;
     }
-    catch ( const std::bad_typeid& e)	{
+    catch (const std::bad_typeid& e)	{
         cout << e.what() << endl;
     }
 
@@ -311,8 +311,8 @@ void show_multimethod(){
     db.multiop(da);
     db.multiop(db);
 
-    db.multiop( dynamic_cast<base&>(da) );
-    db.multiop( dynamic_cast<base&>(db) );
+    db.multiop(dynamic_cast<base&>(da));
+    db.multiop(dynamic_cast<base&>(db));
 }
 
 // Демострация указателей на члены
@@ -327,6 +327,9 @@ void show_member_pointer(member_pointer* p){
     //- адрес функции или NULL, если виртуальная
     //- коррекция указателя this
     //- индекс, если функция виртуальная
+
+    // Member pointer could be treated os an OFFSET from the class beginning
+    // (or its polymorph part)
 
     // Указатель на член можно получить с помощью
     // операции & к полностью квалифицированному имени класса

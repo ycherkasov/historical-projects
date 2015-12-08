@@ -7,39 +7,39 @@
 // именованное пространство имен
 namespace my
 {
-	int a;
+    int a;
 }
 
 // спецификатор пространства имен можно указывать произвольное число раз
 // тогда определения будут объединены
 namespace my
 {
-	int aa;
+    int aa;
 }
 
 // неименованное пространство имен
 // необходимо для разрешения конфликтов имен и запрета доступа из других единиц трансляции
 namespace
 {
-	int anonimous;
+    int anonimous;
 }
 
 // еще именованное пространство имен
 namespace your1
 {
-	int a;
+    int a;
 }
 
 namespace your2
 {
-	int b;
+    int b;
 }
 
 // объединение пространства имен
 namespace your
 {
-	using namespace your1;
-	using namespace your2;
+    using namespace your1;
+    using namespace your2;
 }
 
 // синоним пространства имен
@@ -51,14 +51,14 @@ namespace aaa = my;
 // разрешать использование одного пространства имен
 // в другом, только том, в котором оно необходимо.
 namespace parser{
-	int a;
-	using namespace your;
+    int a;
+    using namespace your;
 }
 
-// Можно объявлять сколько угодно пространств имен 
+// Можно объявлять сколько угодно пространств имен
 // не только с одним именем но и где угодно (в другом h-файле)
 namespace parser{
-	int b;
+    int b;
 }
 
 // можно перенести интерфейс C-библиотеки в пространство имен
@@ -73,11 +73,11 @@ int printf();
 // Пока член пространства имен не используется, он не сможет вызвать неоднозначность
 // Т.е.
 namespace A{
-	int aaa;
+    int aaa;
 }
 
 namespace B{
-	int aaa;
+    int aaa;
 }
 
 using namespace A;
@@ -85,34 +85,47 @@ using namespace B;
 
 void show_namespaces()
 {
-	my::a = 1;
-	your1::a = 2;
+    my::a = 1;
+    your1::a = 2;
 
-	// namespace your объединяет your1 и your2 
-	your::a = 3;
+    // namespace your объединяет your1 и your2
+    your::a = 3;
 
-	// пользоваться директивой using namespace лучше 
-	// в закрытой области видимости, для предотвращение конфликтов
-	{
-		using namespace your;
-		a = 4;
-	}
+    // пользоваться директивой using namespace лучше
+    // в закрытой области видимости, для предотвращение конфликтов
+    {
+        using namespace your;
+        a = 4;
+    }
 
-	{
-		// Можно разрешать видимость всего пространства
-		// _using-директива_
-		using namespace my;
+    {
+        // Можно разрешать видимость всего пространства
+        // _using-директива_
+        using namespace my;
 
-		// А можно только один элемент
-		// _using-объявление_ - 
-		// имеет приоритет по отношению к using-директивам
-		using your1::a;
-		a = 5;	// your1::a
-	}
+        // А можно только один элемент
+        // _using-объявление_ -
+        // имеет приоритет по отношению к using-директивам
+        using your1::a;
+        a = 5;	// your1::a
+    }
 
-	aaa::a = 6;
+    aaa::a = 6;
 
-	// Механизм перегрузки работает сквозь пространства имен
-	// При объявлении using operator+ будут разрешены все перегруженные 
-	// члены operator+()
+    // Механизм перегрузки работает сквозь пространства имен
+    // При объявлении using operator+ будут разрешены все перегруженные
+    // члены operator+()
+
+    // Using ambuguosity with the class name
+    {
+        using namespace std;
+        // local names hides using-directive opened names
+        int vector = 10; // hides std::vector
+    }
+
+    {
+        using std::vector;
+        // local names overloads with using-declaration opened names
+        // int vector = 10; compiler error (hahaha)
+    }
 }

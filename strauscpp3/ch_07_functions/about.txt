@@ -23,3 +23,4 @@ TODO:
    - если определение в *.cpp
    - в шаблонных функциях (std::max)
 11.inline отменяется рекурсией, циклами, virtual если метод, разадресацией
+* std lib has function pointers callback: new_handler

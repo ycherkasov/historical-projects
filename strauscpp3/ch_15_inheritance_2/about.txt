@@ -52,6 +52,8 @@
 *  не используйте массивы полиморфных классов (т.е. не указателей) - ћейерс 2-3
 *  вызов виртуальной функции на низком уровне выгл€дит как (*class->vptr[i])(class)
 *  при множественном наследовании объект содержит несколько vptr (см. схему в ch_15)
+* Member pointer could be treated os an OFFSET from the class beginning (or its polymorph part)
+* pointers to method - not a pointers! Pointer template partial spec does not recogrize them
 
 ”казатель на нестатическую функцию-член класса Ч это особа€ стать€, 
 его нельз€ присвоить простому указателю на данные или на функцию (м.б. разного размера), 
@@ -62,6 +64,9 @@
 - адрес функции или NULL, если виртуальна€
 - коррекци€ указател€ this
 - индекс, если функци€ виртуальна€
+
+
+
 
 http://blogs.msdn.com/b/oldnewthing/archive/2004/02/09/70002.aspx
 http://www.codeproject.com/Articles/7150/Member-Function-Pointers-and-the-Fastest-Possible

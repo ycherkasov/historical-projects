@@ -168,6 +168,16 @@ struct Base1
         std::cout << "A_virt B::pf(int) " << i << std::endl;
         return new A_virt();
     }
+
+    // Changing accessibility of virtual functions!
+protected:
+    virtual void open_me() const {
+        std::cout << "Base1::open_me()" << std::endl;
+    }
+public:
+    virtual void hide_me() const {
+        std::cout << "Base1::hide_me()" << std::endl;
+    }
 };
 
 struct Derived1 : Base1
@@ -188,5 +198,16 @@ struct Derived1 : Base1
     virtual B_virt* pf(int i = 2){
         std::cout << "B_virt* B::pf(int) " << i << std::endl;
         return new B_virt();
+    }
+
+public:
+    virtual void open_me() const {
+        std::cout << "Derived1::open_me()" << std::endl;
+    }
+
+protected:
+    // this function could be called by the pointer to the base class!
+    virtual void hide_me() const {
+        std::cout << "Derived1::hide_me()" << std::endl;
     }
 };

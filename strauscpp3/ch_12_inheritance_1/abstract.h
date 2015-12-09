@@ -33,7 +33,7 @@ protected:
 
     // better to place constructor-destructor to protected section
     // That makes classes abstract even WITHOUT pure virtual functions
-    shape();
+    shape(){}
     virtual ~shape(){}
 
 private:

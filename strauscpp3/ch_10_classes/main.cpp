@@ -26,6 +26,9 @@ void struct_one_name(){
     int A = 1;
 }
 
+void f1(A a){}
+void f2(A& a){}
+
 // Функция демонстрирует инициализацию и работу
 // с константными объектами и mutable-членами
 void show_const(){
@@ -36,6 +39,10 @@ void show_const(){
     size_t s = sizeof(b); // 1
 
     const A aa;
+
+    f1(aa); // non-const copy
+    // f2(aa); compile error
+
     //aa.set_int1(5); - так нельзя, вызов неконстантного метода в константном классе
 
     // а так можно, член константного класса mutable может быть изменен
@@ -117,7 +124,7 @@ void show_const_pointers(){
 // 9. Член объединения (union)
 void show_construct_destruct(){
 
-    std::cout << std::endl <<  "Create automatic objects" << std::endl;
+    std::cout << std::endl << "Create automatic objects" << std::endl;
     // 1. Именованный автоматический объект(по умолчанию, копия).
     // Если в объекте есть константы или ссылки, он не может быть создан
     // конструктором по умолчанию
@@ -160,9 +167,9 @@ void show_construct_destruct(){
     // ! Элементы массива могут быть сконструированы по умолчанию
     construct arr_c[5];
     // Можно использовать список инициализации в виде конструкторов
-    construct arr_1[] = { construct(2), construct( g_construct ) };
+    construct arr_1[] = { construct(2), construct(g_construct) };
     // Можно использовать даже неявные преобразования при конструировании
-    construct arr_2[] = {1, 2};
+    construct arr_2[] = { 1, 2 };
     // прим.-такие массивы лучше объявлять без указания количества элементов - []
 
     // 5. Локальный статический объект.
@@ -199,8 +206,8 @@ void show_construct_destruct(){
 
 // Task from B.Batkin
 void show_word_counter(){
-    string s( "test.txt" );
-    word_counter::count_from_file( s );
+    string s("test.txt");
+    word_counter::count_from_file(s);
 }
 
 
@@ -237,7 +244,6 @@ void show_placement_delete(){
 void test_placement_new_handler(){
     printf("No more memory!\n");
     throw bad_alloc();
-
 }
 
 void show_user_alloc(){
@@ -254,10 +260,10 @@ void show_user_alloc(){
 
     // new for array overload
     {
-        cout << "Test array new overload" << endl;
-        user_alloc* x = new user_alloc[10];
-        x[1].test();
-        delete[] x;
+    cout << "Test array new overload" << endl;
+    user_alloc* x = new user_alloc[10];
+    x[1].test();
+    delete[] x;
 }
 
     // placement new overload
@@ -307,7 +313,6 @@ void show_new_handler(){
     catch (const std::bad_alloc& e){
         cerr << "Lack of memory: " << e.what() << '\n';
     }
-
 }
 
 void show_memory_pool(){
@@ -329,7 +334,6 @@ void show_memory_pool(){
     memory_pool_item* mpi3 = new memory_pool_item();
     mpi3->test();
     delete mpi3;
-
 }
 
 //delete вместо delete[] приводит к падению, если у типа есть нетривиальный деструктор(почему ? ).
@@ -423,7 +427,7 @@ void crach_2(){
     // trying to delete data, but in fact this is vtable pointer
     delete p;
 
-    // When base is empty, the size of{ vtable, base, derived } and{ base } happen to be the same 
+    // When base is empty, the size of{ vtable, base, derived } and{ base } happen to be the same
     // because allocating an object of empty class occupies nonzero number of bytes, which happens to be equal in both cases.
     // When derived has no virtual functions, vtable is not present,
     // the addresses are again the same and delete succeeds.
@@ -445,10 +449,10 @@ void show_ref_count(){
     char c3 = s2[0];
     // detached s2 as well
 
-	// We 'open' internal representation of the object
-	// so refcount usage could be unsafe
-	// restrict it setting shareable=false 
-	// (do not use refcount anymore)
+    // We 'open' internal representation of the object
+    // so refcount usage could be unsafe
+    // restrict it setting shareable=false
+    // (do not use refcount anymore)
     RCString ss1("Komatoza");
     char* p = &ss1[0];
     RCString ss2 = ss1;
@@ -482,7 +486,7 @@ int main(){
 
     // non-virtual crash
     //crach_2();
-    
+
     //return 0;
 
     array_size_info();
@@ -495,7 +499,7 @@ int main(){
 
     show_const_pointers();
 
-    A a(1,1,1);
+    A a(1, 1, 1);
     int aa = a.get_int6();
     show_const();
     show_construct_destruct();

@@ -109,6 +109,7 @@ http://en.cppreference.com/w/cpp/memory/new/operator_delete
 * use "pre-evaluation" is results could be used too often
 * use ref-count and copy-on-write on big datasets in concurrent environment
 * all function prototype params and return values could be declared via "forward declaration". Even passed by value!
+* friend declarations of non-existent classes are ignored
 
 Проектируя класс, следует ответить на следующие вопросы
 Как следует создавать и удалять объекты?

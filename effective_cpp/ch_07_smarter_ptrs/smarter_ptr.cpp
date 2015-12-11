@@ -2,14 +2,17 @@
 #include "view.h"
 #include "view_grains.h"
 
+/*
+Chapter 07 Jeff Eldger
+
+* smarter (interface) pointers are able to work like COM interfaces, i.e. provide an interface subset
+* aggregation of private inheritance could be used for that
+*/
+
 using namespace std;
 
 class view_events;
 class view_drawings;
-
-
-
-
 
 // Something similar is implemented in MS COM technology
 void show_interface_ptr(){

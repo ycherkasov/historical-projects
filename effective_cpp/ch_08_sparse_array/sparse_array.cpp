@@ -25,22 +25,14 @@ public:
         if (x_ != other.x_) {
             return (x_ < other.x_);
         }
-        else if (y_ != other.y_){
-            return (y_ < other.y_);
-        }
-        // equal
-        return false;
+        return (y_ < other.y_);
     }
 
     bool operator>(const array_index& other) const {
         if (x_ != other.x_) {
             return (x_ > other.x_);
         }
-        else if (y_ != other.y_){
-            return (y_ > other.y_);
-        }
-        // equal
-        return false;
+        return (y_ > other.y_);
     }
 
     size_t get_x() const { return x_; }

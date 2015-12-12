@@ -16,7 +16,7 @@ class view_drawings;
 
 // Something similar is implemented in MS COM technology
 void show_interface_ptr(){
-    // object itself could be hidden
+    // object itself could be hidden (or used as a private base)
     view my_view;
 
     std::unique_ptr<view_events> ev(my_view);

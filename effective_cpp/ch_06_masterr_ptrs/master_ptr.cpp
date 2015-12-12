@@ -5,6 +5,7 @@ Chapter 06 Jeff Eldger
 
 * smart pointers that really owns their objects (master pointers)
 * descriptior-pointers that saves a reference to master pointer
+* read-only pointers make all own memory constant
 */
 
 //////////////////////////////////////////////////////////////////////////

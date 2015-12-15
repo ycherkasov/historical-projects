@@ -20,7 +20,7 @@
 // *QMap operator[] silently inserts like std::map. Just replace to value() for access
 // *QMap could be silently converted to multimap using insertMulti()
 // *QMultiMap is inherited from the QMap!
-// *associalive containers have more mothods than STL (keys(), values())
+// *associalive containers have more methods than STL (keys(), values())
 // *QMap::unite() could also turn it to multimap
 // *all containers could be converted to STL
 // *Hash-table size could be pre-allocated. Ensures that the QHash's internal hash table 

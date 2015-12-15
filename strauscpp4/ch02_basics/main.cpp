@@ -4,15 +4,6 @@
 using namespace std;
 
 /*
-1. Basic types (architecture-denendent and independent)
-2. Constant (const, constexpr)
-3. Curly braces init
-4. Auto, auto examples, auto & generic programming
-5. For, range-for
-6. enum, enum class
-7. Class invariant (negative length example)
-8. Static assertions
-
 New features:
 {}-lists	(2.2.2)
 auto		(2.2.2)
@@ -23,16 +14,39 @@ nullptr		(2.2.5)
 enum/enum class	(2.2.3)
 static_assert	(2.4.3)
 
+1. Basic types (architecture-denendent and independent)
+2. Constant (const, constexpr)
+3. Curly braces init
+4. Auto, auto examples, auto & generic programming
+5. For, range-for
+6. enum, enum class
+7. Class invariant (negative length example)
+8. Static assertions
+
 */
 
 // 1. Basic types (architecture-dependent and independent)
 // 2. Constant (const, constexpr)
 // 3. Curly braces init
+
+// declare as constexpr so that calc in compile-time
+constexpr double test_me(int i1, int i2){
+    return i1 + i2;
+}
+
 void show_basic_types(){
 
     // new initialisators
     double d1 = 2.3;
     double d{ 2.3 };
+
+    // The = form is traditional and dates back to C, but if in doubt, 
+    // use the general{}-list form.
+    // If nothing else, it saves you from conversions that lose information
+    // (narrowing conversions)
+
+    // error: conversion from 'double' to 'int' requires a narrowing conversion
+    // int i1{ 7.2 };
 
     // const have to be initialized
     const int ic = 17;
@@ -40,9 +54,17 @@ void show_basic_types(){
     // constexpr evaluates in compile time that all parts of expression is const
     // used as additional check or for the performance
 #if 1
-    constexpr int ce_itn = 18;
-    // ok - dc is const
-    constexpr double = sqrt(dc);
+    constexpr int ce_itn1 = 18;
+    constexpr int ce_itn2 = 18 + 12;
+
+    // test_me() is constexpr
+    constexpr double ce_d1 = test_me(ce_itn1, ce_itn2);
+
+    cout << typeid(ce_d1).name() << '\n';
+    
+    // error: expression did not evaluate to a constant
+    // sqrt does not return constexpr
+    // constexpr double d2 = sqrt(dc);
 
     // error - d1 is not const
     //constexpr double = sqrt(dc);
@@ -82,15 +104,18 @@ void show_for(){
     // for loops that traverse a sequence
 
     // by value
-    for (auto x : arr)
-    {
+    for (auto x : arr){
         cout << x << endl;
     }
 
     // by reference
-    for (auto& x : arr)
-    {
+    for (auto& x : arr){
         cout << x << endl;
+    }
+
+    // array emplaced
+    for (auto x : { 10,21,32,43,54,65 }){
+        cout << x << '\n';
     }
 }
 
@@ -98,6 +123,9 @@ void show_for(){
 void show_enum(){
 
     // Strong-typed enum
+    // enum classes - enumerator names are local to the enum 
+    // and their values do not implicitly convert to other types 
+    // (like another enum or int)
     enum class Color{
         red,
         green,
@@ -105,9 +133,13 @@ void show_enum(){
     };
 
     // Can not be assigned other type
+    
+    // ok
     Color c = Color::red;
-    // error!
-    //c = 1;
+    c = static_cast<Color>(1);
+    
+    // 'initializing': cannot convert from 'show_enum::Color' to 'int'
+    // int i = Color::red;
 
     // classic enum
     enum TrafficLight{
@@ -115,8 +147,18 @@ void show_enum(){
         yellow = 2,
         green = 3
     };
-    TrafficLight tl = TrafficLight::red;
-    tl = Color::red;
+    TrafficLight tl = red;
+    
+    // Conversion to enumeration type requires an explicit cast (static_cast, C-style cast or function-style cast)
+    //tl = Color::red;
+    tl = static_cast<TrafficLight>(Color::red);
+    tl = static_cast<TrafficLight>(1);
+
+    // ok
+    int i = TrafficLight::red;
+
+    // understand even without qualifier (do not conflict with enum class)
+    i = red;
 }
 
 // Invariant is a checked statement in moment of object creation
@@ -128,6 +170,10 @@ void show_static_assert(){
     // compile-time check (statement should be true)
     static_assert(4 <= sizeof(int), "Integers are too small");
 }
+
+
+// Such a statement of what is assumed to be true for a class 
+// is called a class invariant, or simply an invariant
 
 // is the program’s return value to the system.
 // If no value is returned, the system will receive a value indicating successful completion.

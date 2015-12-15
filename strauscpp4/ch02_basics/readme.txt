@@ -1,4 +1,5 @@
 Questions:
+enum/enum class difference
 
 New C++14 features:
 {}-lists	(2.2.2)

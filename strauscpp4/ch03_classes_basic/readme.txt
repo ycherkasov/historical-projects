@@ -2,6 +2,15 @@ Questions:
 
 New C++14 features:
 
+initializer_list
+rvalue-references
+tmpl args ending
+lambdas
+variadic
+type/template aliases
+initializer_list containers
+move semantic
+
 Advices:
 
 * Express ideas directly in code

@@ -12,5 +12,4 @@ int main(){
 	show_set();
 	show_multiset();
 	show_bitset();
-	show_hash();
 }

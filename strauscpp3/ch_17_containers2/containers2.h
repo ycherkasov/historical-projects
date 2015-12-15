@@ -7,4 +7,3 @@ void show_multimap();
 void show_set();
 void show_multiset();
 void show_bitset();
-void show_hash();

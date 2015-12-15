@@ -16,6 +16,7 @@ int main() {}
 #include <fstream>
 #include <algorithm>
 #include <complex>
+#include <vector>
 #include <valarray>
 
 using namespace std;
@@ -65,6 +66,57 @@ void show_math() {
     vect3 = vect1*vect2;
 
     c2 = log(c1);
+}
+
+int show_iterators()
+{
+    // TODO: write test file first
+    // does not work because of OOS cmake build
+
+    // Iterator for invitation cout
+    ostream_iterator<string> out_iter(cout);
+
+    // Invite to input first filename
+    *out_iter = "Input file:";
+
+    // Read input fiulename (test.txt)
+    // Initialize istream by cin
+    istream_iterator<string> iinput_iter(cin);
+    string from = *iinput_iter;
+
+    // Invite to input second filename (test1.txt)
+    ++out_iter;
+    *out_iter = "Output file:";
+
+    ++iinput_iter;
+    string to = *iinput_iter;
+
+    // file read from
+    ifstream from_file(from.c_str());
+
+    // iterator to read from file (the stream as a container)
+    istream_iterator<string> from_it_begin(from_file);
+
+    // Default istream iterator constructor creates eof
+    istream_iterator<string> from_it_end;
+
+    // From file to vector
+    vector<string> b(from_it_begin, from_it_end);
+
+    // sort values
+    sort(b.begin(), b.end());
+
+    // writo to that file
+    ofstream to_file(to.c_str());
+
+    // Write to file iterator
+    ostream_iterator<string> to_it_begin(to_file, "\n");
+
+    // Copy only unique from sorted
+    unique_copy(b.begin(), b.end(), to_it_begin);
+
+    // return error state
+    return !from_file.eof() && !to_file;
 }
 
 // C-style fractal

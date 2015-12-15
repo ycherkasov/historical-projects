@@ -46,7 +46,6 @@ class complex {
 public:
 
     // constructor uses {} notation
-    // ReSharper disable once CppNonExplicitConvertingConstructor
     complex(double re = 0., double im = 0.) : re_{re}, im_{im}{}
 
     double real() const { return re_; }

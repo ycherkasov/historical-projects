@@ -2,6 +2,7 @@
 #include <vector>
 #include <map>
 #include <string>
+#include <memory>
 
 /*
 
@@ -45,7 +46,8 @@ class complex {
 public:
 
     // constructor uses {} notation
-    complex(double re = 0, double im = 0) : re_{re}, im_{im}{}
+    // ReSharper disable once CppNonExplicitConvertingConstructor
+    complex(double re = 0., double im = 0.) : re_{re}, im_{im}{}
 
     double real() const { return re_; }
     double imag() const { return im_; }
@@ -132,7 +134,20 @@ private:
     T* data_ = nullptr;
 };
 
-// 3. return unique_ptr
+// 3. Return unique_ptr
+std::unique_ptr<int> ret_unique_ptr(){
+    std::unique_ptr<int> p(new int(10));
+    return p;
+    // behaves like return move( p );
+
+    // This elision of copy / move operations, called copy elision, is permitted
+    // in a return statement in a function with a class return type, 
+    // when the expression is the name of a non-volatile automatic object 
+    // with the same cv - unqualified type as the function return type
+
+    // So this should call copy construction, however calls move
+    // and works like a new RVO
+}
 
 // 4. Functor
 // One particularly useful kind of template is the function object (sometimes called a functor)
@@ -169,7 +184,9 @@ void variadic_func(){}
 // as a synonim of typedef
 using inch_t = unsigned long;
 
-// templae type synonim notation
+// The using syntax has an advantage when used within templates. 
+// If you need the type abstraction, but also need to keep template parameter 
+// to be possible to be specified in future. You should write something like this
 template<typename C>
 using Element_type = typename C::value_type;
 
@@ -203,7 +220,12 @@ void show_vector() {
     std::cout << v1.size() << std::endl;
 }
 
-// TODO: show return by move
+void show_return_by_move() {
+
+    std::unique_ptr<int> p = cpp4::ret_unique_ptr();
+    std::cout << *p << std::endl;
+}
+
 // TODO: show lambdas
 
 void show_variadics() {

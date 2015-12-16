@@ -79,7 +79,7 @@ int show_iterators()
     // Invite to input first filename
     *out_iter = "Input file:";
 
-    // Read input fiulename (test.txt)
+    // Read input filename (test.txt)
     // Initialize istream by cin
     istream_iterator<string> iinput_iter(cin);
     string from = *iinput_iter;

@@ -114,7 +114,7 @@ public:
 
     // move semantic
     // The && means 'rvalue reference' and is a reference to which we can bind an rvalue
-    // A move constructor does not take a const argument : after all, 
+    // A move constructor does not take a const argument: after all, 
     // a move constructor is supposed to remove the value from its argument.
     // A move assignment is defined similarly.
     vector(vector&& rhs) {
@@ -139,7 +139,7 @@ std::unique_ptr<int> ret_unique_ptr(){
     return p;
     // behaves like return move( p );
 
-    // This elision of copy / move operations, called copy elision, is permitted
+    // This elision of copy/move operations, called copy elision, is permitted
     // in a return statement in a function with a class return type, 
     // when the expression is the name of a non-volatile automatic object 
     // with the same cv - unqualified type as the function return type
@@ -163,6 +163,11 @@ std::unique_ptr<int> ret_unique_ptr(){
 
 // 5. Variadics
 // an arbitrary number of arguments of arbitrary types
+// Should be at least 3 functions:
+// * recursive call for all params
+// * call for head param
+// * end-of-recursion
+
 template <typename T>
 void process(T t) {
     std::cout << t << "=" << typeid(t).name() << std::endl;

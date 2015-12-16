@@ -4,7 +4,7 @@ enum/enum class difference
 New C++14 features:
 {}-lists	(2.2.2)
 auto		(2.2.2)
-prev narrowing	(2.2.2)
+prevent narrowing	(2.2.2)
 constexpr	(2.2.3)
 range-for	(2.2.5)
 nullptr		(2.2.5)

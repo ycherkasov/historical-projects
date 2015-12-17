@@ -375,15 +375,15 @@ void show_random() {
 }
 
 int main() {
-    //show_threads();
-    //show_shared_data();
-    //show_condition_variable();
-    //show_future_promise();
-    //show_future();
-    //show_time();
-    //show_type_functions();
-    //show_iterator_traits();
-    //show_regexp();
+    show_threads();
+    show_shared_data();
+    show_condition_variable();
+    show_future_promise();
+    show_future();
+    show_time();
+    show_type_functions();
+    show_iterator_traits();
+    show_regexp();
     show_random();
 
     return 0;

@@ -11,6 +11,19 @@ New C++14 features:
 
 Advices:
  
+* Use resource handles to manage resources (RAII)
+* Use unique_ptr to refer to objects of polymorphic type
+* Use shared_ptr to refer to shared objects
+* Use type-safe mechanisms for concurrency
+* Minimize the use of shared data
+* Don’t choose shared data for communication because of 'efficiency' without thought and preferably not without measurement
+* Think in terms of concurrent tasks, rather than threads
+* A library doesn't have to be large or complicated to be useful
+* Time your programs before making claims about efficiency
+* You can write code to explicitly depend on properties of types
+* Use regular expressions for simple pattern matching
+* Don't try to do serious numeric computation using only the language, use libraries
+* Properties of numeric types are accessible through numeric_limits
 
 * unique_ptr is moved, shared_ptr is copied
 * We do not need to use a pointer to return a collection of objects, use containers instead

@@ -1,4 +1,5 @@
 Questions:
+TODO: alisnof and alignas
 
 New C++14 features:
 * Uniform and general initialization using {}-lists (2.2.2, 6.3.5)

@@ -5,14 +5,14 @@ using namespace std;
 
 /*
 New features:
-{}-lists	(2.2.2)
-auto		(2.2.2)
-prevent narrowing	(2.2.2)
-constexpr	(2.2.3)
-range-for	(2.2.5)
-nullptr		(2.2.5)
-enum/enum class	(2.2.3)
-static_assert	(2.4.3)
+* Uniform and general initialization using {}-lists (2.2.2, 6.3.5)
+* Type deduction from initializer: auto (2.2.2, 6.3.6.1)
+* Prevention of narrowing (2.2.2, 6.3.5)
+* Generalized and guaranteed constant expressions: constexpr (2.2.3, 10.4, 12.1.6)
+* Range-for-statement (2.2.5, 9.5.1)
+* Null pointer keyword: nullptr (2.2.5, 7.2.2)
+* Scoped and strongly typed enums: enum class (2.3.3, 8.4.1)
+* Compile-time assertions: static_assert (2.4.3.3, 24.4)
 
 1. Basic types (architecture-denendent and independent)
 2. Constant (const, constexpr)

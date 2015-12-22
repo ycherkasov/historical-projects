@@ -14,4 +14,6 @@ New C++14 features:
 * Range-for-statement (2.2.5, 9.5.1)
 
 Advices:
+
+Book advices:
  

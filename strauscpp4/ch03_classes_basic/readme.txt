@@ -17,13 +17,12 @@ Advices:
 * The classical user-defined arithmetic type is complex
 * The std::initializer_list used to define the initializer-list constructor
 * It is possible to return a standard-library unique_ptr
-* tors is an example.
 * A move constructor does not take a const argument as is supposed to remove the value from its argument
 * A move assignment is defined similarly
 * virtual call mechanism can be made almost as efficient as the 'normal function call' (within 25%)
 * In very much the same way as new and delete disappear from application code, we can make pointers disappear into resource handles
 * The best thing to do is usually to delete the default copy and move operations
-* If you need to copy an object explicitly, write some kind of clone function
+* If you need to copy an object explicitly, write some kind of clone() function
 * The =delete mechanism is general, that is, it can be used to suppress any operation
 * One particularly useful kind of template is the function object (sometimes called a functor)
 

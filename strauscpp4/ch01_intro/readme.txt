@@ -41,7 +41,7 @@ Advices:
 
 Here are what I consider the most widely useful new 'building bricks' affecting the style of C++11 code:
 
-* Control of defaults: =deleteand =default
+* Control of defaults: =delete and =default
 * Deducing the type of an object from its initializer,auto
 * Generalized constant expression evaluation (including literal types), constexpr
 * In-class member initializers
@@ -50,8 +50,8 @@ Here are what I consider the most widely useful new 'building bricks' affecting 
 * Move semantics, a way of transmitting information without copying
 * A way of stating that a function may not throw exceptions noexcept
 * A proper name for the null pointer
-* The range-forstatement
-* Override controls:final and override
+* The range-for statement
+* Override controls: final and override
 * Type aliases, a mechanism for providing an alias for a type or a template. 
 * In particular, a way of defining a template by binding some arguments of another template
 * Typed and scoped enumerations: enum class
@@ -104,7 +104,6 @@ int size(void)
 * C can recursively call main()
   C++ 5.2.2/9
   Recursive calls are permitted, except to the function named main (3.6.1).
-* Variable param number macros
 * Pragma in macros
 * _Complex & _Imaginary types
 * restrict qualifier let compiler to know that we have only one pointer to that memory block

@@ -21,6 +21,8 @@ Advices:
 * Such a statement of what is assumed to be true for a class is called a class invariant
 * If an error can be found at compile time, it is usually preferable to do so
 
+Book advices:
+
 * please don’t assume that 'the old ways' are better or simpler just because they are old and familiar
 * Use const to make variable non-changed, constexpr to check whether all elements of expression is const (could be used for safety and performance)
 * A constant cannot be left uninitialized

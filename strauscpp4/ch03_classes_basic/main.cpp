@@ -115,8 +115,8 @@ public:
     // move semantic
     // The && means 'rvalue reference' and is a reference to which we can bind an rvalue
     // A move constructor does not take a const argument: after all, 
-    // a move constructor is supposed to remove the value from its argument.
-    // A move assignment is defined similarly.
+    // a move constructor is supposed to remove the value from its argument
+    // A move assignment is defined similarly
     vector(vector&& rhs) {
         data_ = rhs.data_;
         sz_ = rhs.sz_;
@@ -239,6 +239,10 @@ void show_variadics() {
 void show_type_aliaces() {
     std::vector<int> v;
     cpp4::algo(v);
+
+    cpp4::string_map<int> m;
+    m[1] = "atatat";
+    m[2] = "tatata";
 }
 
 int main() {

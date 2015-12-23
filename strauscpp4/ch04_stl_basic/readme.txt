@@ -3,11 +3,11 @@ Questions:
 New C++14 features:
 
 * A singly-linked list: forward_list (4.4.5, 31.4.2)
-* Hashcontainers:unordered_map,unordered_multimap,unordered_set,andunordered_multiset (4.4.5, 31.4.3)
+* Hash containers: unordered_map, unordered_multimap, unordered_set, and unordered_multiset (4.4.5, 31.4.3)
 
 Advices:
 
-* These list examples could be written identically using vector and (if understand machine architecture) 
+* List examples could be written identically using vector and (if understand machine architecture) 
   perform better with a small vector than with a small list
 * The cost of a map lookup is O(log(n))
 * Hash containers are referred to as 'unordered' because they don't require an ordering function

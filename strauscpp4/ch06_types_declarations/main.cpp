@@ -92,7 +92,7 @@ void show_chars() {
     cout << cl0 << endl;
 
     char16_t cl1[] = u"FADEBEEF";
-    //cout << cl1 << endl; wrond output
+    //cout << cl1 << endl; wrong output
 
     char32_t cl2[] = U"DEADBEAF";
     //cout << cl2 << endl; wrond output
@@ -187,6 +187,7 @@ void show_decltype() {
 }
 
 void show_init() {
+
     // An initializer can use one of four syntactic styles:
     int a1{ 1 }; 
     int a2 = { 1 };

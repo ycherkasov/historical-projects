@@ -73,7 +73,7 @@ void show_basic_types(){
 
 // 4. Auto, auto examples, auto & generic programming
 void show_auto(){
-    //We use auto where we don’t have a specific reason to mention the type explicitly. ‘‘Specific reasons’’ include:
+    //We use auto where we don’t have a specific reason to mention the type explicitly. Specific reasons include:
     //* The definition is in a large scope where we want to make the type clearly visible to readers of our code.
     //* We want to be explicit about a variable’s range or precision (e.g.,doublerather thanfloat)
 

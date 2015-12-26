@@ -6,11 +6,21 @@ New C++14 features:
 
 Advices:
 
+
+* The logical operators && (and), || (or), and ! (not) take operands of arithmetic and pointer types,
+  convert them to bool, and return a bool result
+* The && and || operators evaluate their second argument only if necessary, so they can be used to control evaluation order
+* A plain enum can be implicitly converted to an integer type and used as an operand to bitwise logical operations
 * int size could be checked with static assert so that work with masks
-* Whenever possi- ble, use standard-library facilities in preference to fiddling with pointers and bytes
+* Whenever possible, use standard-library facilities in preference to fiddling with pointers and bytes
 * Wherever possible, have that manager object be a scoped variable
+* Usually two or more words per allocation are used for free-store management
 * The type of a {}-list can be deduced (only) if all elements are of the same type
 * Unfortunately, we do not deduce the type of an unqualified list for a plain template argument
+template<typename T> void f(T);
+f({}); // error: type of initializer is unknown
+f({1}); // error: an unqualified list does not match 'plain T'
+
 * The body of the lambda simply becomes the body of the operator()()
 * lambda is called a closure object (or simply a closure)
 * If a lambda potentially captures every local variable by reference (using the capture list [&]), the

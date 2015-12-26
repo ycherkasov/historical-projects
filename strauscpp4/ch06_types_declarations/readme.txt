@@ -1,6 +1,6 @@
 Questions:
 TODO: alisnof and alignas
-bitwise repr
+bitwise repr of cstdint types
 decltype
 
 New C++14 features:
@@ -62,7 +62,7 @@ X a4(v);
 * We can decorate auto type with specifiers and modifiers (6.3.1), such as const and & 
 * Better to use the = syntax with auto, because the {}-list syntax might surprise someone:
 auto v1 {12345}; // v1 is a list of int
-* The using keyword can also be used to introduce a template alias
+* The 'using' keyword can also be used to introduce a template alias
 * We cannot apply type specifiers, such as unsigned, to an alias
 using Uchar = unsigned Char; // error 
 using Uchar = unsigned char; // OK

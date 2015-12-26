@@ -16,7 +16,7 @@ New C++14 features:
 
 Advices:
 * A pointer to any type of object can be assigned to a variable of type void*, 
-  but a pointer to function (12.5) or a pointer to member (20.6) cannot
+  but a pointer to function (really?) (12.5) or a pointer to member (20.6) cannot
 * The standard conversions allow 0 to be used as a constant of pointer or pointer-to-member type
 * In C, NULL is typically (void*)0, which makes it illegal in C++
 * A string literal is statically allocated
@@ -40,7 +40,7 @@ Advices:
 * Bit field saves data space, but the size of the code needed to manipulate these variables increases
 * The language doesn't keep track of which kind of value is held by a union
 * On some machines, an int and an int* do not occupy the same amount of space
-* Union that halds current type info is often called a tagged union or a discriminated union
+* Union that holds current type info is often called a tagged union or a discriminated union
 * An anonymous union is an object, not a type, and its members can be accessed without mentioning an object name
 * In general, prefer the enum classes
 * The underlying type must be one of the signed or unsigned integer types (§6.2.4)
@@ -63,7 +63,7 @@ Advices:
 
 Book advices:
 * Keep use of pointers simple and straightforward
-* Avoid nontrivial pointer arithmetic
+* Avoid non-trivial pointer arithmetic
 * Take care not to write beyond the bounds of an array
 * Avoid multidimensional arrays
 * Use nullptr rather than 0 or NULL
@@ -89,12 +89,12 @@ Book advices:
 * Prefer a for-statement to a while-statement when there is an obvious loop variable
 * Prefer a while-statement to a for-statement when there is no obvious loop variable
 * Avoid do-statements
-* Avoidgoto
+* Avoid goto
 * Keep comments crisp
 * Don’t say in comments what can be clearly stated in code
 * State intent in comments
 * Maintain a consistent indentation style
-* Prefer the standard library to other libraries and to ‘‘handcrafted code’’
+* Prefer the standard library to other libraries and to 'handcrafted code'
 * Use character-level input only when you have to
 * When reading, always consider ill-formed input
 * Prefer suitable abstractions (classes, algorithms, etc.) to direct use of language features (e.g.,

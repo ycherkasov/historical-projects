@@ -16,6 +16,7 @@ Advices:
 * The basic idea of concrete classes is that they behave just like built-in types
 * The classical user-defined arithmetic type is complex
 * The std::initializer_list used to define the initializer-list constructor
+* The std::initializer_list is passed by value
 * It is possible to return a standard-library unique_ptr
 * A move constructor does not take a const argument as is supposed to remove the value from its argument
 * A move assignment is defined similarly

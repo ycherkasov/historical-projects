@@ -74,7 +74,7 @@ void show_ptrs_refs() {
 
     void(cpp4::test_me::* method_ptr)() = &cpp4::test_me::point_to_me;
 
-    // better not to do, ensure in Standard
+    // ? better not to do, ensure in Standard
     void* v1 = static_func_ptr;
 
     //void* v2 = method_ptr;
@@ -175,6 +175,10 @@ void show_enum_classes() {
 
     long l = static_cast<long>(warning1::green);
     unsigned char c = static_cast<unsigned char>(warning2::green);
+
+    // 
+    enum plain : long { plain1, plain2, plain3 };
+    plain p = plain1;
 
     // An enum is a user-defined type, so we can define the | and & operators
 

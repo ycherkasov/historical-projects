@@ -1,4 +1,8 @@
 Questions:
+* Product example
+* Suffix type
+* List args does not complain the book
+* Conditional macroses
 
 New C++14 features:
 * Generalized and guaranteed constant expressions: constexpr (2.2.3, 10.4, 12.1.6)
@@ -9,7 +13,7 @@ New C++14 features:
   _Pragma(X) (12.6.3); vararg macros and empty macro arguments (12.6)
 
 Advices:
- 
+
 * The C++ standard algorithms (e.g., find, sort, and iota) provide a good start for functions design
 * The most basic advice is to keep a function of a size so that you can look at it in total on a screen
 * The cost of a function call is not a significant factor
@@ -46,6 +50,7 @@ void odd(int buf[1020]);
     * Type std::initializer_list<T>, where the values of the list can be implicitly converted to T
     * A type that can be initialized with the values provided in the list
     * A reference to an array of T, where the values of the list can be implicitly converted to T
+* If there is a possible ambiguity, an initializer_list parameter takes priority
 * Default arguments may be provided for trailing arguments only
 
 Automatic Overload Resolution

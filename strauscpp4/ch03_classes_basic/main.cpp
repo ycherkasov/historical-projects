@@ -230,7 +230,7 @@ void show_return_by_move() {
     std::cout << *p << std::endl;
 }
 
-// TODO: show lambdas
+// show lambdas in 11
 
 void show_variadics() {
     cpp4::variadic_func(1, 1.2, "hello");

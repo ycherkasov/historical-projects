@@ -117,7 +117,7 @@ public:
     // A move constructor does not take a const argument: after all, 
     // a move constructor is supposed to remove the value from its argument
     // A move assignment is defined similarly
-    vector(vector&& rhs) {
+    vector(vector&& rhs) noexcept {
         data_ = rhs.data_;
         sz_ = rhs.sz_;
         rhs.data_ = nullptr;

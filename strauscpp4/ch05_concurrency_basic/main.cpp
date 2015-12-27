@@ -92,40 +92,40 @@ void show_threads() {
 
 namespace cpp4 {
 
-    // 3. Sharing data, managing deadlocks, performance compare
-    class share_data {
-    public:
+// 3. Sharing data, managing deadlocks, performance compare
+class share_data {
+public:
 
-        void single_lock() {
-            std::unique_lock<std::mutex> l{ m1_ };
-            data_ = "single lock";
-            std::cout << data_ << std::endl;
-        }
-
-        void multiple_lock() {
-
-            // preventing deadlock - postpone locking group of mutex
-            std::unique_lock<std::mutex> l1{ m1_, defer_lock };
-            std::unique_lock<std::mutex> l2{ m2_, defer_lock };
-            std::unique_lock<std::mutex> l3{ m3_, defer_lock };
-
-            // deadlock-safe lock
-            std::lock(l1, l2, l3);
-            data_ = "multiple lock";
-            std::cout << data_ << std::endl;
-        }
-
-    private:
-        std::string data_;
-        std::mutex m1_;
-        std::mutex m2_;
-        std::mutex m3_;
-    };
-
-    void thread_func_share(share_data& d) {
-        d.single_lock();
-        d.multiple_lock();
+    void single_lock() {
+        std::unique_lock<std::mutex> l{ m1_ };
+        data_ = "single lock";
+        std::cout << data_ << std::endl;
     }
+
+    void multiple_lock() {
+
+        // preventing deadlock - postpone locking group of mutex
+        std::unique_lock<std::mutex> l1{ m1_, defer_lock };
+        std::unique_lock<std::mutex> l2{ m2_, defer_lock };
+        std::unique_lock<std::mutex> l3{ m3_, defer_lock };
+
+        // deadlock-safe lock
+        std::lock(l1, l2, l3);
+        data_ = "multiple lock";
+        std::cout << data_ << std::endl;
+    }
+
+private:
+    std::string data_;
+    std::mutex m1_;
+    std::mutex m2_;
+    std::mutex m3_;
+};
+
+void thread_func_share(share_data& d) {
+    d.single_lock();
+    d.multiple_lock();
+}
 
 } // namespace cpp4
 

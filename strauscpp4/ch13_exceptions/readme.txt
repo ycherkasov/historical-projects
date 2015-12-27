@@ -1,6 +1,6 @@
 Questions:
 TODO: exception-safe modern vector impl
-TODO: deal with noexcept operator
+does not work constexpr is_pod
 
 New C++14 features:
 * Preventing exception propagation: the noexcept specifier (13.5.1.1) Section 44.2.1 Language Features 1269

@@ -174,7 +174,7 @@ void show_lambda() {
         std::cout << i + val1 + val2 << std::endl;
     });
 
-    // this is captured only by value
+    // this is captured only by value, members - by ref
 
     // Naming the lambda is often a good idea
     auto l = [val1, val2](int i) {

@@ -213,10 +213,12 @@ namespace cpp4 {
 void nexcept_f(int) noexcept{}
 void plain_f(int) {}
 
-// linkage convention specifiers
+// calling convention specifiers
 void __stdcall std_call_func(int) {}
 void __fastcall fast_call_func(int) {}
 void __cdecl cdecl_call_func(int) {}
+
+// Linking convention - the same
 
 }
 

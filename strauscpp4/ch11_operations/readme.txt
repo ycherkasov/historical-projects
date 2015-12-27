@@ -29,7 +29,7 @@ f({1}); // error: an unqualified list does not match 'plain T'
 * If you need to capture a variadic template (28.6) argument, use ...
 * A lambda might outlive its caller. Use copy capure then [=]
 * We don’t need to 'capture' namespace variables (including global variables) because they are always accessible
-* We can include class members in the set of names potentially captured by adding this
+* We can include class members in the set of names potentially captured by adding [this]
 * Members are always captured by reference
 * In the unlikely event that we want to modify the state, we can declare the lambda mutable
 * If a lambda body does not have a return-statement, the lambda’s return type is void

@@ -1,8 +1,9 @@
 Questions:
 * Product example
 * Suffix type
-* List args does not complain the book
+* List args does not complain the book (reference to array)
 * Conditional macroses
+* type aliases with func ptrs - same as typedefs? (see last advice)
 
 New C++14 features:
 * Generalized and guaranteed constant expressions: constexpr (2.2.3, 10.4, 12.1.6)
@@ -68,7 +69,7 @@ Derived* to Base* (20.2), T* to void* (7.2.1), int to unsigned int (10.5))
   The reason is to keep resolution for an individual operator or function call context-independent
 * A pointer to function does not allow the code to be modified
 * A pointer to a noexcept function can be declared noexcept
-* A pointer to function must reflect the linkage of a function (15.2.6)
+* A pointer to function must reflect the linkage of a function (15.2.6) and calling convention
 * Neither linkage specification nor noexcept may appear in type aliases:
 using Pc = extern "C" void(int); // error: linkage specification in alias 
 using Pn = void(int) noexcept; // error: noexcept in alias
@@ -118,11 +119,9 @@ Book advices:
 * Avoid passing arrays as pointers; 12.2.2.
 * Pass a homogeneous list of unknown length as an initializer_list<T> (or as some other container); 12.2.3.
 * Avoid unspecified numbers of arguments (...); 12.2.4.
-* Use overloading when functions perform conceptually the same task on different types;
-12.3.
+* Use overloading when functions perform conceptually the same task on different types; 12.3.
 * When overloading on integers, provide functions to eliminate common ambiguities; 12.3.5.
 * Specify preconditions and postconditions for your functions; 12.4.
-* Prefer function objects (including lambdas) and virtual functions to pointers to functions;
-12.5.
+* Prefer function objects (including lambdas) and virtual functions to pointers to functions; 12.5
 * Avoid macros; 12.6.
 * If you must use macros, use ugly names with lots of capital letters; 12.6.

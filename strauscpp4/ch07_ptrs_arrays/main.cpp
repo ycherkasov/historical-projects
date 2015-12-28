@@ -101,7 +101,7 @@ void show_ptrs_refs() {
 void show_string_literals() {
 
     // Raw string literals use the R"(ccc)" notation for a sequence of characters ccc
-    const char* qs = R"("quoted string")"; // the string is "quoted string"
+    const char* qs = R"(quoted string)"; // the string is "quoted string"
     const char* complicated = R"("('(?:[^\\\\']|\\\\.)*'|\"(?:[^\\\\\"]|\\\\.)*\")|")";
 
     std::cout << qs << std::endl;

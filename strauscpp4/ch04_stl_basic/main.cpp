@@ -10,7 +10,6 @@ using namespace std;
 New features:
 * A singly-linked list: forward_list (4.4.5, 31.4.2)
 * Hashcontainers:unordered_map,unordered_multimap,unordered_set,andunordered_multiset (4.4.5, 31.4.3)
-
 */
 
 namespace cpp4 {
@@ -64,6 +63,8 @@ void show_hash() {
     // for range iteration through a subset of their elements.
 
     // Iterators in the container are at least forward iterators.
+
+    // C++ has std::hash standard function in <functional>
 
     // empty
     stringmap first;

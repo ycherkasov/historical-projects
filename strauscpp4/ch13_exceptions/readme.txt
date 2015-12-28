@@ -17,7 +17,7 @@ Advices:
 * A library that asks the (possibly absent) user/operator for help is unacceptable
 * Asynchronous events require mechanisms fundamentally different from exceptions
 * Many systems offer mechanisms, such as signals, to deal with asynchrony
-* practical and histori- cal reasons cannot use exceptions:
+* practical and historical reasons cannot use exceptions:
 	* A time-critical component of an embedded system
 	* A large old program in which resource management is an ad hoc mess (error codes, plain new etc)
 * To mimic RAII, give every class with a constructor an invalid() operation that returns some error_code

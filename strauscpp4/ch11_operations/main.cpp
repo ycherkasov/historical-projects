@@ -16,7 +16,9 @@ New features:
 Examples:
 1. Bitwise operations
 2. Initializer list
-3. Lambda
+3. Initializer list with auto
+4. Lambda
+5. emplace {} and copy = {} difference
 */
 
 
@@ -112,24 +114,31 @@ void show_initializer_auto() {
     //auto x4 = { 1,2.0 };
 }
 
-#if 0
+
 namespace cpp4 {
 
-template<typename T>
-T adder(T v) {
-  return v;
+template<typename T, typename... Tail>
+void recursive_variadic_call(T s, Tail... v) {
+    std::cout << s << '\n';
+    recursive_variadic_call(v...);
 }
 
-template<typename... Var> 
-void algo(int s, Var... v) {
+void recursive_variadic_call() {}
 
-    auto helper = [&s, &v...](int i){ std::cout << s * i * adder(v...) << std::endl; };
+template<typename... Var>
+void algo(Var... args) {
+
+    // first param always int
+    auto helper = [&, args...](int i){
+        recursive_variadic_call(i, args...);
+    };
+
     std::vector<int> v = { 1,2,3,4,5,6 };
     std::for_each(v.begin(), v.end(), helper);
 }
 
 }
-#endif
+
 
 void show_lambda() {
 
@@ -183,7 +192,7 @@ void show_lambda() {
     std::for_each(v.begin(), v.end(), l);
 
     // If you need to capture a variadic template (28.6) argument, use ...
-    // TODO: manage that: cpp4::algo(1, 2, 3, 4, 5, 6);
+    cpp4::algo(1, 2, 3, 4, 5, 6);
 
     // In the unlikely event that we want to modify the state, we can declare the lambda mutable
     size_t count = v.size();
@@ -206,10 +215,41 @@ void show_lambda() {
     double (*p1)(double) = [](double a) { return sqrt(a); };
 }
 
+namespace cpp4 {
+
+class test_emplace_copy {
+public:
+    
+    test_emplace_copy(int i) :i_{ i } {
+        std::cout << "int i" << std::endl;
+    }
+    test_emplace_copy(const test_emplace_copy& cp) :i_{ cp.i_ } {
+        std::cout << "const test_emplace_copy& cp" << std::endl;
+    }
+private:
+    int i_;
+};
+
+} // namespace cpp4 
+
+void show_emplace_copy() {
+
+    // When used as the initializer for a named object without the use of a = (as for v above), 
+    // an unqualified {}-list performs direct initialization (16.2.6). 
+    // In all other cases, it performs copy initialization (16.2.6). 
+    // In particular, the otherwise redundant = in an initializer restricts the set 
+    // of initializations that can be performed with a given {}-list
+    cpp4::test_emplace_copy a1{ 1 };
+    cpp4::test_emplace_copy a2 = { 2 };
+
+    // me: it anyway calls direct initialization
+}
+
 int main() {
     show_bitwise();
     show_initializer_list();
     show_initializer_auto();
     show_lambda();
+    show_emplace_copy();
     return 0;
 }

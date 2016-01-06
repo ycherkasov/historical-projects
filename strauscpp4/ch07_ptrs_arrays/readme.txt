@@ -1,5 +1,5 @@
 Questions:
-Ensure about finc_ptr -> void*
+Ensure about finc_ptr -> void* (Standard)
 
 New C++14 features:
 

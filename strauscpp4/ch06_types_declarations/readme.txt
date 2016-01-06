@@ -1,7 +1,6 @@
 Questions:
-TODO: alisnof and alignas
-bitwise repr of cstdint types
-decltype
+* alisnof and alignas + pragma pack()
+* bitwise repr of cstdint types
 
 New C++14 features:
 * Uniform and general initialization using {}-lists (2.2.2, 6.3.5)

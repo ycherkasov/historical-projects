@@ -1,9 +1,4 @@
 Questions:
-* Product example
-* Suffix type
-* List args does not complain the book (reference to array)
-* Conditional macroses
-* type aliases with func ptrs - same as typedefs? (see last advice)
 
 New C++14 features:
 * Generalized and guaranteed constant expressions: constexpr (2.2.3, 10.4, 12.1.6)

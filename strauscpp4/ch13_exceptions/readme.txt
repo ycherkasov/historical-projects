@@ -1,6 +1,5 @@
 Questions:
-TODO: exception-safe modern vector impl
-does not work constexpr is_pod
+* exception-safe modern vector impl
 
 New C++14 features:
 * Preventing exception propagation: the noexcept specifier (13.5.1.1) Section 44.2.1 Language Features 1269
@@ -11,16 +10,16 @@ Advices:
 	* terminate program
 	* error code
 	* errno
-	* erro-handler function
+	* error-handler function
 	* return pair error-value
 * An exception terminates a program only if a programmer allows it to terminate
 * A library that asks the (possibly absent) user/operator for help is unacceptable
 * Asynchronous events require mechanisms fundamentally different from exceptions
 * Many systems offer mechanisms, such as signals, to deal with asynchrony
 * practical and historical reasons cannot use exceptions:
-	* A time-critical component of an embedded system
+	* A time-critical component of an embedded system (use init(), errno, pair value-code etc.)
+	To mimic RAII, give every class with a constructor an invalid() operation that returns some error_code
 	* A large old program in which resource management is an ad hoc mess (error codes, plain new etc)
-* To mimic RAII, give every class with a constructor an invalid() operation that returns some error_code
 * The strategy must be simple (relative to the complexity of the total program) and explicit
 * Occasionally, it is necessary to convert from one style of error reporting to another
 	* on error code throw exception

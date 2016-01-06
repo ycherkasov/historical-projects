@@ -24,6 +24,7 @@ Examples:
 6. operator= safety (17.5.1)
 7. Prevent slicing (17.5.1.4)
 8. Using Default Operations (17.6.3)
+9. Deleted functions (17.6.4)
 */
 
 //1. Memberwise init(struct and by friend) (17.2.3)
@@ -68,6 +69,8 @@ public:
         this->~prevent_destruction_private();
     }
 private:
+
+    // could be = delete, we must destruct in destroy() manually then
     ~prevent_destruction_private() {}
     int i = 0;
 };
@@ -169,7 +172,7 @@ public:
     my_delegate(int i) : i_{i} {}
 
     // use delegate in default constructor
-    my_delegate() : i_{ 42 } {}
+    my_delegate() : my_delegate{ 42 } {}
 
 private:
     int i_ = 0;
@@ -218,6 +221,10 @@ public:
     my_movable() : count_{}, i_ { nullptr } {}
     my_movable(size_t count) : count_{ count }, i_{new int[count]} {}
 
+    ~my_movable() {
+        delete[] i_;
+    }
+
     // copy (throwable)
     my_movable(const my_movable& rhs) : count_{ rhs.count_ }, i_{new int[rhs.count_]} {
         
@@ -236,6 +243,17 @@ public:
         i_ = rhs.i_;
         rhs.count_ = 0;
         rhs.i_ = nullptr;
+    }
+
+    // Important! move-constructor and move-assign must be implemented both
+    my_movable& operator=(my_movable&& rhs) noexcept {
+        count_ = rhs.count_;
+        i_ = rhs.i_;
+
+        rhs.count_ = 0;
+        rhs.i_ = nullptr;
+
+        return *this;
     }
 
     // assign (throw)
@@ -292,14 +310,11 @@ class base_private_protected {
 public:
     base_private_protected() {}
 protected:
-
-private:
-
-    // protect copy operation
-    base_private_protected(base_private_protected& rhs) : b{ rhs.b } {
-        __asm nop
+    base_private_protected& operator =(base_private_protected& rhs) {
+        b = rhs.b;
+        return *this;
     }
-
+private:
     int b = 0;
 };
 
@@ -321,14 +336,98 @@ void show_slicing_protection() {
     //
     cpp4::base_private_protected b2;
     cpp4::derived_private_protected d2;
-    b2 = d2;
+    cpp4::derived_private_protected d3;
+
+    // preventing slicing
+    // error: cannot access protected member declared in class 'cpp4::base_private_protected'
+    // b2 = d2;
+    d2 = d3;
 }
 
 //8. Using Default Operations(17.6.3)
 namespace cpp4 {
 
+class no_move{
+public:
+
+    // all operations by default
+    no_move() = default;
+    ~no_move() = default;
+    no_move(const no_move& rhs) :i_{rhs.i_} {
+        std::cout << "no_move(const no_move&)" << std::endl;
+    }
+    no_move& operator=(const no_move& rhs) {
+        std::cout << "no_move& operator=(const no_move& rhs)" << std::endl;
+        i_ = rhs.i_;
+        return *this;
+    }
+
+    // move operations do not defined so they are not generated
+private:
+    int i_ = 0;
+};
+
 } // namespace cpp4 
 
+void show_default() {
+
+    // these 
+    cpp4::no_move m1;
+    cpp4::no_move m2;
+
+    // explicitly called lvalue copy and assign
+    // (move-operations don't generated)
+    std::swap(m1, m2);
+}
+
+// 9. Deleted functions (17.6.4)
+namespace cpp4 {
+
+// delete template specialization
+template <typename T>
+T* clone(T* p) {
+    return new T{ *p };
+}
+
+// don't clone int
+int* clone(int*) = delete;
+
+// delete unnecessary conversion
+struct restrict_conversion {
+
+    restrict_conversion(int i) : i_{ i } {}
+
+    // don't try co convert double->int
+    restrict_conversion(double) = delete;
+    
+    int i_ = 0;
+};
+
+// allocation control
+struct heap_allocated {
+    
+    // don't call destructor 
+    ~heap_allocated() = delete;
+
+    // call destroy() instaed
+    void destroy() {}
+};
+
+struct stack_allocated {
+
+    // could be created only on stack
+    void* operator new(size_t) = delete;
+};
+
+} // namespace cpp4 
+
+void show_deleted() {
+
+    int a = 0;
+    
+    // error C2280: 'int *cpp4::clone(int *)': attempting to reference a deleted function
+    // cpp4::clone(&a);
+}
 
 int main() {
 
@@ -336,12 +435,9 @@ int main() {
     show_explicit_destroy();
     show_constructors_precedence();
     show_delegate_constructor();
-    
-    // TODO: solve it
-    //show_movable();
-
-    // unclear
+    show_movable();
     show_slicing_protection();
+    show_default();
 
     return 0;
 }

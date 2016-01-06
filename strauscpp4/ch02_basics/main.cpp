@@ -53,7 +53,7 @@ void show_basic_types(){
     const double dc = 10.0;
     // constexpr evaluates in compile time that all parts of expression is const
     // used as additional check or for the performance
-#if 1
+
     constexpr int ce_itn1 = 18;
     constexpr int ce_itn2 = 18 + 12;
 
@@ -68,7 +68,6 @@ void show_basic_types(){
 
     // error - d1 is not const
     //constexpr double = sqrt(dc);
-#endif
 }
 
 // 4. Auto, auto examples, auto & generic programming

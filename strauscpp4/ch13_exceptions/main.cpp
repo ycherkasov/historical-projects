@@ -79,7 +79,7 @@ void check_noexcept2() noexcept {
 
 // conditional noexcept (predicate must be constexpr)
 template<typename T>
-void copy_function(T& x) noexcept(std::is_pod<T>()) {
+void copy_function(T& x) noexcept(std::is_pod<T>::value) {
     T tmp(x); // POD does not throw
 }
 
@@ -124,17 +124,12 @@ void show_noexcept() {
     
     struct S { int i{}; };
     S s;
-    // TODO: does not work
-    // error C2057: expected constant expression
-    // cpp4::copy_function(s); // s is POD, should be noexcept
+    cpp4::copy_function(s); // s is POD, should be noexcept
 
     std::vector<int> v{ 1,2,3 };
     cpp4::call_func(v); // POD = zero all values
 }
 
-
-// 6. vector implementation
-// TODO
 
 // 5. set_terminate
 
@@ -145,6 +140,9 @@ using terminate_handler = void(*)();
     // exit calls destructors
     exit(1);
 }
+
+// 6. vector implementation
+// TODO
 
 int main() {
 

@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <stdexcept>
 #include <string>
+#include <cstdint>
 
 
 /*
@@ -31,25 +32,18 @@ namespace cpp4 {
 
 // The essential use for a suffix return type comes in function template declarations
 // in which the return type depends on the arguments
-template<typename T, typename U>
-auto product(const std::vector<T>& x, const std::vector<U>& y) -> decltype(x::value_type * y::value_type){
+template<typename X, typename Y>
+auto product(X x, Y y) -> decltype(x * y){
 
-    if ((x.empty()) || (y.empty())) {
-        throw std::logic_error("");
-    }
-    // TODO: product
-    return x[0] + y[0];
+    return x * y;
 }
 
 } // namespace cpp4
 
 void show_suffix() {
-    std::vector<int> v1{ 1,2,3 };
-    std::vector<int> v2{ 1,2,3 };;
 
-    // TODO: solve!
-    //auto prod = cpp4::product(v1, v2);
-    //std::cout << prod << std::endl;
+    auto prod = cpp4::product(1, 1.0);
+    std::cout << prod << std::endl;
 }
 
 // 2. noreturn
@@ -128,7 +122,7 @@ void show_list_args() {
     // cannot convert argument 1 from 'initializer list' to 'int (&)[4]'
 
     //f4(int{1});
-    cpp4::f4({ 1 }); 
+    cpp4::f4({ 1 });
 
     // If there is a possible ambiguity, an initializer_list parameter takes priority
 }
@@ -168,6 +162,7 @@ void print(char) {
 
 void show_overload_resolution() {
 
+    // TODO: try split ,
     char c{};
     int i{};
     short s{};
@@ -238,6 +233,16 @@ void show_function_ptrs_specifiers() {
     void(__cdecl* p3)(int) = &cpp4::cdecl_call_func;
     void(__stdcall* p4)(int) = &cpp4::std_call_func;
     void(__fastcall* p5)(int) = &cpp4::fast_call_func;
+
+    // aliases
+    //  error C2143: syntax error
+    //using ptr_c = extern "C" void(int);
+
+    // error C2279: exception specification cannot appear in a typedef declaration
+    //using ptr_noexcept = void(int) noexcept;
+
+    // OK
+    using ptr_stdcall =  void __stdcall (int);
 }
 
 // 7. Useful macros
@@ -262,7 +267,10 @@ void show_macro() {
     std::cout << "__TIME__ = " << __TIME__ << '\n';
     std::cout << "__FILE__ = " << __FILE__ << '\n';
     std::cout << "__LINE__ = " << __LINE__ << '\n';
-    //std::cout << "__FUNC__ = " << __FUNC__ << '\n';
+
+#ifdef __FUNC__
+    std::cout << "__FUNC__ = " << __FUNC__ << '\n';
+#endif
 
 #ifdef __STDC_HOSTED__
     std::cout << "__STDC_HOSTED__ = " << __STDC_HOSTED__ << '\n';

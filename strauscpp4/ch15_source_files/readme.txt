@@ -1,6 +1,5 @@
 Questions:
-difference between quick_exit() and abort()
-how many at_quick_exit() functions could be?
+* how many at_quick_exit() functions could be?
 
 New C++14 features:
 * Abandoning a process: quick_exit(15.4.3)
@@ -23,15 +22,19 @@ extern "C" {
 }
 
 * This technique is commonly used to produce a C++ header from a C header
-* Alternatively, condi- tional compilation (12.6.1) can be used to create a common C and C++ header:
+* Alternatively, conditional compilation (12.6.1) can be used to create a common C and C++ header:
 #ifdef __cplusplus
 extern "C" {...
 * A name with C linkage can be declared in a namespace (std::printf)
 * A variable defined outside any function (that is, global, namespace, and class static variables) is initialized before main() is invoked
-* Often, a function returning a reference is a good alternative to a global variable
+* Often, a function returning a reference to static is a good alternative to a global variable
 * The initialization of a local static is thread-safe (42.3.3)
 * The quick_exit() function is like exit() except that it does not invoke any destructors
 * Register functions to be invoked by quick_exit() using at_quick_exit()
+* Exit possibilities
+	* std::_Exit (abort): doesn't execute static destructors or flush critical IO and soes not call handler
+	* std::exit: executes static destructors and flushes critical IO and call handler if exists
+	* std::quick_exit: doesn't execute static destructors, but does flush critical IO and call handler if exists
 
 Book advices: 
 * Use header files to represent interfaces and to emphasize logical structure; 15.1, 15.3.2.

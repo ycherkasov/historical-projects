@@ -25,7 +25,7 @@ Examples:
 4. Integer types, suffixes, C compatible types
 5. Floating-point suffixes
 6. Sizes and alignment
-7. Declaration and decltype, -> suffix
+7. Declaration and decltype, -> suffix (see ch.12)
 8. Scopes (text only)
 7. Initialization, auto and {}
 8. Type aliases (see Ch.05 for examples)
@@ -169,22 +169,6 @@ void show_align() {
     //TODO: alignas
 }
 
-
-void show_decltype() {
-    // we can consider a declaration as having five parts (in order):
-    // * Optional prefix specifiers(e.g., static or virtual)
-    // * A base type (e.g., vector<double> or const int)
-    // * A declarator optionally including a name (e.g., p[7], n, or *(*)[])
-    // * Optional suffix function specifiers (e.g., const or noexcept)
-    // * An optional initializer or function body (e.g., ={ 7,5,3 } or {return x; })
-
-    // Some types have names composed out of multiple keywords, such as long long and volatile int 
-    // Some type names don’t even look much like names, such as decltype(f(x)):
-    // the return type of a call f(x)
-
-    // names starting with a double underscore (__) 
-    // or an underscore followed by an uppercase letter (e.g., _Foo) are reserved
-}
 
 void show_init() {
 

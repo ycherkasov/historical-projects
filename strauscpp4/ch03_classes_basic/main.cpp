@@ -81,7 +81,7 @@ public:
     }
 
     // copy semantic
-    // sould be suppressed by = delete notation
+    // should be suppressed by = delete notation
     // it can be used to suppress any operation
     vector(const vector& rhs) : data_{new T[rhs.size()]} {
         // so that keep exception-safety
@@ -90,7 +90,7 @@ public:
     }
 
     // assign semantic
-    // sould be suppressed by = delete notation
+    // should be suppressed by = delete notation
     // it can be used to suppress any operation
     vector& operator=(const vector& rhs) {
 

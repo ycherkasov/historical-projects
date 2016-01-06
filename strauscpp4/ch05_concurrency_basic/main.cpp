@@ -375,6 +375,7 @@ private:
 
 template <typename Generator>
 void print_distribution(Generator& g) {
+    
     std::map<int, size_t> distr;
 
     for (size_t i = 0; i < 200; ++i) {

@@ -1,4 +1,7 @@
 Questions:
+http://stackoverflow.com/questions/5868431/what-is-the-structure-of-virtual-tables-in-c
+http://blog.httrack.com/blog/2014/05/09/a-basic-glance-at-the-virtual-table/
+http://www.phpcompiler.org/articles/virtualinheritance.html
 
 New C++14 features:
 * Override controls: override and final (20.3.4)

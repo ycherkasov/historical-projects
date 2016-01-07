@@ -216,7 +216,78 @@ void show_template_friend() {
 // Scopes outside the innermost enclosing namespace scope are not considered for a name 
 // first declared as a friend (§iso.7.3.1.2). Consider a technical example
 
-// Thus, a friend function should be explicitly declared in an enclosing scope or take an argument of its class or a class derived from that
+// Thus, a friend function should be explicitly declared in an enclosing scope
+// or take an argument of its class or a class derived from that
+
+class c1 {};
+void f1() {
+    // we are friend but the class defined below
+    // error C2039: 'find_friends': is not a member of 'cpp4'
+    //cpp4::find_friends f;
+    //f.x = 1;
+}
+
+namespace cpp4 {
+
+class c2 {};
+void f2() {
+    // we are friend but the class defined below
+    // error C2039: 'find_friends': is not a member of 'cpp4'
+
+    //cpp4::find_friends f;
+    //f.x = 1;
+}
+
+class find_friends {
+public:
+
+    // OK: declared previously in global namespace
+    friend class c1;
+    friend void f1();
+
+    // OK: declared previously in the same namespace
+    friend class c2;
+    friend void f2();
+
+    // OK: declared just in the same namespace
+    friend class c3;
+    friend void f3();
+
+    // Error: declared but will never be found, as they are defined below 
+    // and not in the same namespace
+    friend class c4;
+    friend void f4();
+
+private:
+    int x = 0;
+};
+// also could be found if a class a param of a friend function
+
+class c3 {};
+void f3() {
+    // ok
+    cpp4::find_friends f;
+    f.x = 1;
+}
+
+
+} // namespace cpp4 
+
+class c4 {};
+void f4() {
+    cpp4::find_friends f;
+
+    // not a friend as expected to be in the same namespace
+    // 'cpp4::find_friends::x': cannot access private member declared in class 'cpp4::find_friends'
+    //f.x = 1;
+}
+
+void show_find_friends() {
+    f1();
+    cpp4::f2();
+    cpp4::f3();
+}
+
 
 int main() {
     show_deleted_operations();
@@ -225,5 +296,6 @@ int main() {
     // TODO:
     //show_ternary_digits();
     show_template_friend();
+    show_find_friends();
     return 0;
 }

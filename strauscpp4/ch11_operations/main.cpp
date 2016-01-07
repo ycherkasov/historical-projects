@@ -93,8 +93,8 @@ Unfortunately, we do not deduce the type of an unqualified list for a plain temp
 template<typename T> void f(T);
 
 f({}); // error: type of initializer is unknown
-f({ 1 }); // error: an unqualified list does not match ‘‘plain T’’ 
-f({1,2}); // error: an unqualified list does not match ‘‘plain T’’
+f({ 1 }); // error: an unqualified list does not match 'plain T' 
+f({1,2}); // error: an unqualified list does not match 'plain T'
 
 this is a language restriction, rather than a fundamental rule
 */

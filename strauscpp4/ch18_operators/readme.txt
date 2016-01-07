@@ -67,7 +67,6 @@ constexpr int operator"" _b3(); // base 3, i.e., ternary
   of assigning nonstandard meanings to digits at compile time
 * The standard library reserves all suffixes not starting with an initial underscore, 
   so define your suffixes starting with an underscore or risk your code breaking in the future
-* It is logically possible to move a source into itself (s=std::move(s)), so we have to protect against self-assignment
 
 * An ordinary member function declaration specifies three logically distinct things:
 	1. The function can access the private part of the class declaration.

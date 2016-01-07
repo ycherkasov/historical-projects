@@ -262,6 +262,7 @@ void show_future() {
     // 2. async
     // Treat a task as a function that may happen to run concurrently with other tasks
     std::future<int> f2 = std::async(std::launch::async, []() { return 8; });
+    // TODO: more real example std::async
 
     // Basically, async() separates the 'call part' of a function call from the 'get the result' part
     // Using async(), you don’t have to think about threads and locks

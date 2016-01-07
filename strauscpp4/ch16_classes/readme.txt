@@ -131,5 +131,6 @@ Tic_tac_toe& operator=(const Tic_tac_toe& arg) = default;
 * Note the difference between a =deleted function and one that simply has not been declared
   In the former case, the compiler notes that the programmer has tried to use the deleted function and gives an error
   In the latter case, the compiler looks for alternatives, such as not invoking a destructor or using a global operator new()
+* It is logically possible to move a source into itself (s=std::move(s)), so we have to protect against self-assignment
 
 Book advices: 

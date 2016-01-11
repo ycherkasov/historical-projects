@@ -214,6 +214,8 @@ namespace cpp4 {
 // and a move is often more efficient than a copy. When you write a move operation,
 // you should leave the source object in a valid but unspecified state
 
+// Some types could be moved only (not copied)
+
 class my_movable {
 public:
     
@@ -310,6 +312,7 @@ class base_private_protected {
 public:
     base_private_protected() {}
 protected:
+    // could be = default;
     base_private_protected& operator =(base_private_protected& rhs) {
         b = rhs.b;
         return *this;
@@ -353,6 +356,8 @@ public:
     // all operations by default
     no_move() = default;
     ~no_move() = default;
+
+    // also could be =default, implemented for debugging
     no_move(const no_move& rhs) :i_{rhs.i_} {
         std::cout << "no_move(const no_move&)" << std::endl;
     }

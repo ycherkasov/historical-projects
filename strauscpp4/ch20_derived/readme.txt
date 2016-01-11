@@ -28,7 +28,7 @@ Advices:
 * A return type of B& may be relaxed to D& (provided B is a public base of D)
   This is sometimes called the covariant return rule
 * Because functions such as clone() are virtual and they (indirectly) construct objects, they are often called virtual constructors
-* A compiler may reorder sections of a class with separate access specifiers
+* A compiler may reorder sections of a class with separate access specifiers (affects alignment)
 * Such reordering could come as a surprise to the programmer and is implementation-dependent
 * declaring data members protected is usually a design error
 * A using-declaration (14.2.2, 20.3.5) cannot open private data

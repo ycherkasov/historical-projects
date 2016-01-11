@@ -57,6 +57,7 @@ Advices:
 * The basic (implementation) idea is that after parsing what could be a literal, the compiler always checks for a suffix
 * It is not possible to redefine the meaning of a built-in literal suffix or to augment the syntax of literals
 * There are four kinds of literals that can be suffixed to make a user-defined literal
+TODO
 * A literal operator converting numerical values to strings could be quite confusing
 * A template literal operator is a literal operator that takes its argument as a template parameter pack, 
   rather than as a function argument. For example:

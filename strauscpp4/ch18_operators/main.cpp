@@ -253,7 +253,7 @@ public:
     friend class c3;
     friend void f3();
 
-    // Error: declared but will never be found, as they are defined below 
+    // Wrong: declared but will never be found, as they are defined below 
     // and not in the same namespace
     friend class c4;
     friend void f4();

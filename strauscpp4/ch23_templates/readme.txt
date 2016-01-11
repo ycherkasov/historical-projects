@@ -1,8 +1,13 @@
 Questions:
 http://habrahabr.ru/post/264157/
-http://habrahabr.ru/post/242639/
+http://habrahabr.ru/post/157961/
+http://habrahabr.ru/post/226229/
 http://eli.thegreenplace.net/2014/perfect-forwarding-and-universal-references-in-c
-Forwarding
+Perfect Forwarding, Universal References
+Friend template operators example
+
+Links:
+http://habrahabr.ru/post/242639/
 
 New C++14 features:
 * Type and template aliases (23.6)

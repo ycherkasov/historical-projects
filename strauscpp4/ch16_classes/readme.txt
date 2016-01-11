@@ -1,7 +1,4 @@
 Questions:
-* Very basic move example does not work (ex.7)
-* slicing protection
-* default operations
 
 
 New C++14 features:

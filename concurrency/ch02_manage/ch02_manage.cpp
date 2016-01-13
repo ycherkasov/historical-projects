@@ -25,6 +25,15 @@
 // * hardware_concurrency could be used for pooling
 
 
+// Examples:
+// 1. Plain thread function
+// 2. Lambda thread
+// 3. Error! Stack usage
+// 4. Thread guard
+// 5. Error! Implicit constructor usage
+// 6. Passing by ref
+// 7. hardware_concurrency
+// 8. Thread ID
 
 void show_functor_thread(){
     
@@ -175,6 +184,11 @@ void show_hardware_concurrency() {
     std::cout << "5000 elements = " << threads_per_dataset(5000) << std::endl;
 }
 
+void show_thread_id() {
+    // thread_id format is system-specific
+    std::cout << std::this_thread::get_id() << std::endl;
+}
+
 int main(int argc, char* argv[]) {
     
     try{
@@ -182,6 +196,7 @@ int main(int argc, char* argv[]) {
         show_lambda_thread();
         show_thread_guard();
         show_hardware_concurrency();
+        show_thread_id();
     }
     catch(const std::exception& e){
     }

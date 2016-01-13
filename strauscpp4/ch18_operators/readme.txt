@@ -57,7 +57,12 @@ Advices:
 * The basic (implementation) idea is that after parsing what could be a literal, the compiler always checks for a suffix
 * It is not possible to redefine the meaning of a built-in literal suffix or to augment the syntax of literals
 * There are four kinds of literals that can be suffixed to make a user-defined literal
-TODO
+	* An integer literal: unsigned long long or a const char* argument or by a template literal operator, 
+	for example, 123m or 12345678901234567890X
+	* A floating-point literal: long double or a const char* argument or by a template literal operator, 
+	for example, 12345678901234567890.976543210x or 3.99s
+	* A string literal: (const char*, size_t) pair of arguments, for example, "string"s and R"(Foo\bar)"_path
+	* A character literal: type char, wchar_t, char16_t, or char32_t, for example, 'f'_runic or u'BEEF'_w
 * A literal operator converting numerical values to strings could be quite confusing
 * A template literal operator is a literal operator that takes its argument as a template parameter pack, 
   rather than as a function argument. For example:

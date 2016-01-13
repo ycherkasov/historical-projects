@@ -1,5 +1,7 @@
 #include <iostream>
 #include <typeinfo>
+#include <utility>
+#include <type_traits>
 
 using namespace std;
 
@@ -169,15 +171,60 @@ void show_enable_if() {
     cpp4::simple_ptr<cpp4::example_class> p1{ new cpp4::example_class };
     std::cout << p1->i << std::endl;
 
-    cpp4::simple_ptr<int> p2{ new int{42} };
     // does not instantiated
+    //cpp4::simple_ptr<int> p2{ new int{42} };
     //p2->
 }
-
+#if 0
 //6. SFINAE and enable_if(28.4.4)
 namespace cpp4 {
-} // namespace cpp4 
 
+// question 'Can we call f(x) if x is of type X?' 
+// Defining has_f to answer that question gives an opportunity to demonstrate some of the techniques used
+
+// represent a failure to declare something
+struct substitution_failure { }; 
+
+template<typename T>
+struct substitution_succeeded : std::true_type {};
+
+// specialization for the fail condition
+template<>
+struct substitution_succeeded<substitution_failure> : std::false_type {};
+
+// Answer the question
+template<typename T>
+struct get_f_result {
+public:
+
+    // 'std::declval' converts any type T to a reference type, 
+    // making it possible to use member functions in decltype expressions without the need to go through constructors
+    using type = decltype(check(std::declval<T>()));
+private:
+
+    // can call f(x)
+    template<typename X>
+    static auto check(X const& x) -> decltype(f(x));
+
+    // cannot call f(x)
+    static substitution_failure check(...);
+};
+
+template<typename T> 
+struct has_f : substitution_succeeded<typename get_f_result<T>::type> {};
+
+// X<T> has a member use_f() if and only if f(t) can be called for a T value t
+template<typename T> 
+class X {
+    // ...
+    std::enable_if_t<has_f<T>()> use_f(const T&) {
+        // ... f(t); // ...
+    }
+    // ... 
+};
+
+} // namespace cpp4 
+#endif
 //7. type - safe print(28.6.1)
 namespace cpp4 {
 } // namespace cpp4 

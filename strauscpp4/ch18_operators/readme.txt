@@ -1,5 +1,7 @@
 Questions:
 // StackO: ternary digits example
+// TODO: complex type example
+// TODO: string type example
 
 New C++14 features:
 * Explicit conversion operators (18.4.2)

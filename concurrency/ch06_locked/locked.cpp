@@ -4,7 +4,9 @@
 #include <thread>
 #include <mutex>
 #include <condition_variable>
- 
+
+// TODO:  https://en.wikipedia.org/wiki/Out-of-order_execution
+
 template <typename T>
 class threadsafe_queue{
 public:

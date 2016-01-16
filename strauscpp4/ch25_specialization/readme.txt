@@ -4,6 +4,7 @@ extern templates: TODO
 repeat templates
 http://habrahabr.ru/post/237323/
 remove_reference<T>::type&
+linearizing hierarchy example (27.4.2)
 
 New C++14 features:
 * Local classes as template arguments (25.2.1)

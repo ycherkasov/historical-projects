@@ -225,6 +225,7 @@ class X {
 
 } // namespace cpp4 
 #endif
+
 //7. type - safe print(28.6.1)
 namespace cpp4 {
 } // namespace cpp4 

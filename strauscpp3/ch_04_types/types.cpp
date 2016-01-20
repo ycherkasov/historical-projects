@@ -473,6 +473,8 @@ void show_rand(){
     std::cout << int(double(n) * CLOCKS_PER_SEC / (clock() - t));
 }
 
+
+
 int main(){
 
     show_pointer_arithmetic();

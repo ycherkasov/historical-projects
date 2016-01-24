@@ -1,9 +1,12 @@
 Questions:
 * Logic errors vs runtime errors
 * what is nested_exception
-* system_errors some article
 * default_error_condition()
-* http://stackoverflow.com/questions/21821673/understanding-the-system-error-facility-in-c11
+* default_error_condition example 5 does not work
+
+http://stackoverflow.com/questions/21821673/understanding-the-system-error-facility-in-c11
+http://blog.think-async.com/2010/04/system-error-support-in-c0x-part-1.html
+
 
 New C++14 features:
 * Copying and rethrowing exceptions (30.4.1.2)
@@ -63,6 +66,46 @@ Advices:
 * To help the implementer of error_code, we specialize the trait is_error_code_enum for our enumeration
 * Standard error_codes for the system_category() are defined by enum class errc with values equivalent to the POSIX-derived contents of <cerrno>
 * The POSIX macros are integers whereas the errc enumerators are of type errc
-* 
+* Be pragmatic, not dogmatic. Use whatever error mechanism suits best in terms of clarity, correctness, constraints
+
+* Here are the types and classes defined by <system_error>, in a nutshell:
+	* class error_category - intended as a base class, an error_category is used to define sources of errors 
+	  or categories of error codes and conditions.
+	* class error_code - represents a specific error value returned by an operation (such as a system call)
+	* class error_condition - something that you want to test for and, potentially, react to in your code
+	* class system_error - an exception used to wrap error_codes when an error is to be reported via throw/catch.
+	* enum class errc - a set of generic error condition values, derived from POSIX.
+	* is_error_code_enum<>, is_error_condition_enum<>, make_error_code, make_error_condition - a mechanism
+	  for converting enum class error values into error_codes or error_conditions.
+	* generic_category() - returns a category object used to classify the errc-based error codes and conditions.
+	* system_category() - returns a category object used for error codes that originate from the operating system.
+
+Example:
+std::error_code ec;
+create_directory("/some/path", ec);
+if (ec == std::errc::file_exists)
+// ...
+
+* Obviously, this is because there's an implicit conversion from errc to error_condition using a single-argument constructor
+  There's a few reasons why there's a bit more to it than that:
+	* The enumerator provides an error value, but to construct an error_condition we need to know the category too. 
+	  The <system_error> facility uses categories to support multiple error sources, and a category is an attribute of both error_code and error_condition.
+	* The facility should be user-extensible. That is, users (as well as future extensions to the standard library) 
+	  need to be able to define their own placeholders.
+	* The facility should support placeholders for either error_code or error_condition. 
+	  Although enum class errc provides placeholders for error_condition constants, other use cases may require constants of type error_code.
+	* Finally, it should allow explicit conversion from an enumerator to error_code or error_condition. 
+	  Portable programs may need to create error codes that are derived from the std::errc::* enumerators
+
+* the compiler has to choose between these two overloads:
+
+bool operator==(
+    const error_code& a,
+    const error_code& b);
+bool operator==(
+    const error_code& a,
+    const error_condition& b);
+
+It chooses the latter because the error_condition conversion constructor is available, but the error_code one is not
 
 Book advices: 

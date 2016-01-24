@@ -1,5 +1,8 @@
 TODO: Move Ñ/C++ difference to the related topic
 
+GCC docs:
+https://gcc.gnu.org/onlinedocs/libstdc++/manual/index.html
+
 New C++14 features:
 None
 

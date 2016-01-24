@@ -3,6 +3,7 @@ Questions:
 * what is nested_exception
 * system_errors some article
 * default_error_condition()
+* http://stackoverflow.com/questions/21821673/understanding-the-system-error-facility-in-c11
 
 New C++14 features:
 * Copying and rethrowing exceptions (30.4.1.2)

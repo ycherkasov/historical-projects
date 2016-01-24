@@ -171,7 +171,7 @@ void show_enable_if() {
     cpp4::simple_ptr<cpp4::example_class> p1{ new cpp4::example_class };
     std::cout << p1->i << std::endl;
 
-    // does not instantiated
+    // does not instantiated (?)
     //cpp4::simple_ptr<int> p2{ new int{42} };
     //p2->
 }

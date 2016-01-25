@@ -45,17 +45,19 @@ class closed
     double b;
 };
 
-} // namespace cpp4 
-
-
+// place in the same namespace so that find friend
 void show_memberwise_init() {
-    
+
     // all members are opened, ok
     cpp4::opened op = { 1, 1.0 };
 
     // members are closed, does not work even for friend
-    // cpp4::closed cl { 1, 1.0 };
+    //cpp4::closed cl { 1, 1.0 };
 }
+
+} // namespace cpp4 
+
+
 
 //2. Explicit destroy(17.2.4)
 namespace cpp4 {
@@ -436,7 +438,7 @@ void show_deleted() {
 
 int main() {
 
-    show_memberwise_init();
+    cpp4::show_memberwise_init();
     show_explicit_destroy();
     show_constructors_precedence();
     show_delegate_constructor();

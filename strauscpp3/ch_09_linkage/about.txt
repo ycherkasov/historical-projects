@@ -1,0 +1,84 @@
+Глава 9 Страуструпа
+Компоновка. Внешние объявления.
+Компоновка в стиле C. Компоновка и указатели на функцию.
+One definition rule. Стражи включения.
+Глобальные переменные. Выход из программы.
+Типы линковки.
+
+Вопросы:
+
+
+Linkage types
+1. Internal linkage, in which case they refer only to program elements inside their own translation units; 
+they are not shared with other translation units.
+The same name in another translation unit may refer to a different object or a different class.
+
+// The static keyword ensures internal linkage.
+static int i;   
+
+2. External linkage, in which case they can refer to program elements 
+in any translation unit in the program — the program element is shared among the translation units.
+
+namespace{
+	int i;
+}
+// "i" has external linkage.
+// This is correct.  Even though "i" is not visible outside the compilation unit, 
+// it still has external linkage (C++ Standard 7.3.1.1/1 - See footnote).
+
+3. No linkage, in which case they refer to unique entities. 
+The following kinds of identifiers have no linkage:
+* Names that have neither external or internal linkage
+* Names declared in local scopes (with exceptions like certain entities declared with the extern keyword)
+* Identifiers that do not represent an object or a function, including labels, enumerators, typedef names
+
+
+C supports four different kinds of scope: 
+file scope, block scope, function prototype scope, and function scope. 
+C++ generalizes file scope into namespace scope, and adds class scope.
+
+A name’s linkage affects whether two or more declarations for that name are valid, 
+and if so, whether they refer to the same entity (such as a function or an object). 
+Understanding linkage clears up a number of misconceptions about the behavior of C and C++ programs.
+
+1. Внешняя линковка (external linkage) означает, что одинаковые имена, используемые в разных файлах, 
+трактуются линковщиком как один объект. 
+Для имен функций и переменных, объявленных вне функций, внешняя линковка применяется по умолчанию.
+
+2. Внутренняя линковка (internal linkage) для переменной x или функции f() из файла a.c означает, 
+что указанные объекты является "собственностью" этого файла, а переменные или функции 
+с такими же именами, но объявленные в других файлах, являются другими объектами.
+
+3. Отсутствие линковки
+
+Для обозначения внешней линковки используется ключевое слово extern, тогда как для внутренней 
+используется ключевое слово static. Это может вызвать путаницу.
+В области видимости клоза или класса static - это модель памяти.
+В глобальной области видимости - тип линковки.
+Обычная переменная const - всегла static
+C++ implicitly treats any const namespace-scope variable as having internal linkage 
+unless it is explicitly declared extern, unlike C.
+
+Советы.
+1. Избегайте определeний функций в хедерах.
+2. Используйте #include только в глобальной области видимости.
+3. Пользуйтесь стражами включения или #pragma once
+   ODR - определения, встречающиеся в разных единицах трансляции
+   д.б. идентичны лексема за лексемой.
+4. Создавайте самодостаточные заголовочные файлы.
+5. Глобальным переменным предпочитайте функции возвращающие статические или синглтоны.
+   Нет гарантированного порядка инициализации глобальных переменных в разных единицах трансляции.
+6. Пользуйтесь соглашением по компоновке extern "C" для межъязыкового взаимодействия.
+7. Используйте при этом макрос #ifdef __cplusplus.
+8. При передаче между модулями указателей на функции также пользуйтесь extern "C" для функций,
+   которые передаются в указателе.
+9. При объявлении мелких структур и множества POD-типов объединяйте их 
+   в один h-файл для предотвращения путаницы и ускорения компиляции.
+10.При аварийном завершении программы предпочитайте exit(), а не abort() - 
+    он хотя бы вызовет деструкторы.
+11. Согласно стандарту, как старому, так и новому, если переменная объявлена с модификатором const
+    и при этом явно не объявлена как extern, то она получает внутренне связывание (т.е. static)
+12. inline-функции имеют внешнее связывание в C++. Из всех inline-функций с одним и тем же именем 
+    линковщик выберет только одну реализацию (механизм selectany). 
+	Чтобы определить метод, описанный за пределами класса или обычную функцию как inline, 
+	нужно написать: inline void f()

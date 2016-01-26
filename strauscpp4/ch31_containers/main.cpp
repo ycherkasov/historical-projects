@@ -161,6 +161,7 @@ void show_load_bucket() {
     float mlf = s.max_load_factor();
     s.max_load_factor(0.7f);
 
+    // Rehashing occurs only if the new number of elements is greater than max_load_factor()*bucket_count()
     s.rehash(2000);
     //reserve
 

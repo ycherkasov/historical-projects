@@ -290,7 +290,7 @@ def show_dict():
     print('####################################')
     print('Dictionary operations')
 
-    # A dictionary is an unordered set of key-value pairs
+    # A dictionary is an unordered set of key-value pairs (based on hash)
     # The syntax is similar to sets, but instead of values, you have key-value pairs
     a_dict = {'server': 'db.diveintopython3.org', 'database': 'mysql'}
 
